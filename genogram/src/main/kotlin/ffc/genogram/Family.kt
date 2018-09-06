@@ -20,8 +20,20 @@ package ffc.genogram
 class Family(
     var familyId: Long,
     var familyName: String,
-    var bloodFamily: List<Int>,
-    var member: List<Person>
+    var bloodFamily: List<Int>?,
+    var member: List<Person>?
 ) {
+
+    fun removeBloodFamily(personId: Long) {
+        val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
+        if (tmp.size > 1) {
+            tmp.find { it == personId.toInt() }?.let {
+                tmp.remove(it)
+            }
+            bloodFamily = tmp
+        } else if (tmp.size == 1) {
+            bloodFamily = null
+        }
+    }
 
 }

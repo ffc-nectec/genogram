@@ -27,7 +27,7 @@
     },
     {
       "idCard": 10,
-      "firstname": "Gradmother",
+      "firstname": "Grandmother",
       "lastname": "Smiths",
       "birthDate": "12-11-1972",
       "gender": 1,
@@ -40,10 +40,7 @@
         0
       ],
       "wife": null,
-      "children": [
-        1,
-        2
-      ],
+      "children": null,
       "linkedStack": [
         0
       ]

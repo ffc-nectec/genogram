@@ -38,4 +38,43 @@ class Person(
     fun hasBeenDivorced(): Boolean {
         return exHusband != null || exWife != null
     }
+
+    fun removeLinkedStack(removeList: MutableList<Int>) {
+        if (linkedStack != null) {
+            var tmp: MutableList<Int>? = linkedStack as MutableList<Int>
+
+            if (tmp!!.isNotEmpty() && tmp!!.size > 1) {
+                for (i in 0 until tmp.size) {
+                    removeList.find { it == tmp!![i] }?.let {
+                        tmp!!.removeAt(i)
+                    }
+                }
+            }
+            if (tmp.size == 1)
+                tmp = null
+
+            /*if (tmp!!.size == 1)
+                tmp = null
+            else
+                for (i in 0 until tmp.size) {
+                    if (tmp[i] == personId.toInt()) {
+                        tmp.removeAt(i)
+                    }
+                }*/
+
+            linkedStack = tmp
+        }
+    }
+
+    fun removeListLinkedStack(removeList: MutableList<Int>) {
+        var tmp: MutableList<Int>? = null
+        if (linkedStack != null)
+            tmp = linkedStack as MutableList<Int>
+        for (i in 0 until tmp!!.size) {
+            removeList.find { it == tmp[i] }?.let {
+                tmp.removeAt(i)
+            }
+        }
+        linkedStack = tmp
+    }
 }
