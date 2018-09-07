@@ -58,4 +58,22 @@ class RelationshipFactory {
         }
         return familyTreeDrawer
     }
+
+    fun getLine(
+        focusedListPerson: MutableList<Person>,
+        parentsPosition: MutableList<Double>,
+        familyTreeDrawer: FamilyTreeDrawer,
+        relationshipLabel: RelationshipLabel
+    ): FamilyTreeDrawer {
+        return when (relationshipLabel) {
+            RelationshipLabel.CHILDREN -> {
+                // Add new "familyTreeDrawer" layer
+                ChildrenLine(focusedListPerson, parentsPosition, familyTreeDrawer).drawLine()
+            }
+            else -> {
+                // RelationshipLabel.TWIN
+                TwinLine().drawLine()
+            }
+        }
+    }
 }

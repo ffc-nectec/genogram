@@ -22,14 +22,29 @@ class FamilyTreeDrawer {
     var familyLayers: ArrayList<String> = ArrayList()
     var familyStorage: ArrayList<ArrayList<String>> = ArrayList()
 
-    fun addFamilyLayer(name: String) {
+    fun addFamilyLayer(name: String, storage: ArrayList<ArrayList<String>>) {
         familyLayers.add(name)
 
-        if (familyLayers.isEmpty())
+        if (storage.isEmpty()) {
             addFamilyStorage(familyLayers)
+        }
     }
 
-    fun addFamilyStorage(familyLayers: ArrayList<String>) {
+    fun addFamilyNewLayer(name: String) {
+        val newLayers: ArrayList<String> = arrayListOf(name)
+        familyStorage.add(newLayers)
+    }
+
+    fun addEmptyNewLayer() {
+        val newLayers: ArrayList<String> = arrayListOf()
+        familyStorage.add(newLayers)
+    }
+
+    fun createFamilyStorage() {
+        familyStorage.add(familyLayers)
+    }
+
+    fun addFamilyStorage(newLayer: ArrayList<String>) {
         familyStorage.add(familyLayers)
     }
 }

@@ -23,9 +23,13 @@ abstract class Relationship {
 
     companion object {
         const val thinkness = 3.0
-        const val distance = 10.0
+        const val distanceLine = 9.0
+        const val spaceLine = 3.0
+        const val lengthLine = distanceLine + spaceLine
         const val color = 0xff888888
     }
 
     abstract fun drawLine(): FamilyTreeDrawer
+
+    abstract fun createLineDistance(): String
 }

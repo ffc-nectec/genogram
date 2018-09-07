@@ -19,14 +19,32 @@ package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
+import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class NodeFactory {
 
-    fun getNode(familyTreeDrawer: FamilyTreeDrawer, person: Person): FamilyTreeDrawer {
-
+    fun getNode(
+        familyTreeDrawer: FamilyTreeDrawer,
+        person: Person,
+        relationLabel: RelationshipLabel?
+    ): FamilyTreeDrawer {
         return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, person.firstname).drawNode()
-            else -> FemaleNode(familyTreeDrawer, person.firstname).drawNode()
+            0 -> MaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel)
+            else -> FemaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel)
         }
+    }
+
+    fun getNode(
+        familyTreeDrawer: FamilyTreeDrawer,
+        personList: MutableList<Person>,
+        relationLabel: RelationshipLabel?
+    ): FamilyTreeDrawer {
+        return if (personList.size == 1) {
+            when (personList[0].gender) {
+                0 -> MaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel)
+                else -> FemaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel)
+            }
+        } else
+            familyTreeDrawer
     }
 }

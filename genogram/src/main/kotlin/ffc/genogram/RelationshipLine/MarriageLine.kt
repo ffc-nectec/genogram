@@ -25,10 +25,25 @@ class MarriageLine(
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
-        if (handSide == RelationshipLabel.RIGHT_HAND)
-        // 6 hyphens
-            familyTreeDrawer.addFamilyLayer("---Married---")
+        if (handSide == RelationshipLabel.RIGHT_HAND) {
+            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+        }
 
         return familyTreeDrawer
+    }
+
+    override fun createLineDistance(): String {
+        val sign = '_'
+        val space = ' '
+        var resultSpace = ""
+        var resultSign = ""
+
+        for (i in 0 until spaceLine.toInt())
+            resultSpace += space
+
+        for (i in 0 until distanceLine.toInt())
+            resultSign += sign
+
+        return "$resultSpace|$resultSign|$resultSpace"
     }
 }

@@ -18,15 +18,17 @@
 package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class MaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
     var nodeName: String
 ) : Node() {
 
-    override fun drawNode(): FamilyTreeDrawer {
+    override fun drawNode(relationLabel: RelationshipLabel?): FamilyTreeDrawer {
         // TODO: draw node
-        familyTreeDrawer.addFamilyLayer("[$nodeName]")
+        nodeName = setNodeSize(nodeName)
+        familyTreeDrawer.addFamilyLayer("[$nodeName]", familyTreeDrawer.familyStorage)
         return familyTreeDrawer
     }
 

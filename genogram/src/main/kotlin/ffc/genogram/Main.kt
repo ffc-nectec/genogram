@@ -25,10 +25,9 @@ private lateinit var familyObj: Family
 fun main(args: Array<String>) {
     familyObj = getResourceAs<Family>("family-empty.json")
     val familyTreePic = drawGenogram()
-//    for (i in 0 until familyTreePic.familyStorage.size) {
-//        print(familyTreePic.familyLayers[i])
-//    }
-    print(familyTreePic.familyLayers)
+    for (i in 0 until familyTreePic.familyStorage.size) {
+        print("${familyTreePic.familyStorage[i]}\n")
+    }
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {

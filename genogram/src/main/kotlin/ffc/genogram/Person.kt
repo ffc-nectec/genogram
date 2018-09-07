@@ -40,30 +40,43 @@ class Person(
     }
 
     fun removeLinkedStack(removeList: MutableList<Int>) {
-        if (linkedStack != null) {
-            var tmp: MutableList<Int>? = linkedStack as MutableList<Int>
-
-            if (tmp!!.isNotEmpty() && tmp!!.size > 1) {
-                for (i in 0 until tmp.size) {
-                    removeList.find { it == tmp!![i] }?.let {
-                        tmp!!.removeAt(i)
-                    }
+        val tmp: MutableList<Int> = (linkedStack as MutableList<Int>?)!!
+        if (linkedStack!!.size == 1 && removeList.size == 1) {
+            if (linkedStack!![0] == removeList[0])
+                linkedStack = null
+        } else {
+            for (i in 0 until removeList.size) {
+                removeList.find { it == tmp[i] }?.let {
+                    tmp.removeAt(i)
                 }
             }
-            if (tmp.size == 1)
-                tmp = null
-
-            /*if (tmp!!.size == 1)
-                tmp = null
-            else
-                for (i in 0 until tmp.size) {
-                    if (tmp[i] == personId.toInt()) {
-                        tmp.removeAt(i)
-                    }
-                }*/
-
             linkedStack = tmp
         }
+//
+//        if (linkedStack != null) {
+//            var tmp: MutableList<Int>? = linkedStack as MutableList<Int>
+//
+//            if (tmp!!.isNotEmpty() && tmp.size > 1) {
+//                for (i in 0 until tmp.size) {
+//                    removeList.find { it == tmp!![i] }?.let {
+//                        tmp!!.removeAt(i)
+//                    }
+//                }
+//            }
+//            if (tmp.size == 1)
+//                tmp = null
+//
+//            /*if (tmp!!.size == 1)
+//                tmp = null
+//            else
+//                for (i in 0 until tmp.size) {
+//                    if (tmp[i] == personId.toInt()) {
+//                        tmp.removeAt(i)
+//                    }
+//                }*/
+//
+//            linkedStack = tmp
+//        }
     }
 
     fun removeListLinkedStack(removeList: MutableList<Int>) {

@@ -20,7 +20,12 @@ package ffc.genogram.RelationshipLine
 import ffc.genogram.FamilyTreeDrawer
 
 class TwinLine : Relationship() {
+
     override fun drawLine(): FamilyTreeDrawer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createLineDistance(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

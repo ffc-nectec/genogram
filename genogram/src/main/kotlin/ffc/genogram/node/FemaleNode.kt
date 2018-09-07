@@ -18,6 +18,7 @@
 package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.RelationshipLine.RelationshipLabel
 import kotlin.math.PI
 
 class FemaleNode(
@@ -25,9 +26,17 @@ class FemaleNode(
     var nodeName: String
 ) : Node() {
 
-    override fun drawNode(): FamilyTreeDrawer {
+    override fun drawNode(relationLabel: RelationshipLabel?): FamilyTreeDrawer {
         // TODO: draw node
-        familyTreeDrawer.addFamilyLayer("($nodeName)")
+        nodeName = setNodeSize(nodeName)
+        if (relationLabel == RelationshipLabel.WIFE) {
+            familyTreeDrawer.addFamilyLayer("($nodeName)", familyTreeDrawer.familyStorage)
+        } else {
+            // Children or Twin
+            val familyGen = familyTreeDrawer.familyStorage.size - 1
+            val newNode: ArrayList<String> = arrayListOf(setNodePosition(nodeName, 1))
+            familyTreeDrawer.familyStorage[familyGen] = newNode
+        }
         return familyTreeDrawer
     }
 

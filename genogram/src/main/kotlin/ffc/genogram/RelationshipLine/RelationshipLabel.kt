@@ -28,5 +28,6 @@ enum class RelationshipLabel {
     LEFT_HAND,
     MARRIAGE,
     DIVORCED,
-    SINGLE
+    SINGLE,
+    START
 }

@@ -18,9 +18,41 @@
 package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.Person
 
-class ChildrenLine : Relationship() {
+class ChildrenLine(
+    var childreObjList: MutableList<Person>,
+    var parentPosition: MutableList<Double>,
+    var familyTreeDrawer: FamilyTreeDrawer
+) : Relationship() {
+
     override fun drawLine(): FamilyTreeDrawer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val familyStorage = familyTreeDrawer.familyStorage
+        val lastestLayer = familyStorage[familyStorage.size - 1]
+        // find Daddy position(index) and Mark at that index
+        // find Mummy position(index) and Mark at that index
+        // Make line at the position(index) between Daddy and Mummy in the new layer
+        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+        familyTreeDrawer.addEmptyNewLayer()
+        // Find "childrenObjList" size for make a mark
+
+        return familyTreeDrawer
+    }
+
+    override fun createLineDistance(): String {
+        val sign = "'"
+        val space = " "
+        var resultSpace = ""
+        var resultSign = ""
+
+        if (childreObjList.size == 1) {
+            for (i in 0 until lengthLine.toInt() / 2 + 2) {
+                resultSpace += space
+            }
+            return "$resultSpace|$resultSpace"
+        } else {
+            // have more than one children
+            return "|"
+        }
     }
 }
