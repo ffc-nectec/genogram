@@ -28,66 +28,90 @@ class FamilyTree(var familyObj: Family) {
     private var personLinkedStack: List<Int>? = null
     private val relationFactory = RelationshipFactory()
     private val nodeFactory = NodeFactory()
+    private val addedNodes: MutableList<Int> = mutableListOf()
 
     fun drawGenogram(): FamilyTreeDrawer {
         focusedPerson = popBloodFamily()
+//        print("1: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
 
-        if (focusedPerson == null) {
+        if (focusedPerson == null || isAdded(focusedPerson)) {
             print("==== ${familyObj.familyName} Family =====\n")
             return familyTreePic
         } else {
             print("LOADING...\n")
-            addNode(focusedPerson!!, null)
+            if (!isAdded(focusedPerson))
+                addNode(focusedPerson!!, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
             listFocusedPerson.add(focusedPerson!!)
             personLinkedStack = focusedPerson!!.linkedStack
 
             while (personLinkedStack != null) {
-                personLinkedStack = this.setRelationship(listFocusedPerson, null)
+                personLinkedStack = this.setRelationship(listFocusedPerson, null, null)
             }
 
-            familyObj.removeBloodFamily(focusedPerson!!.idCard)
-//            return drawGenogram()
-            return familyTreePic
+            print("2: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+//            familyObj.removeBloodFamily(focusedPerson!!.idCard)
+//            print("3: familyObj: ${familyObj.bloodFamily}\n")
+            return drawGenogram()
+//            return familyTreePic
         }
     }
 
-    private fun setRelationship(list1: ArrayList<Person>, list2: ArrayList<Person>?): List<Int>? {
+    private fun isAdded(focusedPerson: Person?): Boolean {
+        if (focusedPerson != null) {
+            addedNodes.find { it == focusedPerson.idCard.toInt() }?.let {
+                return true
+            } ?: kotlin.run {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
 
-        lateinit var relatedPerson: Person
+    private fun setRelationship(
+        list1: ArrayList<Person>,
+        childrenObjList: ArrayList<Person>?,
+        childrenIdList: ArrayList<Int>?
+    ): List<Int>? {
 
-        if (list1.size > 1) {
+        val relatedPerson: Person?
+
+        if (list1.size > 1 && childrenObjList != null && childrenIdList != null) {
             // Draw a children or twins line
+            val parentsPosition = findParentsPosition()
+            relationFactory.getLine(childrenObjList, parentsPosition, familyTreePic, RelationshipLabel.CHILDREN)
+            addListNode(childrenObjList, RelationshipLabel.CHILDREN)
+            return focusedPerson!!.linkedStack
+//            return null
         } else {
             // Draw a marriage or divorce line
             relatedPerson = popLinkedStack(list1, null)
             val relatedPersonList: ArrayList<Person> = ArrayList()
-            relatedPersonList.add(relatedPerson)
-            val relationLabel = findRelationship(list1, relatedPersonList)
-            // Draw a relationship line
-            relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel)
-            addNode(relatedPerson, relationLabel)
-            val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
-            relatedPerson.removeLinkedStack(tmp)
 
-            // Check whether they have children together
-            val childrenList = popChildren(focusedPerson!!, relatedPerson)
-            if (childrenList != null) {
-                // TODO: Children Line
-                val childrenObjList = findChildrenObj(childrenList)
-                val parentsPosition = findParentsPosition()
-                relationFactory.getLine(childrenObjList, parentsPosition, familyTreePic, RelationshipLabel.CHILDREN)
-                focusedPerson!!.removeListLinkedStack(childrenList)
-                relatedPerson.removeListLinkedStack(childrenList)
-                // Add Children Node
-                addListNode(childrenObjList, RelationshipLabel.CHILDREN)
-            } else {
-//                print("out: ${focusedPerson!!.linkedStack}")
-//                return focusedPerson!!.linkedStack
+            if (relatedPerson != null) {
+                relatedPersonList.add(relatedPerson)
+                val relationLabel = findRelationship(list1, relatedPersonList)
+                // Draw a relationship line
+                relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel)
+                addNode(relatedPerson, relationLabel)
+                val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
+                print("relatedPerson: ${relatedPerson!!.firstname}\n")
+                relatedPerson.removeLinkedStack(tmp)
+                val childrenIdList = haveChildren(focusedPerson!!, relatedPerson)
+
+                return if (childrenIdList != null) {
+                    focusedPerson!!.removeListLinkedStack(childrenIdList)
+                    relatedPerson.removeListLinkedStack(childrenIdList)
+                    val childrenObjList = popChildren(childrenIdList, focusedPerson!!, relatedPerson)
+                    val focusedParents: ArrayList<Person> = arrayListOf(focusedPerson!!, relatedPerson)
+                    setRelationship(focusedParents, childrenObjList, childrenIdList)
+                } else {
+                    focusedPerson!!.linkedStack
+                }
             }
         }
-        // temp
-        return null
+        return focusedPerson!!.linkedStack
     }
 
     private fun findParentsPosition(): MutableList<Double> {
@@ -99,18 +123,24 @@ class FamilyTree(var familyObj: Family) {
         return mutableListOf(parent2Inx, parent1Inx)
     }
 
-    private fun findChildrenObj(childrenList: MutableList<Int>): MutableList<Person> {
-        val childrenObjList: MutableList<Person> = mutableListOf()
+    private fun popChildren(childrenList: MutableList<Int>, person1: Person, person2: Person?): ArrayList<Person> {
+        val childrenObjList: ArrayList<Person> = arrayListOf()
         for (i in 0 until familyObj.member!!.size) {
             childrenList.find { it == familyObj.member!![i].idCard.toInt() }?.let {
-                childrenObjList.add(familyObj.member!![i])
+                val child = familyObj.member!![i]
+                val tmpChildStack: MutableList<Int> = child.linkedStack as MutableList<Int>
+                tmpChildStack.remove(person1.idCard.toInt())
+                if (person2 != null)
+                    tmpChildStack.remove(person2.idCard.toInt())
+                child.linkedStack = tmpChildStack
+                childrenObjList.add(child)
             }
         }
         return childrenObjList
     }
 
-    private fun popChildren(focusedPerson: Person, relatedPerson: Person): MutableList<Int>? {
-        var childrenList: MutableList<Int>? = mutableListOf()
+    private fun haveChildren(focusedPerson: Person, relatedPerson: Person): ArrayList<Int>? {
+        var childrenList: ArrayList<Int>? = arrayListOf()
         // find the focusedPerson's children
         // find the focusedPerson's children who also is the relatedPerson's children
         val fChildren: List<Int>? = focusedPerson.children
@@ -124,7 +154,10 @@ class FamilyTree(var familyObj: Family) {
         } else {
             childrenList = null
         }
+
         // delete children out of focusedPerson and relatedPerson's linkedStack
+        // delete focusedPerson and relatedPerson out of children'stack
+
         return childrenList
     }
 
@@ -185,51 +218,76 @@ class FamilyTree(var familyObj: Family) {
         return RelationshipLabel.SINGLE
     }
 
-    private fun popLinkedStack(list1: ArrayList<Person>, list2: ArrayList<Person>?): Person {
+    private fun popLinkedStack(list1: ArrayList<Person>, list2: ArrayList<Person>?): Person? {
 
         var relatedPerson: Person? = null
+        var relatedPersonId: Int? = null
 
         if (list2 == null) {
             // list1 always has one element.
             relatedPerson = list1[0]
-
             // list1 = [grandfather]
             // list1.linkedStack = [10]
-            val relatedPersonId = list1[0].linkedStack!![0]
-            // relatedPerson = find person who has idCard = 10 = Grandmother
-            familyObj.member!!.find { it.idCard.toInt() == relatedPersonId }?.let {
-                relatedPerson = it
-            }
-            // remove idCard = 10 out of the linkedStack's list1
-            val tmpPerson: MutableList<Int> = focusedPerson!!.linkedStack as MutableList<Int>
-            tmpPerson.removeAt(0)
-            if (tmpPerson.isEmpty())
-                focusedPerson!!.linkedStack = null
-            else
-                focusedPerson!!.linkedStack = tmpPerson
-            familyObj.member!!.forEachIndexed { index, person ->
-                if (person.idCard == focusedPerson!!.idCard)
-                    familyObj.member!![index].linkedStack = focusedPerson!!.linkedStack
+            if (relatedPerson.linkedStack!!.isNotEmpty()) {
+                relatedPersonId = relatedPerson.linkedStack!![0]
+                // relatedPerson = find person who has idCard = 10 = Grandmother
+                familyObj.member!!.find { it.idCard.toInt() == relatedPersonId }?.let {
+                    relatedPerson = it
+                }
+                // remove idCard = 10 out of the linkedStack's list1
+                val tmpPerson: MutableList<Int> = focusedPerson!!.linkedStack as MutableList<Int>
+                tmpPerson.removeAt(0)
+                if (tmpPerson.isEmpty())
+                    focusedPerson!!.linkedStack = null
+                else
+                    focusedPerson!!.linkedStack = tmpPerson
+                familyObj.member!!.forEachIndexed { index, person ->
+                    if (person.idCard == focusedPerson!!.idCard)
+                        familyObj.member!![index].linkedStack = focusedPerson!!.linkedStack
+                }
+            } else {
+                relatedPerson = null
             }
         }
 
-        return relatedPerson!!
+        return relatedPerson
     }
 
     private fun addNode(focusedPerson: Person, relationLabel: RelationshipLabel?) {
         nodeFactory.getNode(familyTreePic, focusedPerson, relationLabel)
+        addedNodes.add(focusedPerson.idCard.toInt())
     }
 
     private fun addListNode(focusedList: MutableList<Person>, relationLabel: RelationshipLabel) {
         nodeFactory.getNode(familyTreePic, focusedList, relationLabel)
+        for (i in 0 until focusedList.size) {
+            addedNodes.add(focusedList[i].idCard.toInt())
+        }
     }
 
     fun popBloodFamily(): Person? {
-        // TODO: Add delete after pop
-        val bloodFamily = familyObj.bloodFamily
-        if (bloodFamily != null) {
-            return familyObj.member!![bloodFamily[0]]
+        // get first person from the bloodFamily stack
+        var person: Person? = null
+        var bloodFamily: MutableList<Int>? = mutableListOf()
+        if (familyObj.bloodFamily != null)
+            bloodFamily = familyObj.bloodFamily as MutableList<Int>
+        if (bloodFamily != null && bloodFamily.isNotEmpty()) {
+            val personId = bloodFamily[0]
+            val members = familyObj.member
+            for (i in 0 until members!!.size) {
+                if (members[i].idCard.toInt() == personId) {
+                    person = members[i]
+                }
+            }
+            // delete that person from the bloodFamily stack
+            bloodFamily.removeAt(0)
+            // update the bloodFamily stack
+            if (bloodFamily.isEmpty())
+                familyObj.bloodFamily = null
+            else
+                familyObj.bloodFamily = bloodFamily
         }
-        return null
+
+        return person
     }
 }
