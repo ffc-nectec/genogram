@@ -49,7 +49,7 @@ class FamilyTree(var familyObj: Family) {
                 personLinkedStack = this.setRelationship(listFocusedPerson, null, null)
             }
 
-            print("2: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+//            print("2: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
 //            familyObj.removeBloodFamily(focusedPerson!!.idCard)
 //            print("3: familyObj: ${familyObj.bloodFamily}\n")
             return drawGenogram()
@@ -116,11 +116,13 @@ class FamilyTree(var familyObj: Family) {
 
     private fun findParentsPosition(): MutableList<Double> {
         val familyStorage = familyTreePic.familyStorage
-        val latestLayer = familyStorage[familyStorage.size - 2]
-        val parent1Inx = (latestLayer.size - 1).toDouble()
-        val parent2Inx = (latestLayer.size - 2).toDouble()
+        print("familyStorage.size: ${familyStorage.size}\n")
+//        val latestLayer = familyStorage[familyStorage.size - 2]
+//        val parent1Inx = (latestLayer.size - 1).toDouble()
+//        val parent2Inx = (latestLayer.size - 2).toDouble()
 
-        return mutableListOf(parent2Inx, parent1Inx)
+//        return mutableListOf(parent2Inx, parent1Inx)
+        return mutableListOf(0.0, 1.0)
     }
 
     private fun popChildren(childrenList: MutableList<Int>, person1: Person, person2: Person?): ArrayList<Person> {

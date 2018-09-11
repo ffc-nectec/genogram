@@ -25,10 +25,18 @@ class MaleNode(
     var nodeName: String
 ) : Node() {
 
-    override fun drawNode(relationLabel: RelationshipLabel?): FamilyTreeDrawer {
+    override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
         // TODO: draw node
         nodeName = setNodeSize(nodeName)
-        familyTreeDrawer.addFamilyLayer("[$nodeName]", familyTreeDrawer.familyStorage)
+        if (relationLabel != RelationshipLabel.CHILDREN && relationLabel != RelationshipLabel.TWIN) {
+            familyTreeDrawer.addFamilyLayer("[$nodeName]", familyTreeDrawer.familyStorage)
+        } else {
+            // Children or Twin
+            val familyGen = familyTreeDrawer.familyStorage.size - 1
+            val currentLayer = familyTreeDrawer.familyStorage[familyGen]
+            currentLayer.add(setNodePosition(nodeName, 0, siblings))
+        }
+
         return familyTreeDrawer
     }
 

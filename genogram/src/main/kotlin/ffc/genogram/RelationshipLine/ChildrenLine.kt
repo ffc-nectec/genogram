@@ -19,6 +19,7 @@ package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
+import ffc.genogram.node.Node
 
 class ChildrenLine(
     var childreObjList: MutableList<Person>,
@@ -40,19 +41,43 @@ class ChildrenLine(
     }
 
     override fun createLineDistance(): String {
+        val childrenSize = childreObjList.size
         val sign = "'"
         val space = " "
         var resultSpace = ""
-        var resultSign = ""
+        val lineSpace = "-"
+        var resultSign: String
 
-        if (childreObjList.size == 1) {
-            for (i in 0 until lengthLine.toInt() / 2 + 2) {
+        if (childrenSize == 1) {
+            for (i in 0 until lengthLine.toInt() / 2 + Node.nodesDistance.toInt()) {
                 resultSpace += space
             }
             return "$resultSpace|$resultSpace"
         } else {
             // have more than one children
-            return "|"
+            for (i in 0 until spaceLine.toInt())
+                resultSpace += space
+
+            resultSign = resultSpace
+            for (i in 0 until childrenSize - 1) {
+                resultSign += "|"
+                for (j in 0 until distanceLine.toInt())
+                    resultSign += lineSpace
+            }
+
+            resultSign = "$resultSign|$resultSpace"
+
+            val tmp = StringBuilder()
+            for (i in 0 until resultSign.length) {
+                if (i == (resultSign.length) / 2) {
+                    tmp.append("^")
+                } else {
+                    tmp.append(resultSign[i])
+                }
+            }
+            resultSign = tmp.toString()
+
+            return resultSign
         }
     }
 }

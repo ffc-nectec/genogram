@@ -3,7 +3,8 @@
   "familyName": "Smiths",
   "bloodFamily": [
     0,
-    1
+    1,
+    2
   ],
   "member": [
     {
@@ -22,11 +23,13 @@
         10
       ],
       "children": [
-        1
+        1,
+        2
       ],
       "linkedStack": [
         10,
-        1
+        1,
+        2
       ]
     },
     {
@@ -45,11 +48,13 @@
       ],
       "wife": null,
       "children": [
-        1
+        1,
+        2
       ],
       "linkedStack": [
         0,
-        1
+        1,
+        2
       ]
     },
     {
@@ -58,6 +63,25 @@
       "lastname": "Snow",
       "birthDate": "12-11-1980",
       "gender": 1,
+      "father": 0,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        0,
+        10
+      ]
+    },
+    {
+      "idCard": 2,
+      "firstname": "Ed",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
       "father": 0,
       "mother": 10,
       "twin": null,

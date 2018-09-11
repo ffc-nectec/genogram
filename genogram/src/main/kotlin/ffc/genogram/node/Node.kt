@@ -26,9 +26,10 @@ abstract class Node() {
         const val borderline = 3.0
         const val color = 0xff888888
         const val nodeSize = 6.0
+        const val nodesDistance = 2.0
     }
 
-    abstract fun drawNode(relationLabel: RelationshipLabel?): FamilyTreeDrawer
+    abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer
 
     abstract fun getArea(): Double
 
@@ -45,14 +46,15 @@ abstract class Node() {
         }
     }
 
-    fun setNodePosition(nodeName: String, gender: Int): String {
+    fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
         val diff = (((nodeSize * 2) - nodeName.length) / 2) + 2
         val space = " "
         var resultSpace = ""
 
-        for (i in 0 until diff.toInt()) {
-            resultSpace += space
-        }
+        if (!siblings)
+            for (i in 0 until diff.toInt()) {
+                resultSpace += space
+            }
 
         return if (gender == 0) {
             "$resultSpace[$nodeName]$resultSpace"

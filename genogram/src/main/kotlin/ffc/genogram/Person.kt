@@ -57,15 +57,18 @@ class Person(
     }
 
     fun removeListLinkedStack(removeList: MutableList<Int>) {
-        var tmp: MutableList<Int>? = null
-        if (linkedStack != null)
+        var tmp: MutableList<Int>? = mutableListOf()
+
+        if (linkedStack != null) {
             tmp = linkedStack as MutableList<Int>
-        for (i in 0 until tmp!!.size) {
-            removeList.find { it == tmp!![i] }?.let {
-                tmp!!.removeAt(i)
+            for (i in 0 until removeList.size) {
+                tmp.find { it == removeList[i] }?.let {
+                    tmp!!.remove(it)
+                }
             }
         }
-        if (tmp.isEmpty())
+
+        if (tmp!!.isEmpty())
             tmp = null
         linkedStack = tmp
     }

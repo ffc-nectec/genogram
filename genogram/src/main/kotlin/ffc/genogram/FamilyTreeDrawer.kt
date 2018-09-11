@@ -40,10 +40,6 @@ class FamilyTreeDrawer {
         familyStorage.add(newLayers)
     }
 
-    fun createFamilyStorage() {
-        familyStorage.add(familyLayers)
-    }
-
     fun addFamilyStorage(newLayer: ArrayList<String>) {
         familyStorage.add(familyLayers)
     }

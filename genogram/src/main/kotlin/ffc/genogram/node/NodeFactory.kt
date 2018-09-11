@@ -28,9 +28,10 @@ class NodeFactory {
         person: Person,
         relationLabel: RelationshipLabel?
     ): FamilyTreeDrawer {
+        val siblings = false
         return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel)
-            else -> FemaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel)
+            0 -> MaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel, siblings)
+            else -> FemaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel, siblings)
         }
     }
 
@@ -39,12 +40,22 @@ class NodeFactory {
         personList: MutableList<Person>,
         relationLabel: RelationshipLabel?
     ): FamilyTreeDrawer {
+        var siblings = false
+
         return if (personList.size == 1) {
             when (personList[0].gender) {
-                0 -> MaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel)
-                else -> FemaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel)
+                0 -> MaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel, siblings)
+                else -> FemaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel, siblings)
             }
-        } else
+        } else {
+            siblings = true
+            for (i in 0 until personList.size) {
+                when (personList[i].gender) {
+                    0 -> MaleNode(familyTreeDrawer, personList[i].firstname).drawNode(relationLabel, siblings)
+                    else -> FemaleNode(familyTreeDrawer, personList[i].firstname).drawNode(relationLabel, siblings)
+                }
+            }
             familyTreeDrawer
+        }
     }
 }
