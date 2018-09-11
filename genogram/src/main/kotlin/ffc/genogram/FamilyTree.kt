@@ -33,10 +33,18 @@ class FamilyTree(var familyObj: Family) {
     fun drawGenogram(): FamilyTreeDrawer {
         focusedPerson = popBloodFamily()
 //        print("1: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+//        print("1: linkedStack: ${focusedPerson!!.linkedStack}, focusedPerson: ${focusedPerson!!.firstname}\n")
 
-        if (focusedPerson == null || isAdded(focusedPerson)) {
+        if (focusedPerson == null) {
             print("==== ${familyObj.familyName} Family =====\n")
             return familyTreePic
+        } else if (isAdded(focusedPerson) && focusedPerson!!.linkedStack == null) {
+            print("==== ${familyObj.familyName} Family | ${focusedPerson!!.firstname} =====\n")
+            return familyTreePic
+//        else if ((isAdded(focusedPerson)) && (focusedPerson!!.linkedStack == null)) {
+//            print("==== ${familyObj.familyName} Family | ${focusedPerson!!.firstname} =====\n")
+////            print("focusedPerson.linkstack: ${focusedPerson!!.linkedStack}\n")
+//            return familyTreePic
         } else {
             print("LOADING...\n")
             if (!isAdded(focusedPerson))
@@ -50,10 +58,7 @@ class FamilyTree(var familyObj: Family) {
             }
 
 //            print("2: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
-//            familyObj.removeBloodFamily(focusedPerson!!.idCard)
-//            print("3: familyObj: ${familyObj.bloodFamily}\n")
             return drawGenogram()
-//            return familyTreePic
         }
     }
 
@@ -96,7 +101,6 @@ class FamilyTree(var familyObj: Family) {
                 relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel)
                 addNode(relatedPerson, relationLabel)
                 val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
-                print("relatedPerson: ${relatedPerson!!.firstname}\n")
                 relatedPerson.removeLinkedStack(tmp)
                 val childrenIdList = haveChildren(focusedPerson!!, relatedPerson)
 
@@ -116,13 +120,12 @@ class FamilyTree(var familyObj: Family) {
 
     private fun findParentsPosition(): MutableList<Double> {
         val familyStorage = familyTreePic.familyStorage
-        print("familyStorage.size: ${familyStorage.size}\n")
-//        val latestLayer = familyStorage[familyStorage.size - 2]
-//        val parent1Inx = (latestLayer.size - 1).toDouble()
-//        val parent2Inx = (latestLayer.size - 2).toDouble()
+        val latestLayer = familyStorage[familyStorage.size - 2]
+        val parent1Inx = (latestLayer.size - 1).toDouble()
+        val parent2Inx = (latestLayer.size - 2).toDouble()
 
-//        return mutableListOf(parent2Inx, parent1Inx)
-        return mutableListOf(0.0, 1.0)
+        return mutableListOf(parent2Inx, parent1Inx)
+//        return mutableListOf(0.0, 1.0)
     }
 
     private fun popChildren(childrenList: MutableList<Int>, person1: Person, person2: Person?): ArrayList<Person> {
@@ -134,10 +137,14 @@ class FamilyTree(var familyObj: Family) {
                 tmpChildStack.remove(person1.idCard.toInt())
                 if (person2 != null)
                     tmpChildStack.remove(person2.idCard.toInt())
-                child.linkedStack = tmpChildStack
+                if (tmpChildStack.isEmpty())
+                    child.linkedStack = null
+                else
+                    child.linkedStack = tmpChildStack
                 childrenObjList.add(child)
             }
         }
+
         return childrenObjList
     }
 
@@ -157,8 +164,7 @@ class FamilyTree(var familyObj: Family) {
             childrenList = null
         }
 
-        // delete children out of focusedPerson and relatedPerson's linkedStack
-        // delete focusedPerson and relatedPerson out of children'stack
+        // TODO: delete focusedPerson and relatedPerson out of children'stack
 
         return childrenList
     }
