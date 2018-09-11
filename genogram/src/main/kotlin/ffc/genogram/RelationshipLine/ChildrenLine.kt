@@ -42,7 +42,7 @@ class ChildrenLine(
 
     override fun createLineDistance(): String {
         val childrenSize = childreObjList.size
-        val sign = "'"
+        val sign = ","
         val space = " "
         var resultSpace = ""
         val lineSpace = "-"
@@ -60,17 +60,20 @@ class ChildrenLine(
 
             resultSign = resultSpace
             for (i in 0 until childrenSize - 1) {
-                resultSign += "|"
+                resultSign += sign
                 for (j in 0 until distanceLine.toInt())
                     resultSign += lineSpace
             }
 
-            resultSign = "$resultSign|$resultSpace"
+            resultSign = "$resultSign$sign$resultSpace"
 
             val tmp = StringBuilder()
             for (i in 0 until resultSign.length) {
                 if (i == (resultSign.length) / 2) {
-                    tmp.append("^")
+                    if (resultSign[i].toString() != sign)
+                        tmp.append("^")
+                    else
+                        tmp.append("|")
                 } else {
                     tmp.append(resultSign[i])
                 }

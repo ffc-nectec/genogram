@@ -68,12 +68,35 @@
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": null,
+      "husband": [
+        13
+      ],
       "wife": null,
       "children": null,
       "linkedStack": [
         0,
-        10
+        10,
+        13
+      ]
+    },
+    {
+      "idCard": 13,
+      "firstname": "Bill",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [
+        1
+      ],
+      "children": null,
+      "linkedStack": [
+        1
       ]
     },
     {
