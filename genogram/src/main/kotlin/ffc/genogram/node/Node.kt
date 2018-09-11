@@ -37,12 +37,12 @@ abstract class Node() {
         return if (nodeName.length > nodeSize) {
             nodeName.subSequence(0, nodeSize.toInt()) as String
         } else {
-            var tmp = nodeName
-            val diff = nodeName.length - nodeSize.toInt()
-            for (i in 0 until diff) {
+            var tmp = ""
+            val diff = Math.abs(nodeName.length - nodeSize.toInt())
+            for (i in 0 until diff / 2) {
                 tmp += " "
             }
-            tmp
+            tmp + nodeName + tmp
         }
     }
 
