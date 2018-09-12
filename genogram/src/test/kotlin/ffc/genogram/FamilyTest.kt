@@ -30,12 +30,6 @@ class FamilyTest {
     fun read() {
         // Get the focused Person
         val focusedPerson = familyTree.popBloodFamily()
-        assert(focusedPerson.firstname == "Grandfather")
-    }
-
-    @Test
-    fun drawGenogram() {
-        val famPic = familyTree.drawGenogram()
-        assert(famPic.familyStorage.isEmpty())
+        assert(focusedPerson?.firstname == "Grandfather")
     }
 }

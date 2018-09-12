@@ -17,7 +17,6 @@
 
 package ffc.genogram
 
-import ffc.entity.gson.parseTo
 import java.nio.charset.Charset
 
 private lateinit var familyObj: Family

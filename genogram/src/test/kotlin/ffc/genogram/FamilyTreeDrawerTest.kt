@@ -36,9 +36,8 @@ class FamilyTreeDrawerTest {
         val drawer = familyPic.drawGenogram()
 
         val excepted = mutableListOf(
-            "[Grandfather]",
-            "---Married---",
-            "(Gradmother)"
+            "[Grandf]",
+            "(Gradmo)"
         )
         assert(drawer.familyLayers == excepted)
     }

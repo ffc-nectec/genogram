@@ -24,6 +24,6 @@ compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "com.github.ffc-nectec:entities:visit-SNAPSHOT"
+    compile "com.google.code.gson:gson:2.8.1"
     testCompile "junit:junit:4.12"
 }
