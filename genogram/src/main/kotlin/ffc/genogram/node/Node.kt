@@ -20,7 +20,7 @@ package ffc.genogram.node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
-abstract class Node() {
+abstract class Node {
 
     companion object {
         const val borderline = 3.0
@@ -32,19 +32,6 @@ abstract class Node() {
     abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer
 
     abstract fun getArea(): Double
-
-    fun setNodeSize(nodeName: String): String {
-        return if (nodeName.length > nodeSize) {
-            nodeName.subSequence(0, nodeSize.toInt()) as String
-        } else {
-            var tmp = ""
-            val diff = Math.abs(nodeName.length - nodeSize.toInt())
-            for (i in 0 until diff / 2) {
-                tmp += " "
-            }
-            tmp + nodeName + tmp
-        }
-    }
 
     fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
         val diff = (((nodeSize * 2) - nodeName.length) / 2) + 2

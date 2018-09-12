@@ -25,7 +25,8 @@ class RelationshipFactory {
     fun getLine(
         focusedPerson: Person,
         familyTreeDrawer: FamilyTreeDrawer,
-        relationshipLabel: RelationshipLabel
+        relationshipLabel: RelationshipLabel,
+        addLayer: Int
     ): FamilyTreeDrawer {
         when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
@@ -41,18 +42,18 @@ class RelationshipFactory {
                     labelType = RelationshipLabel.MARRIAGE
                 }
 
-                if (focusedPerson.gender == 0) {
+                return if (focusedPerson.gender == 0) {
                     labelType = RelationshipLabel.RIGHT_HAND
                     if (labelType == RelationshipLabel.DIVORCED)
-                        return DivorceLine().drawLine()
+                        DivorceLine().drawLine()
                     else
-                        return MarriageLine(familyTreeDrawer, labelType).drawLine()
+                        MarriageLine(familyTreeDrawer, labelType, addLayer).drawLine()
                 } else {
                     labelType = RelationshipLabel.LEFT_HAND
                     if (labelType == RelationshipLabel.MARRIAGE)
-                        return DivorceLine().drawLine()
+                        DivorceLine().drawLine()
                     else
-                        return MarriageLine(familyTreeDrawer, labelType).drawLine()
+                        MarriageLine(familyTreeDrawer, labelType, addLayer).drawLine()
                 }
             }
         }

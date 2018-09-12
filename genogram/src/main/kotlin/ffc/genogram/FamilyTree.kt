@@ -20,6 +20,7 @@ package ffc.genogram
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.node.NodeFactory
+import ffc.genogram.util.setNodeSize
 
 class FamilyTree(var familyObj: Family) {
 
@@ -48,7 +49,7 @@ class FamilyTree(var familyObj: Family) {
         } else {
             print("LOADING...\n")
             if (!isAdded(focusedPerson))
-                addNode(focusedPerson!!, null)
+                addNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
             listFocusedPerson.add(focusedPerson!!)
             personLinkedStack = focusedPerson!!.linkedStack
@@ -97,9 +98,10 @@ class FamilyTree(var familyObj: Family) {
             if (relatedPerson != null) {
                 relatedPersonList.add(relatedPerson)
                 val relationLabel = findRelationship(list1, relatedPersonList)
+                print("Relationship: ${focusedPerson!!.firstname} + ${relatedPerson.firstname} = $relationLabel\n")
                 // Draw a relationship line
-                relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel)
-                addNode(relatedPerson, relationLabel)
+                relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel, findPersonLayer(focusedPerson!!))
+                addNode(relatedPerson, focusedPerson, relationLabel)
                 val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
                 relatedPerson.removeLinkedStack(tmp)
                 val childrenIdList = haveChildren(focusedPerson!!, relatedPerson)
@@ -116,6 +118,21 @@ class FamilyTree(var familyObj: Family) {
             }
         }
         return focusedPerson!!.linkedStack
+    }
+
+    private fun findPersonLayer(focusedPerson: Person): Int {
+        val familyTree = familyTreePic.familyStorage
+        var targetLayer = 0
+        var tmp = setNodeSize(focusedPerson.firstname)
+        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
+
+        for (i in (familyTree.size - 1) downTo 0) {
+            familyTree[i].find { it == tmp }?.let {
+                targetLayer = i
+            }
+        }
+
+        return targetLayer
     }
 
     private fun findParentsPosition(): MutableList<Double> {
@@ -261,9 +278,9 @@ class FamilyTree(var familyObj: Family) {
         return relatedPerson
     }
 
-    private fun addNode(focusedPerson: Person, relationLabel: RelationshipLabel?) {
-        nodeFactory.getNode(familyTreePic, focusedPerson, relationLabel)
-        addedNodes.add(focusedPerson.idCard.toInt())
+    private fun addNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
+        nodeFactory.getNode(familyTreePic, focusedPerson, relatedPerson, relationLabel)
+        addedNodes.add(relatedPerson.idCard.toInt())
     }
 
     private fun addListNode(focusedList: MutableList<Person>, relationLabel: RelationshipLabel) {

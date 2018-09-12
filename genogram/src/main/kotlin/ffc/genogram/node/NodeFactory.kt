@@ -25,13 +25,14 @@ class NodeFactory {
 
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,
+        focusedPerson: Person?,
         person: Person,
         relationLabel: RelationshipLabel?
     ): FamilyTreeDrawer {
         val siblings = false
         return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel, siblings)
-            else -> FemaleNode(familyTreeDrawer, person.firstname).drawNode(relationLabel, siblings)
+            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname).drawNode(relationLabel, siblings)
+            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname).drawNode(relationLabel, siblings)
         }
     }
 
@@ -44,15 +45,18 @@ class NodeFactory {
 
         return if (personList.size == 1) {
             when (personList[0].gender) {
-                0 -> MaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel, siblings)
-                else -> FemaleNode(familyTreeDrawer, personList[0].firstname).drawNode(relationLabel, siblings)
+                0 -> MaleNode(familyTreeDrawer, null, personList[0].firstname).drawNode(relationLabel, siblings)
+                else -> FemaleNode(familyTreeDrawer, null, personList[0].firstname).drawNode(relationLabel, siblings)
             }
         } else {
             siblings = true
             for (i in 0 until personList.size) {
                 when (personList[i].gender) {
-                    0 -> MaleNode(familyTreeDrawer, personList[i].firstname).drawNode(relationLabel, siblings)
-                    else -> FemaleNode(familyTreeDrawer, personList[i].firstname).drawNode(relationLabel, siblings)
+                    0 -> MaleNode(familyTreeDrawer, null, personList[i].firstname).drawNode(relationLabel, siblings)
+                    else -> FemaleNode(familyTreeDrawer, null, personList[i].firstname).drawNode(
+                        relationLabel,
+                        siblings
+                    )
                 }
             }
             familyTreeDrawer

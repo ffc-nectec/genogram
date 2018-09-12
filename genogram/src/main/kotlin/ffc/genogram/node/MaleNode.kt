@@ -18,18 +18,33 @@
 package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.util.findPersonLayer
+import ffc.genogram.util.findPersonPosition
+import ffc.genogram.util.setNodeSize
 
 class MaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
+    var focusedPerson: Person?,
     var nodeName: String
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
         // TODO: draw node
-        nodeName = setNodeSize(nodeName)
+        nodeName = "[${setNodeSize(nodeName)}]"
         if (relationLabel != RelationshipLabel.CHILDREN && relationLabel != RelationshipLabel.TWIN) {
-            familyTreeDrawer.addFamilyLayer("[$nodeName]", familyTreeDrawer.familyStorage)
+            //////
+            if (focusedPerson != null) {
+                var addLayer = 0
+                addLayer = findPersonLayer(familyTreeDrawer, focusedPerson!!)
+                val addInd = findPersonPosition(familyTreeDrawer.familyStorage[addLayer], focusedPerson!!)
+                val tmp = familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
+                print("NODE: $tmp")
+            } else {
+                //////
+                familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
+            }
         } else {
             // Children or Twin
             val familyGen = familyTreeDrawer.familyStorage.size - 1

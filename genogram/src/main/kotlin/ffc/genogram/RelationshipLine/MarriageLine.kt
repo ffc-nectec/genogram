@@ -21,11 +21,15 @@ import ffc.genogram.FamilyTreeDrawer
 
 class MarriageLine(
     var familyTreeDrawer: FamilyTreeDrawer,
-    var handSide: RelationshipLabel
+    var handSide: RelationshipLabel,
+    var addLayer: Int
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
         if (handSide == RelationshipLabel.RIGHT_HAND) {
+            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+        } else {
+            // Left Hand Line
             familyTreeDrawer.addFamilyNewLayer(createLineDistance())
         }
 
