@@ -25,6 +25,20 @@ import java.lang.StringBuilder
 class FamilyTreeDrawerTest {
 
     @Test
+    fun drawGrandFaAndMa() {
+        val drawer = FamilyTree(getResourceAs("family-easy.json")).drawGenogram()
+
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Gradmo)]
+            [   |_________|   ]
+        """.trimIndent()
+    }
+
+    @Test
     fun drawGrandFaMoBillLisaEd() {
         val drawer = FamilyTree(getResourceAs("family-empty.json")).drawGenogram()
 
@@ -38,6 +52,6 @@ class FamilyTreeDrawerTest {
             [   ,----^----,   ]
             [[ Bill ], ( Lisa ), [[  Ed  ]]]
             [   |_________|   ]
-""".trimIndent()
+        """.trimIndent()
     }
 }
