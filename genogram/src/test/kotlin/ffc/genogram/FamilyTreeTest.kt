@@ -17,25 +17,19 @@
 
 package ffc.genogram
 
+import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class FamilyTest {
-
-    //    private val familyObj = getResourceAs<Family>("family.json")
-    private val familyObj = getResourceAs<Family>("family-empty.json")
-    private val familyTreePic: FamilyTreeDrawer = FamilyTreeDrawer()
-    private val familyTree = FamilyTree(familyObj)
+class FamilyTreeTest {
 
     @Test
-    fun read() {
-        // Get the focused Person
-        val focusedPerson = familyTree.popBloodFamily()
-        assert(focusedPerson.firstname == "Grandfather")
-    }
+    fun popBloodFamily() {
+        val familyTree = FamilyTree(getResourceAs<Family>("family-empty.json"))
 
-    @Test
-    fun drawGenogram() {
-        val famPic = familyTree.drawGenogram()
-        assert(famPic.familyStorage.isEmpty())
+        familyTree.popBloodFamily()?.firstname `should equal` "Grandfather"
+        familyTree.popBloodFamily()?.firstname `should equal` "Lisa"
+        familyTree.popBloodFamily()?.firstname `should equal` "Ed"
+        familyTree.popBloodFamily() `should be` null
     }
 }

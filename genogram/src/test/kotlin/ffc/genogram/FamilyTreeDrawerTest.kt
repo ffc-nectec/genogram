@@ -17,32 +17,41 @@
 
 package ffc.genogram
 
+import org.amshove.kluent.`should equal`
 import org.junit.Before
 import org.junit.Test
+import java.lang.StringBuilder
 
 class FamilyTreeDrawerTest {
 
-    lateinit var familyObj: Family
-    lateinit var familyPic: FamilyTree
+    @Test
+    fun drawGrandFaAndMa() {
+        val drawer = FamilyTree(getResourceAs("family-easy.json")).drawGenogram()
 
-    @Before
-    fun setUp() {
-        familyObj = getResourceAs("family-empty.json")
-        familyPic = FamilyTree(familyObj)
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Gradmo)]
+            [   |_________|   ]
+        """.trimIndent()
     }
 
     @Test
-    fun drawFirstGen() {
-        val drawer = familyPic.drawGenogram()
+    fun drawGrandFaMoBillLisaEd() {
+        val drawer = FamilyTree(getResourceAs("family-empty.json")).drawGenogram()
 
-        val excepted = mutableListOf(
-            "[Grandfather]",
-            "---Married---",
-            "(Gradmother)"
-        )
-        assert(drawer.familyLayers == excepted)
-    }
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
 
-    fun drawGrandMother() {
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Gradmo)]
+            [   |_________|   ]
+            [   ,----^----,   ]
+            [[ Bill ], ( Lisa ), [[  Ed  ]]]
+            [   |_________|   ]
+        """.trimIndent()
     }
 }
