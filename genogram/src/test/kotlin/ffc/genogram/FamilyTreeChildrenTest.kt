@@ -21,23 +21,11 @@ import org.amshove.kluent.`should equal`
 import org.junit.Test
 import java.lang.StringBuilder
 
-class FamilyTreeDrawerTest {
+class FamilyTreeChildrenTest {
 
     @Test
-    fun drawGrandF() {
-        val drawer = FamilyTree(getResourceAs("family-1-person.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf]]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaAndMa() {
-        val drawer = FamilyTree(getResourceAs("family-2-people.json")).drawGenogram()
+    fun drawThreeChildren() {
+        val drawer = FamilyTree(getResourceAs("family-3-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
@@ -45,12 +33,14 @@ class FamilyTreeDrawerTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [   |_________|   ]
+            [   ,---------|---------,   ]
+            [( Lisa ), [[  Ed  ]], [[Teddy]]]
         """.trimIndent()
     }
 
     @Test
-    fun drawGrandFaAndMaAndLi() {
-        val drawer = FamilyTree(getResourceAs("family-3-people.json")).drawGenogram()
+    fun drawFourChildren() {
+        val drawer = FamilyTree(getResourceAs("family-4-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
@@ -58,24 +48,8 @@ class FamilyTreeDrawerTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [   |_________|   ]
-            [        |        ]
-            [     ( Lisa )     ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaMoBillLisaEd() {
-        val drawer = FamilyTree(getResourceAs("family-empty.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,    |_________|   ]
-            [        ,    ,----^----,   ]
-            [[ Bill ], ( Lisa ), [[  Ed  ]]]
-            [   |_________|   ]
+            [   ,---------,----^----,---------,   ]
+            [( Lisa ), [[  Ed  ]], [[Teddy]], ( Anne )]
         """.trimIndent()
     }
 }

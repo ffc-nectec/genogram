@@ -181,20 +181,6 @@ class FamilyTree(var family: Family) {
         return childrenList
     }
 
-    private fun updatePersonLinkStack(person: Person, removeList: MutableList<Int>): Person {
-        var tmp: MutableList<Int>? = null
-        if (person.linkedStack != null)
-            tmp = person.linkedStack as MutableList<Int>
-        for (i in 0 until person.linkedStack!!.size) {
-            removeList.find { it == tmp!![i] }?.let {
-                tmp!!.removeAt(i)
-            }
-        }
-        person.linkedStack = tmp
-
-        return person
-    }
-
     private fun findRelationship(focusedList: ArrayList<Person>, relatedList: ArrayList<Person>)
             : RelationshipLabel {
         when (focusedList.size) {

@@ -25,7 +25,7 @@ class FamilyTreeTest {
 
     @Test
     fun popBloodFamily() {
-        val family = getResourceAs<Family>("family-tree-3-people.json")
+        val family = getResourceAs<Family>("family-3-people.json")
 //        val familyTree = FamilyTree(family)
 
         family.popBloodFamily()?.firstname `should equal` "Grandfather"
