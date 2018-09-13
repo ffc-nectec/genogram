@@ -20,6 +20,7 @@ package ffc.genogram.node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.util.createEmptyNode
 import ffc.genogram.util.findPersonLayer
 import ffc.genogram.util.findPersonPosition
 import ffc.genogram.util.setNodeSize
@@ -34,15 +35,17 @@ class MaleNode(
         // TODO: draw node
         nodeName = "[${setNodeSize(nodeName)}]"
         if (relationLabel != RelationshipLabel.CHILDREN && relationLabel != RelationshipLabel.TWIN) {
-            //////
             if (focusedPerson != null) {
-                var addLayer = 0
-                addLayer = findPersonLayer(familyTreeDrawer, focusedPerson!!)
+                val addLayer = findPersonLayer(familyTreeDrawer, focusedPerson!!)
                 val addInd = findPersonPosition(familyTreeDrawer.familyStorage[addLayer], focusedPerson!!)
-                val tmp = familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
-                print("NODE: $tmp")
+                familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
+                if (focusedPerson!!.gender == 1) {
+                    // Female is always on the right hand of the male node
+                    // Add the empty nodes to the previous layer to make a balance picture
+                    for (i in 0 until addLayer)
+                        familyTreeDrawer.familyStorage[i].add(0, createEmptyNode())
+                }
             } else {
-                //////
                 familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
             }
         } else {

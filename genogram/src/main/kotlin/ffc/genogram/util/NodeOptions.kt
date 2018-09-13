@@ -75,3 +75,14 @@ fun findPersonPosition(personLayer: ArrayList<String>, focusedPerson: Person): I
 
     return personInd
 }
+
+fun createEmptyNode(): String {
+    var result = ""
+    val nodeBorderSize = 2
+
+    for (i in 0 until Node.nodeSize.toInt() + nodeBorderSize) {
+        result += " "
+    }
+
+    return result
+}
