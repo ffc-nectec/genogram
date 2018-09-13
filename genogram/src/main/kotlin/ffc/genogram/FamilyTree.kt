@@ -20,7 +20,6 @@ package ffc.genogram
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.node.NodeFactory
-import ffc.genogram.util.setNodeSize
 
 class FamilyTree(var family: Family) {
 
@@ -81,7 +80,7 @@ class FamilyTree(var family: Family) {
 
         if (list1.size > 1 && childrenObjList != null && childrenIdList != null) {
             // Draw a children or twins line
-            val parentsPosition = findParentsPosition()
+            val parentsPosition = familyTreePic.findParentsPosition()
             relationFactory.getLine(childrenObjList, parentsPosition, familyTreePic, RelationshipLabel.CHILDREN)
             addListNode(childrenObjList, RelationshipLabel.CHILDREN)
             return focusedPerson!!.linkedStack
@@ -96,11 +95,16 @@ class FamilyTree(var family: Family) {
                 val relationLabel = findRelationship(list1, relatedPersonList)
                 print("Relationship: ${focusedPerson!!.firstname} + ${relatedPerson.firstname} = $relationLabel\n")
                 // Draw a relationship line
-                relationFactory.getLine(focusedPerson!!, familyTreePic, relationLabel, findPersonLayer(focusedPerson!!))
+                relationFactory.getLine(
+                    focusedPerson!!,
+                    familyTreePic,
+                    relationLabel,
+                    addLayer = familyTreePic.findPersonLayer(focusedPerson!!)
+                )
                 addNode(relatedPerson, focusedPerson, relationLabel)
                 val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
                 relatedPerson.removeLinkedStack(tmp)
-                val childrenIdList = haveChildren(focusedPerson!!, relatedPerson)
+                val childrenIdList = focusedPerson!!.haveChildren(relatedPerson)
 
                 return if (childrenIdList != null) {
                     focusedPerson!!.removeListLinkedStack(childrenIdList)
@@ -114,30 +118,6 @@ class FamilyTree(var family: Family) {
             }
         }
         return focusedPerson!!.linkedStack
-    }
-
-    private fun findPersonLayer(focusedPerson: Person): Int {
-        val familyTree = familyTreePic.familyStorage
-        var targetLayer = 0
-        var tmp = setNodeSize(focusedPerson.firstname)
-        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
-
-        for (i in (familyTree.size - 1) downTo 0) {
-            familyTree[i].find { it == tmp }?.let {
-                targetLayer = i
-            }
-        }
-
-        return targetLayer
-    }
-
-    private fun findParentsPosition(): MutableList<Double> {
-        val familyStorage = familyTreePic.familyStorage
-        val latestLayer = familyStorage[familyStorage.size - 2]
-        val parent1Ind = (latestLayer.size - 1).toDouble()
-        val parent2Ind = (latestLayer.size - 2).toDouble()
-
-        return mutableListOf(parent2Ind, parent1Ind)
     }
 
     private fun popChildren(childrenList: MutableList<Int>, person1: Person, person2: Person?): ArrayList<Person> {
@@ -158,27 +138,6 @@ class FamilyTree(var family: Family) {
         }
 
         return childrenObjList
-    }
-
-    private fun haveChildren(focusedPerson: Person, relatedPerson: Person): ArrayList<Int>? {
-        var childrenList: ArrayList<Int>? = arrayListOf()
-        // find the focusedPerson's children
-        // find the focusedPerson's children who also is the relatedPerson's children
-        val fChildren: List<Int>? = focusedPerson.children
-        val rChildren: List<Int>? = relatedPerson.children
-        if (fChildren != null) {
-            for (i in 0 until fChildren.size) {
-                rChildren!!.find { it == fChildren[i] }?.let {
-                    childrenList!!.add(it)
-                }
-            }
-        } else {
-            childrenList = null
-        }
-
-        // TODO: delete focusedPerson and relatedPerson out of children'stack
-
-        return childrenList
     }
 
     private fun findRelationship(focusedList: ArrayList<Person>, relatedList: ArrayList<Person>)

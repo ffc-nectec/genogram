@@ -17,6 +17,8 @@
 
 package ffc.genogram
 
+import ffc.genogram.util.setNodeSize
+
 class FamilyTreeDrawer {
 
     var familyLayers: ArrayList<String> = ArrayList()
@@ -40,7 +42,29 @@ class FamilyTreeDrawer {
         familyStorage.add(newLayers)
     }
 
-    fun addFamilyStorage(newLayer: ArrayList<String>) {
-        familyStorage.add(familyLayers)
+    private fun addFamilyStorage(newLayer: ArrayList<String>) {
+        familyStorage.add(newLayer)
+    }
+
+    fun findParentsPosition(): MutableList<Double> {
+        val latestLayer = familyStorage[familyStorage.size - 2]
+        val parent1Ind = (latestLayer.size - 1).toDouble()
+        val parent2Ind = (latestLayer.size - 2).toDouble()
+
+        return mutableListOf(parent2Ind, parent1Ind)
+    }
+
+    fun findPersonLayer(focusedPerson: Person): Int {
+        var targetLayer = 0
+        var tmp = setNodeSize(focusedPerson.firstname)
+        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
+
+        for (i in (familyStorage.size - 1) downTo 0) {
+            familyStorage[i].find { it == tmp }?.let {
+                targetLayer = i
+            }
+        }
+
+        return targetLayer
     }
 }

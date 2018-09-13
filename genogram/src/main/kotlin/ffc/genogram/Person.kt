@@ -39,6 +39,27 @@ class Person(
         return exHusband != null || exWife != null
     }
 
+    fun haveChildren(relatedPerson: Person): ArrayList<Int>? {
+        var childrenList: ArrayList<Int>? = arrayListOf()
+        // find the focusedPerson's children
+        // find the focusedPerson's children who also is the relatedPerson's children
+        val fChildren: List<Int>? = children
+        val rChildren: List<Int>? = relatedPerson.children
+        if (fChildren != null) {
+            for (i in 0 until fChildren.size) {
+                rChildren!!.find { it == fChildren[i] }?.let {
+                    childrenList!!.add(it)
+                }
+            }
+        } else {
+            childrenList = null
+        }
+
+        // TODO: delete focusedPerson and relatedPerson out of children'stack
+
+        return childrenList
+    }
+
     fun removeLinkedStack(removeList: MutableList<Int>) {
 
         val tmp: MutableList<Int> = linkedStack as MutableList<Int>
