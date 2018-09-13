@@ -22,7 +22,8 @@ import java.nio.charset.Charset
 private lateinit var familyObj: Family
 
 fun main(args: Array<String>) {
-    familyObj = getResourceAs<Family>("family-empty.json")
+//    familyObj = getResourceAs<Family>("family-tree-1-person.json")
+    familyObj = getResourceAs<Family>("family-tree-3-people.json")
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.familyStorage.size) {
         print("${familyTreePic.familyStorage[i]}\n")

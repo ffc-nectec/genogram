@@ -4,7 +4,7 @@
   "bloodFamily": [
     0
   ],
-  "member": [
+  "members": [
     {
       "idCard": 0,
       "firstname": "Grandfather",
@@ -20,7 +20,7 @@
     },
     {
       "idCard": 10,
-      "firstname": "Gradmother",
+      "firstname": "Grandmother",
       "lastname": "Smiths",
       "birthDate": "12-11-1972",
       "gender": 1,

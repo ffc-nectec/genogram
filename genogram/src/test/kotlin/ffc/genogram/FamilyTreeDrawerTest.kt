@@ -24,29 +24,54 @@ import java.lang.StringBuilder
 class FamilyTreeDrawerTest {
 
     @Test
-    fun drawGrandFaAndMa() {
-        val drawer = FamilyTree(getResourceAs("family-easy.json")).drawGenogram()
-
+    fun drawGrandF() {
+        val drawer = FamilyTree(getResourceAs("family-tree-1-person.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Gradmo)]
+            [[Grandf]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun drawGrandFaAndMa() {
+        val drawer = FamilyTree(getResourceAs("family-tree-2-people.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
             [   |_________|   ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun drawGrandFaAndMaAndLi() {
+        val drawer = FamilyTree(getResourceAs("family-tree-3-people.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
+            [   |_________|   ]
+            [        |        ]
+            [     ( Lisa )     ]
         """.trimIndent()
     }
 
     @Test
     fun drawGrandFaMoBillLisaEd() {
         val drawer = FamilyTree(getResourceAs("family-empty.json")).drawGenogram()
-
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Gradmo)]
+            [        , [Grandf], (Grandm)]
             [        ,    |_________|   ]
             [        ,    ,----^----,   ]
             [[ Bill ], ( Lisa ), [[  Ed  ]]]

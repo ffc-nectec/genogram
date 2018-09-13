@@ -21,19 +21,28 @@ class Family(
     var familyId: Long,
     var familyName: String,
     var bloodFamily: List<Int>?,
-    var member: List<Person>?
+    var members: List<Person>?
 ) {
 
-    fun removeBloodFamily(personId: Long) {
-        val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
-        if (tmp.size > 1) {
-            tmp.find { it == personId.toInt() }?.let {
-                tmp.remove(it)
+    fun popBloodFamily(): Person? {
+        // get first person from the bloodFamily stack
+        var person: Person? = null
+
+        if (bloodFamily != null) {
+            val personId = bloodFamily!![0]
+            for (i in 0 until members!!.size) {
+                if (members!![i].idCard.toInt() == personId) {
+                    person = members!![i]
+                }
             }
+            // delete that person from the bloodFamily stack
+            val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
+            tmp.removeAt(0)
             bloodFamily = tmp
-        } else if (tmp.size == 1) {
-            bloodFamily = null
+            bloodFamily = if (tmp.isEmpty()) null else tmp
         }
+
+        return person
     }
 
 }

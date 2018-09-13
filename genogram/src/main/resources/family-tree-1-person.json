@@ -1,0 +1,25 @@
+{
+  "familyId": 2,
+  "familyName": "Smiths",
+  "bloodFamily": [
+    0
+  ],
+  "members": [
+    {
+      "idCard": 0,
+      "firstname": "Grandfather",
+      "lastname": "Smiths",
+      "birthDate": "1-1-1970",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": null
+    }
+  ]
+}

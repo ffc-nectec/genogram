@@ -28,11 +28,11 @@ class NodeFactory {
         focusedPerson: Person?,
         person: Person,
         relationLabel: RelationshipLabel?
-    ): FamilyTreeDrawer {
+    ): Node {
         val siblings = false
         return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname).drawNode(relationLabel, siblings)
-            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname).drawNode(relationLabel, siblings)
+            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname)
+            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname)
         }
     }
 
