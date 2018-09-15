@@ -24,12 +24,43 @@ import java.lang.StringBuilder
 class FamilyTreeChildrenTest {
 
     @Test
+    fun drawOneChild() {
+        val drawer = FamilyTree(getResourceAs("family-3-people.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
+            [   |_________|   ]
+            [        |        ]
+            [     ( Lisa )     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun drawTwoChildren() {
+        val drawer = FamilyTree(getResourceAs("family-2-children.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
+            [   |_________|   ]
+            [   ,----^----,   ]
+            [( Lisa ), [[  Ed  ]]]
+        """.trimIndent()
+    }
+
+    @Test
     fun drawThreeChildren() {
         val drawer = FamilyTree(getResourceAs("family-3-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
 
+        // TODO: Improve 3 children family
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [   |_________|   ]
@@ -45,6 +76,7 @@ class FamilyTreeChildrenTest {
             drawer.familyStorage.forEach { append("$it\n") }
         }
 
+        // TODO: Improve 4 children family
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [   |_________|   ]

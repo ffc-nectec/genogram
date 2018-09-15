@@ -49,21 +49,6 @@ class FamilyTreeDrawerTest {
     }
 
     @Test
-    fun drawGrandFaAndMaAndLi() {
-        val drawer = FamilyTree(getResourceAs("family-3-people.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
-            [        |        ]
-            [     ( Lisa )     ]
-        """.trimIndent()
-    }
-
-    @Test
     fun drawGrandFaMoBillLisaEd() {
         val drawer = FamilyTree(getResourceAs("family-empty.json")).drawGenogram()
         val canvas = StringBuilder().apply {
