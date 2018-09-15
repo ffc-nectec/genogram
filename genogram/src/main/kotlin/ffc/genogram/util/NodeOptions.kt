@@ -17,7 +17,6 @@
 
 package ffc.genogram.util
 
-import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 import ffc.genogram.node.Node
 
@@ -32,37 +31,6 @@ fun setNodeSize(nodeName: String): String {
         }
         tmp + nodeName + tmp
     }
-}
-
-fun setNodeSizeWithGender(person: Person): String {
-    val nodeName = person.firstname
-    var tmp = ""
-    if (nodeName.length > Node.nodeSize) {
-        nodeName.subSequence(0, Node.nodeSize.toInt()) as String
-    } else {
-        val diff = Math.abs(nodeName.length - Node.nodeSize.toInt())
-        for (i in 0 until diff / 2) {
-            tmp += " "
-        }
-        tmp = tmp + nodeName + tmp
-    }
-
-    return if (person.gender == 0) "[$tmp]" else "($tmp)"
-}
-
-fun findPersonLayer(familyTreePic: FamilyTreeDrawer, focusedPerson: Person): Int {
-    val familyTree = familyTreePic.familyStorage
-    var targetLayer = 0
-    var tmp = setNodeSize(focusedPerson.firstname)
-    tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
-
-    for (i in (familyTree.size - 1) downTo 0) {
-        familyTree[i].find { it == tmp }?.let {
-            targetLayer = i
-        }
-    }
-
-    return targetLayer
 }
 
 fun findPersonPosition(personLayer: ArrayList<String>, focusedPerson: Person): Int {

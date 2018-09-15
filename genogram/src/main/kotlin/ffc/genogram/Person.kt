@@ -112,4 +112,22 @@ class Person(
         }
         return childrenObjList
     }
+
+    fun popLinkedStack(familyMembers: List<Person>?): Person? {
+
+        var person: Person? = null
+        if (linkedStack != null) {
+            // find a member whose id is in the linkedStack's first index
+            val relatedPersonId = linkedStack!![0]
+            familyMembers!!.find { it.idCard.toInt() == relatedPersonId }?.let {
+                person = it
+            }
+            // Delete the previous person's id out of the linkedStack
+            val tmpPerson: MutableList<Int> = linkedStack as MutableList<Int>
+            tmpPerson.removeAt(0)
+            linkedStack = if (tmpPerson.isEmpty()) null else tmpPerson
+        }
+
+        return person
+    }
 }

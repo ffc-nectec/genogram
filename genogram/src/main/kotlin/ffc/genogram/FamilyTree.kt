@@ -178,33 +178,15 @@ class FamilyTree(var family: Family) {
 
     private fun popLinkedStack(list1: ArrayList<Person>, list2: ArrayList<Person>?): Person? {
 
-        var relatedPerson: Person? = null
-        val relatedPersonId: Int?
-
-        if (list2 == null) {
-            relatedPerson = list1[0]
-            if (relatedPerson.linkedStack!!.isNotEmpty()) {
-                relatedPersonId = relatedPerson.linkedStack!![0]
-                family.members!!.find { it.idCard.toInt() == relatedPersonId }?.let {
-                    relatedPerson = it
-                }
-
-                val tmpPerson: MutableList<Int> = focusedPerson!!.linkedStack as MutableList<Int>
-                tmpPerson.removeAt(0)
-                if (tmpPerson.isEmpty())
-                    focusedPerson!!.linkedStack = null
-                else
-                    focusedPerson!!.linkedStack = tmpPerson
-                family.members!!.forEachIndexed { index, person ->
-                    if (person.idCard == focusedPerson!!.idCard)
-                        family.members!![index].linkedStack = focusedPerson!!.linkedStack
-                }
-            } else {
-                relatedPerson = null
-            }
+        return if (list2 == null) {
+            // list1 = focused person
+            list1[0].popLinkedStack(family.members)
+        } else {
+            // TODO: popLinkedStack parents and children list
+            // - list1 is a list of parents
+            // - list2 is a list of list1's children
+            null
         }
-
-        return relatedPerson
     }
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
