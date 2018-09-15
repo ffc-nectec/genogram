@@ -74,7 +74,6 @@ class Person(
             }
             linkedStack = tmp
         }
-
     }
 
     fun removeListLinkedStack(removeList: MutableList<Int>) {
@@ -92,5 +91,25 @@ class Person(
         if (tmp!!.isEmpty())
             tmp = null
         linkedStack = tmp
+    }
+
+    fun popChildren(childrenList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
+            : ArrayList<Person> {
+        val childrenObjList: ArrayList<Person> = arrayListOf()
+        for (i in 0 until familyMembers!!.size) {
+            childrenList.find { it == familyMembers!![i].idCard.toInt() }?.let {
+                val child = familyMembers[i]
+                val tmpChildStack: MutableList<Int> = child.linkedStack as MutableList<Int>
+                tmpChildStack.remove(idCard.toInt())
+                if (person2 != null)
+                    tmpChildStack.remove(person2.idCard.toInt())
+                if (tmpChildStack.isEmpty())
+                    child.linkedStack = null
+                else
+                    child.linkedStack = tmpChildStack
+                childrenObjList.add(child)
+            }
+        }
+        return childrenObjList
     }
 }

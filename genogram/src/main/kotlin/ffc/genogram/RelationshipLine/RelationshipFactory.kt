@@ -27,37 +27,34 @@ class RelationshipFactory {
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel,
         addLayer: Int
-    ): FamilyTreeDrawer {
-        when (relationshipLabel) {
-            RelationshipLabel.CHILDREN -> {
-            }
-            RelationshipLabel.TWIN -> {
-            }
-            else -> {
-                lateinit var labelType: RelationshipLabel
-                if (focusedPerson.hasBeenDivorced()) {
-                    labelType = RelationshipLabel.DIVORCED
-                    // TODO: suspectedPerson could be Ex-spouce or the Person we focuse.
-                } else {
-                    labelType = RelationshipLabel.MARRIAGE
-                }
+    ): Relationship {
 
-                return if (focusedPerson.gender == 0) {
-                    labelType = RelationshipLabel.RIGHT_HAND
-                    if (labelType == RelationshipLabel.DIVORCED)
-                        DivorceLine().drawLine()
-                    else
-                        MarriageLine(familyTreeDrawer, labelType, addLayer).drawLine()
-                } else {
-                    labelType = RelationshipLabel.LEFT_HAND
-                    if (labelType == RelationshipLabel.MARRIAGE)
-                        DivorceLine().drawLine()
-                    else
-                        MarriageLine(familyTreeDrawer, labelType, addLayer).drawLine()
-                }
+        var labelType: RelationshipLabel?
+
+        if (relationshipLabel == RelationshipLabel.WIFE ||
+            relationshipLabel == RelationshipLabel.EX_WIFE ||
+            relationshipLabel == RelationshipLabel.HUSBAND ||
+            relationshipLabel == RelationshipLabel.EX_HUSBAND
+        ) {
+            labelType = if (focusedPerson.hasBeenDivorced()) {
+                // TODO: suspectedPerson could be Ex-spouce or the Person we focuse.
+                RelationshipLabel.DIVORCED
+            } else
+                RelationshipLabel.MARRIAGE
+
+            return if (labelType == RelationshipLabel.DIVORCED)
+                DivorceLine()
+            else {
+                labelType = if (focusedPerson.gender == 0)
+                    RelationshipLabel.RIGHT_HAND
+                else
+                    RelationshipLabel.LEFT_HAND
+                MarriageLine(familyTreeDrawer, labelType, addLayer)
             }
+        } else {
+            // TODO: Other relationship ig. Enemy
+            return TwinLine()
         }
-        return familyTreeDrawer
     }
 
     fun getLine(
@@ -65,15 +62,13 @@ class RelationshipFactory {
         parentsPosition: MutableList<Double>,
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel
-    ): FamilyTreeDrawer {
+    ): Relationship {
         return when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
-                // Add new "familyTreeDrawer" layer
-                ChildrenLine(focusedListPerson, parentsPosition, familyTreeDrawer).drawLine()
+                ChildrenLine(focusedListPerson, parentsPosition, familyTreeDrawer)
             }
             else -> {
-                // RelationshipLabel.TWIN
-                TwinLine().drawLine()
+                TwinLine()
             }
         }
     }
