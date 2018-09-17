@@ -17,6 +17,8 @@
 
 package ffc.genogram
 
+import ffc.genogram.util.cleanUpEmptyStack
+
 class Family(
     var familyId: Long,
     var familyName: String,
@@ -24,22 +26,22 @@ class Family(
     var members: List<Person>?
 ) {
 
+    // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {
-        // get first person from the bloodFamily stack
+
         var person: Person? = null
 
         if (bloodFamily != null) {
             val personId = bloodFamily!![0]
-            for (i in 0 until members!!.size) {
-                if (members!![i].idCard.toInt() == personId) {
-                    person = members!![i]
-                }
+            members!!.forEach {
+                if (it.idCard.toInt() == personId)
+                    person = it
             }
+
             // delete that person from the bloodFamily stack
             val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
             tmp.removeAt(0)
-            bloodFamily = tmp
-            bloodFamily = if (tmp.isEmpty()) null else tmp
+            bloodFamily = cleanUpEmptyStack(tmp)
         }
 
         return person

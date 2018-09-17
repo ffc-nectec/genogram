@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.util.cleanUpEmptyStack
 
 class Person(
@@ -39,6 +40,41 @@ class Person(
 
     // Whether the person has been divorced.
     fun hasBeenDivorced() = exHusband != null || exWife != null
+
+    fun hasBeenMarriedWith(relatedPersonId: Int): RelationshipLabel {
+
+        if (gender == 0) {
+            // Male
+            exWife?.find { it == relatedPersonId }?.let {
+                return RelationshipLabel.EX_WIFE
+            }
+            wife?.find { it == relatedPersonId }?.let {
+                return RelationshipLabel.WIFE
+            }
+        } else {
+            // Female
+            exHusband?.find { it == relatedPersonId }?.let {
+                return RelationshipLabel.EX_HUSBAND
+            }
+            husband?.find { it == relatedPersonId }?.let {
+                return RelationshipLabel.HUSBAND
+            }
+        }
+
+        return RelationshipLabel.SINGLE
+    }
+
+    fun hasChildOrTwin(relatedPersonId: Int): RelationshipLabel {
+
+        children?.find { it == relatedPersonId }?.let {
+            return RelationshipLabel.CHILDREN
+        }
+        twin?.find { it == relatedPersonId }?.let {
+            return RelationshipLabel.TWIN
+        }
+
+        return RelationshipLabel.NO_CHILD
+    }
 
     // Whether the person has any child with the relatedPerson,
     // and remove the parents (person and the related person) out of children'stack

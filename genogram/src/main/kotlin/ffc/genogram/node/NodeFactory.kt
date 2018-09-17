@@ -35,31 +35,4 @@ class NodeFactory {
             else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname)
         }
     }
-
-    fun getNode(
-        familyTreeDrawer: FamilyTreeDrawer,
-        personList: MutableList<Person>,
-        relationLabel: RelationshipLabel?
-    ): FamilyTreeDrawer {
-        var siblings = false
-
-        return if (personList.size == 1) {
-            when (personList[0].gender) {
-                0 -> MaleNode(familyTreeDrawer, null, personList[0].firstname).drawNode(relationLabel, siblings)
-                else -> FemaleNode(familyTreeDrawer, null, personList[0].firstname).drawNode(relationLabel, siblings)
-            }
-        } else {
-            siblings = true
-            for (i in 0 until personList.size) {
-                when (personList[i].gender) {
-                    0 -> MaleNode(familyTreeDrawer, null, personList[i].firstname).drawNode(relationLabel, siblings)
-                    else -> FemaleNode(familyTreeDrawer, null, personList[i].firstname).drawNode(
-                        relationLabel,
-                        siblings
-                    )
-                }
-            }
-            familyTreeDrawer
-        }
-    }
 }
