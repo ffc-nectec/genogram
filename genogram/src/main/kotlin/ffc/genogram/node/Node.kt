@@ -27,6 +27,7 @@ abstract class Node {
         const val color = 0xff888888
         const val nodeSize = 6.0
         const val nodesDistance = 2.0
+        const val nodeBorderSize = 2.0
     }
 
     abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer

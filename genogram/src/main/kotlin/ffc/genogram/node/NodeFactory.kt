@@ -19,17 +19,14 @@ package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
-import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class NodeFactory {
 
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,
         focusedPerson: Person?,
-        person: Person,
-        relationLabel: RelationshipLabel?
+        person: Person
     ): Node {
-        val siblings = false
         return when (person.gender) {
             0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname)
             else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname)

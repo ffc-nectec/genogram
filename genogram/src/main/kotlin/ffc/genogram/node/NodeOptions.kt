@@ -17,9 +17,12 @@
 
 package ffc.genogram.node
 
+import ffc.genogram.GenderLabel
 import ffc.genogram.Person
+import ffc.genogram.node.Node.Companion.nodeBorderSize
 
 fun setNodeSize(nodeName: String): String {
+
     return if (nodeName.length > Node.nodeSize) {
         nodeName.subSequence(0, Node.nodeSize.toInt()) as String
     } else {
@@ -32,24 +35,31 @@ fun setNodeSize(nodeName: String): String {
     }
 }
 
+// find the person index
 fun findPersonPosition(personLayer: ArrayList<String>, focusedPerson: Person): Int {
-    // find the person index
-    var personInd = 0
-    for (i in 0 until personLayer.size) {
-        if (personLayer[i] == setNodeSize(focusedPerson.firstname))
-            personInd = i
+
+    personLayer.forEachIndexed { index, element ->
+        if (element == setNodeSize(focusedPerson.firstname))
+            return index
     }
 
-    return personInd
+    return 0
 }
 
 fun createEmptyNode(): String {
-    var result = ""
-    val nodeBorderSize = 2
 
-    for (i in 0 until Node.nodeSize.toInt() + nodeBorderSize) {
+    var result = ""
+
+    for (i in 0 until Node.nodeSize.toInt() + nodeBorderSize.toInt()) {
         result += " "
     }
 
     return result
+}
+
+fun createGenderBorder(name: String, gender: GenderLabel): String {
+    return if (gender == GenderLabel.MALE)
+        "[${setNodeSize(name)}]"
+    else
+        "(${setNodeSize(name)})"
 }

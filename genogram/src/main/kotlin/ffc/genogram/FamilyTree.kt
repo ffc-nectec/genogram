@@ -179,14 +179,14 @@ class FamilyTree(var family: Family) {
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
         val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson, relationLabel)
+            .getNode(familyTreePic, focusedPerson, relatedPerson)
         node.drawNode(relationLabel, siblings = false)
         addedNodes.add(relatedPerson.idCard.toInt())
     }
 
     private fun drawListNode(focusedList: MutableList<Person>, relationLabel: RelationshipLabel) {
         focusedList.forEach {
-            val node = nodeFactory.getNode(familyTreePic, null, it, relationLabel)
+            val node = nodeFactory.getNode(familyTreePic, null, it)
             if (focusedList.size == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
