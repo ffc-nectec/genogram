@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-package ffc.genogram.util
+package ffc.genogram.node
 
 import ffc.genogram.Person
-import ffc.genogram.node.Node
 
 fun setNodeSize(nodeName: String): String {
     return if (nodeName.length > Node.nodeSize) {

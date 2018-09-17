@@ -17,6 +17,8 @@
 
 package ffc.genogram
 
+import ffc.genogram.util.cleanUpEmptyStack
+
 class Person(
     var idCard: Long,
     var firstname: String,
@@ -35,99 +37,85 @@ class Person(
     var linkedStack: List<Int>?
 ) {
 
-    fun hasBeenDivorced(): Boolean {
-        return exHusband != null || exWife != null
-    }
+    // Whether the person has been divorced.
+    fun hasBeenDivorced() = exHusband != null || exWife != null
 
+    // Whether the person has any child with the relatedPerson,
+    // and remove the parents (person and the related person) out of children'stack
     fun haveChildren(relatedPerson: Person): ArrayList<Int>? {
-        var childrenList: ArrayList<Int>? = arrayListOf()
-        // find the focusedPerson's children
-        // find the focusedPerson's children who also is the relatedPerson's children
-        val fChildren: List<Int>? = children
-        val rChildren: List<Int>? = relatedPerson.children
-        if (fChildren != null) {
-            for (i in 0 until fChildren.size) {
-                rChildren!!.find { it == fChildren[i] }?.let {
+
+        return if (children != null) {
+            val childrenList: ArrayList<Int>? = arrayListOf()
+            children!!.forEach { child ->
+                relatedPerson.children!!.find { it == child }?.let {
                     childrenList!!.add(it)
                 }
             }
-        } else {
-            childrenList = null
-        }
 
-        // TODO: delete focusedPerson and relatedPerson out of children'stack
-
-        return childrenList
+            removeLinkedStack(childrenList!!)
+            relatedPerson.removeLinkedStack(childrenList)
+            childrenList
+        } else
+            null
     }
 
+    // Remove the person(s) out of the stack
     fun removeLinkedStack(removeList: MutableList<Int>) {
+        val tmp = linkedStack as MutableList<Int>?
 
-        val tmp: MutableList<Int> = linkedStack as MutableList<Int>
-        if (linkedStack!!.size == 1 && removeList.size == 1) {
-            if (linkedStack!![0] == removeList[0])
-                linkedStack = null
-        } else {
-            for (i in 0 until removeList.size) {
-                removeList.find { it == tmp[i] }?.let {
-                    tmp.removeAt(i)
+        if (tmp != null) {
+            removeList.forEach { element ->
+                Int
+                tmp.find { it == element }?.let {
+                    tmp.remove(it)
                 }
             }
-            linkedStack = tmp
+
+            linkedStack = cleanUpEmptyStack(tmp)
         }
     }
 
-    fun removeListLinkedStack(removeList: MutableList<Int>) {
-        var tmp: MutableList<Int>? = mutableListOf()
-
-        if (linkedStack != null) {
-            tmp = linkedStack as MutableList<Int>
-            for (i in 0 until removeList.size) {
-                tmp.find { it == removeList[i] }?.let {
-                    tmp!!.remove(it)
-                }
-            }
-        }
-
-        if (tmp!!.isEmpty())
-            tmp = null
-        linkedStack = tmp
-    }
-
-    fun popChildren(childrenList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
-            : ArrayList<Person> {
-        val childrenObjList: ArrayList<Person> = arrayListOf()
-        for (i in 0 until familyMembers!!.size) {
-            childrenList.find { it == familyMembers!![i].idCard.toInt() }?.let {
-                val child = familyMembers[i]
-                val tmpChildStack: MutableList<Int> = child.linkedStack as MutableList<Int>
-                tmpChildStack.remove(idCard.toInt())
-                if (person2 != null)
-                    tmpChildStack.remove(person2.idCard.toInt())
-                if (tmpChildStack.isEmpty())
-                    child.linkedStack = null
-                else
-                    child.linkedStack = tmpChildStack
-                childrenObjList.add(child)
-            }
-        }
-        return childrenObjList
-    }
-
+    // Return a person and remove the person out of the stack
     fun popLinkedStack(familyMembers: List<Person>?): Person? {
 
         var person: Person? = null
+
         if (linkedStack != null) {
-            // find a member whose id is in the linkedStack's first index
             val relatedPersonId = linkedStack!![0]
-            familyMembers!!.find { it.idCard.toInt() == relatedPersonId }?.let {
+            familyMembers!!.find {
+                it.idCard.toInt() == relatedPersonId
+            }?.let {
                 person = it
             }
-            // Delete the previous person's id out of the linkedStack
-            val tmpPerson: MutableList<Int> = linkedStack as MutableList<Int>
-            tmpPerson.removeAt(0)
-            linkedStack = if (tmpPerson.isEmpty()) null else tmpPerson
+
+            val tmp: MutableList<Int> = linkedStack as MutableList<Int>
+            tmp.removeAt(0)
+            linkedStack = cleanUpEmptyStack(tmp)
         }
 
         return person
+    }
+
+    // Return children whose has the same parents
+    // and remove children's id out of the parents' link stack
+    fun popChildren(childrenIdList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
+            : ArrayList<Person> {
+
+        val childrenList: ArrayList<Person> = arrayListOf()
+
+        familyMembers!!.forEach { child ->
+            childrenIdList.find { it == child.idCard.toInt() }?.let {
+                val tmp = child.linkedStack as MutableList<Int>
+                // remove the child father/mother
+                tmp.remove(idCard.toInt())
+                if (person2 != null)
+                    tmp.remove(person2.idCard.toInt())
+
+                child.linkedStack = cleanUpEmptyStack(tmp)
+                childrenList.add(child)
+            }
+        }
+
+        return childrenList
     }
 }

@@ -38,12 +38,12 @@ class FamilyTree(var family: Family) {
         if (focusedPerson == null) {
             print("==== ${family.familyName} Family =====\n")
             return familyTreePic
-        } else if (isAdded(focusedPerson) && focusedPerson!!.linkedStack == null) {
+        } else if (isDrawn(focusedPerson) && focusedPerson!!.linkedStack == null) {
             print("==== ${family.familyName} Family | ${focusedPerson!!.firstname} =====\n")
             return familyTreePic
         } else {
             print("LOADING...\n")
-            if (!isAdded(focusedPerson))
+            if (!isDrawn(focusedPerson))
                 drawNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
             listFocusedPerson.add(focusedPerson!!)
@@ -102,8 +102,6 @@ class FamilyTree(var family: Family) {
                 val childrenId = focusedPerson!!.haveChildren(relatedPerson)
 
                 return if (childrenId != null) {
-                    focusedPerson!!.removeListLinkedStack(childrenId)
-                    relatedPerson.removeListLinkedStack(childrenId)
                     val childrenList = focusedPerson!!
                         .popChildren(
                             childrenId,
@@ -120,7 +118,7 @@ class FamilyTree(var family: Family) {
         return focusedPerson!!.linkedStack
     }
 
-    private fun isAdded(focusedPerson: Person?): Boolean {
+    private fun isDrawn(focusedPerson: Person?): Boolean {
         if (focusedPerson != null) {
             addedNodes.find { it == focusedPerson.idCard.toInt() }?.let {
                 return true

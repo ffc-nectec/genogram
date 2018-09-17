@@ -17,7 +17,7 @@
 
 package ffc.genogram
 
-import ffc.genogram.util.setNodeSize
+import ffc.genogram.node.setNodeSize
 
 class FamilyTreeDrawer {
 

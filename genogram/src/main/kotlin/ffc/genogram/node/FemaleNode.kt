@@ -20,7 +20,6 @@ package ffc.genogram.node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import ffc.genogram.util.setNodeSize
 import kotlin.math.PI
 
 class FemaleNode(
