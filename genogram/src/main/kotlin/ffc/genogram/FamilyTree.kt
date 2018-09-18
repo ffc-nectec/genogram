@@ -17,9 +17,9 @@
 
 package ffc.genogram
 
+import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import ffc.genogram.node.NodeFactory
 
 class FamilyTree(var family: Family) {
 
@@ -75,7 +75,6 @@ class FamilyTree(var family: Family) {
             val parentsPosition = familyTreePic.findParentsPosition()
             val line = relationFactory.getLine(
                 childrenList,
-                parentsPosition,
                 familyTreePic,
                 RelationshipLabel.CHILDREN
             )
@@ -98,7 +97,7 @@ class FamilyTree(var family: Family) {
                             "a $relationLabel of ${focusedPerson!!.firstname} \n"
                 )
 
-                // Draw a relationship line and node.
+                // Draw a relationship line and Node.
                 val line = relationFactory.getLine(
                     focusedPerson!!,
                     familyTreePic,

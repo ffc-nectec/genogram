@@ -59,13 +59,12 @@ class RelationshipFactory {
 
     fun getLine(
         focusedListPerson: MutableList<Person>,
-        parentsPosition: MutableList<Double>,
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel
     ): Relationship {
         return when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
-                ChildrenLine(focusedListPerson, parentsPosition, familyTreeDrawer)
+                ChildrenLine(focusedListPerson, familyTreeDrawer)
             }
             else -> {
                 TwinLine()

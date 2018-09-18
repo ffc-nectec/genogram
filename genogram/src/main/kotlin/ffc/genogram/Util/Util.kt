@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package ffc.genogram.util
+package ffc.genogram.Util
 
 fun cleanUpEmptyStack(stack: MutableList<Int>) = if (stack.isEmpty()) null else stack
 

@@ -18,7 +18,7 @@
 package ffc.genogram
 
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import ffc.genogram.util.cleanUpEmptyStack
+import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
     var idCard: Long,

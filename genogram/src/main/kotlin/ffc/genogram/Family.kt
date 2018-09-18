@@ -17,7 +17,7 @@
 
 package ffc.genogram
 
-import ffc.genogram.util.cleanUpEmptyStack
+import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
     var familyId: Long,

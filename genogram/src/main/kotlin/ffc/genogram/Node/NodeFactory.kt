@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package ffc.genogram.node
+package ffc.genogram.Node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person

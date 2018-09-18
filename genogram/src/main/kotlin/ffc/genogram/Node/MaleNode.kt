@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package ffc.genogram.node
+package ffc.genogram.Node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
@@ -42,7 +42,7 @@ class MaleNode(
                 familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
 
                 if (focusedPerson!!.gender == 1) {
-                    // Female is always on the right hand of the male node then
+                    // Female is always on the right hand of the male Node then
                     // the empty nodes to the previous layer to make a balance picture.
                     for (i in 0 until addLayer)
                         familyTreeDrawer.familyStorage[i].add(0, createEmptyNode())

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package ffc.genogram.node
+package ffc.genogram.Node
 
+import ffc.genogram.Node.Node.Companion.nodeBorderSize
 import ffc.genogram.Person
-import ffc.genogram.node.Node.Companion.nodeBorderSize
 
 fun setNodeSize(nodeName: String): String {
 
