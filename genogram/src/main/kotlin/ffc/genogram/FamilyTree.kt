@@ -72,7 +72,7 @@ class FamilyTree(var family: Family) {
             (childrenIdList != null)
         ) {
             // Draw a children or twins line
-            val parentsPosition = familyTreePic.findParentsPosition()
+//            val parentsPosition = familyTreePic.findParentsPosition()
             val line = relationFactory.getLine(
                 childrenList,
                 familyTreePic,

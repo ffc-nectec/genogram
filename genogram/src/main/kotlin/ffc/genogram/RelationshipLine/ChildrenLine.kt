@@ -38,34 +38,41 @@ class ChildrenLine(
         val sign = ","
         val space = " "
         var resultSpace = ""
-        val lineSpace = "-"
+        val line = "-"
         var resultSign: String
 
+        // Make an indent
         if (childrenSize == 1) {
-
             val nodeDistance = ((lengthLine / 2) + Node.nodesDistance).toInt()
             for (i in 0 until nodeDistance) {
                 resultSpace += space
             }
 
-            return "$resultSpace|$resultSpace"
+            return "$resultSpace |$resultSpace"
         } else {
-            // have more than one children
-            for (i in 0 until spaceLine.toInt())
+
+            if (childrenSize % 2 == 0) {
+
+            } else {
+
+            }
+
+            for (i in 0 until spaceLine.toInt() + 1)
                 resultSpace += space
             resultSign = resultSpace
 
             for (i in 0 until childrenSize - 1) {
                 resultSign += sign
                 for (j in 0 until distanceLine.toInt())
-                    resultSign += lineSpace
+                    resultSign += line
             }
 
             resultSign = "$resultSign$sign$resultSpace"
 
             val tmp = StringBuilder()
+            val markPosition = (resultSign.length / 2)
             for (i in 0 until resultSign.length) {
-                if (i == (resultSign.length) / 2) {
+                if (i == markPosition) {
                     if (resultSign[i].toString() != sign)
                         tmp.append("^")
                     else

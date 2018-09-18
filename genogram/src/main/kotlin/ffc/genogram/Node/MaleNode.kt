@@ -30,16 +30,17 @@ class MaleNode(
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
 
-        nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
 
         if (relationLabel != RelationshipLabel.CHILDREN &&
             relationLabel != RelationshipLabel.TWIN
         ) {
+            nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
+
             if (focusedPerson != null) {
                 val addLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addInd =
                     findPersonPosition(familyTreeDrawer.familyStorage[addLayer], focusedPerson!!)
-                familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
+                familyTreeDrawer.familyStorage[addLayer].add(addInd, " $nodeName")
 
                 if (focusedPerson!!.gender == 1) {
                     // Female is always on the right hand of the male Node then
@@ -52,6 +53,7 @@ class MaleNode(
             }
         } else {
             // Children or Twin
+//            nodeName = setNodeSize(nodeName)
             val familyGen = familyTreeDrawer.familyStorage.size - 1
             val currentLayer = familyTreeDrawer.familyStorage[familyGen]
             currentLayer.add(setNodePosition(nodeName, 0, siblings))

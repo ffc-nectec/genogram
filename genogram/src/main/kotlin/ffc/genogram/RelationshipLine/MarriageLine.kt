@@ -42,7 +42,7 @@ class MarriageLine(
         var resultSpace = ""
         var resultSign = ""
 
-        for (i in 0 until spaceLine.toInt())
+        for (i in 0 until spaceLine.toInt() + 1)
             resultSpace += space
 
         for (i in 0 until distanceLine.toInt())

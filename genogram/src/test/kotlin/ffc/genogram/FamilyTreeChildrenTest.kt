@@ -19,7 +19,6 @@ package ffc.genogram
 
 import org.amshove.kluent.`should equal`
 import org.junit.Test
-import java.lang.StringBuilder
 
 class FamilyTreeChildrenTest {
 
@@ -31,10 +30,10 @@ class FamilyTreeChildrenTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
-            [        |        ]
-            [     ( Lisa )     ]
+            [[Grandfa], (Grandmo)]
+            [    |_________|    ]
+            [         |        ]
+            [      ( Lisa )      ]
         """.trimIndent()
     }
 
@@ -46,10 +45,10 @@ class FamilyTreeChildrenTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
-            [   ,----^----,   ]
-            [( Lisa ), [[  Ed  ]]]
+            [[Grandfa], (Grandmo)]
+            [    |_________|    ]
+            [    ,----^----,    ]
+            [( Lisa ), [  Ed  ]]
         """.trimIndent()
     }
 
@@ -62,11 +61,18 @@ class FamilyTreeChildrenTest {
 
         // TODO: Improve 3 children family
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
-            [   ,---------|---------,   ]
-            [( Lisa ), [[  Ed  ]], [[Teddy]]]
+            [[Grandfa], (Grandmo)]
+            [    |_________|    ]
+            [    ,---------|---------,    ]
+            [( Lisa ), [  Ed  ], [ Teddy ]]
         """.trimIndent()
+
+        /*canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
+            [    |_________|    ]
+            [    ,----^----,---------,    ]
+            [( Lisa ), [[  Ed  ]], [[Teddy]]]
+        """.trimIndent()*/
     }
 
     @Test
@@ -78,10 +84,10 @@ class FamilyTreeChildrenTest {
 
         // TODO: Improve 4 children family
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
-            [   ,---------,----^----,---------,   ]
-            [( Lisa ), [[  Ed  ]], [[Teddy]], ( Anne )]
+            [[Grandfa], (Grandmo)]
+            [    |_________|    ]
+            [    ,---------,----^----,---------,    ]
+            [( Lisa ), [  Ed  ], [ Teddy ], ( Anne )]
         """.trimIndent()
     }
 }

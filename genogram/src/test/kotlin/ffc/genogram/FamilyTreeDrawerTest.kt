@@ -19,7 +19,6 @@ package ffc.genogram
 
 import org.amshove.kluent.`should equal`
 import org.junit.Test
-import java.lang.StringBuilder
 
 class FamilyTreeDrawerTest {
 
@@ -31,7 +30,7 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf]]
+            [[Grandfa]]
         """.trimIndent()
     }
 
@@ -43,8 +42,8 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [   |_________|   ]
+            [[Grandfa], (Grandmo)]
+            [    |_________|    ]
         """.trimIndent()
     }
 
@@ -56,11 +55,11 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,    |_________|   ]
-            [        ,    ,----^----,   ]
-            [[ Bill ], ( Lisa ), [[  Ed  ]]]
-            [   |_________|   ]
+            [         , [Grandfa], (Grandmo)]
+            [         ,     |_________|    ]
+            [         ,     ,----^----,    ]
+            [ [ Bill ], ( Lisa ), [  Ed  ]]
+            [    |_________|    ]
         """.trimIndent()
     }
 }
