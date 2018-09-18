@@ -25,12 +25,13 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("family-1-person.json")
 //    familyObj = getResourceAs("family-2-people.json")
 //    familyObj = getResourceAs("family-3-people.json")
+    familyObj = getResourceAs("family-6-people.json")
 //    familyObj = getResourceAs("family-2-children.json")
 //    familyObj = getResourceAs("family-3-children.json")
 //    familyObj = getResourceAs("family-4-children.json")
 //    familyObj = getResourceAs("family-5-children.json")
 //    familyObj = getResourceAs("family-6-children.json")
-    familyObj = getResourceAs("family-7-children.json")
+//    familyObj = getResourceAs("family-7-children.json")
 
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {
