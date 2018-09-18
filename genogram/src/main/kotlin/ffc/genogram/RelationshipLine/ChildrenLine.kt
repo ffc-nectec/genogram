@@ -67,7 +67,7 @@ class ChildrenLine(
 
             var markPosition = resultSign.length / 2
             if (childrenSize % 2 != 0)
-                markPosition = (markPosition - (nodeSize - nodeBorderSize)).toInt()
+                markPosition = (markPosition - ((nodeSize + 1) - nodeBorderSize)).toInt()
 
             val tmp = StringBuilder()
             for (i in 0 until resultSign.length) {

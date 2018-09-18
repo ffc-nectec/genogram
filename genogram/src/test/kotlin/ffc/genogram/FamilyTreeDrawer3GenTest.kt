@@ -20,36 +20,11 @@ package ffc.genogram
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class FamilyTreeDrawerTest {
+class FamilyTreeDrawer3GenTest {
 
     @Test
     fun drawGrandF() {
-        val drawer = FamilyTree(getResourceAs("family-1-person.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf]]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaAndMa() {
-        val drawer = FamilyTree(getResourceAs("family-2-people.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|    ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaMoBillLisaEd() {
-        val drawer = FamilyTree(getResourceAs("family-5-people.json")).drawGenogram()
+        val drawer = FamilyTree(getResourceAs("family-6-people.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
@@ -60,6 +35,8 @@ class FamilyTreeDrawerTest {
             [        ,     ,----^----,    ]
             [ [ Bill ], ( Lisa ), [  Ed  ]]
             [    |_________|    ]
+            [         |        ]
+            [     [River ]     ]
         """.trimIndent()
     }
 }
