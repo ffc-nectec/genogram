@@ -184,13 +184,38 @@ class FamilyTree(var family: Family) {
     }
 
     private fun drawListNode(focusedList: MutableList<Person>, relationLabel: RelationshipLabel) {
+
+        val childrenNumber = focusedList.size
         focusedList.forEach {
             val node = nodeFactory.getNode(familyTreePic, null, it)
-            if (focusedList.size == 1)
+            if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
                 node.drawNode(relationLabel, siblings = true)
         }
+
+        // Add indent for the previous layers if the number of children is even number.
+        // The number of empty nodes will be the number of children / 2.
+        val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
+        if (childrenNumber > 3) {
+
+            val addingEmptyNodes = if (childrenNumber % 2 == 0)
+                childrenNumber / 2 - 1
+            else
+                Math.floorDiv(childrenNumber, 2) - 1
+
+            for (i in (addingLayer + 1) downTo 0)
+                for (j in 1..addingEmptyNodes)
+                    familyTreePic.addFamilyStorageReplaceIndex(i, 0)
+        }
+
+        // children => index
+        // 2 / 2 => even
+        // 3 % 2 => odd
+        // 4 / 2 => even = 2-1 = 1 empty node
+        // 5 / 2 => odd  = 2.5 -> 2 - 1  = 1 empty node
+        // 6 / 2 => even = 3-1 = 2 empty nodes
+        // 7 % 2 => odd  = 3.5 -> 3 - 1 = 2 empty nodes
 
         focusedList.forEach {
             addedNodes.add(it.idCard.toInt())

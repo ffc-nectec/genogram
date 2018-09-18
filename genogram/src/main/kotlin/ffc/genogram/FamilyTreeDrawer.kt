@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.Node.createEmptyNode
 import ffc.genogram.Node.setNodeSize
 
 class FamilyTreeDrawer {
@@ -45,6 +46,12 @@ class FamilyTreeDrawer {
     private fun addFamilyStorage(newLayer: ArrayList<String>) {
         familyStorage.add(newLayer)
     }
+
+    fun addFamilyStorageReplaceIndex(index: Int, replaceInd: Int) {
+        familyStorage[index].add(replaceInd, createEmptyNode())
+    }
+
+    fun findStorageSize(): Int = familyStorage.size
 
     fun findParentsPosition(): MutableList<Double> {
         val latestLayer = familyStorage[familyStorage.size - 2]

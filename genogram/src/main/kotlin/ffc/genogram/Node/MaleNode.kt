@@ -30,31 +30,30 @@ class MaleNode(
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
 
-
         if (relationLabel != RelationshipLabel.CHILDREN &&
             relationLabel != RelationshipLabel.TWIN
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
 
             if (focusedPerson != null) {
-                val addLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-                val addInd =
-                    findPersonPosition(familyTreeDrawer.familyStorage[addLayer], focusedPerson!!)
-                familyTreeDrawer.familyStorage[addLayer].add(addInd, " $nodeName")
+                val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                val addingInd =
+                    findPersonPosition(familyTreeDrawer.familyStorage[addingLayer], focusedPerson!!)
+                familyTreeDrawer.familyStorage[addingLayer].add(addingInd, " $nodeName")
 
                 if (focusedPerson!!.gender == 1) {
                     // Female is always on the right hand of the male Node then
                     // the empty nodes to the previous layer to make a balance picture.
-                    for (i in 0 until addLayer)
-                        familyTreeDrawer.familyStorage[i].add(0, createEmptyNode())
+                    for (i in 0 until addingLayer)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0)
+
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
             }
         } else {
             // Children or Twin
-//            nodeName = setNodeSize(nodeName)
-            val familyGen = familyTreeDrawer.familyStorage.size - 1
+            val familyGen = familyTreeDrawer.findStorageSize() - 1
             val currentLayer = familyTreeDrawer.familyStorage[familyGen]
             currentLayer.add(setNodePosition(nodeName, 0, siblings))
         }

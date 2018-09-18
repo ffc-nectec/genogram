@@ -19,6 +19,8 @@ package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Node.Node
+import ffc.genogram.Node.Node.Companion.nodeBorderSize
+import ffc.genogram.Node.Node.Companion.nodeSize
 import ffc.genogram.Person
 
 class ChildrenLine(
@@ -51,12 +53,6 @@ class ChildrenLine(
             return "$resultSpace |$resultSpace"
         } else {
 
-            if (childrenSize % 2 == 0) {
-
-            } else {
-
-            }
-
             for (i in 0 until spaceLine.toInt() + 1)
                 resultSpace += space
             resultSign = resultSpace
@@ -69,8 +65,11 @@ class ChildrenLine(
 
             resultSign = "$resultSign$sign$resultSpace"
 
+            var markPosition = resultSign.length / 2
+            if (childrenSize % 2 != 0)
+                markPosition = (markPosition - (nodeSize - nodeBorderSize)).toInt()
+
             val tmp = StringBuilder()
-            val markPosition = (resultSign.length / 2)
             for (i in 0 until resultSign.length) {
                 if (i == markPosition) {
                     if (resultSign[i].toString() != sign)

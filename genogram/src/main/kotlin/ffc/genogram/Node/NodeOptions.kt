@@ -22,15 +22,22 @@ import ffc.genogram.Person
 
 fun setNodeSize(nodeName: String): String {
 
-    return if (nodeName.length > Node.nodeSize) {
-        nodeName.subSequence(0, Node.nodeSize.toInt()) as String
+    if (nodeName.length > Node.nodeSize) {
+        return nodeName.subSequence(0, Node.nodeSize.toInt()) as String
     } else {
         var tmp = ""
         val diff = Math.abs(nodeName.length - Node.nodeSize.toInt())
         for (i in 0 until diff / 2) {
             tmp += " "
         }
-        tmp + nodeName + tmp
+
+        var node = tmp + nodeName + tmp
+        val addMoreSpace = Node.nodeSize.toInt() - node.length
+        if (addMoreSpace > 0)
+            for (i in 0 until addMoreSpace)
+                node += " "
+
+        return node
     }
 }
 

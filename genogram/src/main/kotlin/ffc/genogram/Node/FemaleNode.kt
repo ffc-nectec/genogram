@@ -38,8 +38,7 @@ class FemaleNode(
             familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
         } else {
             // Children or Twin
-//            nodeName = setNodeSize(nodeName)
-            val familyGen = familyTreeDrawer.familyStorage.size - 1
+            val familyGen = familyTreeDrawer.findStorageSize() - 1
             val currentLayer = familyTreeDrawer.familyStorage[familyGen]
             currentLayer.add(setNodePosition(nodeName, 1, siblings))
         }

@@ -26,7 +26,7 @@ abstract class Node {
     companion object {
         const val borderline = 3.0
         const val color = 0xff888888
-        const val nodeSize = 7.0
+        const val nodeSize = 6.0
         const val nodesDistance = 2.0
         const val nodeBorderSize = 2.0
     }
@@ -36,12 +36,12 @@ abstract class Node {
     abstract fun getArea(): Double
 
     fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
-        val diff = (((nodeSize * 2) - nodeName.length) / 2) + 1
+        val diff = (((nodeSize * 2) - nodeName.length) / 2).toInt() + 2
         val space = " "
         var resultSpace = ""
 
         if (!siblings)
-            for (i in 0 until diff.toInt()) {
+            for (i in 0 until diff) {
                 resultSpace += space
             }
 

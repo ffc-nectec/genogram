@@ -30,7 +30,7 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandfa]]
+            [[Grandf]]
         """.trimIndent()
     }
 
@@ -42,7 +42,7 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandfa], (Grandmo)]
+            [[Grandf], (Grandm)]
             [    |_________|    ]
         """.trimIndent()
     }
@@ -55,9 +55,9 @@ class FamilyTreeDrawerTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [         , [Grandfa], (Grandmo)]
-            [         ,     |_________|    ]
-            [         ,     ,----^----,    ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,    ]
             [ [ Bill ], ( Lisa ), [  Ed  ]]
             [    |_________|    ]
         """.trimIndent()
