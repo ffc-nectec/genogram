@@ -17,7 +17,6 @@
 
 package ffc.genogram.node
 
-import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.node.Node.Companion.nodeBorderSize
 
@@ -55,11 +54,4 @@ fun createEmptyNode(): String {
     }
 
     return result
-}
-
-fun createGenderBorder(name: String, gender: GenderLabel): String {
-    return if (gender == GenderLabel.MALE)
-        "[${setNodeSize(name)}]"
-    else
-        "(${setNodeSize(name)})"
 }

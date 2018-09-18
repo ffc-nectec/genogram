@@ -18,6 +18,7 @@
 package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
@@ -28,17 +29,21 @@ class MaleNode(
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
-        // TODO: draw node
-        nodeName = "[${setNodeSize(nodeName)}]"
-        if (relationLabel != RelationshipLabel.CHILDREN && relationLabel != RelationshipLabel.TWIN) {
+
+        nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
+
+        if (relationLabel != RelationshipLabel.CHILDREN &&
+            relationLabel != RelationshipLabel.TWIN
+        ) {
             if (focusedPerson != null) {
                 val addLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addInd =
                     findPersonPosition(familyTreeDrawer.familyStorage[addLayer], focusedPerson!!)
                 familyTreeDrawer.familyStorage[addLayer].add(addInd, nodeName)
+
                 if (focusedPerson!!.gender == 1) {
-                    // Female is always on the right hand of the male node
-                    // Add the empty nodes to the previous layer to make a balance picture
+                    // Female is always on the right hand of the male node then
+                    // the empty nodes to the previous layer to make a balance picture.
                     for (i in 0 until addLayer)
                         familyTreeDrawer.familyStorage[i].add(0, createEmptyNode())
                 }

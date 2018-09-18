@@ -18,6 +18,7 @@
 package ffc.genogram.node
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.GenderLabel
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 abstract class Node {
@@ -49,5 +50,12 @@ abstract class Node {
         } else {
             "$resultSpace($nodeName)$resultSpace"
         }
+    }
+
+    fun createGenderBorder(name: String, gender: GenderLabel): String {
+        return if (gender == GenderLabel.MALE)
+            "[${setNodeSize(name)}]"
+        else
+            "(${setNodeSize(name)})"
     }
 }
