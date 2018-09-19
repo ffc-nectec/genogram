@@ -25,8 +25,8 @@ import org.junit.Test
 class Drawer2GenSpouseTest {
 
     @Test
-    fun draw2ndGenMarried() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-5-people.json")).drawGenogram()
+    fun draw1Spouses() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-1-spouse.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }
@@ -39,4 +39,21 @@ class Drawer2GenSpouseTest {
             [    |_________|    ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw2Spouses() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,    ]
+            [ [ Bill ], ( Lisa ), [  Ed  ], ( Mary )]
+            [    |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
 }

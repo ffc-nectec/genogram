@@ -35,7 +35,14 @@ class FemaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
-            familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
+
+            if (focusedPerson != null) {
+                print("focusedPerson: ${focusedPerson!!.firstname}\n")
+                val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
+            } else {
+                familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
+            }
         } else {
             // Children or Twin
             val familyGen = familyTreeDrawer.findStorageSize() - 1

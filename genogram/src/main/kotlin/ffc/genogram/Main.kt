@@ -24,7 +24,7 @@ private lateinit var familyObj: Family
 fun main(args: Array<String>) {
 //    familyObj = getResourceAs("family-1-person.json")
 //    familyObj = getResourceAs("family-2-people.json")
-//    familyObj = getResourceAs("family-3-people.json")
+//    familyObj = getResourceAs("family-1-child.json")
 //    familyObj = getResourceAs("family-2-children.json")
 //    familyObj = getResourceAs("family-3-children.json")
 //    familyObj = getResourceAs("family-4-children.json")
@@ -37,7 +37,8 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
-    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
+//    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
+    familyObj = getResourceAs("2ndGen/family-2-spouses.json")
 
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {

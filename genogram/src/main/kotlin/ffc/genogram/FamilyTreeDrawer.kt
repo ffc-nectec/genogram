@@ -18,7 +18,7 @@
 package ffc.genogram
 
 import ffc.genogram.Node.createEmptyNode
-import ffc.genogram.Node.setNodeSize
+import ffc.genogram.Node.createGenderBorder
 
 class FamilyTreeDrawer {
 
@@ -36,6 +36,10 @@ class FamilyTreeDrawer {
     fun addFamilyNewLayer(name: String) {
         val newLayers: ArrayList<String> = arrayListOf(name)
         familyStorage.add(newLayers)
+    }
+
+    fun addFamilyAtLayer(layer: Int, element: String) {
+        familyStorage[layer].add(element)
     }
 
     fun addEmptyNewLayer() {
@@ -61,10 +65,27 @@ class FamilyTreeDrawer {
         return mutableListOf(parent2Ind, parent1Ind)
     }
 
+    // find the person index
+    fun findPersonInd(focusedPerson: Person, storageLayer: Int): Int {
+
+        val personName = focusedPerson.firstname
+        val nodeList = familyStorage[storageLayer]
+
+        nodeList.forEachIndexed { index, string ->
+            if (string == personName)
+                return index
+        }
+
+        return 0
+    }
+
     fun findPersonLayer(focusedPerson: Person): Int {
         var targetLayer = 0
-        var tmp = setNodeSize(focusedPerson.firstname)
-        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
+//        var tmp = setNodeSize(focusedPerson.firstname)
+//        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
+        val gender = if (focusedPerson.gender == 0)
+            GenderLabel.MALE else GenderLabel.FEMALE
+        val tmp = createGenderBorder(focusedPerson.firstname, gender)
 
         for (i in (familyStorage.size - 1) downTo 0) {
             familyStorage[i].find { it == tmp }?.let {

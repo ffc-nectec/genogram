@@ -34,9 +34,6 @@ class FamilyTree(var family: Family) {
 
         focusedPerson = family.popBloodFamily()
 
-        // TODO: Delete
-//        print("1: linkedStack: ${focusedPerson!!.linkedStack}, focusedPerson: ${focusedPerson!!.firstname}\n")
-
         return if (focusedPerson == null) {
             print("==== ${family.familyName} Family =====\n")
             familyTreePic
@@ -56,7 +53,7 @@ class FamilyTree(var family: Family) {
             }
 
             // TODO: Delete
-//            print("2: familyObj: ${familyObj.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+            print("2: familyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
             drawGenogram()
         }
     }

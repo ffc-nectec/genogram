@@ -22,12 +22,18 @@ import ffc.genogram.FamilyTreeDrawer
 class MarriageLine(
     var familyTreeDrawer: FamilyTreeDrawer,
     var handSide: RelationshipLabel,
-    var addLayer: Int
+    var addingLayer: Int
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
         if (handSide == RelationshipLabel.RIGHT_HAND) {
-            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            if (addingLayer > 0)
+                familyTreeDrawer.addFamilyAtLayer(
+                    addingLayer + 1,
+                    createLineDistance()
+                )
+            else
+                familyTreeDrawer.addFamilyNewLayer(createLineDistance())
         } else {
             // Left Hand Line
             familyTreeDrawer.addFamilyNewLayer(createLineDistance())
