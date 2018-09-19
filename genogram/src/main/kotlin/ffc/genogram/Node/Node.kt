@@ -19,6 +19,7 @@ package ffc.genogram.Node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
+import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 abstract class Node {
@@ -36,20 +37,21 @@ abstract class Node {
     abstract fun getArea(): Double
 
     fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
-        val diff = (((nodeSize * 2) - nodeName.length) / 2).toInt() + 2
+//        val diff = (((nodeSize * 2) - nodeSize) / 2).toInt() + 2
+        val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""
-
-        if (!siblings)
-            for (i in 0 until diff) {
-                resultSpace += space
-            }
 
         val newNodeName = if (gender == 0) {
             createGenderBorder(nodeName, GenderLabel.MALE)
         } else {
             createGenderBorder(nodeName, GenderLabel.FEMALE)
         }
+
+        if (!siblings)
+            for (i in 0 until diff) {
+                resultSpace += space
+            }
 
         return resultSpace + newNodeName + resultSpace
     }

@@ -38,7 +38,7 @@ class Drawer3GenChildrenTest {
             [ [ Bill ], ( Lisa ), [  Ed  ]]
             [    |_________|    ]
             [         |        ]
-            [     [River ]     ]
+            [      [River ]      ]
         """.trimIndent()
     }
 
