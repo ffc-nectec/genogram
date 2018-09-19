@@ -15,41 +15,18 @@
  * limitations under the License.
  */
 
-package ffc.genogram
+package ffc.genogram.FamilyTree
 
+import ffc.genogram.FamilyTree
+import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class FamilyTreeDrawerTest {
+class Drawer2GenSpouseTest {
 
     @Test
-    fun drawGrandF() {
-        val drawer = FamilyTree(getResourceAs("family-1-person.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf]]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaAndMa() {
-        val drawer = FamilyTree(getResourceAs("family-2-people.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|    ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawGrandFaMoBillLisaEd() {
-        val drawer = FamilyTree(getResourceAs("family-5-people.json")).drawGenogram()
+    fun draw2ndGenMarried() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-5-people.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.familyStorage.forEach { append("$it\n") }
         }

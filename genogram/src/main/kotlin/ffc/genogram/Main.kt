@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("family-1-person.json")
 //    familyObj = getResourceAs("family-2-people.json")
 //    familyObj = getResourceAs("family-3-people.json")
-    familyObj = getResourceAs("family-6-people.json")
+    familyObj = getResourceAs("3rdGen/family-6-people.json")
 //    familyObj = getResourceAs("family-2-children.json")
 //    familyObj = getResourceAs("family-3-children.json")
 //    familyObj = getResourceAs("family-4-children.json")
