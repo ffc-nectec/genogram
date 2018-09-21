@@ -19,6 +19,8 @@ package ffc.genogram
 
 import ffc.genogram.Node.createEmptyNode
 import ffc.genogram.Node.createGenderBorder
+import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
+import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class FamilyTreeDrawer {
 
@@ -51,11 +53,25 @@ class FamilyTreeDrawer {
         familyStorage.add(newLayer)
     }
 
-    fun addFamilyStorageReplaceIndex(index: Int, replaceInd: Int) {
-        familyStorage[index].add(replaceInd, createEmptyNode())
+    fun addFamilyStorageReplaceIndex(layerNumb: Int, replaceInd: Int, node: String?) {
+        if (node != null)
+            familyStorage[layerNumb].add(replaceInd + 1, node)
+        else
+            familyStorage[layerNumb].add(replaceInd, createEmptyNode())
+    }
+
+    fun replaceFamilyStorageIndex(layerNumb: Int, replaceInd: Int, node: String?) {
+        val layer = familyStorage[layerNumb]
+
+        if (node != null)
+            layer[replaceInd] = node
+        else
+            layer[replaceInd] = createEmptyNode()
     }
 
     fun findStorageSize(): Int = familyStorage.size
+
+    fun findStorageLayerSize(layerNumb: Int): Int = familyStorage[layerNumb].size
 
     fun findParentsPosition(): MutableList<Double> {
         val latestLayer = familyStorage[familyStorage.size - 2]
@@ -65,11 +81,21 @@ class FamilyTreeDrawer {
         return mutableListOf(parent2Ind, parent1Ind)
     }
 
+    fun hasPeopleOnTheRight(focusedPerson: Person, layerNumb: Int): Boolean {
+        val personInd = findPersonInd(focusedPerson, layerNumb)
+
+        return personInd < findStorageLayerSize(layerNumb) - 1
+    }
+
     // find the person index
     fun findPersonInd(focusedPerson: Person, storageLayer: Int): Int {
-
-        val personName = focusedPerson.firstname
+        var personName = focusedPerson.firstname
         val nodeList = familyStorage[storageLayer]
+
+        personName = if (focusedPerson.gender == 0)
+            createGenderBorder(personName, GenderLabel.MALE)
+        else
+            createGenderBorder(personName, GenderLabel.FEMALE)
 
         nodeList.forEachIndexed { index, string ->
             if (string == personName)
@@ -81,8 +107,6 @@ class FamilyTreeDrawer {
 
     fun findPersonLayer(focusedPerson: Person): Int {
         var targetLayer = 0
-//        var tmp = setNodeSize(focusedPerson.firstname)
-//        tmp = if (focusedPerson.gender == 0) "[$tmp]" else "($tmp)"
         val gender = if (focusedPerson.gender == 0)
             GenderLabel.MALE else GenderLabel.FEMALE
         val tmp = createGenderBorder(focusedPerson.firstname, gender)
@@ -94,5 +118,65 @@ class FamilyTreeDrawer {
         }
 
         return targetLayer
+    }
+
+    fun extendRelationshipLine(layerNumb: Int, index: Int, relation: RelationshipLabel)
+            : String {
+        val lineLayer = familyStorage[layerNumb + 1]
+        val line = lineLayer[index]
+        val tmp = StringBuilder()
+
+        val addingLine = createLine(relation, distanceLine.toInt())
+
+        if (relation == RelationshipLabel.MARRIAGE) {
+
+            for (i in 0 until line.length / 2) {
+                tmp.append(line[i])
+            }
+
+            tmp.append(addingLine)
+
+            for (i in line.length / 2 downTo 0) {
+                tmp.append(line[i])
+            }
+        } else if (relation == RelationshipLabel.CHILDREN) {
+            val upSign = "^"
+            var signInd = 0
+
+            line.forEachIndexed { ind, c ->
+                if (c.toString() == upSign)
+                    signInd = ind
+            }
+
+            for (i in 0 until signInd) {
+                tmp.append(line[i])
+            }
+
+            tmp.append(addingLine)
+            tmp.append(line[signInd])
+            tmp.append(addingLine)
+
+            for (i in signInd + 1 until line.length) {
+                tmp.append(line[i])
+            }
+        }
+
+        return tmp.toString()
+    }
+
+    private fun createLine(relation: RelationshipLabel, length: Int): String {
+        var addingLine = ""
+        var underScoreSign = "_"
+        var lengthLine = length
+
+        if (relation == RelationshipLabel.CHILDREN) {
+            underScoreSign = "-"
+            lengthLine /= 2
+        }
+
+        for (i in 0 until lengthLine + 1)
+            addingLine += underScoreSign
+
+        return addingLine
     }
 }

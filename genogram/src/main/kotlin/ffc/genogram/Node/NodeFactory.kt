@@ -17,6 +17,7 @@
 
 package ffc.genogram.Node
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 
@@ -25,11 +26,21 @@ class NodeFactory {
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,
         focusedPerson: Person?,
-        person: Person
+        person: Person,
+        family: Family
     ): Node {
+        var parentName: Person? = null
+        if (focusedPerson != null &&
+            (focusedPerson.father != null ||
+                    focusedPerson.mother != null)
+        ) {
+            parentName = family.findPerson(focusedPerson.father!!)
+            if (parentName == null)
+                parentName = family.findPerson(focusedPerson.mother!!)
+        }
         return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname)
-            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname)
+            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname, parentName)
+            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname, parentName)
         }
     }
 }

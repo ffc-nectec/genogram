@@ -56,20 +56,20 @@ class Drawer2GenSpouseTest {
         """.trimIndent()
     }
 
-//    @Test
-//    fun draw2Spouses2() {
-//        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
-//        val canvas = StringBuilder().apply {
-//            drawer.familyStorage.forEach { append("$it\n") }
-//        }
-//
-//        canvas.toString().trimIndent() `should equal` """
-//            [        , [Grandf], (Grandm)]
-//            [        ,     |_________|    ]
-//            [        ,     ,----^----,    ]
-//            [ [ Bill ],  Ed ), ( Lisa ), ( Mary )]
-//            [    |_________|    ,     |_________|    ]
-//        """.trimIndent()
-//    }
+    @Test
+    fun draw2Spouses2() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf],         , (Grandm)]
+            [    |___________________|    ]
+            [    ,---------^---------,    ]
+            [[  Ed  ], ( Mary ), ( Lisa )]
+            [    |_________|    ]
+        """.trimIndent()
+    }
 
 }

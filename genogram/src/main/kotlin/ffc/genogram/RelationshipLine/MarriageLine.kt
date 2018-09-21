@@ -27,12 +27,15 @@ class MarriageLine(
 
     override fun drawLine(): FamilyTreeDrawer {
         if (handSide == RelationshipLabel.RIGHT_HAND) {
-            if (addingLayer > 0)
-                familyTreeDrawer.addFamilyAtLayer(
-                    addingLayer + 1,
-                    createLineDistance()
-                )
-            else
+            if (addingLayer > 0) {
+                if (familyTreeDrawer.findStorageSize() > (addingLayer + 1))
+                    familyTreeDrawer.addFamilyAtLayer(
+                        addingLayer + 1,
+                        createLineDistance()
+                    )
+                else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1))
+                    familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            } else
                 familyTreeDrawer.addFamilyNewLayer(createLineDistance())
         } else {
             // Left Hand Line

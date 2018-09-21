@@ -175,7 +175,7 @@ class FamilyTree(var family: Family) {
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
         val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson)
+            .getNode(familyTreePic, focusedPerson, relatedPerson, family)
         node.drawNode(relationLabel, siblings = false)
         addedNodes.add(relatedPerson.idCard.toInt())
     }
@@ -184,7 +184,7 @@ class FamilyTree(var family: Family) {
 
         val childrenNumber = focusedList.size
         focusedList.forEach {
-            val node = nodeFactory.getNode(familyTreePic, null, it)
+            val node = nodeFactory.getNode(familyTreePic, null, it, family)
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
@@ -203,7 +203,7 @@ class FamilyTree(var family: Family) {
 
             for (i in (addingLayer + 1) downTo 0)
                 for (j in 1..addingEmptyNodes)
-                    familyTreePic.addFamilyStorageReplaceIndex(i, 0)
+                    familyTreePic.addFamilyStorageReplaceIndex(i, 0, null)
         }
 
         // children => index

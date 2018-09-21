@@ -47,4 +47,12 @@ class Family(
         return person
     }
 
+    fun findPerson(id: Long): Person? {
+        members!!.forEach { person ->
+            if (person.idCard == id)
+                return person
+        }
+
+        return null
+    }
 }

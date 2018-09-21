@@ -37,7 +37,6 @@ abstract class Node {
     abstract fun getArea(): Double
 
     fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
-//        val diff = (((nodeSize * 2) - nodeSize) / 2).toInt() + 2
         val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""

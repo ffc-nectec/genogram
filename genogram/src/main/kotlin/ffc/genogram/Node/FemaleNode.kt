@@ -26,7 +26,8 @@ import kotlin.math.PI
 class FemaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
     var focusedPerson: Person?,
-    var nodeName: String
+    var nodeName: String,
+    var parent: Person?
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
@@ -37,9 +38,47 @@ class FemaleNode(
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {
-                print("focusedPerson: ${focusedPerson!!.firstname}\n")
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-                familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
+
+                // find whether the focusedPerson has any siblings.
+                // if he/she has we'll reorder the array.
+                val rightHandSib = familyTreeDrawer.hasPeopleOnTheRight(
+                    focusedPerson!!, addingLayer
+                )
+                if (rightHandSib) {
+                    val addingInd = familyTreeDrawer.findPersonInd(
+                        focusedPerson!!, addingLayer
+                    )
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, addingInd, nodeName
+                    )
+
+                    // extend the previous generation layer
+                    val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        parentsLayer, 1, null
+                    )
+
+                    if (parent != null) {
+                        // extend the marriage line
+                        val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentsLayer)
+                        val editingLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                        val marriageLine = familyTreeDrawer.extendRelationshipLine(
+                            editingLayer, parentInd, RelationshipLabel.MARRIAGE
+                        )
+                        familyTreeDrawer.replaceFamilyStorageIndex(
+                            editingLayer + 1, parentInd, marriageLine
+                        )
+                        // extend the children line
+                        val childrenLine = familyTreeDrawer.extendRelationshipLine(
+                            editingLayer + 1, parentInd, RelationshipLabel.CHILDREN
+                        )
+                        familyTreeDrawer.replaceFamilyStorageIndex(
+                            editingLayer + 2, parentInd, childrenLine
+                        )
+                    }
+                } else
+                    familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
             }

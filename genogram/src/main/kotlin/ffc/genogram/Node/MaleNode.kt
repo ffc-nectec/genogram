@@ -25,7 +25,8 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 class MaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
     var focusedPerson: Person?,
-    var nodeName: String
+    var nodeName: String,
+    var parentName: Person?
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
@@ -45,7 +46,7 @@ class MaleNode(
                     // Female is always on the right hand of the male Node then
                     // the empty nodes to the previous layer to make a balance picture.
                     for (i in 0 until addingLayer)
-                        familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0, null)
 
                 }
             } else {
