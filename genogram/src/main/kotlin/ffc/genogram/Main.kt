@@ -41,8 +41,9 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
 
+//    familyObj = getResourceAs("2ndGen/family-1-spouse.json")
 //    familyObj = getResourceAs("2ndGen/family-2-spouses.json")
-    familyObj = getResourceAs("2ndGen/family-2-spouses-2.json")
+    familyObj = getResourceAs("2ndGen/family-2-spouses-3.json")
 
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {

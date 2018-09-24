@@ -41,6 +41,22 @@ class Drawer2GenSpouseTest {
     }
 
     @Test
+    fun draw1Spouses2() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.familyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf],         , (Grandm)]
+            [    |___________________|    ]
+            [    ,---------^---------,    ]
+            [[  Ed  ], ( Mary ), ( Lisa )]
+            [    |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
     fun draw2Spouses() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses.json")).drawGenogram()
         val canvas = StringBuilder().apply {
@@ -56,6 +72,7 @@ class Drawer2GenSpouseTest {
         """.trimIndent()
     }
 
+
     @Test
     fun draw2Spouses2() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
@@ -63,12 +80,13 @@ class Drawer2GenSpouseTest {
             drawer.familyStorage.forEach { append("$it\n") }
         }
 
+        // if the women has siblings on the left hand, her husband will add on the right hand.
         canvas.toString().trimIndent() `should equal` """
             [[Grandf],         , (Grandm)]
             [    |___________________|    ]
             [    ,---------^---------,    ]
-            [[  Ed  ], ( Mary ), ( Lisa )]
-            [    |_________|    ]
+            [[  Ed  ], ( Mary ), ( Lisa ), [ Bill ]]
+            [    |_________|    ,     |_________|    ]
         """.trimIndent()
     }
 

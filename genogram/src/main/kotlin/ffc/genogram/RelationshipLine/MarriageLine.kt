@@ -18,11 +18,13 @@
 package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.Person
 
 class MarriageLine(
     var familyTreeDrawer: FamilyTreeDrawer,
     var handSide: RelationshipLabel,
-    var addingLayer: Int
+    var addingLayer: Int,
+    var person: Person
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
@@ -39,7 +41,34 @@ class MarriageLine(
                 familyTreeDrawer.addFamilyNewLayer(createLineDistance())
         } else {
             // Left Hand Line
-            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            if (addingLayer > 0) {
+
+                if (addingLayer == 0) {
+                    familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                } else {
+
+                    val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
+                        person, addingLayer
+                    )
+                    val rightHandSiblings = familyTreeDrawer.hasPeopleOnTheRight(
+                        person, addingLayer
+                    )
+
+                    if (!leftHandSiblings) {
+                        // add node husband node on the left hand.
+                        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                    } else if (!rightHandSiblings) {
+                        // add node husband node on the right hand.
+                        familyTreeDrawer.addFamilyAtLayer(
+                            addingLayer + 1, createLineDistance()
+                        )
+                    } else {
+                        // has both siblings on the left and right hands.
+                        // add husband on the right hand.
+                        // and make an empty node.
+                    }
+                }
+            }
         }
 
         return familyTreeDrawer

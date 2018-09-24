@@ -53,7 +53,7 @@ class FamilyTree(var family: Family) {
             }
 
             // TODO: Delete
-            print("2: familyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+            print("- FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
             drawGenogram()
         }
     }

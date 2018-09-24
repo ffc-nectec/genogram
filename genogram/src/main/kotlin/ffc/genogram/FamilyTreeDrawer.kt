@@ -71,7 +71,12 @@ class FamilyTreeDrawer {
 
     fun findStorageSize(): Int = familyStorage.size
 
-    fun findStorageLayerSize(layerNumb: Int): Int = familyStorage[layerNumb].size
+    private fun findStorageLayerSize(layerNumb: Int): Int {
+        return if (familyStorage[layerNumb].isNotEmpty())
+            familyStorage[layerNumb].size
+        else
+            -1
+    }
 
     fun findParentsPosition(): MutableList<Double> {
         val latestLayer = familyStorage[familyStorage.size - 2]
@@ -85,6 +90,12 @@ class FamilyTreeDrawer {
         val personInd = findPersonInd(focusedPerson, layerNumb)
 
         return personInd < findStorageLayerSize(layerNumb) - 1
+    }
+
+    fun hasPeopleOnTheLeft(focusedPerson: Person, layerNumb: Int): Boolean {
+        val personInd = findPersonInd(focusedPerson, layerNumb)
+
+        return personInd > 0
     }
 
     // find the person index

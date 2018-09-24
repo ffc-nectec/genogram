@@ -38,16 +38,32 @@ class MaleNode(
 
             if (focusedPerson != null) {
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-                val addingInd =
-                    findPersonPosition(familyTreeDrawer.familyStorage[addingLayer], focusedPerson!!)
-                familyTreeDrawer.familyStorage[addingLayer].add(addingInd, " $nodeName")
+                val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
 
                 if (focusedPerson!!.gender == 1) {
-                    // Female is always on the right hand of the male Node then
-                    // the empty nodes to the previous layer to make a balance picture.
-                    for (i in 0 until addingLayer)
-                        familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0, null)
 
+                    val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
+                        focusedPerson!!, addingLayer
+                    )
+                    val rightHandSiblings = familyTreeDrawer.hasPeopleOnTheRight(
+                        focusedPerson!!, addingLayer
+                    )
+
+                    if (!leftHandSiblings) {
+                        // add node husband node on the left hand.
+                        familyTreeDrawer.familyStorage[addingLayer].add(addingInd, " $nodeName")
+                        for (i in 0 until addingLayer)
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                i, 0, null
+                            )
+                    } else if (!rightHandSiblings) {
+                        // add node husband node on the right hand.
+                        familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
+                    } else {
+                        // has both siblings on the left and right hands.
+                        // add husband on the right hand.
+                        // and make an empty node.
+                    }
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
