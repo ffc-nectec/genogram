@@ -25,6 +25,7 @@ import kotlin.math.PI
 
 class FemaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
+    val addedPerson: Person,
     var focusedPerson: Person?,
     var nodeName: String,
     var parent: Person?
@@ -35,10 +36,10 @@ class FemaleNode(
         if (relationLabel != RelationshipLabel.CHILDREN &&
             relationLabel != RelationshipLabel.TWIN
         ) {
+            val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {
-                val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
 
                 // find whether the focusedPerson has any siblings.
                 // if he/she has we'll reorder the array.
@@ -50,13 +51,13 @@ class FemaleNode(
                         focusedPerson!!, addingLayer
                     )
                     familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer, addingInd, nodeName
+                        addingLayer, addingInd, nodeName, addedPerson
                     )
 
                     // extend the previous generation layer
                     val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
                     familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        parentsLayer, 1, null
+                        parentsLayer, 1, null, addedPerson
                     )
 
                     if (parent != null) {
@@ -78,15 +79,18 @@ class FemaleNode(
                         )
                     }
                 } else
-                    familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
+                    familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
             } else {
-                familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
+                familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
         } else {
             // Children or Twin
             val familyGen = familyTreeDrawer.findStorageSize() - 1
-            val currentLayer = familyTreeDrawer.familyStorage[familyGen]
-            currentLayer.add(setNodePosition(nodeName, 1, siblings))
+            familyTreeDrawer.addFamilyAtLayer(
+                familyGen,
+                setNodePosition(nodeName, GenderLabel.FEMALE, siblings),
+                addedPerson
+            )
         }
 
         return familyTreeDrawer

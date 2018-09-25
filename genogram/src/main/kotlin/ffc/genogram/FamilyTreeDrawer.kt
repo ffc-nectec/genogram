@@ -18,50 +18,65 @@
 package ffc.genogram
 
 import ffc.genogram.Node.createEmptyNode
-import ffc.genogram.Node.createGenderBorder
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class FamilyTreeDrawer {
 
-    var familyLayers: ArrayList<String> = ArrayList()
-    var familyStorage: ArrayList<ArrayList<String>> = ArrayList()
+    // For display
+    var nameFamilyLayers: ArrayList<String> = ArrayList()
+    var nameFamilyStorage: ArrayList<ArrayList<String>> = ArrayList()
 
-    fun addFamilyLayer(name: String, storage: ArrayList<ArrayList<String>>) {
-        familyLayers.add(name)
-
-        if (storage.isEmpty()) {
-            addFamilyStorage(familyLayers)
-        }
-    }
+    // For recording
+    var personFamilyLayers: ArrayList<Any> = ArrayList()
+    var personFamilyStorage: ArrayList<ArrayList<Any>> = ArrayList()
 
     fun addFamilyNewLayer(name: String) {
-        val newLayers: ArrayList<String> = arrayListOf(name)
-        familyStorage.add(newLayers)
-    }
-
-    fun addFamilyAtLayer(layer: Int, element: String) {
-        familyStorage[layer].add(element)
+        nameFamilyStorage.add(arrayListOf(name))
+        personFamilyStorage.add(arrayListOf(name))
     }
 
     fun addEmptyNewLayer() {
-        val newLayers: ArrayList<String> = arrayListOf()
-        familyStorage.add(newLayers)
+        nameFamilyStorage.add(arrayListOf())
+        personFamilyStorage.add(arrayListOf())
     }
 
-    private fun addFamilyStorage(newLayer: ArrayList<String>) {
-        familyStorage.add(newLayer)
+    fun addFamilyLayer(name: String, addedPerson: Person) {
+        nameFamilyLayers.add(name)
+        personFamilyLayers.add(addedPerson)
+
+        if (nameFamilyStorage.isEmpty()) {
+            nameFamilyStorage.add(nameFamilyLayers)
+            personFamilyStorage.add(personFamilyLayers)
+        }
     }
 
-    fun addFamilyStorageReplaceIndex(layerNumb: Int, replaceInd: Int, node: String?) {
-        if (node != null)
-            familyStorage[layerNumb].add(replaceInd + 1, node)
+    fun addFamilyAtLayer(layer: Int, element: String, person: Person?) {
+        nameFamilyStorage[layer].add(element)
+
+        if (person != null)
+            personFamilyStorage[layer].add(person)
         else
-            familyStorage[layerNumb].add(replaceInd, createEmptyNode())
+            personFamilyStorage[layer].add(element)
+    }
+
+    fun addFamilyStorageAtIndex(layerNumb: Int, replaceInd: Int, node: String, person: Person) {
+        nameFamilyStorage[layerNumb].add(replaceInd, node)
+        personFamilyStorage[layerNumb].add(replaceInd, person)
+    }
+
+    fun addFamilyStorageReplaceIndex(layerNumb: Int, replaceInd: Int, node: String?, person: Person?) {
+        if (node != null && person != null) {
+            nameFamilyStorage[layerNumb].add(replaceInd + 1, node)
+            personFamilyStorage[layerNumb].add(replaceInd + 1, person)
+        } else {
+            nameFamilyStorage[layerNumb].add(replaceInd, createEmptyNode())
+            personFamilyStorage[layerNumb].add(replaceInd, createEmptyNode())
+        }
     }
 
     fun replaceFamilyStorageIndex(layerNumb: Int, replaceInd: Int, node: String?) {
-        val layer = familyStorage[layerNumb]
+        val layer = nameFamilyStorage[layerNumb]
 
         if (node != null)
             layer[replaceInd] = node
@@ -69,21 +84,17 @@ class FamilyTreeDrawer {
             layer[replaceInd] = createEmptyNode()
     }
 
-    fun findStorageSize(): Int = familyStorage.size
+    fun findStorageSize(): Int = nameFamilyStorage.size
+
+    fun findPersonStorageSize(): Int = personFamilyStorage.size
+
+    fun findPersonLayerSize(layerNumb: Int): Int = personFamilyStorage[layerNumb].size
 
     private fun findStorageLayerSize(layerNumb: Int): Int {
-        return if (familyStorage[layerNumb].isNotEmpty())
-            familyStorage[layerNumb].size
+        return if (nameFamilyStorage[layerNumb].isNotEmpty())
+            nameFamilyStorage[layerNumb].size
         else
             -1
-    }
-
-    fun findParentsPosition(): MutableList<Double> {
-        val latestLayer = familyStorage[familyStorage.size - 2]
-        val parent1Ind = (latestLayer.size - 1).toDouble()
-        val parent2Ind = (latestLayer.size - 2).toDouble()
-
-        return mutableListOf(parent2Ind, parent1Ind)
     }
 
     fun hasPeopleOnTheRight(focusedPerson: Person, layerNumb: Int): Boolean {
@@ -99,17 +110,13 @@ class FamilyTreeDrawer {
     }
 
     // find the person index
-    fun findPersonInd(focusedPerson: Person, storageLayer: Int): Int {
-        var personName = focusedPerson.firstname
-        val nodeList = familyStorage[storageLayer]
+    fun findPersonInd(focusedPerson: Person, layerNumb: Int): Int {
+        val personId = focusedPerson.idCard
+        val nodeList = personFamilyStorage[layerNumb]
 
-        personName = if (focusedPerson.gender == 0)
-            createGenderBorder(personName, GenderLabel.MALE)
-        else
-            createGenderBorder(personName, GenderLabel.FEMALE)
-
-        nodeList.forEachIndexed { index, string ->
-            if (string == personName)
+        nodeList.forEachIndexed { index, person ->
+            person as Person
+            if (person.idCard == personId)
                 return index
         }
 
@@ -117,23 +124,22 @@ class FamilyTreeDrawer {
     }
 
     fun findPersonLayer(focusedPerson: Person): Int {
-        var targetLayer = 0
-        val gender = if (focusedPerson.gender == 0)
-            GenderLabel.MALE else GenderLabel.FEMALE
-        val tmp = createGenderBorder(focusedPerson.firstname, gender)
 
-        for (i in (familyStorage.size - 1) downTo 0) {
-            familyStorage[i].find { it == tmp }?.let {
-                targetLayer = i
+        personFamilyStorage.forEachIndexed { index, arrayList ->
+            arrayList.forEach { element ->
+                if (element is Person) {
+                    if (focusedPerson.idCard == element.idCard)
+                        return index
+                }
             }
         }
 
-        return targetLayer
+        return 0
     }
 
     fun extendRelationshipLine(layerNumb: Int, index: Int, relation: RelationshipLabel)
             : String {
-        val lineLayer = familyStorage[layerNumb + 1]
+        val lineLayer = nameFamilyStorage[layerNumb + 1]
         val line = lineLayer[index]
         val tmp = StringBuilder()
 

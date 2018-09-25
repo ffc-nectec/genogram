@@ -26,7 +26,7 @@ class NodeFactory {
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,
         focusedPerson: Person?,
-        person: Person,
+        addedPerson: Person,
         family: Family
     ): Node {
         var parentName: Person? = null
@@ -38,9 +38,21 @@ class NodeFactory {
             if (parentName == null)
                 parentName = family.findPerson(focusedPerson.mother!!)
         }
-        return when (person.gender) {
-            0 -> MaleNode(familyTreeDrawer, focusedPerson, person.firstname, parentName)
-            else -> FemaleNode(familyTreeDrawer, focusedPerson, person.firstname, parentName)
+        return when (addedPerson.gender) {
+            0 -> MaleNode(
+                familyTreeDrawer,
+                addedPerson,
+                focusedPerson,
+                addedPerson.firstname,
+                parentName
+            )
+            else -> FemaleNode(
+                familyTreeDrawer,
+                addedPerson,
+                focusedPerson,
+                addedPerson.firstname,
+                parentName
+            )
         }
     }
 }

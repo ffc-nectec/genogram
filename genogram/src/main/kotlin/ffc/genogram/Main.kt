@@ -22,16 +22,16 @@ import java.nio.charset.Charset
 private lateinit var familyObj: Family
 
 fun main(args: Array<String>) {
-//    familyObj = getResourceAs("family-1-person.json")
-//    familyObj = getResourceAs("family-2-people.json")
+//    familyObj = getResourceAs("1stGen/family-1-person.json")
+//    familyObj = getResourceAs("1stGen/family-2-people.json")
 
-//    familyObj = getResourceAs("family-1-child.json")
-//    familyObj = getResourceAs("family-2-children.json")
-//    familyObj = getResourceAs("family-3-children.json")
-//    familyObj = getResourceAs("family-4-children.json")
-//    familyObj = getResourceAs("family-5-children.json")
-//    familyObj = getResourceAs("family-6-children.json")
-//    familyObj = getResourceAs("family-7-children.json")
+//    familyObj = getResourceAs("2ndGen/family-1-child.json")
+//    familyObj = getResourceAs("2ndGen/family-2-children.json")
+//    familyObj = getResourceAs("2ndGen/family-3-children.json")
+//    familyObj = getResourceAs("2ndGen/family-4-children.json")
+//    familyObj = getResourceAs("2ndGen/family-5-children.json")
+//    familyObj = getResourceAs("2ndGen/family-6-children.json")
+//    familyObj = getResourceAs("2ndGen/family-7-children.json")
 
 //    familyObj = getResourceAs("3rdGen/family-1-child-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen.json")
@@ -46,9 +46,31 @@ fun main(args: Array<String>) {
     familyObj = getResourceAs("2ndGen/family-2-spouses-3.json")
 
     val familyTreePic = drawGenogram()
-    for (i in 0 until familyTreePic.findStorageSize()) {
-        print("${familyTreePic.familyStorage[i]}\n")
+//    for (i in 0 until familyTreePic.findStorageSize()) {
+//        print("${familyTreePic.nameFamilyStorage[i]}\n")
+//    }
+
+    familyTreePic.nameFamilyStorage.forEachIndexed { index, arrayList ->
+        arrayList.forEach {
+            print("$it  ")
+        }
+
+        if (index < familyTreePic.findStorageSize() - 1)
+            print("\n")
     }
+
+    /*  print("\n\n///////////////////////\n\n")
+
+      familyTreePic.personFamilyStorage.forEach { layer ->
+          layer.forEach {
+              if (it is Person)
+                  print("${it.firstname}  ")
+              else
+                  print(it)
+          }
+
+          print("\n")
+      }*/
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {

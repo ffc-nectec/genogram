@@ -28,7 +28,7 @@ class Drawer2GenSpouseTest {
     fun draw1Spouses() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-1-spouse.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -44,7 +44,7 @@ class Drawer2GenSpouseTest {
     fun draw1Spouses2() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -60,7 +60,7 @@ class Drawer2GenSpouseTest {
     fun draw2Spouses() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -75,12 +75,11 @@ class Drawer2GenSpouseTest {
 
     @Test
     fun draw2Spouses2() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-3.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
-        // if the women has siblings on the left hand, her husband will add on the right hand.
         canvas.toString().trimIndent() `should equal` """
             [[Grandf],         , (Grandm)]
             [    |___________________|    ]

@@ -36,12 +36,12 @@ abstract class Node {
 
     abstract fun getArea(): Double
 
-    fun setNodePosition(nodeName: String, gender: Int, siblings: Boolean): String {
+    fun setNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
         val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""
 
-        val newNodeName = if (gender == 0) {
+        val newNodeName = if (gender == GenderLabel.MALE) {
             createGenderBorder(nodeName, GenderLabel.MALE)
         } else {
             createGenderBorder(nodeName, GenderLabel.FEMALE)

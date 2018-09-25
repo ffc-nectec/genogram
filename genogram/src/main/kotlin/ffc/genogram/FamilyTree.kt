@@ -203,7 +203,7 @@ class FamilyTree(var family: Family) {
 
             for (i in (addingLayer + 1) downTo 0)
                 for (j in 1..addingEmptyNodes)
-                    familyTreePic.addFamilyStorageReplaceIndex(i, 0, null)
+                    familyTreePic.addFamilyStorageReplaceIndex(i, 0, null, null)
         }
 
         // children => index

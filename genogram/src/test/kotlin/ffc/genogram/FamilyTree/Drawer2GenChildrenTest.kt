@@ -28,7 +28,7 @@ class Drawer2GenChildrenTest {
     fun drawOneChild() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-1-child.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -43,7 +43,7 @@ class Drawer2GenChildrenTest {
     fun drawTwoChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -58,7 +58,7 @@ class Drawer2GenChildrenTest {
     fun drawThreeChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-3-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -73,7 +73,7 @@ class Drawer2GenChildrenTest {
     fun drawFourChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-4-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         // TODO: Improve 4 children family
@@ -89,7 +89,7 @@ class Drawer2GenChildrenTest {
     fun drawFiveChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-5-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -104,7 +104,7 @@ class Drawer2GenChildrenTest {
     fun drawSixChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-6-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """
@@ -119,7 +119,7 @@ class Drawer2GenChildrenTest {
     fun drawSevenChildren() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-7-children.json")).drawGenogram()
         val canvas = StringBuilder().apply {
-            drawer.familyStorage.forEach { append("$it\n") }
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
         canvas.toString().trimIndent() `should equal` """

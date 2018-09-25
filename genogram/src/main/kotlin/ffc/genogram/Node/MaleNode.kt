@@ -24,7 +24,8 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class MaleNode(
     var familyTreeDrawer: FamilyTreeDrawer,
-    var focusedPerson: Person?,
+    private val addedPerson: Person,
+    private var relatedPerson: Person?,
     var nodeName: String,
     var parentName: Person?
 ) : Node() {
@@ -36,29 +37,31 @@ class MaleNode(
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
 
-            if (focusedPerson != null) {
-                val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-                val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
+            if (relatedPerson != null) {
+                val addingLayer = familyTreeDrawer.findPersonLayer(relatedPerson!!)
+                val addingInd = familyTreeDrawer.findPersonInd(relatedPerson!!, addingLayer)
 
-                if (focusedPerson!!.gender == 1) {
+                if (relatedPerson!!.gender == 1) {
 
                     val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
-                        focusedPerson!!, addingLayer
+                        relatedPerson!!, addingLayer
                     )
                     val rightHandSiblings = familyTreeDrawer.hasPeopleOnTheRight(
-                        focusedPerson!!, addingLayer
+                        relatedPerson!!, addingLayer
                     )
 
                     if (!leftHandSiblings) {
                         // add node husband node on the left hand.
-                        familyTreeDrawer.familyStorage[addingLayer].add(addingInd, " $nodeName")
+                        familyTreeDrawer.addFamilyStorageAtIndex(
+                            addingLayer, addingInd, " $nodeName", addedPerson
+                        )
                         for (i in 0 until addingLayer)
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                i, 0, null
+                                i, 0, null, null
                             )
                     } else if (!rightHandSiblings) {
                         // add node husband node on the right hand.
-                        familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName)
+                        familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
                     } else {
                         // has both siblings on the left and right hands.
                         // add husband on the right hand.
@@ -66,13 +69,16 @@ class MaleNode(
                     }
                 }
             } else {
-                familyTreeDrawer.addFamilyLayer(nodeName, familyTreeDrawer.familyStorage)
+                familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
         } else {
             // Children or Twin
             val familyGen = familyTreeDrawer.findStorageSize() - 1
-            val currentLayer = familyTreeDrawer.familyStorage[familyGen]
-            currentLayer.add(setNodePosition(nodeName, 0, siblings))
+            familyTreeDrawer.addFamilyAtLayer(
+                familyGen,
+                setNodePosition(nodeName, GenderLabel.MALE, siblings),
+                addedPerson
+            )
         }
 
         return familyTreeDrawer

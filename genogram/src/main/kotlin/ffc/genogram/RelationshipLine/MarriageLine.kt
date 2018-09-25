@@ -33,7 +33,8 @@ class MarriageLine(
                 if (familyTreeDrawer.findStorageSize() > (addingLayer + 1))
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer + 1,
-                        createLineDistance()
+                        createLineDistance(),
+                        null
                     )
                 else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1))
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance())
@@ -60,7 +61,9 @@ class MarriageLine(
                     } else if (!rightHandSiblings) {
                         // add node husband node on the right hand.
                         familyTreeDrawer.addFamilyAtLayer(
-                            addingLayer + 1, createLineDistance()
+                            addingLayer + 1,
+                            createLineDistance(),
+                            null
                         )
                     } else {
                         // has both siblings on the left and right hands.
