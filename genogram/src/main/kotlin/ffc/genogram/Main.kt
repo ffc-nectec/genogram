@@ -47,18 +47,18 @@ fun main(args: Array<String>) {
     familyObj = getResourceAs("2ndGen/family-2-spouses-4.json")
 
     val familyTreePic = drawGenogram()
-//    for (i in 0 until familyTreePic.findStorageSize()) {
-//        print("${familyTreePic.nameFamilyStorage[i]}\n")
-//    }
-
-    familyTreePic.nameFamilyStorage.forEachIndexed { index, arrayList ->
-        arrayList.forEach {
-            print("$it  ")
-        }
-
-        if (index < familyTreePic.findStorageSize() - 1)
-            print("\n")
+    for (i in 0 until familyTreePic.findStorageSize()) {
+        print("${familyTreePic.nameFamilyStorage[i]}\n")
     }
+
+//    familyTreePic.nameFamilyStorage.forEachIndexed { index, arrayList ->
+//        arrayList.forEach {
+//            print("$it  ")
+//        }
+//
+//        if (index < familyTreePic.findStorageSize() - 1)
+//            print("\n")
+//    }
 
     /*  print("\n\n///////////////////////\n\n")
 
