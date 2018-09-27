@@ -23,11 +23,11 @@ import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class MaleNode(
-    var familyTreeDrawer: FamilyTreeDrawer,
+    private var familyTreeDrawer: FamilyTreeDrawer,
     private val addedPerson: Person,
     private var relatedPerson: Person?,
-    var nodeName: String,
-    var parentName: Person?
+    private var nodeName: String,
+    var parent: Person?
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
@@ -65,7 +65,33 @@ class MaleNode(
                     } else {
                         // has both siblings on the left and right hands.
                         // add husband on the right hand.
-                        // and make an empty node.
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            addingLayer, addingInd - 1, " $nodeName", addedPerson
+                        )
+
+                        if (parent != null) {
+                            // extend the previous generation layer
+                            val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                parentsLayer, 1, null, addedPerson
+                            )
+                            // extend the marriage line
+                            val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentsLayer)
+                            val editingLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                            val marriageLine = familyTreeDrawer.extendRelationshipLine(
+                                editingLayer, parentInd, RelationshipLabel.MARRIAGE
+                            )
+                            familyTreeDrawer.replaceFamilyStorageIndex(
+                                editingLayer + 1, parentInd, marriageLine
+                            )
+                            // extend the children line
+                            val childrenLine = familyTreeDrawer.extendRelationshipLine(
+                                editingLayer + 1, parentInd, RelationshipLabel.CHILDREN
+                            )
+                            familyTreeDrawer.replaceFamilyStorageIndex(
+                                editingLayer + 2, parentInd, childrenLine
+                            )
+                        }
                     }
                 }
             } else {

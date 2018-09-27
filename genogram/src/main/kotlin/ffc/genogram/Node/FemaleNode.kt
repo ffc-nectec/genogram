@@ -54,13 +54,13 @@ class FemaleNode(
                         addingLayer, addingInd, nodeName, addedPerson
                     )
 
-                    // extend the previous generation layer
-                    val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        parentsLayer, 1, null, addedPerson
-                    )
-
                     if (parent != null) {
+                        // extend the previous generation layer
+                        val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            parentsLayer, 1, null, addedPerson
+                        )
+
                         // extend the marriage line
                         val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentsLayer)
                         val editingLayer = familyTreeDrawer.findPersonLayer(parent!!)

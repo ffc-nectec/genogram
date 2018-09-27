@@ -21,14 +21,16 @@ import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 
 class MarriageLine(
-    var familyTreeDrawer: FamilyTreeDrawer,
-    var handSide: RelationshipLabel,
-    var addingLayer: Int,
+    private var familyTreeDrawer: FamilyTreeDrawer,
+    private var handSide: RelationshipLabel,
+    private var addingLayer: Int,
     var person: Person
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
+
         if (handSide == RelationshipLabel.RIGHT_HAND) {
+
             if (addingLayer > 0) {
                 if (familyTreeDrawer.findStorageSize() > (addingLayer + 1))
                     familyTreeDrawer.addFamilyAtLayer(
@@ -40,8 +42,9 @@ class MarriageLine(
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance())
             } else
                 familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+
         } else {
-            // Left Hand Line
+            // Add line on left hand side
             if (addingLayer > 0) {
 
                 if (addingLayer == 0) {
@@ -51,25 +54,20 @@ class MarriageLine(
                     val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
                         person, addingLayer
                     )
-                    val rightHandSiblings = familyTreeDrawer.hasPeopleOnTheRight(
-                        person, addingLayer
-                    )
 
                     if (!leftHandSiblings) {
                         // add node husband node on the left hand.
                         familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-                    } else if (!rightHandSiblings) {
+                    } else
                         // add node husband node on the right hand.
+                    // or has both siblings on the left and right hands.
+                    // add husband on the right hand.
+                    // and make an empty node.
                         familyTreeDrawer.addFamilyAtLayer(
                             addingLayer + 1,
                             createLineDistance(),
                             null
                         )
-                    } else {
-                        // has both siblings on the left and right hands.
-                        // add husband on the right hand.
-                        // and make an empty node.
-                    }
                 }
             }
         }
