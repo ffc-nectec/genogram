@@ -48,9 +48,9 @@ class Drawer2GenSpouseTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf],         , (Grandm)]
-            [    |___________________|    ]
-            [    ,---------^---------,    ]
+            [[Grandf], (Grandm)]
+            [    |_________|    ]
+            [    ,----^--------------,    ]
             [[  Ed  ], ( Mary ), ( Lisa )]
             [    |_________|    ]
         """.trimIndent()
@@ -81,9 +81,9 @@ class Drawer2GenSpouseTest {
         }
 
         canvas.toString().trimIndent() `should equal` """
-            [[Grandf],         , (Grandm)]
-            [    |___________________|    ]
-            [    ,---------^---------,    ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------------^----,    ]
             [[  Ed  ], ( Mary ), ( Lisa ), [ Bill ]]
             [    |_________|    ,     |_________|    ]
         """.trimIndent()

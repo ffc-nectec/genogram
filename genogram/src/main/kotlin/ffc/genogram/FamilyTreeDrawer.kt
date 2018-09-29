@@ -19,6 +19,7 @@ package ffc.genogram
 
 import ffc.genogram.Node.createEmptyNode
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
+import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class FamilyTreeDrawer {
@@ -114,10 +115,22 @@ class FamilyTreeDrawer {
         val personId = focusedPerson.idCard
         val nodeList = personFamilyStorage[layerNumb]
 
+        nodeList.forEachIndexed { index, element ->
+            if (element is Person)
+                if (element.idCard == personId)
+                    return index
+        }
+
+        return 0
+    }
+
+    fun findPersonIndById(personId: Long, layerNumb: Int): Int {
+        val nodeList = personFamilyStorage[layerNumb]
+
         nodeList.forEachIndexed { index, person ->
-            person as Person
-            if (person.idCard == personId)
-                return index
+            if (person is Person)
+                if (person.idCard == personId)
+                    return index
         }
 
         return 0
@@ -195,5 +208,64 @@ class FamilyTreeDrawer {
             addingLine += underScoreSign
 
         return addingLine
+    }
+
+    fun extendRelationshipLineAtPosition(lineLayer: Int, addingInd: Int, childrenInd: MutableList<Int>)
+            : String {
+//        val addAt = addingInd + distanceLine.toInt()
+        val addAt = addingInd * lengthLine.toInt()
+        val tmp = StringBuilder()
+
+        val orgLine = nameFamilyStorage[lineLayer][0]
+//        val childrenLine = createLine(
+//            RelationshipLabel.CHILDREN,
+//            lengthLine.toInt() + (spaceLine.toInt() * childrenInd.size)
+//        )
+        val childrenLine = createLine(
+            RelationshipLabel.CHILDREN,
+            lengthLine.toInt() + 6
+        )
+
+        if (addAt <= orgLine.length)
+            for (i in 0 until orgLine.length) {
+                if (i == addAt)
+                    tmp.append(childrenLine)
+                tmp.append(orgLine[i])
+            }
+        else {
+//            var count = childrenInd.size
+//            for (i in 0 until orgLine.length) {
+//                if (orgLine[i] == ',') {
+//                    if (count == 1) {
+//                        tmp.append(childrenLine)
+//                    }
+//                    count--
+//                }
+//                tmp.append(orgLine[i])
+//            }
+        }
+
+        return tmp.toString()
+    }
+
+    fun moveChildrenLineSign(lineLayer: Int): String {
+        val line = nameFamilyStorage[lineLayer][0]
+        val tmp = StringBuilder()
+        val moveSteps = (distanceLine.toInt() * 2) + 1
+        var count = 1
+
+        for (i in 0 until line.length) {
+            if (i == moveSteps && count == 0)
+                tmp.append("^")
+
+            if (line[i] == '^') {
+                tmp.append("")
+                count--
+            } else {
+                tmp.append(line[i])
+            }
+        }
+
+        return tmp.toString()
     }
 }

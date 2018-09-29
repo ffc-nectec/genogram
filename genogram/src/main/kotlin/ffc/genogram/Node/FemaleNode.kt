@@ -55,28 +55,33 @@ class FemaleNode(
                     )
 
                     if (parent != null) {
-                        // extend the previous generation layer
-                        val parentsLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                        familyTreeDrawer.addFamilyStorageReplaceIndex(
-                            parentsLayer, 1, null, addedPerson
-                        )
+                        // check number of children with their spouses
+                        val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                        val parentInd = familyTreeDrawer.findPersonIndById(focusedPerson!!.father!!, parentLayer)
+                        val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                        val childrenLineLayer = childrenLayer - 1
+                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+                        val childrenListId = parent!!.children!!
+                        val childrenListInd: MutableList<Int> = mutableListOf()
+                        childrenListId.forEach { id ->
+                            childrenListInd.add(
+                                familyTreeDrawer.findPersonIndById(
+                                    id.toLong(), childrenLineLayer
+                                )
+                            )
+                        }
 
-                        // extend the marriage line
-                        val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentsLayer)
-                        val editingLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                        val marriageLine = familyTreeDrawer.extendRelationshipLine(
-                            editingLayer, parentInd, RelationshipLabel.MARRIAGE
-                        )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
-                            editingLayer + 1, parentInd, marriageLine
-                        )
-                        // extend the children line
-                        val childrenLine = familyTreeDrawer.extendRelationshipLine(
-                            editingLayer + 1, parentInd, RelationshipLabel.CHILDREN
-                        )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
-                            editingLayer + 2, parentInd, childrenLine
-                        )
+                        if (childrenNumber > 3) {
+                            // extend parent line
+                        } else {
+                            // extend children line
+                            val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+                                childrenLineLayer, addingInd + 1, childrenListInd
+                            )
+                            familyTreeDrawer.replaceFamilyStorageIndex(
+                                childrenLineLayer, parentLayer, extendedLine
+                            )
+                        }
                     }
                 } else
                     familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
