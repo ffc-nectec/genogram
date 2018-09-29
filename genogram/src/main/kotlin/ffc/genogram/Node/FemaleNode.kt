@@ -73,15 +73,14 @@ class FemaleNode(
 
                         if (childrenNumber > 3) {
                             // extend parent line
-                        } else {
-                            // extend children line
-                            val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
-                                childrenLineLayer, addingInd + 1, childrenListInd
-                            )
-                            familyTreeDrawer.replaceFamilyStorageIndex(
-                                childrenLineLayer, parentLayer, extendedLine
-                            )
                         }
+                        // extend children line
+                        val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+                            childrenLineLayer, addingInd + 1, childrenListInd
+                        )
+                        familyTreeDrawer.replaceFamilyStorageIndex(
+                            childrenLineLayer, parentLayer, extendedLine
+                        )
                     }
                 } else
                     familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)

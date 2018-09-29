@@ -62,37 +62,37 @@ class MaleNode(
                     } else if (!rightHandSiblings) {
                         // add node husband node on the right hand.
                         familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
+
+                        // extend children line
+//                        val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+//                            childrenLineLayer, addingInd + 1, childrenListInd
+//                        )
+//                    familyTreeDrawer.replaceFamilyStorageIndex(
+//                        childrenLineLayer, parentLayer, extendedLine
+//                    )
                     } else {
                         // has both siblings on the left and right hands.
                         // add husband on the right hand of his wife.
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
                             addingLayer, addingInd - 1, " $nodeName", addedPerson
                         )
-
-                        if (parent != null) {
-                            // check number of children with their spouses
-                            val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                            val parentInd = familyTreeDrawer.findPersonIndById(focusedPerson!!.father!!, parentLayer)
-                            val childrenLayer = familyTreeDrawer.findPersonLayer(addedPerson)
-                            val childrenLineLayer = childrenLayer - 1
-                            val childrenListId = parent!!.children!!
-                            val childrenListInd: MutableList<Int> = mutableListOf()
-                            childrenListId.forEach { id ->
-                                childrenListInd.add(
-                                    familyTreeDrawer.findPersonIndById(
-                                        id.toLong(), childrenLineLayer
-                                    )
-                                )
-                            }
-                        }
                     }
 
+                    // adjust the children line
                     val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                     val childrenLayer = familyTreeDrawer.findPersonLayer(addedPerson)
                     val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                     val childrenLineLayer = childrenLayer - 1
+                    val childrenListId = parent!!.children!!
+                    val childrenListInd: MutableList<Int> = mutableListOf()
+                    childrenListId.forEach { id ->
+                        childrenListInd.add(
+                            familyTreeDrawer.findPersonIndById(
+                                id.toLong(), childrenLineLayer
+                            )
+                        )
+                    }
 
-                    // adjust the children line
                     if (childrenNumber > 3) {
                         // extend parent line
                         val addingEmptyNodes = if (childrenNumber % 2 == 0)
@@ -107,14 +107,23 @@ class MaleNode(
                                 )
 
                         // extend children line
+                        val addingMore = Math.abs(childrenNumber - (addingInd + 1))
+
+                        if (addingMore > 1) {
+                            for (i in 0 until addingMore - 1) {
+                                val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+                                    childrenLineLayer, addingInd, childrenListInd
+                                )
+                                familyTreeDrawer.replaceFamilyStorageIndex(
+                                    childrenLineLayer, parentLayer, extendedLine
+                                )
+                            }
+                        }
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(childrenLineLayer)
                         familyTreeDrawer.replaceFamilyStorageIndex(
                             childrenLineLayer, parentLayer, editedLine
                         )
-                    } else {
-
                     }
-
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
