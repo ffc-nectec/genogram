@@ -73,6 +73,22 @@ class FemaleNode(
 
                         if (childrenNumber > 3) {
                             // extend parent line
+                            // find that whether the empty node is added.
+                            val addingEmptyNodes = if (childrenNumber % 2 == 0)
+                                childrenNumber / 2 - 1
+                            else
+                                Math.floorDiv(childrenNumber, 2) - 1
+
+                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+
+                            while (Math.abs(addingEmptyNodes - emptyNodeNumber) != 0) {
+                                for (i in (parentLayer + 1) downTo 0)
+                                    for (j in 1..addingEmptyNodes)
+                                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                            i, 0, null, null
+                                        )
+                                emptyNodeNumber++
+                            }
                         }
                         // extend children line
                         val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
@@ -82,8 +98,44 @@ class FemaleNode(
                             childrenLineLayer, parentLayer, extendedLine
                         )
                     }
-                } else
+                } else {
+                    // when her husband is the youngest children
+                    // sarah here
                     familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
+
+                    // extend parent line
+                    // find that whether the empty node is added.
+                    if (parent != null) {
+                        val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                        val childrenLineLayer = childrenLayer - 1
+                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+
+                        val addingEmptyNodes = if (childrenNumber % 2 == 0)
+                            childrenNumber / 2 - 1
+                        else
+                            Math.floorDiv(childrenNumber, 2) - 1
+
+                        val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+                        val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
+
+                        if (addMore != 0) {
+                            for (i in (parentLayer + 1) downTo 0)
+                                for (j in 1..addMore)
+                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                        i, 0, null, null
+                                    )
+                        }
+
+                        // move children sign
+                        val editedLine = familyTreeDrawer.moveChildrenLineSign(
+                            childrenLineLayer, addingEmptyNodes
+                        )
+                        familyTreeDrawer.replaceFamilyStorageIndex(
+                            childrenLineLayer, parentLayer, editedLine
+                        )
+                    }
+                }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }

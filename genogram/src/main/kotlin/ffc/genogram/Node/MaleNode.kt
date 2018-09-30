@@ -95,16 +95,22 @@ class MaleNode(
 
                     if (childrenNumber > 3) {
                         // extend parent line
+                        // find that whether the empty node is added.
                         val addingEmptyNodes = if (childrenNumber % 2 == 0)
                             childrenNumber / 2 - 1
                         else
                             Math.floorDiv(childrenNumber, 2) - 1
 
-                        for (i in (parentLayer + 1) downTo 0)
-                            for (j in 1..addingEmptyNodes)
-                                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                    i, 0, null, null
-                                )
+                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+
+                        while (Math.abs(addingEmptyNodes - emptyNodeNumber) != 0) {
+                            for (i in (parentLayer + 1) downTo 0)
+                                for (j in 1..addingEmptyNodes)
+                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                        i, 0, null, null
+                                    )
+                            emptyNodeNumber++
+                        }
 
                         // extend children line
                         val addingMore = Math.abs(childrenNumber - (addingInd + 1))
@@ -119,7 +125,9 @@ class MaleNode(
                                 )
                             }
                         }
-                        val editedLine = familyTreeDrawer.moveChildrenLineSign(childrenLineLayer)
+
+                        // move children sign
+                        val editedLine = familyTreeDrawer.moveChildrenLineSign(childrenLineLayer, addingEmptyNodes)
                         familyTreeDrawer.replaceFamilyStorageIndex(
                             childrenLineLayer, parentLayer, editedLine
                         )

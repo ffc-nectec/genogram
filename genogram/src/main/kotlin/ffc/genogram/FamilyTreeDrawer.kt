@@ -150,10 +150,14 @@ class FamilyTreeDrawer {
         return 0
     }
 
-    fun findNumberOfEmyptyNode(layerNumb: Int): Int {
-        val lineLayer = nameFamilyStorage[layerNumb + 1]
+    fun findNumberOfEmptyNode(layerNumb: Int): Int {
+        val lineLayer = nameFamilyStorage[layerNumb]
         var count = 0
 
+        lineLayer.forEach {
+            if (it == createEmptyNode())
+                count++
+        }
 
         return count
     }
@@ -256,10 +260,11 @@ class FamilyTreeDrawer {
         return tmp.toString()
     }
 
-    fun moveChildrenLineSign(lineLayer: Int): String {
+    fun moveChildrenLineSign(lineLayer: Int, step: Int): String {
         val line = nameFamilyStorage[lineLayer][0]
         val tmp = StringBuilder()
-        val moveSteps = (distanceLine.toInt() * 2) + 2
+        val extraStep = step + 1
+        val moveSteps = (distanceLine.toInt() * extraStep) + extraStep
         var count = 1
 
         for (i in 0 until line.length) {

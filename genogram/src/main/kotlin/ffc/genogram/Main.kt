@@ -45,9 +45,11 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/family-2-spouses.json")
 //    familyObj = getResourceAs("2ndGen/family-2-spouses-2.json")
 //    familyObj = getResourceAs("2ndGen/family-2-spouses-3.json")
-    familyObj = getResourceAs("2ndGen/family-2-spouses-4.json")
+//    familyObj = getResourceAs("2ndGen/family-2-spouses-4.json")
 //    familyObj = getResourceAs("2ndGen/family-2-spouses-5.json")
-//    familyObj = getResourceAs("2ndGen/family-2-spouses-6.json")
+//    familyObj = getResourceAs("2ndGen/family-2-spouses-4.json")
+//    familyObj = getResourceAs("2ndGen/family-2-spouses-5.json")
+    familyObj = getResourceAs("2ndGen/family-2-spouses-6.json")
 
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {
