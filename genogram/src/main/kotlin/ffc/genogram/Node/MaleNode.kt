@@ -57,7 +57,7 @@ class MaleNode(
                         // on the left of the female node, and make indent(s) at the
                         // FocusedPerson's parent layer.
                         familyTreeDrawer.addFamilyStorageAtIndex(
-                            addingLayer, addingInd, " $nodeName", addedPerson
+                            addingLayer, addingInd, "$nodeName", addedPerson
                         )
                         for (i in 0 until addingLayer)
                             familyTreeDrawer.addFamilyStorageReplaceIndex(

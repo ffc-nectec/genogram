@@ -29,20 +29,30 @@ class MarriageLine(
 
     override fun drawLine(): FamilyTreeDrawer {
 
+        val childrenLayer = familyTreeDrawer.findPersonLayer(person)
+        val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+
         if (handSide == RelationshipLabel.RIGHT_HAND) {
 
             if (addingLayer > 0) {
-                if (familyTreeDrawer.findStorageSize() > (addingLayer + 1))
+                if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer + 1,
                         createLineDistance(),
                         null
                     )
-                else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1))
-                    familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
+                    // HERE!!
+                    if (childrenNumb == 1) {
+                        familyTreeDrawer.addFamilyNewLayer(
+                            singleChildMarriageLine(RelationshipLabel.RIGHT_HAND)
+                        )
+                    } else {
+                        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                    }
+                }
             } else
                 familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-
         } else {
             // Add line on left hand side
             if (addingLayer > 0) {
@@ -51,23 +61,31 @@ class MarriageLine(
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                 } else {
 
-                    val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
+                    val hasLeftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
                         person, addingLayer
                     )
 
-                    if (!leftHandSiblings) {
-                        // add node husband node on the left hand.
-                        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-                    } else
+                    if (!hasLeftHandSiblings) {
+                        // Add node husband node on the left hand.
+                        // Check whether FocusedPerson has any siblings.
+                        if (childrenNumb == 1) {
+                            familyTreeDrawer.addFamilyNewLayer(
+                                singleChildMarriageLine(RelationshipLabel.LEFT_HAND)
+                            )
+                        } else {
+                            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                        }
+                    } else {
                         // add node husband node on the right hand.
-                    // or has both siblings on the left and right hands.
-                    // add husband on the right hand.
-                    // and make an empty node.
+                        // or has both siblings on the left and right hands.
+                        // add husband on the right hand.
+                        // and make an empty node.
                         familyTreeDrawer.addFamilyAtLayer(
                             addingLayer + 1,
                             createLineDistance(),
                             null
                         )
+                    }
                 }
             }
         }
@@ -88,5 +106,43 @@ class MarriageLine(
             resultSign += sign
 
         return "$resultSpace|$resultSign|$resultSpace"
+    }
+
+    private fun singleChildMarriageLine(side: RelationshipLabel): String {
+        val line = createLineDistance()
+        val addMore = (lengthLine / 2).toInt()
+        var tmp = StringBuilder()
+        val sign = '_'
+        val endSign = '|'
+        val space = ' '
+
+        if (side == RelationshipLabel.LEFT_HAND) {
+            for (i in 0 until (line.length - indent.toInt() - 1)) {
+                tmp.append(line[i])
+            }
+
+            for (i in 0 until addMore - 1) {
+                tmp.append(sign)
+            }
+        } else {
+            for (i in 0 until addMore - 1) {
+                tmp.append(space)
+            }
+
+            for (i in 0 until (line.length - indent.toInt() - 1)) {
+                tmp.append(line[i])
+            }
+
+            for (i in 0 until addMore) {
+                tmp.append(sign)
+            }
+        }
+
+        tmp.append(endSign)
+        for (i in 0 until indent.toInt() - 1) {
+            tmp.append(space)
+        }
+
+        return tmp.toString()
     }
 }

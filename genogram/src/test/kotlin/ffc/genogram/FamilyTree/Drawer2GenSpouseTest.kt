@@ -26,6 +26,38 @@ class Drawer2GenSpouseTest {
 
     @Test
     fun draw1Spouses() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-1-spouse-1.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,          |        ]
+            [[ Bill ],       ( Lisa )      ]
+            [    |______________|   ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Spouses2() {
+        val drawer = FamilyTree(getResourceAs("2ndGen/family-1-spouse-2.json")).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [[Grandf], (Grandm)]
+            [    |_________|    ]
+            [         |        ]
+            [      [ Bill ]      , ( Lisa )]
+            [         |_______________|   ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Spouses3() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-1-spouse.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
@@ -35,13 +67,13 @@ class Drawer2GenSpouseTest {
             [        , [Grandf], (Grandm)]
             [        ,     |_________|    ]
             [        ,     ,----^----,    ]
-            [ [ Bill ], ( Lisa ), [  Ed  ]]
+            [[ Bill ], ( Lisa ), [  Ed  ]]
             [    |_________|    ]
         """.trimIndent()
     }
 
     @Test
-    fun draw1Spouses2() {
+    fun draw1Spouses4() {
         val drawer = FamilyTree(getResourceAs("2ndGen/family-2-spouses-2.json")).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
@@ -67,7 +99,7 @@ class Drawer2GenSpouseTest {
             [        , [Grandf], (Grandm)]
             [        ,     |_________|    ]
             [        ,     ,----^----,    ]
-            [ [ Bill ], ( Lisa ), [  Ed  ], ( Mary )]
+            [[ Bill ], ( Lisa ), [  Ed  ], ( Mary )]
             [    |_________|    ,     |_________|    ]
         """.trimIndent()
     }

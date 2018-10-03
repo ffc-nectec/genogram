@@ -24,7 +24,7 @@ import ffc.genogram.Node.Node.Companion.nodeSize
 import ffc.genogram.Person
 
 class ChildrenLine(
-    var childreObjList: MutableList<Person>,
+    var childrenList: MutableList<Person>,
     var familyTreeDrawer: FamilyTreeDrawer
 ) : Relationship() {
 
@@ -36,7 +36,7 @@ class ChildrenLine(
     }
 
     override fun createLineDistance(): String {
-        val childrenSize = childreObjList.size
+        val childrenSize = childrenList.size
         val sign = ","
         val space = " "
         var resultSpace = ""
