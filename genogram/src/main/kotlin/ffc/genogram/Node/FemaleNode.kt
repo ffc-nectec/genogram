@@ -46,13 +46,13 @@ class FemaleNode(
                 val childrenLineLayer = childrenLayer - 1
 
                 // Find whether the focusedPerson has any siblings.
-                // If he/she has we'll reorder the array.
                 val hasRightHandSib = familyTreeDrawer.hasPeopleOnTheRight(
                     focusedPerson!!, addingLayer
                 )
 
                 if (hasRightHandSib) {
                     // FocusedPerson(addedPerson's husband) has older siblings
+                    // Reorder the array's position
                     val addingInd = familyTreeDrawer.findPersonInd(
                         focusedPerson!!, addingLayer
                     )
@@ -101,6 +101,7 @@ class FemaleNode(
                 } else {
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
+                    // No reorder the array's position, only extend the line.
                     familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
 
                     // Extend "MarriageLine" of the FocusedPerson's parents.

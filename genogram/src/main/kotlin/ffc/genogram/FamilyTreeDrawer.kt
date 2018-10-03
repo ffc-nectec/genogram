@@ -199,10 +199,10 @@ class FamilyTreeDrawer {
         }
         tmp.append(indentSpace)
 
-        return moveChildrenLineSign2(tmp.toString(), childrenListInd, parentInd)
+        return createChildrenLineSign(tmp.toString(), childrenListInd, parentInd)
     }
 
-    fun moveChildrenLineSign2(line: String, childrenListInd: MutableList<Int>, parentInd: Int): String {
+    private fun createChildrenLineSign(line: String, childrenListInd: MutableList<Int>, parentInd: Int): String {
         val childrenSign = ','
         val childrenCenterSign = '^'
         val indentNumb = 4
@@ -237,9 +237,9 @@ class FamilyTreeDrawer {
             : String {
 
         val addAt = addingInd * lengthLine.toInt()
+        val orgLine = nameFamilyStorage[lineLayer][0]
         val tmp = StringBuilder()
 
-        val orgLine = nameFamilyStorage[lineLayer][0]
         val childrenLine = createLine(
             RelationshipLabel.CHILDREN,
             lengthLine.toInt() + 6
