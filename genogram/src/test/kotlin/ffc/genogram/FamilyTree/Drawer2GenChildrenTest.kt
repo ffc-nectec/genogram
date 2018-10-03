@@ -76,7 +76,6 @@ class Drawer2GenChildrenTest {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
 
-        // TODO: Improve 4 children family
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
             [        ,     |_________|    ]

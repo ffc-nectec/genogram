@@ -222,17 +222,64 @@ class FamilyTreeDrawer {
         return addingLine
     }
 
+    fun extendLine(
+        lineLayer: Int,
+        expectedLength: Int,
+        addNumber: Int,
+        childrenListInd: MutableList<Int>,
+        parentInd: Int,
+        relation: RelationshipLabel
+    ): String {
+        val tmp = StringBuilder()
+        val lineSign = '-'
+        val indent = ' '
+        val childrenSign = ','
+        val childrenCenterSign = '^'
+        val indentNumb = 4
+        var indentSpace = ""
+        val length = (lengthLine - 1).toInt()
+
+        if (relation == RelationshipLabel.CHILDREN) {
+            // Create Line
+            for (i in 0 until indentNumb) {
+                indentSpace += indent
+            }
+            tmp.append(indentSpace)
+            for (i in 0 until expectedLength - (indentNumb * 2)) {
+                tmp.append(lineSign)
+            }
+            tmp.append(indentSpace)
+
+            // Find Children sign spot
+            val childrenSignInd = mutableListOf<Int>()
+            childrenListInd.forEach { index ->
+                val index = (indentNumb + (length * index)) - (index)
+                childrenSignInd.add(index)
+            }
+
+            // Add Children Sign ','
+            for (i in 0 until tmp.length) {
+                childrenSignInd.forEach {
+                    if (i == it) {
+                        tmp.setCharAt(it, childrenSign)
+                    }
+                }
+            }
+            // Add Children Sign '^'
+            val childrenCenterSignInd = (distanceLine.toInt() + 1) * (parentInd + 1) - 1
+            tmp.setCharAt(childrenCenterSignInd, childrenCenterSign)
+        }
+
+        return tmp.toString()
+    }
+
     fun extendRelationshipLineAtPosition(lineLayer: Int, addingInd: Int, childrenInd: MutableList<Int>)
             : String {
-//        val addAt = addingInd + distanceLine.toInt()
+
         val addAt = addingInd * lengthLine.toInt()
         val tmp = StringBuilder()
 
         val orgLine = nameFamilyStorage[lineLayer][0]
-//        val childrenLine = createLine(
-//            RelationshipLabel.CHILDREN,
-//            lengthLine.toInt() + (spaceLine.toInt() * childrenInd.size)
-//        )
         val childrenLine = createLine(
             RelationshipLabel.CHILDREN,
             lengthLine.toInt() + 6
@@ -244,18 +291,6 @@ class FamilyTreeDrawer {
                     tmp.append(childrenLine)
                 tmp.append(orgLine[i])
             }
-        else {
-//            var count = childrenInd.size
-//            for (i in 0 until orgLine.length) {
-//                if (orgLine[i] == ',') {
-//                    if (count == 1) {
-//                        tmp.append(childrenLine)
-//                    }
-//                    count--
-//                }
-//                tmp.append(orgLine[i])
-//            }
-        }
 
         return tmp.toString()
     }
@@ -281,4 +316,9 @@ class FamilyTreeDrawer {
 
         return tmp.toString()
     }
+
+    fun childrenLineLength(childrenNumb: Int): Int = (4 + (11 * (childrenNumb - 1)) - (childrenNumb - 1)) + 5
+
+    fun childrenLineLength2(childrenNumb: Int): Int = (4 + (11 * (childrenNumb - 1))) - ((childrenNumb - 1) - 1) + 5
+
 }

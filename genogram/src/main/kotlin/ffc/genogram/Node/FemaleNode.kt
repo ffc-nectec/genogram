@@ -66,7 +66,7 @@ class FemaleNode(
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLineLayer
+                                    id.toLong(), childrenLayer
                                 )
                             )
                         }
@@ -74,16 +74,17 @@ class FemaleNode(
                         if (childrenNumber > 3) {
                             // extend parent line
                             // find that whether the empty node is added.
+                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                             val addingEmptyNodes = if (childrenNumber % 2 == 0)
                                 childrenNumber / 2 - 1
                             else
                                 Math.floorDiv(childrenNumber, 2) - 1
 
-                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+                            val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
 
-                            while (Math.abs(addingEmptyNodes - emptyNodeNumber) != 0) {
+                            if (addMore > 0) {
                                 for (i in (parentLayer + 1) downTo 0)
-                                    for (j in 1..addingEmptyNodes)
+                                    for (j in 1..addMore)
                                         familyTreeDrawer.addFamilyStorageReplaceIndex(
                                             i, 0, null, null
                                         )
@@ -91,12 +92,32 @@ class FemaleNode(
                             }
                         }
                         // extend children line
-                        val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
-                            childrenLineLayer, addingInd + 1, childrenListInd
+                        // Problem here
+                        // find how many children in the children layer.
+                        val childrenLine = familyTreeDrawer.nameFamilyStorage[childrenLineLayer][0]
+                        val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
+                        val addNumber = Math.abs(expectedLength - childrenLine.length)
+                        val addMoreLine = familyTreeDrawer.extendLine(
+                            childrenLineLayer,
+                            expectedLength,
+                            addNumber,
+                            childrenListInd,
+                            parentInd,
+                            RelationshipLabel.CHILDREN
                         )
+
                         familyTreeDrawer.replaceFamilyStorageIndex(
-                            childrenLineLayer, parentLayer, extendedLine
+                            childrenLineLayer, parentLayer, addMoreLine
                         )
+
+                        ////////////////////////////////////////////////////
+//                        val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+//                            childrenLineLayer, addingInd + 1, childrenListInd
+//                        )
+//
+//                        familyTreeDrawer.replaceFamilyStorageIndex(
+//                            childrenLineLayer, parentLayer, extendedLine
+//                        )
                     }
                 } else {
                     // when her husband is the youngest children
@@ -119,7 +140,7 @@ class FemaleNode(
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                         val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
 
-                        if (addMore != 0) {
+                        if (addMore > 0) {
                             for (i in (parentLayer + 1) downTo 0)
                                 for (j in 1..addMore)
                                     familyTreeDrawer.addFamilyStorageReplaceIndex(
