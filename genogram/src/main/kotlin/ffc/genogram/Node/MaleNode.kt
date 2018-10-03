@@ -64,12 +64,6 @@ class MaleNode(
                         familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
 
                         // extend children line
-//                        val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
-//                            childrenLineLayer, addingInd + 1, childrenListInd
-//                        )
-//                    familyTreeDrawer.replaceFamilyStorageIndex(
-//                        childrenLineLayer, parentLayer, extendedLine
-//                    )
                     } else {
                         // has both siblings on the left and right hands.
                         // add husband on the right hand of his wife.
@@ -97,21 +91,10 @@ class MaleNode(
                         // extend parent line
                         // find that whether the empty node is added.
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                        val addingEmptyNodes = if (childrenNumber % 2 == 0)
-                            childrenNumber / 2 - 1
-                        else
-                            Math.floorDiv(childrenNumber, 2) - 1
-
-                        val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
-
-                        if (addMore > 0) {
-                            for (i in (parentLayer + 1) downTo 0)
-                                for (j in 1..addMore)
-                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                        i, 0, null, null
-                                    )
-                            emptyNodeNumber++
-                        }
+                        val addingEmptyNodes = findAddingEmptyNodes(childrenNumber)
+                        familyTreeDrawer = addMoreNodes(
+                            emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
+                        )
 
                         // extend children line
                         val addingMore = Math.abs(childrenNumber - (addingInd + 1))

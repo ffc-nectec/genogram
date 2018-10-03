@@ -87,8 +87,6 @@ class FamilyTreeDrawer {
 
     fun findStorageSize(): Int = nameFamilyStorage.size
 
-    fun findPersonStorageSize(): Int = personFamilyStorage.size
-
     fun findPersonLayerSize(layerNumb: Int): Int = personFamilyStorage[layerNumb].size
 
     private fun findStorageLayerSize(layerNumb: Int): Int {
@@ -150,6 +148,10 @@ class FamilyTreeDrawer {
         return 0
     }
 
+    fun getLineLayer(layerNumb: Int): String {
+        return nameFamilyStorage[layerNumb][0]
+    }
+
     fun findNumberOfEmptyNode(layerNumb: Int): Int {
         val lineLayer = nameFamilyStorage[layerNumb]
         var count = 0
@@ -160,50 +162,6 @@ class FamilyTreeDrawer {
         }
 
         return count
-    }
-
-    fun extendRelationshipLine(layerNumb: Int, index: Int, relation: RelationshipLabel)
-            : String {
-        val lineLayer = nameFamilyStorage[layerNumb + 1]
-        val line = lineLayer[index]
-        val tmp = StringBuilder()
-
-        val addingLine = createLine(relation, distanceLine.toInt())
-
-        if (relation == RelationshipLabel.MARRIAGE) {
-
-            for (i in 0 until line.length / 2) {
-                tmp.append(line[i])
-            }
-
-            tmp.append(addingLine)
-
-            for (i in line.length / 2 downTo 0) {
-                tmp.append(line[i])
-            }
-        } else if (relation == RelationshipLabel.CHILDREN) {
-            val upSign = "^"
-            var signInd = 0
-
-            line.forEachIndexed { ind, c ->
-                if (c.toString() == upSign)
-                    signInd = ind
-            }
-
-            for (i in 0 until signInd) {
-                tmp.append(line[i])
-            }
-
-            tmp.append(addingLine)
-            tmp.append(line[signInd])
-            tmp.append(addingLine)
-
-            for (i in signInd + 1 until line.length) {
-                tmp.append(line[i])
-            }
-        }
-
-        return tmp.toString()
     }
 
     private fun createLine(relation: RelationshipLabel, length: Int): String {
@@ -223,52 +181,54 @@ class FamilyTreeDrawer {
     }
 
     fun extendLine(
-        lineLayer: Int,
-        expectedLength: Int,
-        addNumber: Int,
-        childrenListInd: MutableList<Int>,
-        parentInd: Int,
-        relation: RelationshipLabel
+        expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int
     ): String {
         val tmp = StringBuilder()
         val lineSign = '-'
         val indent = ' '
+        val indentNumb = 4
+        var indentSpace = ""
+
+        // Create Line
+        for (i in 0 until indentNumb) {
+            indentSpace += indent
+        }
+        tmp.append(indentSpace)
+        for (i in 0 until expectedLength - (indentNumb * 2)) {
+            tmp.append(lineSign)
+        }
+        tmp.append(indentSpace)
+
+        return moveChildrenLineSign2(tmp.toString(), childrenListInd, parentInd)
+    }
+
+    fun moveChildrenLineSign2(line: String, childrenListInd: MutableList<Int>, parentInd: Int): String {
         val childrenSign = ','
         val childrenCenterSign = '^'
         val indentNumb = 4
-        var indentSpace = ""
         val length = (lengthLine - 1).toInt()
 
-        if (relation == RelationshipLabel.CHILDREN) {
-            // Create Line
-            for (i in 0 until indentNumb) {
-                indentSpace += indent
-            }
-            tmp.append(indentSpace)
-            for (i in 0 until expectedLength - (indentNumb * 2)) {
-                tmp.append(lineSign)
-            }
-            tmp.append(indentSpace)
+        val tmp = StringBuilder()
+        tmp.append(line)
 
-            // Find Children sign spot
-            val childrenSignInd = mutableListOf<Int>()
-            childrenListInd.forEach { index ->
-                val index = (indentNumb + (length * index)) - (index)
-                childrenSignInd.add(index)
-            }
+        // Find Children sign spot
+        val childrenSignInd = mutableListOf<Int>()
+        childrenListInd.forEach { index ->
+            val index = (indentNumb + (length * index)) - (index)
+            childrenSignInd.add(index)
+        }
 
-            // Add Children Sign ','
-            for (i in 0 until tmp.length) {
-                childrenSignInd.forEach {
-                    if (i == it) {
-                        tmp.setCharAt(it, childrenSign)
-                    }
+        // Add Children Sign ','
+        for (i in 0 until tmp.length) {
+            childrenSignInd.forEach {
+                if (i == it) {
+                    tmp.setCharAt(it, childrenSign)
                 }
             }
-            // Add Children Sign '^'
-            val childrenCenterSignInd = (distanceLine.toInt() + 1) * (parentInd + 1) - 1
-            tmp.setCharAt(childrenCenterSignInd, childrenCenterSign)
         }
+        // Add Children Sign '^'
+        val childrenCenterSignInd = (distanceLine.toInt() + 1) * (parentInd + 1) - 1
+        tmp.setCharAt(childrenCenterSignInd, childrenCenterSign)
 
         return tmp.toString()
     }
@@ -317,8 +277,6 @@ class FamilyTreeDrawer {
         return tmp.toString()
     }
 
-    fun childrenLineLength(childrenNumb: Int): Int = (4 + (11 * (childrenNumb - 1)) - (childrenNumb - 1)) + 5
-
-    fun childrenLineLength2(childrenNumb: Int): Int = (4 + (11 * (childrenNumb - 1))) - ((childrenNumb - 1) - 1) + 5
-
+    fun childrenLineLength(childrenNumb: Int)
+            : Int = (4 + (11 * (childrenNumb - 1)) - (childrenNumb - 1)) + 5
 }

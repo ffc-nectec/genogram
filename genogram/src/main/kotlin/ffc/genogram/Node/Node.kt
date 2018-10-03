@@ -55,4 +55,30 @@ abstract class Node {
         return resultSpace + newNodeName + resultSpace
     }
 
+    fun findAddingEmptyNodes(childrenNumber: Int): Int {
+        return if (childrenNumber % 2 == 0)
+            childrenNumber / 2 - 1
+        else
+            Math.floorDiv(childrenNumber, 2) - 1
+    }
+
+    fun addMoreNodes(
+        emptyNodeNumber: Int,
+        addingEmptyNodes: Int,
+        parentLayer: Int,
+        familyTreeDrawer: FamilyTreeDrawer
+    )
+            : FamilyTreeDrawer {
+
+        val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
+        if (addMore > 0) {
+            for (i in (parentLayer + 1) downTo 0)
+                for (j in 1..addMore)
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        i, 0, null, null
+                    )
+        }
+
+        return familyTreeDrawer
+    }
 }
