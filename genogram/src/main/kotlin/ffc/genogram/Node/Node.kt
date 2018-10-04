@@ -36,7 +36,7 @@ abstract class Node {
 
     abstract fun getArea(): Double
 
-    fun setNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
+    fun setSingleNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
         val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""
@@ -48,18 +48,23 @@ abstract class Node {
         }
 
         if (!siblings)
-            for (i in 0 until diff) {
+            for (i in 0 until diff - 1) {
                 resultSpace += space
             }
 
         return resultSpace + newNodeName + resultSpace
     }
 
-    fun findAddingEmptyNodes(childrenNumber: Int): Int {
+    fun findAddingEmptyNodesParent(childrenNumber: Int): Int {
         return if (childrenNumber % 2 == 0)
             childrenNumber / 2 - 1
         else
             Math.floorDiv(childrenNumber, 2) - 1
+    }
+
+    // TODO: Not Complete yet
+    fun findAddingEmptyNodesChild(personInd: Int): Int {
+        return personInd
     }
 
     fun addMoreNodes(
@@ -67,8 +72,7 @@ abstract class Node {
         addingEmptyNodes: Int,
         parentLayer: Int,
         familyTreeDrawer: FamilyTreeDrawer
-    )
-            : FamilyTreeDrawer {
+    ): FamilyTreeDrawer {
 
         val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
         if (addMore > 0) {

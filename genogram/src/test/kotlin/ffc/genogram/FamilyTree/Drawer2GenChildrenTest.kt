@@ -25,38 +25,10 @@ import org.junit.Test
 class Drawer2GenChildrenTest {
 
     @Test
-    fun drawOneChild() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-1-child.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.nameFamilyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|    ]
-            [         |        ]
-            [      ( Lisa )      ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun drawTwoChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-2-children.json")).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.nameFamilyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|    ]
-            [    ,----^----,    ]
-            [( Lisa ), [  Ed  ]]
-        """.trimIndent()
-    }
-
-    @Test
     fun drawThreeChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-3-children.json")).drawGenogram()
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-3-children.json")
+        ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
@@ -71,7 +43,9 @@ class Drawer2GenChildrenTest {
 
     @Test
     fun drawFourChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-4-children.json")).drawGenogram()
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-4-children.json")
+        ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
@@ -86,7 +60,9 @@ class Drawer2GenChildrenTest {
 
     @Test
     fun drawFiveChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-5-children.json")).drawGenogram()
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-5-children.json")
+        ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
@@ -101,7 +77,9 @@ class Drawer2GenChildrenTest {
 
     @Test
     fun drawSixChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-6-children.json")).drawGenogram()
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-6-children.json")
+        ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
@@ -116,7 +94,9 @@ class Drawer2GenChildrenTest {
 
     @Test
     fun drawSevenChildren() {
-        val drawer = FamilyTree(getResourceAs("2ndGen/family-7-children.json")).drawGenogram()
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-7-children.json")
+        ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }

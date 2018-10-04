@@ -53,12 +53,17 @@ class FamilyTreeDrawer {
     }
 
     fun addFamilyAtLayer(layer: Int, element: String, person: Person?) {
-        nameFamilyStorage[layer].add(element)
+        if (layer < findStorageSize()) {
+            nameFamilyStorage[layer].add(element)
 
-        if (person != null)
-            personFamilyStorage[layer].add(person)
-        else
-            personFamilyStorage[layer].add(element)
+            if (person != null)
+                personFamilyStorage[layer].add(person)
+            else
+                personFamilyStorage[layer].add(element)
+        } else {
+            addEmptyNewLayer()
+            nameFamilyStorage[layer].add(element)
+        }
     }
 
     fun addFamilyStorageAtIndex(layerNumb: Int, replaceInd: Int, node: String, person: Person) {
@@ -153,12 +158,14 @@ class FamilyTreeDrawer {
     }
 
     fun findNumberOfEmptyNode(layerNumb: Int): Int {
-        val lineLayer = nameFamilyStorage[layerNumb]
         var count = 0
 
-        lineLayer.forEach {
-            if (it == createEmptyNode())
-                count++
+        if (layerNumb < findStorageSize()) {
+            val lineLayer = nameFamilyStorage[layerNumb]
+            lineLayer.forEach {
+                if (it == createEmptyNode())
+                    count++
+            }
         }
 
         return count

@@ -81,7 +81,7 @@ class FemaleNode(
                         if (childrenNumber > 3) {
                             // Extend the MarriageLine by adding the empty node(s).
                             var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                            val addingEmptyNodes = findAddingEmptyNodes(childrenNumber)
+                            val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -99,6 +99,7 @@ class FemaleNode(
                         )
                     }
                 } else {
+
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
                     // No reorder the array's position, only extend the line.
@@ -106,11 +107,11 @@ class FemaleNode(
 
                     // Extend "MarriageLine" of the FocusedPerson's parents.
                     // Extend by adding the empty node(s).
+                    val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                     if (parent != null) {
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                        val addingEmptyNodes = findAddingEmptyNodes(childrenNumber)
+                        val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         familyTreeDrawer = addMoreNodes(
                             emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                         )
@@ -123,16 +124,31 @@ class FemaleNode(
                             childrenLineLayer, parentLayer, editedLine
                         )
                     }
+
+                    // Extend the "MarriageLine" of AddedPerson and FocusedPerson.
+                    if (childrenNumber == 3) {
+                        val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
+                        val emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(childrenLayer)
+                        val addingEmptyNodes = findAddingEmptyNodesChild(husbandInd)
+                        val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
+
+                        for (i in 0 until addMore) {
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                childrenLayer + 1, husbandInd - 1, null, null
+                            )
+                        }
+                    }
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
         } else {
             // Children or Twin
+            // Add a single child
             val familyGen = familyTreeDrawer.findStorageSize() - 1
             familyTreeDrawer.addFamilyAtLayer(
                 familyGen,
-                setNodePosition(nodeName, GenderLabel.FEMALE, siblings),
+                setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
                 addedPerson
             )
         }

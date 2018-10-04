@@ -27,14 +27,18 @@ class MarriageLine(
     var person: Person
 ) : Relationship() {
 
+    private val sign = '_'
+    private val space = ' '
+    private val endSign = '|'
+
     override fun drawLine(): FamilyTreeDrawer {
 
         val childrenLayer = familyTreeDrawer.findPersonLayer(person)
         val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
 
         if (handSide == RelationshipLabel.RIGHT_HAND) {
-
             if (addingLayer > 0) {
+
                 if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer + 1,
@@ -42,7 +46,7 @@ class MarriageLine(
                         null
                     )
                 } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
-                    // HERE!!
+
                     if (childrenNumb == 1) {
                         familyTreeDrawer.addFamilyNewLayer(
                             singleChildMarriageLine(RelationshipLabel.RIGHT_HAND)
@@ -51,8 +55,9 @@ class MarriageLine(
                         familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                     }
                 }
-            } else
+            } else {
                 familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            }
         } else {
             // Add line on left hand side
             if (addingLayer > 0) {
@@ -78,8 +83,7 @@ class MarriageLine(
                     } else {
                         // add node husband node on the right hand.
                         // or has both siblings on the left and right hands.
-                        // add husband on the right hand.
-                        // and make an empty node.
+                        // add husband on the right hand by adding empty node(s).
                         familyTreeDrawer.addFamilyAtLayer(
                             addingLayer + 1,
                             createLineDistance(),
@@ -94,8 +98,6 @@ class MarriageLine(
     }
 
     override fun createLineDistance(): String {
-        val sign = '_'
-        val space = ' '
         var resultSpace = ""
         var resultSign = ""
 
@@ -105,16 +107,13 @@ class MarriageLine(
         for (i in 0 until distanceLine.toInt())
             resultSign += sign
 
-        return "$resultSpace|$resultSign|$resultSpace"
+        return "$resultSpace$endSign$resultSign$endSign$resultSpace"
     }
 
     private fun singleChildMarriageLine(side: RelationshipLabel): String {
         val line = createLineDistance()
         val addMore = (lengthLine / 2).toInt()
         var tmp = StringBuilder()
-        val sign = '_'
-        val endSign = '|'
-        val space = ' '
 
         if (side == RelationshipLabel.LEFT_HAND) {
             for (i in 0 until (line.length - indent.toInt() - 1)) {

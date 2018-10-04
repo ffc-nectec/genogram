@@ -33,12 +33,16 @@ class FamilyTree(var family: Family) {
     fun drawGenogram(): FamilyTreeDrawer {
 
         focusedPerson = family.popBloodFamily()
+//        print("-1 FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
 
         return if (focusedPerson == null) {
             print("==== ${family.familyName} Family =====\n")
             familyTreePic
-        } else if (isDrawn(focusedPerson) && focusedPerson!!.linkedStack == null) {
+        } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) &&
+            (family.bloodFamily == null)
+        ) {
             print("==== ${family.familyName} Family | ${focusedPerson!!.firstname} =====\n")
+            // here
             familyTreePic
         } else {
             print("LOADING...\n")
@@ -53,7 +57,7 @@ class FamilyTree(var family: Family) {
             }
 
             // TODO: Delete
-            print("- FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+            print("-2 FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
             drawGenogram()
         }
     }
