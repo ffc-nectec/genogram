@@ -78,10 +78,10 @@ class FemaleNode(
                         }
 
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
+                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                         // Extend the MarriageLine of AddedPerson's parent.
                         if (childrenNumber > 3) {
                             // Extend the MarriageLine by adding the empty node(s).
-                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -97,7 +97,6 @@ class FemaleNode(
                         familyTreeDrawer.replaceFamilyStorageIndex(
                             childrenLineLayer, parentLayer, extendedLine
                         )
-
                         // Move the children sign
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes
@@ -105,9 +104,27 @@ class FemaleNode(
                         familyTreeDrawer.replaceFamilyStorageIndex(
                             childrenLineLayer, parentLayer, editedLine
                         )
+
+                        // Extend the MarriageLine of AddedPerson and FocusedPerson
+                        // by adding the empty node(s).
+                        // Check AddedPerson's husband index, then check
+                        // whether her husband's index is equal to the number of empty node(s).
+                        val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
+                        if (husbandInd != emptyNodeNumber) {
+                            val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
+                            if (addMore > 0) {
+                                for (i in 0..(addMore - 1))
+                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                        childrenLayer + 1,
+                                        0, null, null
+                                    )
+                            }
+                        }
+
+                        print("husbandInd: $husbandInd\n")
+                        print("emptyNodeNumber: $emptyNodeNumber\n")
                     }
                 } else {
-
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
                     // No reorder the array's position, only extend the line.
@@ -144,6 +161,28 @@ class FemaleNode(
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
                                 childrenLayer + 1, husbandInd - 1, null, null
                             )
+                        }
+                    }
+
+                    // Extend the MarriageLine of AddedPerson and FocusedPerson
+                    // by adding the empty node(s).
+                    // Check AddedPerson's husband index, then check
+                    // whether her husband's index is equal to the number of empty node(s).
+                    // Find number of marriage line
+                    val marriageLineNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer + 1)
+                    if (marriageLineNumb == 1) {
+                        val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
+                        // Her husband(FocusedPerson) siblings and AddedPerson
+                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(childrenLayer)
+                        val addingEmptyNodes = husbandInd - emptyNodeNumber
+                        if (husbandInd != emptyNodeNumber) {
+                            if (addingEmptyNodes > 0) {
+                                for (i in 0..(addingEmptyNodes - 1))
+                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                        childrenLayer + 1,
+                                        0, null, null
+                                    )
+                            }
                         }
                     }
                 }

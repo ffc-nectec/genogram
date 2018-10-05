@@ -180,4 +180,22 @@ class Drawer2ndGen3ChildrenTest {
             [    |_________|    ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw3Children10() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-10.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^--------------,    ]
+            [[ Bill ], [  Ed  ], ( Lisa ), [Teddy ]]
+            [        ,     |_________|    ]
+        """.trimIndent()
+    }
 }
