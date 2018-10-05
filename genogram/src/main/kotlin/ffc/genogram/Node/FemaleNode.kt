@@ -170,8 +170,8 @@ class FemaleNode(
                     // whether her husband's index is equal to the number of empty node(s).
                     // Find number of marriage line
                     val marriageLineNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer + 1)
+                    val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
                     if (marriageLineNumb == 1) {
-                        val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
                         // Her husband(FocusedPerson) siblings and AddedPerson
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(childrenLayer)
                         val addingEmptyNodes = husbandInd - emptyNodeNumber
@@ -184,6 +184,16 @@ class FemaleNode(
                                     )
                             }
                         }
+                    } else {
+                        // Add an empty node between the marriage line
+                        val newMarriageLine = familyTreeDrawer.addEmptyNodeMarriageLine(
+                            husbandInd, childrenLayer + 1
+                        )
+
+//                        print("here: ${addedPerson.firstname}\n")
+//                        print("husbandInd: $husbandInd\n")
+//                        print("marriageLineNumb: $marriageLineNumb\n")
+                        print("marriageLineInd: $newMarriageLine\n")
                     }
                 }
             } else {

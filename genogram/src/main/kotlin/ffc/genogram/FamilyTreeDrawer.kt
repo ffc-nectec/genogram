@@ -157,6 +157,10 @@ class FamilyTreeDrawer {
         return nameFamilyStorage[layerNumb][0]
     }
 
+    fun getLayer(layerNumb: Int): ArrayList<String> {
+        return nameFamilyStorage[layerNumb]
+    }
+
     fun findNumberOfEmptyNode(layerNumb: Int): Int {
         var count = 0
 
@@ -169,6 +173,23 @@ class FamilyTreeDrawer {
         }
 
         return count
+    }
+
+    fun addEmptyNodeMarriageLine(partnerInd: Int, layerNumb: Int): String {
+        val marriageLineIndList = nameFamilyStorage[layerNumb]
+        val tmp = StringBuilder()
+        print("size: ${marriageLineIndList.size}\n")
+        print("partnerInd: $partnerInd\n")
+
+        if (partnerInd % 2 != 0) {
+            if (marriageLineIndList.size < partnerInd) {
+                // Add the previous index of partner with an empty node
+                val addingInd = partnerInd - (1 * 2)
+                addFamilyStorageReplaceIndex(layerNumb, addingInd, null, null)
+            }
+        }
+
+        return tmp.toString()
     }
 
     private fun createLine(relation: RelationshipLabel, length: Int): String {

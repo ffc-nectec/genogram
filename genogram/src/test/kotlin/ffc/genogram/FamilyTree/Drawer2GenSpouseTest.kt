@@ -43,24 +43,6 @@ class Drawer2GenSpouseTest {
     }
 
     @Test
-    fun draw2Spouses4() {
-        val drawer = FamilyTree(
-            getResourceAs("2ndGen/spouses/family-2-spouses-5.json")
-        ).drawGenogram()
-        val canvas = StringBuilder().apply {
-            drawer.nameFamilyStorage.forEach { append("$it\n") }
-        }
-
-        canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|    ]
-            [    ,------------------------^----,---------,    ]
-            [[  Ed  ], ( Mary ),  [ Bill ], ( Lisa ), [Teddy ], (Sarah )]
-            [    |_________|    ,     |_________|    ,     |_________|    ]
-        """.trimIndent()
-    }
-
-    @Test
     fun draw2Spouses5() {
         val drawer = FamilyTree(
             getResourceAs("2ndGen/spouses/family-2-spouses-6.json")
