@@ -142,6 +142,7 @@ class MaleNode(
         } else {
             // Children or Twin
             // Add a single child
+
             val familyGen = familyTreeDrawer.findStorageSize() - 1
             familyTreeDrawer.addFamilyAtLayer(
                 familyGen,

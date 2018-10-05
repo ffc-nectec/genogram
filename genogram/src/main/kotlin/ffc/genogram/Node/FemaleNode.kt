@@ -77,11 +77,11 @@ class FemaleNode(
                             )
                         }
 
+                        val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         // Extend the MarriageLine of AddedPerson's parent.
                         if (childrenNumber > 3) {
                             // Extend the MarriageLine by adding the empty node(s).
                             var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                            val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -96,6 +96,14 @@ class FemaleNode(
                         )
                         familyTreeDrawer.replaceFamilyStorageIndex(
                             childrenLineLayer, parentLayer, extendedLine
+                        )
+
+                        // Move the children sign
+                        val editedLine = familyTreeDrawer.moveChildrenLineSign(
+                            childrenLineLayer, addingEmptyNodes
+                        )
+                        familyTreeDrawer.replaceFamilyStorageIndex(
+                            childrenLineLayer, parentLayer, editedLine
                         )
                     }
                 } else {

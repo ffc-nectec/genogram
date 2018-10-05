@@ -29,14 +29,14 @@ class NodeFactory {
         addedPerson: Person,
         family: Family
     ): Node {
-        var parentName: Person? = null
+        var parent: Person? = null
         if (focusedPerson != null &&
             (focusedPerson.father != null ||
                     focusedPerson.mother != null)
         ) {
-            parentName = family.findPerson(focusedPerson.father!!)
-            if (parentName == null)
-                parentName = family.findPerson(focusedPerson.mother!!)
+            parent = family.findPerson(focusedPerson.father!!)
+            if (parent == null)
+                parent = family.findPerson(focusedPerson.mother!!)
         }
         return when (addedPerson.gender) {
             0 -> MaleNode(
@@ -44,14 +44,14 @@ class NodeFactory {
                 addedPerson,
                 focusedPerson,
                 addedPerson.firstname,
-                parentName
+                parent
             )
             else -> FemaleNode(
                 familyTreeDrawer,
                 addedPerson,
                 focusedPerson,
                 addedPerson.firstname,
-                parentName
+                parent
             )
         }
     }
