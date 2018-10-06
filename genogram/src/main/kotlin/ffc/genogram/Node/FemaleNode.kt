@@ -120,9 +120,6 @@ class FemaleNode(
                                     )
                             }
                         }
-
-                        print("husbandInd: $husbandInd\n")
-                        print("emptyNodeNumber: $emptyNodeNumber\n")
                     }
                 } else {
                     // When AddedPerson's husband is the youngest children.
@@ -189,11 +186,6 @@ class FemaleNode(
                         val newMarriageLine = familyTreeDrawer.addEmptyNodeMarriageLine(
                             husbandInd, childrenLayer + 1
                         )
-
-//                        print("here: ${addedPerson.firstname}\n")
-//                        print("husbandInd: $husbandInd\n")
-//                        print("marriageLineNumb: $marriageLineNumb\n")
-                        print("marriageLineInd: $newMarriageLine\n")
                     }
                 }
             } else {

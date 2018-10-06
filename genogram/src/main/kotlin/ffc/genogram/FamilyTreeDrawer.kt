@@ -94,7 +94,7 @@ class FamilyTreeDrawer {
 
     fun findPersonLayerSize(layerNumb: Int): Int = personFamilyStorage[layerNumb].size
 
-    private fun findStorageLayerSize(layerNumb: Int): Int {
+    fun findStorageLayerSize(layerNumb: Int): Int {
         return if (nameFamilyStorage[layerNumb].isNotEmpty())
             nameFamilyStorage[layerNumb].size
         else

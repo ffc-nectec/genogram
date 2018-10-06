@@ -83,6 +83,31 @@ class MaleNode(
                             }
                         }
 
+                        // Extend the "MarriageLine" of AddedPerson and FocusedPerson.
+                        // by adding the empty node(s).
+                        // Check AddedPerson's husband index, then check
+                        // whether her husband's index is equal to the number of empty node(s).
+                        // Find number of marriage line
+                        val marriageLineNumb = familyTreeDrawer.findStorageLayerSize(
+                            addingLayer + 1
+                        )
+                        val wifeInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
+                        if (marriageLineNumb == 1) {
+                            // His wife(FocusedPerson) siblings and AddedPerson
+                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
+                            val addingEmptyNodes = wifeInd - emptyNodeNumber
+                            if (wifeInd != emptyNodeNumber) {
+                                if (addingEmptyNodes > 0) {
+                                    for (i in 0..(addingEmptyNodes - 1))
+                                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                            addingLayer + 1,
+                                            0, null, null
+                                        )
+                                }
+                            }
+                        } else {
+                            // Add an empty node between the marriage line
+                        }
                     } else {
                         // FocusedPerson(the AddedPerson's wife) is the middle daughter.
                         // Add husband on the right hand of his wife.
