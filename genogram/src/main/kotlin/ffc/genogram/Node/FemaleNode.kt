@@ -183,7 +183,7 @@ class FemaleNode(
                         }
                     } else {
                         // Add an empty node between the marriage line
-                        val newMarriageLine = familyTreeDrawer.addEmptyNodeMarriageLine(
+                        familyTreeDrawer.addEmptyNodeMarriageLine(
                             husbandInd, childrenLayer + 1
                         )
                     }
