@@ -63,6 +63,7 @@ class MaleNode(
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
                                 i, 0, null, null
                             )
+                        // Here
                     } else if (!rightHandSiblings) {
                         // FocusedPerson(the AddedPerson's wife) is the youngest daughter.
                         // (Special case) Add node AddedPerson node on the right of FocusedPerson.
@@ -149,49 +150,54 @@ class MaleNode(
                         }
                     }
 
-                    // Adjust the children line
-                    val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                    val childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
-                    val childrenLineLayer = addingLayer - 1
-                    val childrenListId = parent!!.children!!
-                    val childrenListInd: MutableList<Int> = mutableListOf()
-                    childrenListId.forEach { id ->
-                        childrenListInd.add(
-                            familyTreeDrawer.findPersonIndById(
-                                id.toLong(), childrenLineLayer
+                    // When the FocusedPerson is the oldest one.
+                    // The AddedPerson will be added at the left-hand of the FocusedPerson.
+                    // Then we don't change any sign of the line.
+                    if (leftHandSiblings) {
+                        // Adjust the children line
+                        val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
+                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                        val childrenLineLayer = addingLayer - 1
+                        val childrenListId = parent!!.children!!
+                        val childrenListInd: MutableList<Int> = mutableListOf()
+                        childrenListId.forEach { id ->
+                            childrenListInd.add(
+                                familyTreeDrawer.findPersonIndById(
+                                    id.toLong(), childrenLineLayer
+                                )
                             )
-                        )
-                    }
-
-                    // Extend the MarriageLine of AddedPerson's parent.
-                    if (childrenNumber > 3) {
-                        // Extend the MarriageLine by adding the empty node(s).
-                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                        val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
-                        familyTreeDrawer = addMoreNodes(
-                            emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
-                        )
-
-                        // Extend the ChildrenLine the top layer of the AddedPerson
-                        val addingMore = Math.abs(childrenNumber - (addingInd + 1))
-                        if (addingMore > 1) {
-                            for (i in 0 until addingMore - 1) {
-                                val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
-                                    childrenLineLayer, addingInd, childrenListInd
-                                )
-                                familyTreeDrawer.replaceFamilyStorageIndex(
-                                    childrenLineLayer, parentLayer, extendedLine
-                                )
-                            }
                         }
 
-                        // Move children sign
-                        val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                            childrenLineLayer, addingEmptyNodes
-                        )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
-                            childrenLineLayer, parentLayer, editedLine
-                        )
+                        // Extend the MarriageLine of AddedPerson's parent.
+                        if (childrenNumber > 3) {
+                            // Extend the MarriageLine by adding the empty node(s).
+                            var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+                            val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
+                            familyTreeDrawer = addMoreNodes(
+                                emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
+                            )
+
+                            // Extend the ChildrenLine the top layer of the AddedPerson
+                            val addingMore = Math.abs(childrenNumber - (addingInd + 1))
+                            if (addingMore > 1) {
+                                for (i in 0 until addingMore - 1) {
+                                    val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
+                                        childrenLineLayer, addingInd, childrenListInd
+                                    )
+                                    familyTreeDrawer.replaceFamilyStorageIndex(
+                                        childrenLineLayer, parentLayer, extendedLine
+                                    )
+                                }
+                            }
+
+                            // Move children sign
+                            val editedLine = familyTreeDrawer.moveChildrenLineSign(
+                                childrenLineLayer, addingEmptyNodes
+                            )
+                            familyTreeDrawer.replaceFamilyStorageIndex(
+                                childrenLineLayer, parentLayer, editedLine
+                            )
+                        }
                     }
                 }
             } else {

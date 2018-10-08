@@ -274,7 +274,7 @@ class Drawer2ndGen3ChildrenTest {
     @Test
     fun draw3Children15() {
         val drawer = FamilyTree(
-            getResourceAs("2ndGen/spouses/family-2-spouses-5.json")
+            getResourceAs("2ndGen/spouses/family-3-spouses-2.json")
         ).drawGenogram()
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
@@ -397,6 +397,26 @@ class Drawer2ndGen3ChildrenTest {
         """.trimIndent()
     }
 
+    fun draw3Children29() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-3-spouses-1.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [    ,------------------,-----^--------------,    ]
+            [[  Ed  ], ( Mary ), [Chris ], ( Cara ), (Sarah ), [Teddy ]]
+            [    |_________|    ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+
+
+
     @Test
     fun draw3Children22() {
         val drawer = FamilyTree(
@@ -502,6 +522,78 @@ class Drawer2ndGen3ChildrenTest {
             [    ,--------------^----,---------,    ]
             [[ Bill ],  [  Ed  ], (Sarah ), [Teddy ], ( Lisa )]
             [        ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children28() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-3-spouses-3.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [    ,------------------------^----,---------,    ]
+            [[ Bill ], ( Lisa ),  [  Ed  ], (Sarah ), [Teddy ], ( Lisa )]
+            [    |_________|    ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children30() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-18.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,---------,    ]
+            [[ Bill ], ( Lisa ), [  Ed  ], [Teddy ]]
+            [    |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children31() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-19.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^--------------,    ]
+            [( Lisa ), [  Ed  ], (Sarah ), [Teddy ]]
+            [        ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children32() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-20.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^----,    ]
+            [( Lisa ), [  Ed  ], [Teddy ], (Sarah )]
+            [        ,         ,     |_________|    ]
         """.trimIndent()
     }
 }
