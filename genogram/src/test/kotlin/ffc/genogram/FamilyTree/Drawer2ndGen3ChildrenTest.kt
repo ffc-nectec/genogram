@@ -614,4 +614,58 @@ class Drawer2ndGen3ChildrenTest {
             [    |_________|    ,     |_________|    ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw3Children34() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-19.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,---------,    ]
+            [[ Bill ], ( Lisa ), [  Ed  ], [Teddy ], (Kitty )]
+            [    |_________|    ,         ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children35() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-20.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^--------------,    ]
+            [( Lisa ), [  Ed  ], ( Cara ), [Teddy ], (Kitty )]
+            [        ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children36() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-3-spouses-4.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [        ,     ,--------,-----^--------------,    ]
+            [[ Bill ], ( Lisa ), [  Ed  ], ( Cara ), [Teddy ], ( Lisa )]
+            [    |_________|    ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
 }

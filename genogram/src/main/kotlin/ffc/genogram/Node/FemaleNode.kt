@@ -140,7 +140,6 @@ class FemaleNode(
                         }
                     }
                 } else if (!hasRightHandSib) {
-                    print("-2- ${addedPerson.firstname}\n")
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
                     // No reorder the array's position, only extend the line.
@@ -157,13 +156,34 @@ class FemaleNode(
                             emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                         )
 
-                        // Move children sign
-                        val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                            childrenLineLayer, addingEmptyNodes
-                        )
-                        familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, parentLayer, editedLine
-                        )
+                        // Find index of AddedPerson's siblings
+                        val childrenListId = parent!!.children!!
+                        val childrenListInd: MutableList<Int> = mutableListOf()
+                        childrenListId.forEach { id ->
+                            childrenListInd.add(
+                                familyTreeDrawer.findPersonIndById(
+                                    id.toLong(), childrenLayer
+                                )
+                            )
+
+                            // Extend the CHILDREN Line the top layer of the AddedPerson.
+                            // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
+                            var startInd = childrenListInd[0]
+                            val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+                            startInd = if ((startInd != 0) && (parentInd > startInd)) {
+                                parentInd - startInd
+                            } else {
+                                parentLayer
+                            }
+
+                            // Move children sign
+                            val editedLine = familyTreeDrawer.moveChildrenLineSign(
+                                childrenLineLayer, addingEmptyNodes
+                            )
+                            familyTreeDrawer.replaceFamilyStorageLayer(
+                                childrenLineLayer, startInd, editedLine
+                            )
+                        }
                     }
 
                     // Extend the "MarriageLine" of AddedPerson and FocusedPerson.

@@ -179,8 +179,6 @@ class FamilyTreeDrawer {
     fun addEmptyNodeMarriageLine(partnerInd: Int, layerNumb: Int): String {
         val marriageLineIndList = nameFamilyStorage[layerNumb]
         val tmp = StringBuilder()
-        print("size: ${marriageLineIndList.size}\n")
-        print("partnerInd: $partnerInd\n")
 
         if (partnerInd % 2 != 0) {
             if (marriageLineIndList.size < partnerInd) {
@@ -295,11 +293,25 @@ class FamilyTreeDrawer {
     }
 
     fun moveChildrenLineSign(lineLayer: Int, step: Int): String {
-        val line = nameFamilyStorage[lineLayer][0]
         val tmp = StringBuilder()
         val extraStep = step + 1
-        val moveSteps = (distanceLine.toInt() * extraStep) + extraStep
+        var moveSteps = (distanceLine.toInt() * extraStep) + extraStep
         var count = 1
+
+        val parentLayer = lineLayer - 1
+        var parentEmptyNodeNumber = findNumberOfEmptyNode(parentLayer)
+        var childrenEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
+        var line = nameFamilyStorage[lineLayer][0]
+
+        if ((parentEmptyNodeNumber - childrenEmptyNodeNumber > 0) && (childrenEmptyNodeNumber > 0)) {
+            line = nameFamilyStorage[lineLayer][childrenEmptyNodeNumber]
+            moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
+        }
+
+        print("line: $line\n")
+        print("parentEmptyNodeNumber: $parentEmptyNodeNumber\n")
+        print("childrenEmptyNodeNumber: $childrenEmptyNodeNumber\n")
+        print("moveSteps: $moveSteps\n")
 
         for (i in 0 until line.length) {
             if (i == moveSteps && count == 0)
@@ -313,6 +325,7 @@ class FamilyTreeDrawer {
             }
         }
 
+        print("")
         return tmp.toString()
     }
 
