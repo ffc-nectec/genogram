@@ -308,11 +308,6 @@ class FamilyTreeDrawer {
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
 
-        print("line: $line\n")
-        print("parentEmptyNodeNumber: $parentEmptyNodeNumber\n")
-        print("childrenEmptyNodeNumber: $childrenEmptyNodeNumber\n")
-        print("moveSteps: $moveSteps\n")
-
         for (i in 0 until line.length) {
             if (i == moveSteps && count == 0)
                 tmp.append("^")
