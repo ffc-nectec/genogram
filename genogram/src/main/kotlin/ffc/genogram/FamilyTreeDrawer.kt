@@ -23,6 +23,7 @@ import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class FamilyTreeDrawer {
+    private val indentNumb = 4
 
     // For display
     var nameFamilyLayers: ArrayList<String> = ArrayList()
@@ -81,7 +82,7 @@ class FamilyTreeDrawer {
         }
     }
 
-    fun replaceFamilyStorageIndex(layerNumb: Int, replaceInd: Int, node: String?) {
+    fun replaceFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?) {
         val layer = nameFamilyStorage[layerNumb]
 
         if (node != null)
@@ -214,13 +215,13 @@ class FamilyTreeDrawer {
         val tmp = StringBuilder()
         val lineSign = '-'
         val indent = ' '
-        val indentNumb = 4
         var indentSpace = ""
 
         // Create Line
-        for (i in 0 until indentNumb) {
+        for (i in 0 until (indentNumb)) {
             indentSpace += indent
         }
+
         tmp.append(indentSpace)
         for (i in 0 until expectedLength - (indentNumb * 2)) {
             tmp.append(lineSign)
@@ -233,18 +234,23 @@ class FamilyTreeDrawer {
     private fun createChildrenLineSign(line: String, childrenListInd: MutableList<Int>, parentInd: Int): String {
         val childrenSign = ','
         val childrenCenterSign = '^'
-        val indentNumb = 4
-        val length = (lengthLine - 1).toInt()
-
+        var length = (lengthLine - 1).toInt()
         val tmp = StringBuilder()
-        tmp.append(line)
+        var startInd = childrenListInd[0]
+        var childrenSignInd = mutableListOf<Int>()
+        var childrenCenterSignInd: Int
 
         // Find Children sign spot
-        val childrenSignInd = mutableListOf<Int>()
         childrenListInd.forEach { index ->
-            val index = (indentNumb + (length * index)) - (index)
-            childrenSignInd.add(index)
+            var shiftInd = index
+            var ind: Int
+            if (startInd != 0) {
+                shiftInd = index - startInd
+            }
+            ind = (indentNumb + (length * shiftInd)) - (shiftInd)
+            childrenSignInd.add(ind)
         }
+        tmp.append(line)
 
         // Add Children Sign ','
         for (i in 0 until tmp.length) {
@@ -254,8 +260,13 @@ class FamilyTreeDrawer {
                 }
             }
         }
+
         // Add Children Sign '^'
-        val childrenCenterSignInd = (distanceLine.toInt() + 1) * (parentInd + 1) - 1
+        childrenCenterSignInd = if (startInd == 0) {
+            (distanceLine.toInt() + 1) * (parentInd + 1) - 1
+        } else {
+            ((distanceLine.toInt() + 1) * (parentInd + 1) - 1) / 2
+        }
         tmp.setCharAt(childrenCenterSignInd, childrenCenterSign)
 
         return tmp.toString()

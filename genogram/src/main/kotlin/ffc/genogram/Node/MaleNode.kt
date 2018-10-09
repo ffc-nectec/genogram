@@ -63,7 +63,6 @@ class MaleNode(
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
                                 i, 0, null, null
                             )
-                        // Here
                     } else if (!rightHandSiblings) {
                         // FocusedPerson(the AddedPerson's wife) is the youngest daughter.
                         // (Special case) Add node AddedPerson node on the right of FocusedPerson.
@@ -184,7 +183,7 @@ class MaleNode(
                                     val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
                                         childrenLineLayer, addingInd, childrenListInd
                                     )
-                                    familyTreeDrawer.replaceFamilyStorageIndex(
+                                    familyTreeDrawer.replaceFamilyStorageLayer(
                                         childrenLineLayer, parentLayer, extendedLine
                                     )
                                 }
@@ -194,7 +193,7 @@ class MaleNode(
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                                 childrenLineLayer, addingEmptyNodes
                             )
-                            familyTreeDrawer.replaceFamilyStorageIndex(
+                            familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, parentLayer, editedLine
                             )
                         }

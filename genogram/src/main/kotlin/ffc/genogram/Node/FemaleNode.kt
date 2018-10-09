@@ -37,6 +37,8 @@ class FemaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+            val childrenLineLayer = addingLayer - 1
+
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {
@@ -47,8 +49,15 @@ class FemaleNode(
 
                 // Find whether the focusedPerson has any siblings.
                 val hasRightHandSib = familyTreeDrawer.hasPeopleOnTheRight(
-                    focusedPerson!!, addingLayer
+                    focusedPerson!!,
+                    addingLayer
                 )
+                val hasLeftHandSib = familyTreeDrawer.hasPeopleOnTheLeft(
+                    focusedPerson!!,
+                    addingLayer
+                )
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////
 
                 if (hasRightHandSib) {
                     // FocusedPerson(addedPerson's husband) has older siblings
@@ -66,7 +75,7 @@ class FemaleNode(
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                         val parentInd = familyTreeDrawer.findPersonIndById(focusedPerson!!.father!!, parentLayer)
                         // Find index of AddedPerson's siblings
-                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+                        var childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                         val childrenListId = parent!!.children!!
                         val childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
@@ -87,21 +96,30 @@ class FemaleNode(
                             )
                         }
 
-                        // Extend the ChildrenLine the top layer of the AddedPerson
+                        // Extend the CHILDREN Line the top layer of the AddedPerson.
+                        // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
+                        var startInd = childrenListInd[0]
+                        if (startInd != 0) {
+                            childrenNumber -= 1
+                        } else {
+                            startInd = 0
+                        }
+
                         val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                         val extendedLine = familyTreeDrawer.extendLine(
                             expectedLength,
                             childrenListInd,
                             parentInd
                         )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
-                            childrenLineLayer, parentLayer, extendedLine
+                        familyTreeDrawer.replaceFamilyStorageLayer(
+                            childrenLineLayer, startInd, extendedLine
                         )
+
                         // Move the children sign
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes
                         )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
+                        familyTreeDrawer.replaceFamilyStorageLayer(
                             childrenLineLayer, parentLayer, editedLine
                         )
 
@@ -121,7 +139,8 @@ class FemaleNode(
                             }
                         }
                     }
-                } else {
+                } else if (!hasRightHandSib) {
+                    print("-2- ${addedPerson.firstname}\n")
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
                     // No reorder the array's position, only extend the line.
@@ -142,7 +161,7 @@ class FemaleNode(
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes
                         )
-                        familyTreeDrawer.replaceFamilyStorageIndex(
+                        familyTreeDrawer.replaceFamilyStorageLayer(
                             childrenLineLayer, parentLayer, editedLine
                         )
                     }
@@ -187,6 +206,8 @@ class FemaleNode(
                             husbandInd, childrenLayer + 1
                         )
                     }
+                } else {
+                    print("-3- ${addedPerson.firstname}\n")
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
