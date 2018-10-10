@@ -773,4 +773,148 @@ class Drawer2ndGen3ChildrenTest {
             [    |_________|    ,         ,     |_________|    ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw3Children43() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-3-spouses-5.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [    ,------------------------^----,---------,    ]
+            [[  Ed  ], (Sarah ),  [ Bill ], ( Lisa ), ( Cara ), [ Bill ]]
+            [    |_________|    ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children44() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-24.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,---------,    ]
+            [[ Bill ], (Sarah ), [  Ed  ], ( Cara )]
+            [    |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children45() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-25.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^--------------,    ]
+            [(Sarah ), [  Ed  ], ( Lisa ), ( Cara )]
+            [        ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children47() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-26.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^----,    ]
+            [(Sarah ), [  Ed  ], ( Cara ), [ Bill ]]
+            [        ,         ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children48() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-24.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,-------------------,    ]
+            [[ Bill ], (Sarah ), [  Ed  ], ( Cara ), ( Cara )]
+            [    |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children49() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-25.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------,-----^--------------,    ]
+            [(Sarah ), [  Ed  ], ( Cara ), ( Cara ), [ Bill ]]
+            [        ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children50() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-26.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [        ,     ,----^----,---------,    ]
+            [[ Bill ], (Sarah ), [  Ed  ], ( Cara ), [ Bill ]]
+            [    |_________|    ,         ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw3Children51() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-3-spouses-6.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [        ,     ,--------,-----^--------------,    ]
+            [[ Bill ], (Sarah ), [  Ed  ], ( Lisa ), ( Cara ), [ Bill ]]
+            [    |_________|    ,     |_________|    ,     |_________|    ]
+        """.trimIndent()
+    }
 }
