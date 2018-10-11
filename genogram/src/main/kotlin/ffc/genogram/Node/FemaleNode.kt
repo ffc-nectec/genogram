@@ -37,7 +37,6 @@ class FemaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {

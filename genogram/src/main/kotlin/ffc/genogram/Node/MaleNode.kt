@@ -200,11 +200,10 @@ class MaleNode(
                             }
 
                             var startInd = childrenListInd[0]
+                            val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
                             if (!rightHandSiblings) {
                                 // Extend the CHILDREN Line the top layer of the AddedPerson.
                                 // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
-                                val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
-
                                 if ((startInd != 0) && (parentInd > startInd)) {
                                     startInd = parentInd - startInd
                                     // Moving the children line by adding an empty node.
@@ -224,6 +223,31 @@ class MaleNode(
                                     )
                                 } else {
                                     startInd = parentLayer
+                                }
+                            } else {
+                                // Middle Child
+
+                                var startInd = childrenListInd[0]
+                                val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+                                if ((startInd != 0) && (parentInd > startInd)) {
+                                    startInd = parentInd - startInd
+
+                                    // Moving the children line by adding an empty node.
+                                    familyTreeDrawer.replaceFamilyStorageLayer(
+                                        childrenLineLayer, 0, null
+                                    )
+
+                                    // Extend the children line.
+                                    childrenNumber--
+                                    val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
+                                    val extendedLine = familyTreeDrawer.extendLine(
+                                        expectedLength,
+                                        childrenListInd,
+                                        parentInd
+                                    )
+                                    familyTreeDrawer.replaceFamilyStorageLayer(
+                                        childrenLineLayer, startInd, extendedLine
+                                    )
                                 }
                             }
 

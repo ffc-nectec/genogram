@@ -162,11 +162,34 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": null,
-      "wife": null,
+      "wife": [
+        13
+      ],
       "children": null,
       "linkedStack": [
         0,
-        10
+        10,
+        13
+      ]
+    },
+    {
+      "idCard": 13,
+      "firstname": "Kitty",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [
+        3
+      ],
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        3
       ]
     },
     {
@@ -181,11 +204,34 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": null,
-      "wife": null,
+      "wife": [
+        14
+      ],
       "children": null,
       "linkedStack": [
         0,
-        10
+        10,
+        14
+      ]
+    },
+    {
+      "idCard": 14,
+      "firstname": "Kitty",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [
+        4
+      ],
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        4
       ]
     }
   ]

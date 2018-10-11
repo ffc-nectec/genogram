@@ -34,7 +34,8 @@
         10,
         1,
         2,
-        3
+        3,
+        4
       ]
     },
     {
@@ -68,19 +69,19 @@
     },
     {
       "idCard": 1,
-      "firstname": "Chris",
+      "firstname": "Lisa",
       "lastname": "Snow",
       "birthDate": "12-11-1980",
-      "gender": 0,
+      "gender": 1,
       "father": 0,
       "mother": 10,
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": null,
-      "wife": [
+      "husband": [
         11
       ],
+      "wife": null,
       "children": null,
       "linkedStack": [
         0,
@@ -90,19 +91,19 @@
     },
     {
       "idCard": 11,
-      "firstname": "Lisa",
+      "firstname": "Ed",
       "lastname": "Snow",
       "birthDate": "12-11-1980",
-      "gender": 1,
+      "gender": 0,
       "father": null,
       "mother": null,
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": [
+      "husband": null,
+      "wife": [
         1
       ],
-      "wife": null,
       "children": null,
       "linkedStack": [
         1
@@ -110,19 +111,19 @@
     },
     {
       "idCard": 2,
-      "firstname": "Ed",
+      "firstname": "Cara",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
-      "gender": 0,
+      "gender": 1,
       "father": 0,
       "mother": 10,
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": null,
-      "wife": [
+      "husband": [
         12
       ],
+      "wife": null,
       "children": null,
       "linkedStack": [
         0,
@@ -132,19 +133,19 @@
     },
     {
       "idCard": 12,
-      "firstname": "Kitty",
+      "firstname": "Bill",
       "lastname": "Snow",
       "birthDate": "12-11-1980",
-      "gender": 1,
+      "gender": 0,
       "father": null,
       "mother": null,
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": [
+      "husband": null,
+      "wife": [
         2
       ],
-      "wife": null,
       "children": null,
       "linkedStack": [
         2
@@ -152,10 +153,10 @@
     },
     {
       "idCard": 3,
-      "firstname": "Teddy",
+      "firstname": "Lucy",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
-      "gender": 0,
+      "gender": 1,
       "father": 0,
       "mother": 10,
       "twin": null,
@@ -171,10 +172,10 @@
     },
     {
       "idCard": 4,
-      "firstname": "Mike",
+      "firstname": "Anne",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
-      "gender": 0,
+      "gender": 1,
       "father": 0,
       "mother": 10,
       "twin": null,
