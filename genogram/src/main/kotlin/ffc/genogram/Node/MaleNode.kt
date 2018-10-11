@@ -155,7 +155,7 @@ class MaleNode(
                     if (leftHandSiblings) {
                         // Adjust the children line
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                        val childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                        var childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
                         val childrenLineLayer = addingLayer - 1
                         val childrenListId = parent!!.children!!
                         val childrenListInd: MutableList<Int> = mutableListOf()
@@ -176,6 +176,16 @@ class MaleNode(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
 
+                            // Find index of AddedPerson's siblings
+                            val childrenListInd: MutableList<Int> = mutableListOf()
+                            childrenListId.forEach { id ->
+                                childrenListInd.add(
+                                    familyTreeDrawer.findPersonIndById(
+                                        id.toLong(), addingLayer
+                                    )
+                                )
+                            }
+
                             // Extend the ChildrenLine the top layer of the AddedPerson
                             val addingMore = Math.abs(childrenNumber - (addingInd + 1))
                             if (addingMore > 1) {
@@ -188,28 +198,33 @@ class MaleNode(
                                     )
                                 }
                             }
-                        }
 
-                        // Here
-                        if (!rightHandSiblings) {
-                            // Find index of AddedPerson's siblings
-                            val childrenListInd: MutableList<Int> = mutableListOf()
-                            childrenListId.forEach { id ->
-                                childrenListInd.add(
-                                    familyTreeDrawer.findPersonIndById(
-                                        id.toLong(), addingLayer
-                                    )
-                                )
-                            }
-
-                            // Extend the CHILDREN Line the top layer of the AddedPerson.
-                            // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
                             var startInd = childrenListInd[0]
-                            val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
-                            startInd = if ((startInd != 0) && (parentInd > startInd)) {
-                                parentInd - startInd
-                            } else {
-                                parentLayer
+                            if (!rightHandSiblings) {
+                                // Extend the CHILDREN Line the top layer of the AddedPerson.
+                                // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
+                                val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+
+                                if ((startInd != 0) && (parentInd > startInd)) {
+                                    startInd = parentInd - startInd
+                                    // Moving the children line by adding an empty node.
+                                    familyTreeDrawer.replaceFamilyStorageLayer(
+                                        childrenLineLayer, 0, null
+                                    )
+                                    // Extend the children line.
+                                    childrenNumber = childrenNumber - childrenListInd.size + 1
+                                    val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
+                                    val extendedLine = familyTreeDrawer.extendLine(
+                                        expectedLength,
+                                        childrenListInd,
+                                        parentInd
+                                    )
+                                    familyTreeDrawer.replaceFamilyStorageLayer(
+                                        childrenLineLayer, startInd, extendedLine
+                                    )
+                                } else {
+                                    startInd = parentLayer
+                                }
                             }
 
                             // Move children sign
@@ -218,15 +233,6 @@ class MaleNode(
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, startInd, editedLine
-                            )
-                        } else {
-                            // Middle children
-                            // Move children sign
-                            val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                                childrenLineLayer, addingEmptyNodes
-                            )
-                            familyTreeDrawer.replaceFamilyStorageLayer(
-                                childrenLineLayer, parentLayer, editedLine
                             )
                         }
                     }

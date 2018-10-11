@@ -265,6 +265,14 @@ class FamilyTreeDrawer {
         } else {
             ((distanceLine.toInt() + 1) * (parentInd + 1) - 1) / 2
         }
+        // Check Children Sign before adding
+        for (i in 0 until tmp.length) {
+            childrenSignInd.forEach {
+                if (childrenCenterSignInd == it) {
+                    childrenCenterSignInd++
+                }
+            }
+        }
         tmp.setCharAt(childrenCenterSignInd, childrenCenterSign)
 
         return tmp.toString()
@@ -298,6 +306,9 @@ class FamilyTreeDrawer {
         var moveSteps = (distanceLine.toInt() * extraStep) + extraStep
         var count = 1
 
+        print("lineLayer: $lineLayer\n")
+        print("step: $step\n")
+
         val parentLayer = lineLayer - 1
         var parentEmptyNodeNumber = findNumberOfEmptyNode(parentLayer)
         var childrenEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
@@ -320,7 +331,6 @@ class FamilyTreeDrawer {
             }
         }
 
-        print("")
         return tmp.toString()
     }
 
