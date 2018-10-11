@@ -38,7 +38,6 @@ class MarriageLine(
 
         if (handSide == RelationshipLabel.RIGHT_HAND) {
             if (addingLayer > 0) {
-
                 if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer + 1,
@@ -46,13 +45,23 @@ class MarriageLine(
                         null
                     )
                 } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
-
                     if (childrenNumb == 1) {
                         familyTreeDrawer.addFamilyNewLayer(
                             singleChildMarriageLine(RelationshipLabel.RIGHT_HAND)
                         )
                     } else {
+                        // Find the focusedPerson's index
                         familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+                        val personInd = familyTreeDrawer.findPersonIndById(
+                            person.idCard, addingLayer
+                        )
+                        if (personInd != 0) {
+                            for (i in 0 until personInd) {
+                                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                    addingLayer + 1, 0, null, null
+                                )
+                            }
+                        }
                     }
                 }
             } else {

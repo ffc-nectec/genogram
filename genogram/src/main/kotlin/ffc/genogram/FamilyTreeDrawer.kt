@@ -154,6 +154,18 @@ class FamilyTreeDrawer {
         return 0
     }
 
+    fun findMarriageLine(layerNumb: Int): Int {
+        val marriageLine = nameFamilyStorage[layerNumb]
+        var count = 0
+
+        marriageLine.forEach {
+            if (it != createEmptyNode())
+                count++
+        }
+
+        return count
+    }
+
     fun getLineLayer(layerNumb: Int): String {
         return nameFamilyStorage[layerNumb][0]
     }
@@ -305,9 +317,6 @@ class FamilyTreeDrawer {
         val extraStep = step + 1
         var moveSteps = (distanceLine.toInt() * extraStep) + extraStep
         var count = 1
-
-        print("lineLayer: $lineLayer\n")
-        print("step: $step\n")
 
         val parentLayer = lineLayer - 1
         var parentEmptyNodeNumber = findNumberOfEmptyNode(parentLayer)

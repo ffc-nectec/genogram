@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package ffc.genogram.FamilyTree
+package ffc.genogram.FamilyTree.SecondGen
 
 import ffc.genogram.FamilyTree
 import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class Drawer2ndGenTest {
+class Drawer2ndGen1ChildTest {
 
     /************************************************************************************
      **  1 Child

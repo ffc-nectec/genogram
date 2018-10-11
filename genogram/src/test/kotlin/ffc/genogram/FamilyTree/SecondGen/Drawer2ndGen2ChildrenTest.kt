@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package ffc.genogram.FamilyTree
+package ffc.genogram.FamilyTree.SecondGen
 
 import ffc.genogram.FamilyTree
 import ffc.genogram.getResourceAs
