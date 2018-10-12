@@ -397,6 +397,7 @@ class Drawer2ndGen3ChildrenTest {
         """.trimIndent()
     }
 
+    @Test
     fun draw3Children29() {
         val drawer = FamilyTree(
             getResourceAs("2ndGen/spouses/family-3-spouses-1.json")

@@ -70,11 +70,9 @@ class MarriageLine(
         } else {
             // Add line on left hand side
             if (addingLayer > 0) {
-
                 if (addingLayer == 0) {
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                 } else {
-
                     val hasLeftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
                         person, addingLayer
                     )
@@ -90,9 +88,14 @@ class MarriageLine(
                             familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                         }
                     } else {
+                        print("add1: ${person.firstname}\n")
                         // add node husband node on the right hand.
                         // or has both siblings on the left and right hands.
                         // add husband on the right hand by adding empty node(s).
+
+                        // Update the line by adding the new one.
+
+//                        print("line1: ${familyTreeDrawer.nameFamilyStorage[addingLayer+1]}\n")
                         familyTreeDrawer.addFamilyAtLayer(
                             addingLayer + 1,
                             createLineDistance(),

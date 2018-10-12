@@ -141,7 +141,6 @@ class FamilyTreeDrawer {
     }
 
     fun findPersonLayer(focusedPerson: Person): Int {
-
         personFamilyStorage.forEachIndexed { index, arrayList ->
             arrayList.forEach { element ->
                 if (element is Person) {
@@ -152,6 +151,17 @@ class FamilyTreeDrawer {
         }
 
         return 0
+    }
+
+    fun findPerson(focusedPerson: Person, layerNumb: Int): Person? {
+        personFamilyStorage[layerNumb].forEach {
+            if (it is Person) {
+                if (focusedPerson.idCard == it.idCard) {
+                    return focusedPerson
+                }
+            }
+        }
+        return null
     }
 
     fun findMarriageLine(layerNumb: Int): Int {
@@ -172,6 +182,34 @@ class FamilyTreeDrawer {
 
     fun getLayer(layerNumb: Int): ArrayList<String> {
         return nameFamilyStorage[layerNumb]
+    }
+
+    fun addMarriageLineInd(
+        layerNumb: Int, focusedPerson: Person,
+        addedPerson: Person
+    ): Int {
+        // Check the person gender, and find the person's
+        val allPeople: MutableList<Long> = mutableListOf()
+        personFamilyStorage[layerNumb - 1].forEach {
+            if (it is Person)
+                allPeople.add(it.idCard)
+        }
+        // find the focusedPerson and addedPerson's index
+        var focusedPersonInd = 0
+        var addedPersonInd = 0
+        allPeople.forEachIndexed { index, l ->
+            if (l == focusedPerson.idCard)
+                focusedPersonInd = index
+            else if (l == addedPerson.idCard)
+                addedPersonInd = index
+        }
+        // find number of marriage line
+        val marriageLineNumb = findMarriageLine(layerNumb)
+
+        return if (focusedPersonInd > addedPersonInd)
+            (focusedPersonInd - marriageLineNumb) + 1
+        else
+            (addedPersonInd - marriageLineNumb) + 1
     }
 
     fun findNumberOfEmptyNode(layerNumb: Int): Int {

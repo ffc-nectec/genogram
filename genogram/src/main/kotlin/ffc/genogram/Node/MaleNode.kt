@@ -107,8 +107,11 @@ class MaleNode(
                             }
                         } else {
                             // Add an empty node between the marriage line
+                            val addingInd = familyTreeDrawer.addMarriageLineInd(
+                                addingLayer + 1, focusedPerson!!, addedPerson
+                            )
                             familyTreeDrawer.addEmptyNodeMarriageLine(
-                                wifeInd, addingLayer + 1
+                                addingInd, addingLayer + 1
                             )
                         }
                     } else {
@@ -205,8 +208,6 @@ class MaleNode(
                                 // Extend the CHILDREN Line the top layer of the AddedPerson.
                                 // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
                                 // Check an empty node.
-                                var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(childrenLineLayer)
-                                print("emptyNodeNumber: $emptyNodeNumber\n")
                                 if ((startInd != 0) && (parentInd > startInd)) {
                                     // Moving the children line by adding an empty node.
                                     familyTreeDrawer.replaceFamilyStorageLayer(

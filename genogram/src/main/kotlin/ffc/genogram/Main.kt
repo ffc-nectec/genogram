@@ -109,7 +109,9 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-6.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-7.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-8.json")
-    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-9.json")
+
+//    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-9.json")
+    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-13.json")
 
 //    familyObj = getResourceAs("2ndGen/children/family-4-children.json")
 //    familyObj = getResourceAs("2ndGen/children/family-4-children-2.json")
