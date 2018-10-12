@@ -204,14 +204,21 @@ class MaleNode(
                             if (!rightHandSiblings) {
                                 // Extend the CHILDREN Line the top layer of the AddedPerson.
                                 // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
+                                // Check an empty node.
+                                var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(childrenLineLayer)
+                                print("emptyNodeNumber: $emptyNodeNumber\n")
                                 if ((startInd != 0) && (parentInd > startInd)) {
-                                    startInd = parentInd - startInd
                                     // Moving the children line by adding an empty node.
                                     familyTreeDrawer.replaceFamilyStorageLayer(
                                         childrenLineLayer, 0, null
                                     )
                                     // Extend the children line.
-                                    childrenNumber = childrenNumber - childrenListInd.size + 1
+                                    var childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                                    if (addingInd != 0)
+                                        childrenNumber -= 2
+                                    else
+                                        childrenNumber = childrenNumber - childrenListInd.size + 1
+
                                     val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                                     val extendedLine = familyTreeDrawer.extendLine(
                                         expectedLength,
@@ -226,7 +233,6 @@ class MaleNode(
                                 }
                             } else {
                                 // Middle Child
-
                                 var startInd = childrenListInd[0]
                                 val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
                                 if ((startInd != 0) && (parentInd > startInd)) {

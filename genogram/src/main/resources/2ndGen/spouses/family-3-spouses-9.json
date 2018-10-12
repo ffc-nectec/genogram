@@ -120,35 +120,12 @@
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
-      "husband": [
-        12
-      ],
+      "husband": null,
       "wife": null,
       "children": null,
       "linkedStack": [
         0,
-        10,
-        12
-      ]
-    },
-    {
-      "idCard": 12,
-      "firstname": "Bill",
-      "lastname": "Snow",
-      "birthDate": "12-11-1980",
-      "gender": 0,
-      "father": null,
-      "mother": null,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": null,
-      "wife": [
-        2
-      ],
-      "children": null,
-      "linkedStack": [
-        2
+        10
       ]
     },
     {
@@ -205,19 +182,19 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": [
-        14
+        12
       ],
       "wife": null,
       "children": null,
       "linkedStack": [
         0,
         10,
-        14
+        12
       ]
     },
     {
-      "idCard": 14,
-      "firstname": "Mike",
+      "idCard": 12,
+      "firstname": "Bill",
       "lastname": "Snow",
       "birthDate": "12-11-1980",
       "gender": 0,
