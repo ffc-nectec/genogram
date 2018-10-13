@@ -182,11 +182,6 @@ class FemaleNode(
                             )
                         }
                     }
-
-                    val husbandInd = familyTreeDrawer.findPersonInd(focusedPerson!!, childrenLayer)
-                    familyTreeDrawer.addEmptyNodeMarriageLine(
-                        husbandInd, childrenLayer + 1
-                    )
                 }
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)

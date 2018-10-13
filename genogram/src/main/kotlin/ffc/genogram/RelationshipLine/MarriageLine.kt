@@ -35,15 +35,44 @@ class MarriageLine(
 
         val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
         val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+        val lineLayer = addingLayer + 1
 
         if (handSide == RelationshipLabel.RIGHT_HAND) {
             if (addingLayer > 0) {
                 if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
+                    // It works
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer + 1,
                         createLineDistance(),
                         null
                     )
+
+                    // Here
+                    if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
+                        val addingInd = familyTreeDrawer.addMarriageLineInd(
+                            lineLayer, focusedPerson, null
+                        )
+                        val lineLayerSize = familyTreeDrawer
+                            .findStorageLayerSize(lineLayer)
+                        val lastLineLayerInd = lineLayerSize - 1
+
+                        if (addingInd > lastLineLayerInd) {
+                            // find whether addingInd's element is the marriage line yet
+                            if (lineLayerSize < addingInd) {
+//                                print("1\n")
+                            } else {
+                                // Add empty node(s) between the marriage line.
+                                val addingMore = addingInd - lineLayerSize
+                                for (i in 0 until addingMore + 1) {
+                                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                        addingLayer + 1, addingInd - 1, null, null
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+
                 } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
                     if (childrenNumb == 1) {
                         familyTreeDrawer.addFamilyNewLayer(
@@ -88,19 +117,18 @@ class MarriageLine(
                             familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                         }
                     } else {
-                        // add node husband node on the right hand.
+                        // Add node husband node on the right hand.
                         // or has both siblings on the left and right hands.
-                        // add husband on the right hand by adding empty node(s).
+                        // Add husband on the right hand by adding empty node(s).
                         familyTreeDrawer.addFamilyAtLayer(
                             addingLayer + 1,
                             createLineDistance(),
                             null
                         )
 
-                        val lineLayer = addingLayer + 1
                         if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
                             val addingInd = familyTreeDrawer.addMarriageLineInd(
-                                addingLayer + 1, focusedPerson, null
+                                lineLayer, focusedPerson, null
                             )
                             val lineLayerSize = familyTreeDrawer
                                 .findStorageLayerSize(lineLayer)
@@ -123,7 +151,7 @@ class MarriageLine(
                                             )
                                         }
                                     }
-                                } else if (lineLayerSize == addingInd) {
+                                } else {
                                     // Add empty node(s) between the marriage line.
                                     val addingMore = addingInd - lineLayerSize
                                     for (i in 0 until addingMore + 1) {
