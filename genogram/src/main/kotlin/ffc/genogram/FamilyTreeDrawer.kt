@@ -99,7 +99,7 @@ class FamilyTreeDrawer {
         return if (nameFamilyStorage[layerNumb].isNotEmpty())
             nameFamilyStorage[layerNumb].size
         else
-            -1
+            0
     }
 
     fun hasPeopleOnTheRight(focusedPerson: Person, layerNumb: Int): Boolean {
@@ -184,9 +184,13 @@ class FamilyTreeDrawer {
         return nameFamilyStorage[layerNumb]
     }
 
+    fun getLayerInd(layerNumb: Int, index: Int): String {
+        return nameFamilyStorage[layerNumb][index]
+    }
+
     fun addMarriageLineInd(
         layerNumb: Int, focusedPerson: Person,
-        addedPerson: Person
+        addedPerson: Person?
     ): Int {
         // Check the person gender, and find the person's
         val allPeople: MutableList<Long> = mutableListOf()
@@ -200,9 +204,12 @@ class FamilyTreeDrawer {
         allPeople.forEachIndexed { index, l ->
             if (l == focusedPerson.idCard)
                 focusedPersonInd = index
-            else if (l == addedPerson.idCard)
-                addedPersonInd = index
+            else if (addedPerson != null) {
+                if (l == addedPerson.idCard)
+                    addedPersonInd = index
+            }
         }
+
         // find number of marriage line
         val marriageLineNumb = findMarriageLine(layerNumb)
 
