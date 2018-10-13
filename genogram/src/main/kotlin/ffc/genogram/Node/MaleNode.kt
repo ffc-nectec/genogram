@@ -130,7 +130,6 @@ class MaleNode(
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
-
                             // Find index of AddedPerson's siblings
                             val childrenListInd: MutableList<Int> = mutableListOf()
                             childrenListId.forEach { id ->
@@ -195,7 +194,6 @@ class MaleNode(
                                     familyTreeDrawer.replaceFamilyStorageLayer(
                                         childrenLineLayer, 0, null
                                     )
-
                                     // Extend the children line.
                                     childrenNumber--
                                     val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
@@ -226,7 +224,6 @@ class MaleNode(
         } else {
             // Children or Twin
             // Add a single child
-
             val familyGen = familyTreeDrawer.findStorageSize() - 1
             familyTreeDrawer.addFamilyAtLayer(
                 familyGen,
