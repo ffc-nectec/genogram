@@ -29,6 +29,7 @@ class NodeFactory {
         addedPerson: Person,
         family: Family
     ): Node {
+        // focusedPerson = parent
         var parent: Person? = null
         if (focusedPerson != null &&
             (focusedPerson.father != null ||

@@ -195,6 +195,35 @@ class FemaleNode(
                 setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
                 addedPerson
             )
+
+            // "focusedPerson" = parent, when the generation is greater than 2.
+            // "parent" = grandparent
+            // Find parent index, and add the addedPerson node at the index.
+            if (focusedPerson != null) {
+                val focusedPersonLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                val focusedPersonInd = familyTreeDrawer.findPersonInd(
+                    focusedPerson!!, focusedPersonLayer
+                )
+                val addingLayer = familyTreeDrawer.findPersonLayer(addedPerson)
+                val addingLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
+
+                if (addingLayerSize < focusedPersonInd) {
+                    // Add empty node(s), and move the node
+                    for (i in addingLayerSize - 1 until focusedPersonInd) {
+                        if (i == focusedPersonInd) {
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                addingLayer, i,
+                                setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
+                                addedPerson
+                            )
+                        } else {
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                addingLayer, i, null, null
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         return familyTreeDrawer

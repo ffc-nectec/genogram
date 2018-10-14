@@ -188,10 +188,7 @@ class FamilyTreeDrawer {
         return nameFamilyStorage[layerNumb][index]
     }
 
-    fun addMarriageLineInd(
-        layerNumb: Int, focusedPerson: Person,
-        addedPerson: Person?
-    ): Int {
+    fun addMarriageLineInd(layerNumb: Int, focusedPerson: Person, addedPerson: Person?): Int {
         // Check the person gender, and find the person's
         val allPeople: MutableList<Long> = mutableListOf()
         personFamilyStorage[layerNumb - 1].forEach {
@@ -231,6 +228,17 @@ class FamilyTreeDrawer {
         }
 
         return count
+    }
+
+    fun addChildrenLineInd(parentLayer: Int, focusedPerson: Person, addedPerson: MutableList<Person>): Int {
+        val addingLayer = parentLayer + 2
+        val parentInd = findPersonInd(focusedPerson, parentLayer)
+
+        // The number of empty node(s) should be equal to the parentInd
+//        print("addingLayer: $addingLayer\n")
+//        print("parentInd: $parentInd\n")
+
+        return 0
     }
 
     fun addEmptyNodeMarriageLine(partnerInd: Int, layerNumb: Int): String {

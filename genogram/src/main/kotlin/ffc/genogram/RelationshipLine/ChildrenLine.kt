@@ -25,12 +25,37 @@ import ffc.genogram.Person
 
 class ChildrenLine(
     var childrenList: MutableList<Person>,
+    var parent: Person,
     var familyTreeDrawer: FamilyTreeDrawer
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
+        // Add the children line
         familyTreeDrawer.addFamilyNewLayer(createLineDistance())
         familyTreeDrawer.addEmptyNewLayer()
+
+        val parentLayer = familyTreeDrawer.findPersonLayer(parent)
+        val addingInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
+        val addingLayer = parentLayer + 2
+        val childrenLineSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
+
+        // The number of empty node(s) should be equal to the parentInd
+        // Add the empty node(s), move the line
+        if (childrenLineSize < addingInd) {
+            for (i in childrenLineSize - 1 until addingInd) {
+                if (i == (addingInd)) {
+                    familyTreeDrawer.addFamilyAtLayer(
+                        addingLayer,
+                        createLineDistance(),
+                        null
+                    )
+                } else {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, i, null, null
+                    )
+                }
+            }
+        }
 
         return familyTreeDrawer
     }

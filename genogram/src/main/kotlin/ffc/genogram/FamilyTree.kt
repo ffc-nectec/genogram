@@ -73,14 +73,14 @@ class FamilyTree(var family: Family) {
             (childrenIdList != null)
         ) {
             // Draw a children or twins line
-//            val parentsPosition = familyTreePic.findParentsPosition()
             val line = relationFactory.getLine(
                 childrenList,
+                focusedPerson!!,
                 familyTreePic,
                 RelationshipLabel.CHILDREN
             )
             line.drawLine()
-            drawListNode(childrenList, RelationshipLabel.CHILDREN)
+            drawListNode(childrenList, list1, RelationshipLabel.CHILDREN)
 
             return focusedPerson!!.linkedStack
         } else {
@@ -184,11 +184,26 @@ class FamilyTree(var family: Family) {
         addedNodes.add(relatedPerson.idCard.toInt())
     }
 
-    private fun drawListNode(focusedList: MutableList<Person>, relationLabel: RelationshipLabel) {
-
+    private fun drawListNode(
+        focusedList: MutableList<Person>,
+        parents: ArrayList<Person>,
+        relationLabel: RelationshipLabel
+    ) {
         val childrenNumber = focusedList.size
         focusedList.forEach {
-            val node = nodeFactory.getNode(familyTreePic, null, it, family)
+            var parent = parents[0]
+            // Find the parent who is in the blood family
+            family.bloodFamily?.forEach { bloodId ->
+                parents.forEach { person ->
+                    if (bloodId == person.idCard.toInt()) {
+                        parent = person
+                        return
+                    }
+                }
+            }
+
+            val node = nodeFactory.getNode(familyTreePic, parent, it, family)
+//            val node = nodeFactory.getNode(familyTreePic, null, it, family)
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
