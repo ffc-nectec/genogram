@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NECTEC
+ * Copyright (c) 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,27 @@
  * limitations under the License.
  */
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
+package ffc.genogram.android
+
+import ffc.genogram.Family
+
+interface Families {
+
+    fun family(callbackDsl: Callback.() -> Unit)
+
+    class Callback {
+        lateinit var onSuccess: ((Family) -> Unit)
+            private set
+        lateinit var onFail: ((Throwable?) -> Unit)
+            private set
+
+        fun onSuccess(onFound: (Family) -> Unit) {
+            this.onSuccess = onFound
+        }
+
+        fun onFail(onFail: (Throwable?) -> Unit) {
+            this.onFail = onFail
+        }
     }
 }
 
-ext {
-    supportLibVersion = '28.0.0'
-    kotlinVersion = '1.2.71'
-}
