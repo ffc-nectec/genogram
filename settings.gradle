@@ -17,4 +17,5 @@
 
 rootProject.name = 'ffc-genogram'
 
-include ':genogram', ':genogram-android', ':sample'
+include ':genogram', ':genogram-android'
+include ':samples:android'
