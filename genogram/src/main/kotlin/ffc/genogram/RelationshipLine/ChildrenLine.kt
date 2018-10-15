@@ -38,12 +38,13 @@ class ChildrenLine(
         val addingInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val addingLayer = parentLayer + 2
         val childrenLineSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
+        val childrenLineInd = childrenLineSize - 1
 
         // The number of empty node(s) should be equal to the parentInd
         // Add the empty node(s), move the line
         if (childrenLineSize < addingInd) {
-            for (i in childrenLineSize - 1 until addingInd) {
-                if (i == (addingInd)) {
+            for (i in childrenLineInd until addingInd) {
+                if (i == addingInd) {
                     familyTreeDrawer.addFamilyAtLayer(
                         addingLayer,
                         createLineDistance(),
@@ -56,7 +57,6 @@ class ChildrenLine(
                 }
             }
         }
-
         return familyTreeDrawer
     }
 

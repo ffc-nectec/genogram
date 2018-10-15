@@ -384,4 +384,58 @@ class Drawer2ndGen4ChildrenTest {
             [        ,     |_________|    ,         ,     |_________|    ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw4Children21() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-1-spouse-29.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|    ]
+            [    ,--------------^----,---------,---------,    ]
+            [[ Bill ],  [  Ed  ], ( Lisa ), [ Ted  ], ( Anne )]
+            [        ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw4Children22() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-37.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [    ,------------------,-----^----,---------,    ]
+            [[ Bill ],  [  Ed  ], ( Lisa ), [ Ted  ], ( Anne ), [Chris ]]
+            [        ,     |_________|    ,         ,     |_________|    ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw4Children23() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/spouses/family-2-spouses-38.json")
+        ).drawGenogram()
+        val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|    ]
+            [        ,     ,---------,----^----,-------------------,    ]
+            [[Chris ], ( Anne ), ( Lisa ), [ Bill ], ( Lucy ), [  Ed  ]]
+            [    |_________|    ,         ,     |_________|    ]
+        """.trimIndent()
+    }
 }

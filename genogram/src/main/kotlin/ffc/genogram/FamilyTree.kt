@@ -73,9 +73,10 @@ class FamilyTree(var family: Family) {
             (childrenIdList != null)
         ) {
             // Draw a children or twins line
+            val parent = findLeftHandParent(list1, family)
             val line = relationFactory.getLine(
                 childrenList,
-                focusedPerson!!,
+                parent,
                 familyTreePic,
                 RelationshipLabel.CHILDREN
             )
@@ -191,19 +192,10 @@ class FamilyTree(var family: Family) {
     ) {
         val childrenNumber = focusedList.size
         focusedList.forEach {
-            var parent = parents[0]
-            // Find the parent who is in the blood family
-            family.bloodFamily?.forEach { bloodId ->
-                parents.forEach { person ->
-                    if (bloodId == person.idCard.toInt()) {
-                        parent = person
-                        return
-                    }
-                }
-            }
-
+            // Find the left-hand parent
+            var parent = findLeftHandParent(parents, family)
             val node = nodeFactory.getNode(familyTreePic, parent, it, family)
-//            val node = nodeFactory.getNode(familyTreePic, null, it, family)
+
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
@@ -225,16 +217,44 @@ class FamilyTree(var family: Family) {
                     familyTreePic.addFamilyStorageReplaceIndex(i, 0, null, null)
         }
 
-        // children => index
-        // 2 / 2 => even
-        // 3 % 2 => odd
-        // 4 / 2 => even = 2-1 = 1 empty node
-        // 5 / 2 => odd  = 2.5 -> 2 - 1  = 1 empty node
-        // 6 / 2 => even = 3-1 = 2 empty nodes
-        // 7 % 2 => odd  = 3.5 -> 3 - 1 = 2 empty nodes
-
         focusedList.forEach {
             addedNodes.add(it.idCard.toInt())
         }
+    }
+
+    private fun findLeftHandParent(parents: ArrayList<Person>, family: Family): Person {
+        var parent = parents[0]
+        family.bloodFamily?.forEach { bloodId ->
+            parents.forEach { person ->
+                if (bloodId == person.idCard.toInt()) {
+                    parent = person
+                }
+            }
+        }
+
+        if (parents.size > 1) {
+            if (parent.father != null) {
+                var grandParent = family.findPerson(parent.father!!)
+                if (grandParent == null)
+                    grandParent = family.findPerson(parent.mother!!)
+
+                var parentSib = listOf<Int>()
+                if (grandParent != null) {
+                    parentSib = grandParent.children!!
+                }
+
+                if ((parent.gender == 1) &&
+                    (parent.idCard.toInt() != parentSib[parentSib.size - 1])
+                ) {
+                    val husbandList = parent.husband
+                    husbandList!!.forEach {
+                        if (it == parents[1].idCard.toInt())
+                            parent = family.findPerson(it.toLong())!!
+                    }
+                }
+            }
+        }
+
+        return parent
     }
 }

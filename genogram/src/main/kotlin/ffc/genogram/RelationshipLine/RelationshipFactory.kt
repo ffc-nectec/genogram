@@ -65,6 +65,7 @@ class RelationshipFactory {
     ): Relationship {
         return when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
+
                 ChildrenLine(focusedListPerson, parent, familyTreeDrawer)
             }
             else -> {

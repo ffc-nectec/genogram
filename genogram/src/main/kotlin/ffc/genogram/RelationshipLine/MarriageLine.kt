@@ -174,19 +174,17 @@ class MarriageLine(
         if (lineLayerSize < addingInd) {
             // When the layer's is less than the index the new marriage line expect.
             // Add empty node(s), and move the marriage line to "focusedPerson"'s index.
-            if (lineLayerSize < addingInd) {
-                for (i in lastLineLayerInd until addingInd) {
-                    if (i == (addingInd)) {
-                        familyTreeDrawer.addFamilyAtLayer(
-                            addingLayer + 1,
-                            createLineDistance(),
-                            null
-                        )
-                    } else {
-                        familyTreeDrawer.addFamilyStorageReplaceIndex(
-                            addingLayer + 1, i, null, null
-                        )
-                    }
+            for (i in lastLineLayerInd until addingInd) {
+                if (i == addingInd) {
+                    familyTreeDrawer.addFamilyAtLayer(
+                        addingLayer + 1,
+                        createLineDistance(),
+                        null
+                    )
+                } else {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer + 1, i, null, null
+                    )
                 }
             }
         } else {

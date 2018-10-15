@@ -368,7 +368,7 @@ class FamilyTreeDrawer {
     fun moveChildrenLineSign(lineLayer: Int, step: Int): String {
         val tmp = StringBuilder()
         val extraStep = step + 1
-        var moveSteps = (distanceLine.toInt() * extraStep) + extraStep
+        var moveSteps = ((distanceLine.toInt() * extraStep) + extraStep)
         var count = 1
 
         val parentLayer = lineLayer - 1
@@ -381,15 +381,41 @@ class FamilyTreeDrawer {
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
 
-        for (i in 0 until line.length) {
-            if (i == moveSteps && count == 0)
-                tmp.append("^")
+        // find the '^' index
+        var signInd = 0
+        line.forEachIndexed { index, c ->
+            if (c == '^')
+                signInd = index
+        }
 
-            if (line[i] == '^') {
-                tmp.append("")
-                count--
-            } else {
-                tmp.append(line[i])
+//        print("signInd: $signInd\n")
+//        print("moveSteps: $moveSteps\n")
+
+        if (signInd > moveSteps) {
+            // Add '^' sign
+            tmp.append(line)
+            moveSteps--
+            if (tmp[moveSteps] != '^') {
+                tmp[moveSteps] = '^'
+            }
+
+            // Remove wrong '^' position
+            for (i in 0 until tmp.length) {
+                if (tmp[i] == '^' && i != moveSteps) {
+                    tmp[i] = '-'
+                }
+            }
+        } else {
+            for (i in 0 until line.length) {
+                if (i == moveSteps && count == 0)
+                    tmp.append("^")
+
+                if (line[i] == '^') {
+                    tmp.append("")
+                    count--
+                } else {
+                    tmp.append(line[i])
+                }
             }
         }
 

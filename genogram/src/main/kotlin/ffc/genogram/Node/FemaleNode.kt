@@ -40,7 +40,6 @@ class FemaleNode(
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {
-
                 // Find layer of AddedPerson's siblings
                 val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val childrenLineLayer = childrenLayer - 1
@@ -92,12 +91,19 @@ class FemaleNode(
                         // Extend the CHILDREN Line the top layer of the AddedPerson.
                         // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
                         var startInd = childrenListInd[0]
+                        var addingInd = parentInd - 1
                         if (startInd != 0) {
                             childrenNumber -= 1
                         } else {
                             startInd = 0
+                            addingInd = 0
                         }
 
+                        // Here
+                        print("startInd: $startInd\n")
+                        print("parentLayer: $parentLayer\n")
+                        print("parentInd: $parentInd\n")
+                        print("childrenNumber: $childrenNumber\n")
                         val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                         val extendedLine = familyTreeDrawer.extendLine(
                             expectedLength,
@@ -113,7 +119,7 @@ class FemaleNode(
                             childrenLineLayer, addingEmptyNodes
                         )
                         familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, parentLayer, editedLine
+                            childrenLineLayer, addingInd, editedLine
                         )
 
                         // Extend the MarriageLine of AddedPerson and FocusedPerson
@@ -125,9 +131,7 @@ class FemaleNode(
 
                         if ((husbandInd != emptyNodeNumber) && (marriageLineNumb == 1)) {
                             val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
-                            print("addMore: $addMore\n")
                             if (addMore > 0) {
-                                print("addMore > 0: ${addedPerson.firstname}\n")
                                 for (i in 0..(addMore - 1))
                                     familyTreeDrawer.addFamilyStorageReplaceIndex(
                                         childrenLayer + 1,
@@ -189,9 +193,9 @@ class FemaleNode(
         } else {
             // Children or Twin
             // Add a single child
-            val familyGen = familyTreeDrawer.findStorageSize() - 1
+            val addingLayer = familyTreeDrawer.findStorageSize() - 1
             familyTreeDrawer.addFamilyAtLayer(
-                familyGen,
+                addingLayer,
                 setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
                 addedPerson
             )
@@ -199,12 +203,12 @@ class FemaleNode(
             // "focusedPerson" = parent, when the generation is greater than 2.
             // "parent" = grandparent
             // Find parent index, and add the addedPerson node at the index.
+            // Move the addedPerson node.
             if (focusedPerson != null) {
                 val focusedPersonLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val focusedPersonInd = familyTreeDrawer.findPersonInd(
                     focusedPerson!!, focusedPersonLayer
                 )
-                val addingLayer = familyTreeDrawer.findPersonLayer(addedPerson)
                 val addingLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
 
                 if (addingLayerSize < focusedPersonInd) {
