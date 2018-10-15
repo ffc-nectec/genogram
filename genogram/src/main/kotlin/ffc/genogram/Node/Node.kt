@@ -96,7 +96,7 @@ abstract class Node {
         val focusedPersonInd = familyTreeDrawer.findPersonInd(
             focusedPerson!!, focusedPersonLayer
         )
-        val childrenNumb = familyTreeDrawer.findPersonLayerSize(addingLayer)
+        val childrenNumb = familyTreeDrawer.findLineNumber(addingLayer)
 
         // Add a single child
         familyTreeDrawer.addFamilyAtLayer(

@@ -185,6 +185,7 @@ class MaleNode(
                                 // Middle Child
                                 var startInd = childrenListInd[0]
                                 val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+
                                 if ((startInd != 0) && (parentInd > startInd)) {
                                     startInd = parentInd - startInd
 
@@ -192,18 +193,19 @@ class MaleNode(
                                     familyTreeDrawer.replaceFamilyStorageLayer(
                                         childrenLineLayer, 0, null
                                     )
-                                    // Extend the children line.
                                     childrenNumber--
-                                    val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
-                                    val extendedLine = familyTreeDrawer.extendLine(
-                                        expectedLength,
-                                        childrenListInd,
-                                        parentInd
-                                    )
-                                    familyTreeDrawer.replaceFamilyStorageLayer(
-                                        childrenLineLayer, startInd, extendedLine
-                                    )
                                 }
+
+                                // Extend the children line.
+                                val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
+                                val extendedLine = familyTreeDrawer.extendLine(
+                                    expectedLength,
+                                    childrenListInd,
+                                    parentInd
+                                )
+                                familyTreeDrawer.replaceFamilyStorageLayer(
+                                    childrenLineLayer, startInd, extendedLine
+                                )
                             }
 
                             // Move children sign
