@@ -31,14 +31,27 @@ class ChildrenLine(
 
     override fun drawLine(): FamilyTreeDrawer {
         // Add the children line
-        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-        familyTreeDrawer.addEmptyNewLayer()
-
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
-        val addingInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
+        var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
+        val generationSize = familyTreeDrawer.findStorageSize()
         val addingLayer = parentLayer + 2
+        var childrenLineNumb = 0
+
+        if (addingLayer >= generationSize) {
+            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            familyTreeDrawer.addEmptyNewLayer()
+        } else {
+            childrenLineNumb = familyTreeDrawer.findLineNumber(addingLayer)
+            familyTreeDrawer.addFamilyAtLayer(
+                addingLayer,
+                createLineDistance(),
+                null
+            )
+        }
+
         val childrenLineSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
         val childrenLineInd = childrenLineSize - 1
+        val addingInd = parentInd - childrenLineNumb
 
         // The number of empty node(s) should be equal to the parentInd
         // Add the empty node(s), move the line
@@ -55,6 +68,16 @@ class ChildrenLine(
                         addingLayer, i, null, null
                     )
                 }
+            }
+        } else {
+            // When the layer's is enough for moving the new children line
+            // to the "parent"'s index.
+            // Move the children line to "parent"'s index.
+            val addingMore = addingInd - childrenLineSize
+            for (i in 0 until addingMore + 1) {
+                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                    addingLayer, addingInd - 1, null, null
+                )
             }
         }
         return familyTreeDrawer

@@ -19,6 +19,7 @@ package ffc.genogram.Node
 
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
+import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
@@ -62,11 +63,6 @@ abstract class Node {
             Math.floorDiv(childrenNumber, 2) - 1
     }
 
-    // TODO: Not Complete yet
-    fun findAddingEmptyNodesChild(personInd: Int): Int {
-        return personInd
-    }
-
     fun addMoreNodes(
         emptyNodeNumber: Int,
         addingEmptyNodes: Int,
@@ -84,5 +80,64 @@ abstract class Node {
         }
 
         return familyTreeDrawer
+    }
+
+    fun addMiddleChild(
+        focusedPerson: Person,
+        nodeName: String,
+        gender: GenderLabel,
+        addedPerson: Person,
+        siblings: Boolean,
+        familyTreeDrawer: FamilyTreeDrawer
+    ) {
+        // Children or Twin
+        val addingLayer = familyTreeDrawer.findStorageSize() - 1
+        val focusedPersonLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+        val focusedPersonInd = familyTreeDrawer.findPersonInd(
+            focusedPerson!!, focusedPersonLayer
+        )
+        val childrenNumb = familyTreeDrawer.findPersonLayerSize(addingLayer)
+
+        // Add a single child
+        familyTreeDrawer.addFamilyAtLayer(
+            addingLayer,
+            setSingleNodePosition(nodeName, gender, siblings),
+            addedPerson
+        )
+
+        // "focusedPerson" = parent, when the generation is greater than 2.
+        // "parent" = grandparent
+        // Find parent index, and add the addedPerson node at the index.
+        // Move the addedPerson node.
+        val addingLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
+        val addingInd = focusedPersonInd - childrenNumb
+        val childrenLineInd = addingLayerSize - 1
+
+        if (addingLayerSize < addingInd) {
+            // Add empty node(s), and move the node
+            for (i in childrenLineInd until addingInd) {
+                if (i == addingInd) {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, i,
+                        setSingleNodePosition(nodeName, gender, siblings),
+                        addedPerson
+                    )
+                } else {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, i, null, null
+                    )
+                }
+            }
+        } else {
+            // When the layer's is enough for moving the child node
+            // to the "parent"'s index.
+            // Move the child node to "parent"'s index.
+            val addingMore = addingInd - addingLayerSize
+            for (i in 0 until addingMore + 1) {
+                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                    addingLayer, addingInd - 1, null, null
+                )
+            }
+        }
     }
 }

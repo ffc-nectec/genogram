@@ -99,11 +99,6 @@ class FemaleNode(
                             addingInd = 0
                         }
 
-                        // Here
-                        print("startInd: $startInd\n")
-                        print("parentLayer: $parentLayer\n")
-                        print("parentInd: $parentInd\n")
-                        print("childrenNumber: $childrenNumber\n")
                         val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                         val extendedLine = familyTreeDrawer.extendLine(
                             expectedLength,
@@ -193,41 +188,14 @@ class FemaleNode(
         } else {
             // Children or Twin
             // Add a single child
-            val addingLayer = familyTreeDrawer.findStorageSize() - 1
-            familyTreeDrawer.addFamilyAtLayer(
-                addingLayer,
-                setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
-                addedPerson
+            addMiddleChild(
+                focusedPerson!!,
+                nodeName,
+                GenderLabel.FEMALE,
+                addedPerson,
+                siblings,
+                familyTreeDrawer
             )
-
-            // "focusedPerson" = parent, when the generation is greater than 2.
-            // "parent" = grandparent
-            // Find parent index, and add the addedPerson node at the index.
-            // Move the addedPerson node.
-            if (focusedPerson != null) {
-                val focusedPersonLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
-                val focusedPersonInd = familyTreeDrawer.findPersonInd(
-                    focusedPerson!!, focusedPersonLayer
-                )
-                val addingLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
-
-                if (addingLayerSize < focusedPersonInd) {
-                    // Add empty node(s), and move the node
-                    for (i in addingLayerSize - 1 until focusedPersonInd) {
-                        if (i == focusedPersonInd) {
-                            familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                addingLayer, i,
-                                setSingleNodePosition(nodeName, GenderLabel.FEMALE, siblings),
-                                addedPerson
-                            )
-                        } else {
-                            familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                addingLayer, i, null, null
-                            )
-                        }
-                    }
-                }
-            }
         }
 
         return familyTreeDrawer
