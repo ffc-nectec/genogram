@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NECTEC
+ * Copyright (c) 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,15 @@
  * limitations under the License.
  */
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
-}
+package ffc.genogram.android.sample
 
-ext {
-    supportLibVersion = '28.0.0'
-    kotlinVersion = '1.2.71'
+import android.content.Context
+import android.support.annotation.RawRes
+import com.google.gson.Gson
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+inline fun <reified T> Context.rawAs(@RawRes rawId: Int, gson: Gson = Gson()): T {
+    val reader = BufferedReader(InputStreamReader(resources.openRawResource(rawId)))
+    return gson.fromJson(reader.readText(), T::class.java)
 }
