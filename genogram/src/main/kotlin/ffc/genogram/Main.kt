@@ -140,9 +140,10 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-3.json")
-    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-4.json")
+//    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-4.json")
 
-
+    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-5.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-2.json")
 
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")

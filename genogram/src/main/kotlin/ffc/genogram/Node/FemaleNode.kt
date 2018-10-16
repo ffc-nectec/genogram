@@ -188,6 +188,27 @@ class FemaleNode(
         } else {
             // Children or Twin
             // Add a single child
+            val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+            val childrenLayer = addingLayer + 3
+            val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
+            val cousinsNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+            val emptyNodeNumb = parentInd - cousinsNumb
+            // 2-1 = 1
+            print("add: ${addedPerson.firstname}\n")
+            print("focusedPerson: ${focusedPerson!!.firstname}\n")
+            print("parentInd: $parentInd\n")
+            if (emptyNodeNumb == cousinsNumb) {
+                // Separate AddedPerson and their cousins by adding empty node(s).
+                if (emptyNodeNumb > 0) {
+                    for (i in cousinsNumb until parentInd) {
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            childrenLayer,
+                            i, null, null
+                        )
+                    }
+                }
+            }
+
             addMiddleChild(
                 focusedPerson!!,
                 nodeName,
