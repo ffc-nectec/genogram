@@ -33,11 +33,11 @@ abstract class Node {
         const val nodeBorderSize = 2.0
     }
 
-    abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer
+    abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer?
 
     abstract fun getArea(): Double
 
-    fun setSingleNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
+    private fun setSingleNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
         val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""

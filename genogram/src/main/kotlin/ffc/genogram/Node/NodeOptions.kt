@@ -18,7 +18,6 @@
 package ffc.genogram.Node
 
 import ffc.genogram.GenderLabel
-import ffc.genogram.Node.Node.Companion.nodeBorderSize
 import ffc.genogram.Person
 
 fun setNodeSize(nodeName: String): String {
@@ -51,17 +50,6 @@ fun findPersonPosition(personLayer: ArrayList<String>, focusedPerson: Person): I
     }
 
     return 0
-}
-
-fun createEmptyNode(): String {
-
-    var result = ""
-
-    for (i in 0 until Node.nodeSize.toInt() + nodeBorderSize.toInt()) {
-        result += " "
-    }
-
-    return result
 }
 
 fun createGenderBorder(name: String, gender: GenderLabel): String {

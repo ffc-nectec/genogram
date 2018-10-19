@@ -17,7 +17,7 @@
 
 package ffc.genogram
 
-import ffc.genogram.Node.createEmptyNode
+import ffc.genogram.Node.EmptyNode
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -32,6 +32,8 @@ class FamilyTreeDrawer {
     // For recording
     var personFamilyLayers: ArrayList<Any> = ArrayList()
     var personFamilyStorage: ArrayList<ArrayList<Any>> = ArrayList()
+
+    private var emptyNode: EmptyNode = EmptyNode()
 
     fun addFamilyNewLayer(name: String) {
         nameFamilyStorage.add(arrayListOf(name))
@@ -77,8 +79,8 @@ class FamilyTreeDrawer {
             nameFamilyStorage[layerNumb].add(replaceInd + 1, node)
             personFamilyStorage[layerNumb].add(replaceInd + 1, person)
         } else {
-            nameFamilyStorage[layerNumb].add(replaceInd, createEmptyNode())
-            personFamilyStorage[layerNumb].add(replaceInd, createEmptyNode())
+            nameFamilyStorage[layerNumb].add(replaceInd, emptyNode.drawEmptyNode())
+            personFamilyStorage[layerNumb].add(replaceInd, emptyNode)
         }
     }
 
@@ -88,7 +90,7 @@ class FamilyTreeDrawer {
         if (node != null)
             layer[replaceInd] = node
         else
-            layer[replaceInd] = createEmptyNode()
+            layer[replaceInd] = emptyNode.drawEmptyNode()
     }
 
     fun findStorageSize(): Int = nameFamilyStorage.size
@@ -169,7 +171,7 @@ class FamilyTreeDrawer {
         var count = 0
 
         marriageLine.forEach {
-            if (it != createEmptyNode())
+            if (it != emptyNode.drawEmptyNode())
                 count++
         }
 
@@ -222,7 +224,7 @@ class FamilyTreeDrawer {
         if (layerNumb < findStorageSize()) {
             val lineLayer = nameFamilyStorage[layerNumb]
             lineLayer.forEach {
-                if (it == createEmptyNode())
+                if (it == emptyNode.drawEmptyNode())
                     count++
             }
         }
