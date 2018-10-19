@@ -17,8 +17,6 @@
 
 package ffc.genogram
 
-import ffc.genogram.Node.EmptyNode
-import ffc.genogram.Node.createGenderBorder
 import java.nio.charset.Charset
 
 private lateinit var familyObj: Family
@@ -141,15 +139,19 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-1-child-3rd-gen-5.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-2.json")
-    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-3.json")
-
-    // Fix
+//    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-3.json")
 //    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-4.json")
-
-
-
+//    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-5.json")
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-3.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-4.json")
+
+    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-5.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-2.json")
+
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
+//    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
@@ -168,7 +170,7 @@ fun main(args: Array<String>) {
 //            print("\n")
 //    }
 
-      print("\n\n///////////////////////\n\n")
+     /* print("\n\n///////////////////////\n\n")
 
       familyTreePic.personFamilyStorage.forEach { layer ->
           layer.forEach {
@@ -187,7 +189,7 @@ fun main(args: Array<String>) {
           }
 
           print("\n")
-      }
+      }*/
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {
