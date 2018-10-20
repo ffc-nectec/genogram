@@ -23,14 +23,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ffc.genogram.Family
-import ffc.genogram.parseTo
-import ffc.genogram.toJson
 
 class GenogramFragment : Fragment() {
 
     lateinit var families: Families
-
-    private var family: Family? = null //For saveState only
     var personViewHolder: PersonViewHolder? = null
     lateinit var genogramView: GenogramView
 
@@ -42,11 +38,7 @@ class GenogramFragment : Fragment() {
 
     override fun onActivityCreated(savedState: Bundle?) {
         super.onActivityCreated(savedState)
-
-        val savedFamily = savedState?.family
-        if (savedFamily == null) {
-            getFamilyAndDraw()
-        }
+        getFamilyAndDraw()
     }
 
     private fun getFamilyAndDraw() {
@@ -57,12 +49,10 @@ class GenogramFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.family = family
         super.onSaveInstanceState(outState)
     }
 
     private fun drawFamily(family: Family) {
-        this.family = family
         personViewHolder?.let { genogramView.personViewHolder = it }
         genogramView.drawFamily(family)
     }
@@ -70,13 +60,4 @@ class GenogramFragment : Fragment() {
     private fun handleError(t: Throwable?) {
         //TODO implement
     }
-
-    private var Bundle.family: Family?
-        set(value) {
-            if (value != null)
-                putString("family", value.toJson())
-            else
-                putString("family", null)
-        }
-        get() = getString("family")?.parseTo()
 }
