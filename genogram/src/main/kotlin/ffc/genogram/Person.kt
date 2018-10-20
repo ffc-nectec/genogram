@@ -38,12 +38,16 @@ class Person(
     var linkedStack: List<Int>?
 ) {
 
+    fun getGender(): GenderLabel {
+        return if (gender == 0) GenderLabel.MALE else GenderLabel.FEMALE
+    }
+
     // Whether the person has been divorced.
     fun hasBeenDivorced() = exHusband != null || exWife != null
 
     fun hasBeenMarriedWith(relatedPersonId: Int): RelationshipLabel {
 
-        if (gender == 0) {
+        if (getGender() == GenderLabel.MALE) {
             // Male
             exWife?.find { it == relatedPersonId }?.let {
                 return RelationshipLabel.EX_WIFE
