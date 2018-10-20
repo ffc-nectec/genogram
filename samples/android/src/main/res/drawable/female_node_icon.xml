@@ -15,13 +15,9 @@
   ~ limitations under the License.
   -->
 
-<ffc.genogram.android.GenogramView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp"
-    android:layout_gravity="center"
-    app:layout_anchorGravity="center"
-    android:id="@+id/genogram"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
 
-</ffc.genogram.android.GenogramView>
+    <solid android:color="#e92c8e" />
+
+</shape>

@@ -21,7 +21,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewParent
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
@@ -37,26 +37,23 @@ class GenogramView @JvmOverloads constructor(
         defStyleAttr: Int = 0
 ) : GridLayout(context, attrs, defStyleAttr) {
 
-    val personViewHolder: PersonViewHolder = DummyPersonViewHolder()
+    var personViewHolder: PersonViewHolder = DummyPersonViewHolder()
 
     fun drawFamily(family: Family) {
         val drawer = FamilyTree(family).drawGenogram()
         val column = drawer.personFamilyStorage.maxBy { it.size }!!.size
 
-
-        setAlignmentMode(GridLayout.ALIGN_MARGINS)
+        alignmentMode = GridLayout.ALIGN_BOUNDS
         this.columnCount = column
         this.rowCount = drawer.personFamilyStorage.size
         Toast.makeText(context, "$rowCount:$columnCount", Toast.LENGTH_SHORT).show()
 
-        println("======================")
         drawer.personFamilyStorage.forEachIndexed { row, layer ->
             layer.forEachIndexed { col, node ->
                 when (node) {
                     is Person -> {
                         print(node.firstname)
-                        val view = personViewHolder.onCreateView(context, this)
-                        personViewHolder.onBind(view, node)
+                        val view = personViewHolder.viewFor(node, context, this)
                         addView(view, childLayoutParams(row, col))
                     }
                     else -> {
@@ -82,20 +79,16 @@ class GenogramView @JvmOverloads constructor(
 
     interface PersonViewHolder {
 
-        fun onCreateView(context: Context, parent: ViewParent): View
+        fun viewFor(person: Person, context: Context, parent: ViewGroup): View
 
-        fun onBind(view: View, person: Person)
     }
 
     class DummyPersonViewHolder : PersonViewHolder {
 
-        override fun onCreateView(context: Context, parent: ViewParent): View {
-            return Button(context)
-        }
-
-        override fun onBind(view: View, person: Person) {
-            view as Button
-            view.text = "${person.firstname}"
+        override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
+            return Button(context).apply {
+                text = "${person.firstname}"
+            }
         }
     }
 
