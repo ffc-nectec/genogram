@@ -18,7 +18,6 @@
 package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
-import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
 class RelationshipFactory {
@@ -46,7 +45,7 @@ class RelationshipFactory {
             return if (labelType == RelationshipLabel.DIVORCED)
                 DivorceLine()
             else {
-                labelType = if (focusedPerson.getGender() == GenderLabel.MALE)
+                labelType = if (focusedPerson.gender == 0)
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND

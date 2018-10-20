@@ -178,22 +178,6 @@
       "wife": null,
       "children": null,
       "linkedStack": [3, 12]
-    },
-    {
-      "idCard": 4,
-      "firstname": "Ed",
-      "lastname": "Smiths",
-      "birthDate": "23-10-1982",
-      "gender": 0,
-      "father": 0,
-      "mother": 10,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": null,
-      "wife": null,
-      "children": null,
-      "linkedStack": [0, 10]
     }
   ]
 }

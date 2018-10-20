@@ -26,7 +26,7 @@ class Person(
     var lastname: String,
 //    private var birthDate: Date,
     var birthDate: String?,
-    private var gender: Int,
+    var gender: Int,
     var father: Long?,
     var mother: Long?,
     var twin: List<Int>?,
