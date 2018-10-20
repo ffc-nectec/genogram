@@ -140,4 +140,30 @@ abstract class Node {
             }
         }
     }
+
+    fun separateMidChildren(familyTreeDrawer: FamilyTreeDrawer, focusedPerson: Person) {
+        val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+        val childrenLayer = parentLayer + 3
+        var parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)
+        val emptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNode(childrenLayer)
+        val cousinsLayerElNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+        val cousinsNumb = Math.abs(cousinsLayerElNumb - emptyNodeNumb)
+        val addingEmptyNode = parentInd - cousinsLayerElNumb
+
+        if (addingEmptyNode > 0) {
+            if (cousinsLayerElNumb != addingEmptyNode) {
+                if (cousinsLayerElNumb < addingEmptyNode) {
+                    parentInd -= cousinsNumb
+                }
+                if (cousinsNumb != cousinsLayerElNumb - 1) {
+                    for (i in cousinsLayerElNumb until parentInd) {
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            childrenLayer,
+                            i, null, null
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
