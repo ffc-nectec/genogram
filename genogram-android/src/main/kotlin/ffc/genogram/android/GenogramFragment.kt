@@ -31,7 +31,7 @@ class GenogramFragment : Fragment() {
     lateinit var families: Families
 
     private var family: Family? = null //For saveState only
-    var personViewHolder: GenogramView.PersonViewHolder? = null
+    var personViewHolder: PersonViewHolder? = null
     lateinit var genogramView: GenogramView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
