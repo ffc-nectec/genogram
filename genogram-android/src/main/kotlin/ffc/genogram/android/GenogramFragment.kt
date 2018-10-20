@@ -37,7 +37,6 @@ class GenogramFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.genogram_fragment, container, false)
         genogramView = view!!.findViewById(R.id.genogram)
-        personViewHolder?.let { genogramView.personViewHolder = it }
         return view
     }
 
@@ -64,6 +63,7 @@ class GenogramFragment : Fragment() {
 
     private fun drawFamily(family: Family) {
         this.family = family
+        personViewHolder?.let { genogramView.personViewHolder = it }
         genogramView.drawFamily(family)
     }
 
