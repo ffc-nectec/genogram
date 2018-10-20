@@ -61,7 +61,7 @@ class GenogramView @JvmOverloads constructor(
         return GridLayout.LayoutParams().apply {
             rowSpec = GridLayout.spec(row)
             columnSpec = GridLayout.spec(col)
-            setMargins(0, itemMargin, itemMargin, 0)
+            setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
         }
     }
 
