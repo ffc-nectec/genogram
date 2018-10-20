@@ -19,13 +19,8 @@ package ffc.genogram.android
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
-import android.widget.Toast
 import ffc.genogram.Family
 import ffc.genogram.FamilyTree
 import ffc.genogram.Person
@@ -46,27 +41,23 @@ class GenogramView @JvmOverloads constructor(
         alignmentMode = GridLayout.ALIGN_BOUNDS
         this.columnCount = column
         this.rowCount = drawer.personFamilyStorage.size
-        Toast.makeText(context, "$rowCount:$columnCount", Toast.LENGTH_SHORT).show()
 
         drawer.personFamilyStorage.forEachIndexed { row, layer ->
             layer.forEachIndexed { col, node ->
                 when (node) {
                     is Person -> {
-                        print(node.firstname)
                         val view = personViewHolder.viewFor(node, context, this)
-                        addView(view, childLayoutParams(row, col))
+                        addView(view, layoutParamsFor(row, col))
                     }
                     else -> {
-                        print(node)
-                        addView(TextView(context).apply { text = "$row : $col" }, childLayoutParams(row, col))
+                        addView(TextView(context).apply { text = "$row : $col" }, layoutParamsFor(row, col))
                     }
                 }
             }
         }
-
     }
 
-    fun childLayoutParams(row: Int, col: Int): GridLayout.LayoutParams {
+    fun layoutParamsFor(row: Int, col: Int): GridLayout.LayoutParams {
         return GridLayout.LayoutParams().apply {
             rowSpec = GridLayout.spec(row)
             columnSpec = GridLayout.spec(col)
@@ -74,25 +65,5 @@ class GenogramView @JvmOverloads constructor(
         }
     }
 
-    val itemMargin: Int
-        get() = dip(8)
-
-    interface PersonViewHolder {
-
-        fun viewFor(person: Person, context: Context, parent: ViewGroup): View
-
-    }
-
-    class DummyPersonViewHolder : PersonViewHolder {
-
-        override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
-            return Button(context).apply {
-                text = "${person.firstname}"
-            }
-        }
-    }
-
+    val itemMargin: Int = dip(8)
 }
-
-internal fun View.dip(dipValue: Int): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue.toFloat(), resources.displayMetrics).toInt()
