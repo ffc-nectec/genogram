@@ -19,6 +19,7 @@ package ffc.genogram.Node
 
 import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
 class NodeFactory {
@@ -39,8 +40,8 @@ class NodeFactory {
             if (parent == null)
                 parent = family.findPerson(focusedPerson.mother!!)
         }
-        return when (addedPerson.gender) {
-            0 -> MaleNode(
+        return when (addedPerson.getGender()) {
+            GenderLabel.MALE -> MaleNode(
                 familyTreeDrawer,
                 addedPerson,
                 focusedPerson,
