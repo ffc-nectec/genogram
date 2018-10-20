@@ -223,6 +223,9 @@ class MaleNode(
             }
         } else {
             // Children or Twin
+            // Separate AddedPerson and their cousins by adding empty node(s).
+            separateMidChildren(familyTreeDrawer, focusedPerson!!)
+
             // Add a single child
             addMiddleChild(
                 focusedPerson!!,
