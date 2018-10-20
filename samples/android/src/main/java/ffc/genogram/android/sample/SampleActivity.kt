@@ -21,9 +21,17 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import ffc.genogram.Family
+import ffc.genogram.Person
 import ffc.genogram.android.Families
 import ffc.genogram.android.GenogramFragment
+import ffc.genogram.android.PersonViewHolder
 
 class SampleActivity : AppCompatActivity() {
 
@@ -31,21 +39,38 @@ class SampleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample)
 
-        val genogram = GenogramFragment()
+        val genogram = supportFragmentManager.findFragmentById(R.id.genogram) as GenogramFragment
         genogram.families = RawResourceFamilies(this, R.raw.family_3_children_3rd_gen)
-
-        supportFragmentManager.beginTransaction().replace(R.id.container, genogram).commit()
+        genogram.personViewHolder = SimplePersonViewHolder()
     }
-}
 
-class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Families {
+    class SimplePersonViewHolder : PersonViewHolder {
+        override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
+            val view = LayoutInflater.from(context).inflate(R.layout.node_item, parent, false)
+            val icon = view.findViewById<Button>(R.id.icon)
+            when (person.gender) {
+                0 -> icon.setBackgroundResource(R.drawable.male_node_icon)
+                1 -> icon.setBackgroundResource(R.drawable.female_node_icon)
+            }
+            icon.setOnClickListener {
+                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}", Toast.LENGTH_SHORT).show()
+            }
+            val name = view.findViewById<TextView>(R.id.name)
+            name.text = person.firstname
+            return view
+        }
 
-    override fun family(callbackDsl: Families.Callback.() -> Unit) {
-        val callback = Families.Callback().apply(callbackDsl)
-        try {
-            callback.onSuccess(context.rawAs<Family>(rawId))
-        } catch (exception: Exception) {
-            callback.onFail(exception)
+    }
+
+    class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Families {
+
+        override fun family(callbackDsl: Families.Callback.() -> Unit) {
+            val callback = Families.Callback().apply(callbackDsl)
+            try {
+                callback.onSuccess(context.rawAs<Family>(rawId))
+            } catch (exception: Exception) {
+                callback.onFail(exception)
+            }
         }
     }
 }
