@@ -21,9 +21,16 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import ffc.genogram.Family
+import ffc.genogram.Person
 import ffc.genogram.android.Families
 import ffc.genogram.android.GenogramFragment
+import ffc.genogram.android.GenogramView
 
 class SampleActivity : AppCompatActivity() {
 
@@ -33,8 +40,24 @@ class SampleActivity : AppCompatActivity() {
 
         val genogram = GenogramFragment()
         genogram.families = RawResourceFamilies(this, R.raw.family_3_children_3rd_gen)
+        genogram.personViewHolder = personVh
 
         supportFragmentManager.beginTransaction().replace(R.id.container, genogram).commit()
+    }
+
+    val personVh = object : GenogramView.PersonViewHolder {
+
+        override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
+            val view = LayoutInflater.from(context).inflate(R.layout.node_item, parent, false)
+            val icon = view.findViewById<Button>(R.id.icon)
+            when (person.gender) {
+                1 -> icon.setBackgroundResource(R.drawable.male_node_icon)
+                else -> icon.setBackgroundResource(R.drawable.female_node_icon)
+            }
+            val name = view.findViewById<TextView>(R.id.name)
+            name.text = person.firstname
+            return view
+        }
     }
 }
 
