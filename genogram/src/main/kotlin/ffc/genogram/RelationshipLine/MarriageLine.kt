@@ -79,6 +79,7 @@ class MarriageLine(
         } else {
             // Add line on left hand side
             if (addingLayer > 0) {
+
                 if (addingLayer == 0) {
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance())
                 } else {

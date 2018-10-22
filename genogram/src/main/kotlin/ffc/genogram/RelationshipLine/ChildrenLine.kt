@@ -30,6 +30,7 @@ class ChildrenLine(
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
+
         // Add the children line
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
@@ -49,9 +50,13 @@ class ChildrenLine(
             )
         }
 
+        val childrenLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer + 1)
         val childrenLineSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
         val childrenLineInd = childrenLineSize - 1
-        val addingInd = parentInd - childrenLineNumb
+        var addingInd = parentInd - childrenLineNumb
+
+        if (childrenLayerSize > childrenLineNumb)
+            addingInd = parentInd - (childrenLayerSize - 1)
 
         // The number of empty node(s) should be equal to the parentInd
         // Add the empty node(s), move the line

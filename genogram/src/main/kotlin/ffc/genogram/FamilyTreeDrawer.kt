@@ -142,6 +142,18 @@ class FamilyTreeDrawer {
         return 0
     }
 
+    fun getPersonIndById(personId: Long, layerNumb: Int): Person? {
+        val nodeList = personFamilyStorage[layerNumb]
+
+        nodeList.forEachIndexed { index, person ->
+            if (person is Person)
+                if (person.idCard == personId)
+                    return person
+        }
+
+        return null
+    }
+
     fun findPersonLayer(focusedPerson: Person): Int {
         personFamilyStorage.forEachIndexed { index, arrayList ->
             arrayList.forEach { element ->
@@ -190,6 +202,11 @@ class FamilyTreeDrawer {
         return nameFamilyStorage[layerNumb][index]
     }
 
+    fun getPersonLayerInd(layerNumb: Int, index: Int): Person? {
+        val element = personFamilyStorage[layerNumb][index]
+        return element as? Person
+    }
+
     fun addMarriageLineInd(layerNumb: Int, focusedPerson: Person, addedPerson: Person?): Int {
         // Check the person gender, and find the person's
         val allPeople: MutableList<Long> = mutableListOf()
@@ -197,6 +214,7 @@ class FamilyTreeDrawer {
             if (it is Person)
                 allPeople.add(it.idCard)
         }
+
         // find the focusedPerson and addedPerson's index
         var focusedPersonInd = 0
         var addedPersonInd = 0
@@ -221,13 +239,32 @@ class FamilyTreeDrawer {
     fun findNumberOfEmptyNode(layerNumb: Int): Int {
         var count = 0
 
-        if (layerNumb < findStorageSize()) {
-            val lineLayer = nameFamilyStorage[layerNumb]
-            lineLayer.forEach {
-                if (it == emptyNode.drawEmptyNode())
-                    count++
+        if (nameFamilyStorage.isNotEmpty())
+            if (layerNumb < findStorageSize()) {
+                val lineLayer = nameFamilyStorage[layerNumb]
+                lineLayer.forEach {
+                    if (it == emptyNode.drawEmptyNode())
+                        count++
+                }
             }
-        }
+
+        return count
+    }
+
+    private fun findNumberOfMidEmptyNode(layerNumb: Int): Int {
+        var count = 0
+
+        if (nameFamilyStorage.isNotEmpty())
+            if (layerNumb < findStorageSize()) {
+                val lastLineLayerInd = findStorageLayerSize(layerNumb) - 1
+                val lineLayer = nameFamilyStorage[layerNumb]
+                lineLayer.forEachIndexed { index, s ->
+                    if ((index != 0) && (index != lastLineLayerInd)
+                        && (s == emptyNode.drawEmptyNode())
+                    )
+                        count++
+                }
+            }
 
         return count
     }
@@ -334,11 +371,18 @@ class FamilyTreeDrawer {
         return tmp.toString()
     }
 
-    fun extendRelationshipLineAtPosition(lineLayer: Int, addingInd: Int, childrenInd: MutableList<Int>)
-            : String {
+//    fun extendRelationshipLineParent(lineLayer: Int, addingInd: Int): String {
+//
+//    }
+
+    fun extendRelationshipLineAtPosition(
+        lineLayer: Int, addingInd: Int, lineInd: Int?,
+        childrenInd: MutableList<Int>
+    ): String {
 
         val addAt = addingInd * lengthLine.toInt()
-        val orgLine = nameFamilyStorage[lineLayer][0]
+        var orgLine = nameFamilyStorage[lineLayer][0]
+
         val tmp = StringBuilder()
 
         val childrenLine = createLine(
@@ -356,19 +400,25 @@ class FamilyTreeDrawer {
         return tmp.toString()
     }
 
-    fun moveChildrenLineSign(lineLayer: Int, step: Int): String {
+    fun moveChildrenLineSign(lineLayer: Int, step: Int, ChildInd: List<Int>): String {
         val tmp = StringBuilder()
         val extraStep = step + 1
         var moveSteps = ((distanceLine.toInt() * extraStep) + extraStep)
         var count = 1
 
         val parentLayer = lineLayer - 1
+        val childrenLayer = lineLayer + 1
         var parentEmptyNodeNumber = findNumberOfEmptyNode(parentLayer)
-        var childrenEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
+        var childrenFrontEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
+        var childrenMidEmptyNodeNumber = findNumberOfMidEmptyNode(childrenLayer)
         var line = nameFamilyStorage[lineLayer][0]
 
-        if ((parentEmptyNodeNumber - childrenEmptyNodeNumber > 0) && (childrenEmptyNodeNumber > 0)) {
-            line = nameFamilyStorage[lineLayer][childrenEmptyNodeNumber]
+        if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
+                    childrenFrontEmptyNodeNumber > 0) ||
+                    ((parentEmptyNodeNumber == childrenFrontEmptyNodeNumber) &&
+                            line == emptyNode.drawEmptyNode() && childrenMidEmptyNodeNumber != 0))
+        ) {
+            line = nameFamilyStorage[lineLayer][ChildInd[0]]
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
 
@@ -379,23 +429,11 @@ class FamilyTreeDrawer {
                 signInd = index
         }
 
-//        print("signInd: $signInd\n")
-//        print("moveSteps: $moveSteps\n")
-
         if (signInd > moveSteps) {
             // Add '^' sign
             tmp.append(line)
-            moveSteps--
-            if (tmp[moveSteps] != '^') {
-                tmp[moveSteps] = '^'
-            }
-
-            // Remove wrong '^' position
-            for (i in 0 until tmp.length) {
-                if (tmp[i] == '^' && i != moveSteps) {
-                    tmp[i] = '-'
-                }
-            }
+            tmp.setCharAt(signInd, '-')
+            tmp.setCharAt(moveSteps, '^')
         } else {
             for (i in 0 until line.length) {
                 if (i == moveSteps && count == 0)

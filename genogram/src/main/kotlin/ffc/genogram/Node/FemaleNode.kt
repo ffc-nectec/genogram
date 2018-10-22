@@ -111,7 +111,7 @@ class FemaleNode(
 
                         // Move the children sign
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                            childrenLineLayer, addingEmptyNodes
+                            childrenLineLayer, addingEmptyNodes, childrenListInd
                         )
                         familyTreeDrawer.replaceFamilyStorageLayer(
                             childrenLineLayer, addingInd, editedLine
@@ -174,7 +174,7 @@ class FemaleNode(
 
                             // Move children sign
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                                childrenLineLayer, addingEmptyNodes
+                                childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, startInd, editedLine
@@ -187,8 +187,14 @@ class FemaleNode(
             }
         } else {
             // Children or Twin
+            val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+            val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)
+
             // Separate AddedPerson and their cousins by adding empty node(s).
-            separateMidChildren(familyTreeDrawer, focusedPerson!!)
+            separateMidChildren(familyTreeDrawer, focusedPerson!!, parentLayer, parentInd)
+
+            // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
+            separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd)
 
             // Add a single child
             addMiddleChild(
