@@ -27,6 +27,8 @@ class MarriageLine(
     var focusedPerson: Person
 ) : Relationship() {
 
+    // Marriage Line
+
     private val sign = '_'
     private val space = ' '
     private val endSign = '|'
