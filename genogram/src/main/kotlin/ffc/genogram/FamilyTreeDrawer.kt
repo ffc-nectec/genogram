@@ -97,6 +97,18 @@ class FamilyTreeDrawer {
 
     fun findPersonLayerSize(layerNumb: Int): Int = personFamilyStorage[layerNumb].size
 
+    fun findPersonNumbLayer(layerNumb: Int): Int {
+        var count = 0
+
+        personFamilyStorage[layerNumb].forEach {
+            if (it is Person) {
+                count++
+            }
+        }
+
+        return count
+    }
+
     fun findStorageLayerSize(layerNumb: Int): Int {
         return if (nameFamilyStorage[layerNumb].isNotEmpty())
             nameFamilyStorage[layerNumb].size
@@ -196,6 +208,10 @@ class FamilyTreeDrawer {
 
     fun getLayer(layerNumb: Int): ArrayList<String> {
         return nameFamilyStorage[layerNumb]
+    }
+
+    fun getPersonLayer(layerNumb: Int): ArrayList<Any> {
+        return personFamilyStorage[layerNumb]
     }
 
     fun getLayerInd(layerNumb: Int, index: Int): String {
@@ -370,10 +386,6 @@ class FamilyTreeDrawer {
 
         return tmp.toString()
     }
-
-//    fun extendRelationshipLineParent(lineLayer: Int, addingInd: Int): String {
-//
-//    }
 
     fun extendRelationshipLineAtPosition(
         lineLayer: Int, addingInd: Int, lineInd: Int?,
