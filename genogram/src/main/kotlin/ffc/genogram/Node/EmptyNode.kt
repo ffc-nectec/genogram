@@ -6,6 +6,7 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 class EmptyNode: Node() {
 
     lateinit var nodeString: String
+    var nodeSize = Node.nodeSize
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer? {
         return null

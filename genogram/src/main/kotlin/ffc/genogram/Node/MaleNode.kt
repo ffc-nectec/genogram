@@ -140,7 +140,7 @@ class MaleNode(
                                 )
                             }
 
-                            // Extend the ChildrenLine the top layer of the AddedPerson
+                            // Extend the ChildrenLineManager the top layer of the AddedPerson
                             val addingMore = Math.abs(childrenNumber - (addingInd + 1))
                             if (addingMore > 1) {
                                 val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(

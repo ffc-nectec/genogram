@@ -19,6 +19,7 @@ package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Node.createGenderBorder
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.MarriageLine
 import java.nio.charset.Charset
 
@@ -26,8 +27,7 @@ private lateinit var familyObj: Family
 
 fun main(args: Array<String>) {
 //    familyObj = getResourceAs("1stGen/family-1-person.json")
-    familyObj = getResourceAs("1stGen/family-2-people.json")
-//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen.json")
+//    familyObj = getResourceAs("1stGen/family-2-people.json")
 
 //    familyObj = getResourceAs("2ndGen/children/family-1-child.json")
 //    familyObj = getResourceAs("2ndGen/children/family-1-child-2.json")
@@ -165,7 +165,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-7.json")
 
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
-//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
+    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
 
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
@@ -198,16 +198,18 @@ fun main(args: Array<String>) {
                     print("$nodeName  ")
                 }
                 is EmptyNode -> {
-                    print("${it.nodeString}\n")
+                    print("${it.drawEmptyNode()}")
                 }
                 is MarriageLine -> {
                     val line:MarriageLine = it
-                    print("MarriageLine's length: ${line.imageLength}\n")
+                    print(" |____${line.imageLength}____| ")
+                }
+                is ChildrenLine -> {
+                    val line:ChildrenLine = it
+                    print(" ,----^----, ")
                 }
                 else -> {
-                    print("else\n")
-//                    val line:MarriageLine = it as MarriageLine
-//                    print("${line.imageLength}\n")
+                    print("else")
                 }
             }
         }

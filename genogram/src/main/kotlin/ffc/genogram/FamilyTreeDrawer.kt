@@ -19,7 +19,6 @@ package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
 import ffc.genogram.RelationshipLine.MarriageLine
-import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -37,6 +36,7 @@ class FamilyTreeDrawer {
 
     private var emptyNode: EmptyNode = EmptyNode()
 
+    // TODO: delete this function
     fun addFamilyNewLayer(s: String) {
         if (s != null)
             nameFamilyStorage.add(arrayListOf(s))
@@ -49,11 +49,15 @@ class FamilyTreeDrawer {
         if (s != null)
             nameFamilyStorage.add(arrayListOf(s))
 
+        if (line != null)
+            addLineFamilyNewLayer(line)
+    }
+
+    fun addLineFamilyNewLayer(line: Any?) {
         if (line != null) {
             when (line) {
                 is MarriageLine -> {
-                    val mLine: MarriageLine = line
-                    personFamilyStorage.add(arrayListOf(mLine))
+                    personFamilyStorage.add(arrayListOf(line))
                 }
             }
         }
@@ -74,22 +78,14 @@ class FamilyTreeDrawer {
         }
     }
 
-    fun addFamilyAtLayer(layer: Int, element: String, person: Person?) {
-        if (layer < findStorageSize()) {
-            nameFamilyStorage[layer].add(element)
-
-            if (person != null)
-                personFamilyStorage[layer].add(person)
-            else
-                personFamilyStorage[layer].add(element)
-        } else {
+    fun addFamilyAtLayer(layer: Int, s: String, e: Any) {
+        if (layer >= findStorageSize())
             addEmptyNewLayer()
-            nameFamilyStorage[layer].add(element)
-        }
-    }
+        nameFamilyStorage[layer].add(s)
 
-    fun addLineAtLayer(layer: Int, element: String, line: Relationship) {
-
+        if (layer >= findPersonStorageSize())
+            addEmptyNewLayer()
+        personFamilyStorage[layer].add(e)
     }
 
     fun addFamilyStorageAtIndex(layerNumb: Int, replaceInd: Int, node: String, person: Person) {
@@ -117,6 +113,8 @@ class FamilyTreeDrawer {
     }
 
     fun findStorageSize(): Int = nameFamilyStorage.size
+
+    fun findPersonStorageSize(): Int = personFamilyStorage.size
 
     fun findPersonLayerSize(layerNumb: Int): Int = personFamilyStorage[layerNumb].size
 
