@@ -56,7 +56,7 @@ class MaleNode(
                         // on the left of the female node, and make indent(s) at the
                         // FocusedPerson's parent layer.
                         familyTreeDrawer.addFamilyStorageAtIndex(
-                            addingLayer, addingInd, "$nodeName", addedPerson
+                            addingLayer, addingInd, nodeName, addedPerson
                         )
                         for (i in 0 until addingLayer)
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
@@ -70,10 +70,10 @@ class MaleNode(
                         // FocusedPerson(the AddedPerson's wife) is the middle daughter.
                         // Add husband on the right hand of his wife.
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
-                            addingLayer, addingInd - 1, " $nodeName", addedPerson
+                            addingLayer, addingInd - 1, nodeName, addedPerson
                         )
 
-                        // Extend the "MarriageLine" of AddedPerson and FocusedPerson.
+                        // Extend the "MarriageLineManager" of AddedPerson and FocusedPerson.
                         // by adding the empty node(s).
                         // Check AddedPerson's husband index, then check
                         // whether her husband's index is equal to the number of empty node(s).
@@ -122,11 +122,11 @@ class MaleNode(
                             )
                         }
 
-                        // Extend the MarriageLine of AddedPerson's parent.
+                        // Extend the MarriageLineManager of AddedPerson's parent.
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         if (childrenNumber > 3) {
-                            // Extend the MarriageLine by adding the empty node(s).
+                            // Extend the MarriageLineManager by adding the empty node(s).
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )

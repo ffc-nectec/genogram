@@ -61,7 +61,7 @@ class FemaleNode(
                     )
 
                     if (parent != null) {
-                        // AddedPerson has no parents, focus only on draw "MarriageLine"
+                        // AddedPerson has no parents, focus only on draw "MarriageLineManager"
                         // Find AddedPerson's parent index
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                         val parentInd = familyTreeDrawer.findPersonIndById(focusedPerson!!.father!!, parentLayer)
@@ -80,9 +80,9 @@ class FemaleNode(
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
 
-                        // Extend the MarriageLine of AddedPerson's parent.
+                        // Extend the MarriageLineManager of AddedPerson's parent.
                         if (childrenNumber > 3) {
-                            // Extend the MarriageLine by adding the empty node(s).
+                            // Extend the MarriageLineManager by adding the empty node(s).
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -117,7 +117,7 @@ class FemaleNode(
                             childrenLineLayer, addingInd, editedLine
                         )
 
-                        // Extend the MarriageLine of AddedPerson and FocusedPerson
+                        // Extend the MarriageLineManager of AddedPerson and FocusedPerson
                         // by adding the empty node(s).
                         // Check AddedPerson's husband index, then check
                         // whether her husband's index is equal to the number of empty node(s).
@@ -141,7 +141,7 @@ class FemaleNode(
                     // No reorder the array's position, only extend the line.
                     familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
 
-                    // Extend "MarriageLine" of the FocusedPerson's parents.
+                    // Extend "MarriageLineManager" of the FocusedPerson's parents.
                     // Extend by adding the empty node(s).
                     val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                     if (parent != null) {

@@ -18,6 +18,8 @@
 package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
+import ffc.genogram.RelationshipLine.MarriageLine
+import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -35,9 +37,26 @@ class FamilyTreeDrawer {
 
     private var emptyNode: EmptyNode = EmptyNode()
 
-    fun addFamilyNewLayer(name: String) {
-        nameFamilyStorage.add(arrayListOf(name))
-        personFamilyStorage.add(arrayListOf(name))
+    fun addFamilyNewLayer(s: String) {
+        if (s != null)
+            nameFamilyStorage.add(arrayListOf(s))
+
+        if (s != null)
+            personFamilyStorage.add(arrayListOf(s))
+    }
+
+    fun addFamilyNewLayer(s: String?, line: Any?) {
+        if (s != null)
+            nameFamilyStorage.add(arrayListOf(s))
+
+        if (line != null) {
+            when (line) {
+                is MarriageLine -> {
+                    val mLine: MarriageLine = line
+                    personFamilyStorage.add(arrayListOf(mLine))
+                }
+            }
+        }
     }
 
     fun addEmptyNewLayer() {
@@ -67,6 +86,10 @@ class FamilyTreeDrawer {
             addEmptyNewLayer()
             nameFamilyStorage[layer].add(element)
         }
+    }
+
+    fun addLineAtLayer(layer: Int, element: String, line: Relationship) {
+
     }
 
     fun addFamilyStorageAtIndex(layerNumb: Int, replaceInd: Int, node: String, person: Person) {

@@ -225,7 +225,7 @@ abstract class Node {
 
             // AddedPerson's parent adjusting zone.
             // Extend addedPerson's parent children line and grandparent's line
-            // Extend the MarriageLine of AddedPerson's parent.
+            // Extend the MarriageLineManager of AddedPerson's parent.
             var grandParentLayer = parentLayer - 3
             val grandFatherId = focusedPerson!!.father
             val grandMotherId = focusedPerson!!.mother
@@ -275,7 +275,7 @@ abstract class Node {
             val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
 
             if (childrenNumber > 3) {
-                // Extend the MarriageLine by adding the empty node(s).
+                // Extend the MarriageLineManager by adding the empty node(s).
                 familyTreeDrawer = addMoreNodes(
                     emptyNodeNumber, addingEmptyNodes, grandParentLayer, familyTreeDrawer
                 )

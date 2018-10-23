@@ -50,7 +50,7 @@ class RelationshipFactory {
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND
-                MarriageLine(familyTreeDrawer, labelType, addLayer, focusedPerson)
+                MarriageLineManager(familyTreeDrawer, labelType, addLayer, focusedPerson)
             }
         } else {
             // TODO: Other relationship ig. Enemy

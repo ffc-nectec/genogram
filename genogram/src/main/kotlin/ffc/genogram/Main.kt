@@ -17,13 +17,17 @@
 
 package ffc.genogram
 
+import ffc.genogram.Node.EmptyNode
+import ffc.genogram.Node.createGenderBorder
+import ffc.genogram.RelationshipLine.MarriageLine
 import java.nio.charset.Charset
 
 private lateinit var familyObj: Family
 
 fun main(args: Array<String>) {
 //    familyObj = getResourceAs("1stGen/family-1-person.json")
-//    familyObj = getResourceAs("1stGen/family-2-people.json")
+    familyObj = getResourceAs("1stGen/family-2-people.json")
+//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen.json")
 
 //    familyObj = getResourceAs("2ndGen/children/family-1-child.json")
 //    familyObj = getResourceAs("2ndGen/children/family-1-child-2.json")
@@ -161,9 +165,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-7.json")
 
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
-
-    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
-//    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-6.json")
+//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
 
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
@@ -182,26 +184,36 @@ fun main(args: Array<String>) {
 //            print("\n")
 //    }
 
-    /*print("\n\n///////////////////////\n\n")
+    print("\n\n///////////////////////\n\n")
 
     familyTreePic.personFamilyStorage.forEach { layer ->
         layer.forEach {
             when (it) {
                 is Person -> {
                     var nodeName = it.firstname
-                    nodeName = if (it.gender == 0)
+                    nodeName = if (it.getGender() == GenderLabel.MALE)
                         createGenderBorder(nodeName, GenderLabel.MALE)
                     else
                         createGenderBorder(nodeName, GenderLabel.FEMALE)
                     print("$nodeName  ")
                 }
-                is EmptyNode -> print("${it.nodeString }")
-                else -> print("$it")
+                is EmptyNode -> {
+                    print("${it.nodeString}\n")
+                }
+                is MarriageLine -> {
+                    val line:MarriageLine = it
+                    print("MarriageLine's length: ${line.imageLength}\n")
+                }
+                else -> {
+                    print("else\n")
+//                    val line:MarriageLine = it as MarriageLine
+//                    print("${line.imageLength}\n")
+                }
             }
         }
 
         print("\n")
-    }*/
+    }
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {

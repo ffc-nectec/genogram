@@ -106,7 +106,7 @@ class ChildrenLine(
             return "$resultSpace |$resultSpace"
         } else {
 
-            for (i in 0 until spaceLine.toInt() + 1)
+            for (i in 0 until spaceLine.toInt())
                 resultSpace += space
             resultSign = resultSpace
 
@@ -116,7 +116,7 @@ class ChildrenLine(
                     resultSign += line
             }
 
-            resultSign = "$resultSign$sign$resultSpace"
+            resultSign = " $resultSign$sign$resultSpace"
 
             var markPosition = resultSign.length / 2
             if (childrenSize % 2 != 0)

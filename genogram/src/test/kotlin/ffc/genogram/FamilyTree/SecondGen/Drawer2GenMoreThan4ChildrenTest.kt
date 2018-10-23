@@ -39,8 +39,8 @@ class Drawer2GenMoreThan4ChildrenTest {
 
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
-            [        ,     |_________|    ]
-            [    ,---------,----^----,---------,---------,    ]
+            [        ,     |_________|   ]
+            [    ,---------,----^----,---------,---------,   ]
             [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst]]
         """.trimIndent()
     }
@@ -56,8 +56,8 @@ class Drawer2GenMoreThan4ChildrenTest {
 
         canvas.toString().trimIndent() `should equal` """
             [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|    ]
-            [    ,---------,---------,----^----,---------,---------,    ]
+            [        ,         ,     |_________|   ]
+            [    ,---------,---------,----^----,---------,---------,   ]
             [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst], ( May  )]
         """.trimIndent()
     }
@@ -73,8 +73,8 @@ class Drawer2GenMoreThan4ChildrenTest {
 
         canvas.toString().trimIndent() `should equal` """
             [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|    ]
-            [    ,---------,---------,----^----,---------,---------,---------,    ]
+            [        ,         ,     |_________|   ]
+            [    ,---------,---------,----^----,---------,---------,---------,   ]
             [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst], ( Maye ), ( Kaye )]
         """.trimIndent()
     }
