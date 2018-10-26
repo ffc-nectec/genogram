@@ -38,7 +38,7 @@ class Drawer2ndGen1ChildTest {
 
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
-            [    |_________|    ]
+            [    |_________|   ]
             [         |        ]
             [     [  Ed  ]     ]
         """.trimIndent()
@@ -55,7 +55,7 @@ class Drawer2ndGen1ChildTest {
 
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
-            [    |_________|    ]
+            [    |_________|   ]
             [         |        ]
             [     ( Lisa )     ]
         """.trimIndent()
@@ -72,10 +72,10 @@ class Drawer2ndGen1ChildTest {
 
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
-            [    |_________|    ]
+            [    |_________|   ]
             [         |        ]
             [     [ Bill ]     , ( Lisa )]
-            [         |_______________|   ]
+            [         |______________|   ]
         """.trimIndent()
     }
 
@@ -90,10 +90,10 @@ class Drawer2ndGen1ChildTest {
 
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
-            [        ,     |_________|    ]
+            [        ,     |_________|   ]
             [        ,          |        ]
             [[ Bill ],      ( Lisa )     ]
-            [    |______________|   ]
+            [    |_____________|   ]
         """.trimIndent()
     }
 }

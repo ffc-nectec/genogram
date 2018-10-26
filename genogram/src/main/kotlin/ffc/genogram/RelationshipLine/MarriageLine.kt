@@ -1,202 +1,35 @@
-/*
- * Copyright 2018 NECTEC
- *   National Electronics and Computer Technology Center, Thailand
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package ffc.genogram.RelationshipLine
 
-import ffc.genogram.FamilyTreeDrawer
-import ffc.genogram.Person
+class MarriageLine {
 
-class MarriageLine(
-    private var familyTreeDrawer: FamilyTreeDrawer,
-    private var handSide: RelationshipLabel,
-    private var addingLayer: Int,
-    var focusedPerson: Person
-) : Relationship() {
+    private var lineMarkPos = listOf<Double>()
+    var spousesNumb = 1
+    var imageLength: Double = 0.0
+    var thinkness = 3.0
+    var lineColor = 0xff888888
 
-    private val sign = '_'
-    private val space = ' '
-    private val endSign = '|'
-
-    override fun drawLine(): FamilyTreeDrawer {
-
-        val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
-        val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
-        val lineLayer = addingLayer + 1
-
-        if (handSide == RelationshipLabel.RIGHT_HAND) {
-            if (addingLayer > 0) {
-                if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
-                    // Add a marriage line
-                    familyTreeDrawer.addFamilyAtLayer(
-                        addingLayer + 1,
-                        createLineDistance(),
-                        null
-                    )
-
-                    // Relocate the marriage line's position.
-                    if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
-                        addEmptyNode(lineLayer)
-                    }
-                } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
-                    if (childrenNumb == 1) {
-                        familyTreeDrawer.addFamilyNewLayer(
-                            singleChildMarriageLine(RelationshipLabel.RIGHT_HAND)
-                        )
-                    } else {
-                        // Find the focusedPerson's index
-                        familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-                        val personInd = familyTreeDrawer.findPersonIndById(
-                            focusedPerson.idCard, addingLayer
-                        )
-                        // When we have only one marriage line.
-                        // Relocate the marriage line's position.
-                        if (personInd != 0) {
-                            for (i in 0 until personInd) {
-                                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                    addingLayer + 1, 0, null, null
-                                )
-                            }
-                        }
-                    }
-                }
-            } else {
-                familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-            }
-        } else {
-            // Add line on left hand side
-            if (addingLayer > 0) {
-                if (addingLayer == 0) {
-                    familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-                } else {
-                    val hasLeftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
-                        focusedPerson, addingLayer
-                    )
-
-                    if (!hasLeftHandSiblings) {
-                        // Add node husband node on the left hand.
-                        // Check whether FocusedPerson has any siblings.
-                        if (childrenNumb == 1) {
-                            familyTreeDrawer.addFamilyNewLayer(
-                                singleChildMarriageLine(RelationshipLabel.LEFT_HAND)
-                            )
-                        } else {
-                            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
-                        }
-                    } else {
-                        // When husband node is added on the right-hand.
-                        // Add a marriage line
-                        familyTreeDrawer.addFamilyAtLayer(
-                            addingLayer + 1,
-                            createLineDistance(),
-                            null
-                        )
-
-                        // Relocate the marriage line's position.
-                        if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
-                            addEmptyNode(lineLayer)
-                        }
-                    }
-                }
-            }
-        }
-
-        return familyTreeDrawer
+    fun setLineMarkPos(startingMarkPos: Double, endingMarkPos: Double) {
+        // startingMarkPos and startingMarkPos starts at position 1.
+        lineMarkPos = listOf(startingMarkPos, endingMarkPos)
     }
 
-    override fun createLineDistance(): String {
-        var resultSpace = ""
-        var resultSign = ""
-
-        for (i in 0 until spaceLine.toInt() + 1)
-            resultSpace += space
-
-        for (i in 0 until distanceLine.toInt())
-            resultSign += sign
-
-        return "$resultSpace$endSign$resultSign$endSign$resultSpace"
+    fun getLineMarkPos(): List<Double> {
+        return lineMarkPos
     }
 
-    private fun singleChildMarriageLine(side: RelationshipLabel): String {
-        val line = createLineDistance()
-        val addMore = (lengthLine / 2).toInt()
-        var tmp = StringBuilder()
-
-        if (side == RelationshipLabel.LEFT_HAND) {
-            for (i in 0 until (line.length - indent.toInt() - 1)) {
-                tmp.append(line[i])
-            }
-            for (i in 0 until addMore - 1) {
-                tmp.append(sign)
-            }
-        } else {
-            for (i in 0 until addMore - 1) {
-                tmp.append(space)
-            }
-            for (i in 0 until (line.length - indent.toInt() - 1)) {
-                tmp.append(line[i])
-            }
-            for (i in 0 until addMore) {
-                tmp.append(sign)
-            }
-        }
-
-        tmp.append(endSign)
-        for (i in 0 until indent.toInt() - 1) {
-            tmp.append(space)
-        }
-
-        return tmp.toString()
+    fun getStartingMarkPos(): Double {
+        return lineMarkPos[0]
     }
 
-    private fun addEmptyNode(lineLayer: Int) {
-        // Add empty node(s) between the marriage line.
-        val addingInd = familyTreeDrawer.addMarriageLineInd(
-            lineLayer, focusedPerson, null
-        )
-        val lineLayerSize = familyTreeDrawer
-            .findStorageLayerSize(lineLayer)
-        val lastLineLayerInd = lineLayerSize - 1
-
-        if (lineLayerSize < addingInd) {
-            // When the layer's is less than the index the new marriage line expect.
-            // Add empty node(s), and move the marriage line to "focusedPerson"'s index.
-            for (i in lastLineLayerInd until addingInd) {
-                if (i == addingInd) {
-                    familyTreeDrawer.addFamilyAtLayer(
-                        addingLayer + 1,
-                        createLineDistance(),
-                        null
-                    )
-                } else {
-                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer + 1, i, null, null
-                    )
-                }
-            }
-        } else {
-            // When the layer's is enough for moving the new marriage line
-            // to the "focusedPerson"'s index.
-            // Move the marriage line to "focusedPerson"'s index.
-            val addingMore = addingInd - lineLayerSize
-            for (i in 0 until addingMore + 1) {
-                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    addingLayer + 1, addingInd - 1, null, null
-                )
-            }
-        }
+    fun getEndingMarkPos(): Double {
+        return lineMarkPos[lineMarkPos.size - 1]
     }
+
+    fun drawLine() {
+        var startingMarkPos = (Relationship.spaceLine + 1) + 1
+        var endingMarkPos = startingMarkPos + Relationship.distanceLine + 1
+        imageLength = ((Relationship.spaceLine * 2) + 1) + Relationship.distanceLine + 2
+        setLineMarkPos(startingMarkPos, endingMarkPos)
+    }
+
 }

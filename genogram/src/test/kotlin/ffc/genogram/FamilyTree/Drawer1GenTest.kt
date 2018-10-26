@@ -45,7 +45,7 @@ class Drawer1GenTest {
 
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
-            [    |_________|    ]
+            [    |_________|   ]
         """.trimIndent()
     }
 }

@@ -243,7 +243,7 @@ class FamilyTree(var family: Family) {
                     parentSib = grandParent.children!!
                 }
 
-                if ((parent.gender == 1) &&
+                if ((parent.getGender() == GenderLabel.FEMALE) &&
                     (parent.idCard.toInt() != parentSib[parentSib.size - 1])
                 ) {
                     val husbandList = parent.husband

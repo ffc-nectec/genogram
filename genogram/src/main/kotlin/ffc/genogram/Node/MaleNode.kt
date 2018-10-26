@@ -41,7 +41,7 @@ class MaleNode(
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
 
-                if (focusedPerson!!.gender == 1) {
+                if (focusedPerson!!.getGender() == GenderLabel.FEMALE) {
                     // Find whether the focusedPerson has any siblings.
                     val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
                         focusedPerson!!, addingLayer
@@ -56,7 +56,7 @@ class MaleNode(
                         // on the left of the female node, and make indent(s) at the
                         // FocusedPerson's parent layer.
                         familyTreeDrawer.addFamilyStorageAtIndex(
-                            addingLayer, addingInd, "$nodeName", addedPerson
+                            addingLayer, addingInd, nodeName, addedPerson
                         )
                         for (i in 0 until addingLayer)
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
@@ -70,10 +70,10 @@ class MaleNode(
                         // FocusedPerson(the AddedPerson's wife) is the middle daughter.
                         // Add husband on the right hand of his wife.
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
-                            addingLayer, addingInd - 1, " $nodeName", addedPerson
+                            addingLayer, addingInd - 1, nodeName, addedPerson
                         )
 
-                        // Extend the "MarriageLine" of AddedPerson and FocusedPerson.
+                        // Extend the "MarriageLineManager" of AddedPerson and FocusedPerson.
                         // by adding the empty node(s).
                         // Check AddedPerson's husband index, then check
                         // whether her husband's index is equal to the number of empty node(s).
@@ -122,11 +122,11 @@ class MaleNode(
                             )
                         }
 
-                        // Extend the MarriageLine of AddedPerson's parent.
+                        // Extend the MarriageLineManager of AddedPerson's parent.
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         if (childrenNumber > 3) {
-                            // Extend the MarriageLine by adding the empty node(s).
+                            // Extend the MarriageLineManager by adding the empty node(s).
                             familyTreeDrawer = addMoreNodes(
                                 emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -140,11 +140,11 @@ class MaleNode(
                                 )
                             }
 
-                            // Extend the ChildrenLine the top layer of the AddedPerson
+                            // Extend the ChildrenLineManager the top layer of the AddedPerson
                             val addingMore = Math.abs(childrenNumber - (addingInd + 1))
                             if (addingMore > 1) {
                                 val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
-                                    childrenLineLayer, addingInd, childrenListInd
+                                    childrenLineLayer, addingInd, null, childrenListInd
                                 )
                                 familyTreeDrawer.replaceFamilyStorageLayer(
                                     childrenLineLayer, parentLayer, extendedLine
@@ -210,7 +210,7 @@ class MaleNode(
 
                             // Move children sign
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                                childrenLineLayer, addingEmptyNodes
+                                childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, startInd, editedLine
@@ -223,8 +223,14 @@ class MaleNode(
             }
         } else {
             // Children or Twin
+            val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+            val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)
+
             // Separate AddedPerson and their cousins by adding empty node(s).
-            separateMidChildren(familyTreeDrawer, focusedPerson!!)
+            separateMidChildren(familyTreeDrawer, focusedPerson!!, parentLayer, parentInd)
+
+            // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
+            separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd)
 
             // Add a single child
             addMiddleChild(

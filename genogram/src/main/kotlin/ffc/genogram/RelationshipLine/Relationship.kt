@@ -22,7 +22,6 @@ import ffc.genogram.FamilyTreeDrawer
 abstract class Relationship {
 
     companion object {
-        const val thinkness = 3.0
         const val indent = 4.0
         const val distanceLine = 9.0
         const val spaceLine = 3.0

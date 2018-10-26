@@ -18,6 +18,7 @@
 package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
 class RelationshipFactory {
@@ -45,11 +46,11 @@ class RelationshipFactory {
             return if (labelType == RelationshipLabel.DIVORCED)
                 DivorceLine()
             else {
-                labelType = if (focusedPerson.gender == 0)
+                labelType = if (focusedPerson.getGender() == GenderLabel.MALE)
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND
-                MarriageLine(familyTreeDrawer, labelType, addLayer, focusedPerson)
+                MarriageLineManager(familyTreeDrawer, labelType, addLayer, focusedPerson)
             }
         } else {
             // TODO: Other relationship ig. Enemy
@@ -66,7 +67,7 @@ class RelationshipFactory {
         return when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
 
-                ChildrenLine(focusedListPerson, parent, familyTreeDrawer)
+                ChildrenLineManager(focusedListPerson, parent, familyTreeDrawer)
             }
             else -> {
                 TwinLine()
