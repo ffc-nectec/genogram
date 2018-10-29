@@ -20,6 +20,7 @@ package ffc.genogram.Node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import kotlin.math.PI
 
@@ -99,22 +100,34 @@ class FemaleNode(
                             addingInd = 0
                         }
 
+                        // String Visualization
                         val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                         val extendedLine = familyTreeDrawer.extendLine(
                             expectedLength,
                             childrenListInd,
                             parentInd
                         )
+                        // Object Visualization
+                        val childrenLine = ChildrenLine()
+                        childrenLine.extendLine(childrenListInd, parentInd)
+
                         familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, startInd, extendedLine
+                            childrenLineLayer, startInd, extendedLine, childrenLine
                         )
 
                         // Move the children sign
+                        // String Visualization
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes, childrenListInd
                         )
+                        // Object Visualization
+                        childrenLine.moveChildrenLineSign(
+                            familyTreeDrawer, childrenLineLayer,
+                            addingEmptyNodes
+                        )
+
                         familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, addingInd, editedLine
+                            childrenLineLayer, addingInd, editedLine, childrenLine
                         )
 
                         // Extend the MarriageLineManager of AddedPerson and FocusedPerson
@@ -173,11 +186,18 @@ class FemaleNode(
                             }
 
                             // Move children sign
+                            // String Visualization
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                                 childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
+                            // Object Visualization
+                            val childrenLine = ChildrenLine()
+                            childrenLine.moveChildrenLineSign(
+                                familyTreeDrawer, childrenLineLayer, addingEmptyNodes
+                            )
+
                             familyTreeDrawer.replaceFamilyStorageLayer(
-                                childrenLineLayer, startInd, editedLine
+                                childrenLineLayer, startInd, editedLine, childrenLine
                             )
                         }
                     }

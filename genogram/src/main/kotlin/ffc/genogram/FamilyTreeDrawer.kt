@@ -18,7 +18,6 @@
 package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
-import ffc.genogram.RelationshipLine.MarriageLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -36,15 +35,6 @@ class FamilyTreeDrawer {
 
     private var emptyNode: EmptyNode = EmptyNode()
 
-    // TODO: delete this function
-    fun addFamilyNewLayer(s: String) {
-        if (s != null)
-            nameFamilyStorage.add(arrayListOf(s))
-
-        if (s != null)
-            personFamilyStorage.add(arrayListOf(s))
-    }
-
     fun addFamilyNewLayer(s: String?, line: Any?) {
         if (s != null)
             nameFamilyStorage.add(arrayListOf(s))
@@ -53,14 +43,9 @@ class FamilyTreeDrawer {
             addLineFamilyNewLayer(line)
     }
 
-    fun addLineFamilyNewLayer(line: Any?) {
-        if (line != null) {
-            when (line) {
-                is MarriageLine -> {
-                    personFamilyStorage.add(arrayListOf(line))
-                }
-            }
-        }
+    private fun addLineFamilyNewLayer(line: Any?) {
+        if (line != null)
+            personFamilyStorage.add(arrayListOf(line))
     }
 
     fun addEmptyNewLayer() {
@@ -110,6 +95,22 @@ class FamilyTreeDrawer {
             layer[replaceInd] = node
         else
             layer[replaceInd] = emptyNode.drawEmptyNode()
+    }
+
+    fun replaceFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?, line: Any?) {
+        val nameLayer = nameFamilyStorage[layerNumb]
+        val personLayer = personFamilyStorage[layerNumb]
+
+        if (node == null || line == null) {
+            nameLayer[replaceInd] = emptyNode.drawEmptyNode()
+            personLayer[replaceInd] = emptyNode.drawEmptyNode()
+        }
+
+        if (node !== null)
+            nameLayer[replaceInd] = node
+
+        if (line != null)
+            personLayer[replaceInd] = line
     }
 
     fun findStorageSize(): Int = nameFamilyStorage.size
@@ -288,7 +289,7 @@ class FamilyTreeDrawer {
         return count
     }
 
-    private fun findNumberOfMidEmptyNode(layerNumb: Int): Int {
+    fun findNumberOfMidEmptyNode(layerNumb: Int): Int {
         var count = 0
 
         if (nameFamilyStorage.isNotEmpty())
@@ -340,6 +341,7 @@ class FamilyTreeDrawer {
     fun extendLine(
         expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int
     ): String {
+        // String Visualization
         val tmp = StringBuilder()
         val lineSign = '-'
         val indent = ' '
@@ -359,7 +361,10 @@ class FamilyTreeDrawer {
         return createChildrenLineSign(tmp.toString(), childrenListInd, parentInd)
     }
 
-    private fun createChildrenLineSign(line: String, childrenListInd: MutableList<Int>, parentInd: Int): String {
+    private fun createChildrenLineSign(
+        line: String, childrenListInd: MutableList<Int>,
+        parentInd: Int
+    ): String {
         val childrenSign = ','
         val childrenCenterSign = '^'
         var length = (lengthLine - 1).toInt()
@@ -378,6 +383,7 @@ class FamilyTreeDrawer {
             ind = (indentNumb + (length * shiftInd)) - (shiftInd)
             childrenSignInd.add(ind)
         }
+
         tmp.append(line)
 
         // Add Children Sign ','

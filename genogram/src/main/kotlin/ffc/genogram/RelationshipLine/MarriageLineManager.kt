@@ -94,8 +94,11 @@ class MarriageLineManager(
                         // Add node husband node on the left hand.
                         // Check whether FocusedPerson has any siblings.
                         if (childrenNumb == 1) {
+                            marriageLine.drawLine()
+                            marriageLine.setSingleMarriageLine()
                             familyTreeDrawer.addFamilyNewLayer(
-                                singleChildMarriageLine(RelationshipLabel.LEFT_HAND)
+                                singleChildMarriageLine(RelationshipLabel.LEFT_HAND),
+                                marriageLine
                             )
                         } else {
                             familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
@@ -149,6 +152,7 @@ class MarriageLineManager(
             for (i in 0 until addMore - 1) {
                 tmp.append(sign)
             }
+
         } else {
             for (i in 0 until addMore - 1) {
                 tmp.append(space)

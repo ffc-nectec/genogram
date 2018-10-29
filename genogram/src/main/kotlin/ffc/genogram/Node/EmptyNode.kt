@@ -3,7 +3,7 @@ package ffc.genogram.Node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
-class EmptyNode: Node() {
+class EmptyNode : Node() {
 
     lateinit var nodeString: String
     var nodeSize = Node.nodeSize

@@ -33,10 +33,10 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/children/family-1-child-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-1.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
+    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-3.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-4.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1s-spouse-5.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-5.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-6.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-7.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-8.json")
@@ -155,7 +155,6 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-7.json")
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-8.json")
 
-    
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-3.json")
@@ -165,55 +164,43 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-7.json")
 
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
-    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
 
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
 
+    print(".\n")
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {
         print("${familyTreePic.nameFamilyStorage[i]}\n")
     }
 
-//    familyTreePic.nameFamilyStorage.forEachIndexed { index, arrayList ->
-//        arrayList.forEach {
-//            print("$it  ")
-//        }
-//
-//        if (index < familyTreePic.findStorageSize() - 1)
-//            print("\n")
-//    }
-
-    print("\n\n///////////////////////\n\n")
+    print(".\n====== OBJECT ======\n")
+    print(".\n")
 
     familyTreePic.personFamilyStorage.forEach { layer ->
-        layer.forEach {
+        print("[")
+        val elementSize = layer.size
+        layer.forEachIndexed { index, it ->
             when (it) {
                 is Person -> {
-                    var nodeName = it.firstname
-                    nodeName = if (it.getGender() == GenderLabel.MALE)
-                        createGenderBorder(nodeName, GenderLabel.MALE)
-                    else
-                        createGenderBorder(nodeName, GenderLabel.FEMALE)
-                    print("$nodeName  ")
+                    displayPerson(it, elementSize, index)
                 }
                 is EmptyNode -> {
-                    print("${it.drawEmptyNode()}")
+                    displayEmptyNode(it, layer[index+1])
                 }
                 is MarriageLine -> {
-                    val line:MarriageLine = it
-                    print(" |____${line.imageLength}____| ")
+                    displayMarriageLine(it, elementSize, index)
                 }
                 is ChildrenLine -> {
-                    val line:ChildrenLine = it
-                    print(" ,----^----, ")
+                    displayChildrenLine(it)
                 }
                 else -> {
                     print("else")
                 }
             }
         }
-
+        print("]")
         print("\n")
     }
 }
@@ -229,4 +216,84 @@ inline fun <reified T> getResourceAs(filename: String): T {
 fun drawGenogram(): FamilyTreeDrawer {
     val familyPic = FamilyTree(familyObj)
     return familyPic.drawGenogram()
+}
+
+fun displayPerson(it: Person, elementSize: Int, index: Int) {
+    var nodeName = it.firstname
+    nodeName = if (it.getGender() == GenderLabel.MALE)
+        createGenderBorder(nodeName, GenderLabel.MALE)
+    else
+        createGenderBorder(nodeName, GenderLabel.FEMALE)
+
+    var margin = StringBuilder().toString()
+    for (i in 0 until it.nodeMargin)
+        margin += " "
+
+    if (index in 1..(elementSize - 1))
+        // 2 units left margin
+        print(", $margin$nodeName$margin")
+    else
+        print("$margin$nodeName$margin")
+
+    // Check digits
+//    print("${it.nodeMargin}$nodeName${it.nodeMargin}")
+}
+
+fun displayEmptyNode(it: EmptyNode, element: Any) {
+    if (element !is Person)
+        print("${it.drawEmptyNode()}, ")
+    else
+        print("${it.drawEmptyNode()}")
+}
+
+fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int) {
+    var result = StringBuilder()
+
+    for (i in 0 until it.imageLength.toInt()) {
+        if (i == it.getStartingMarkPos().toInt() ||
+            i == it.getEndingMarkPos().toInt()
+        )
+            result.append("|")
+        if (i >= it.getStartingMarkPos().toInt() &&
+            i < it.getEndingMarkPos().toInt()
+        )
+            result.append("_")
+        else
+            result.append(" ")
+    }
+
+    if (index in 1..(elementSize - 1) || elementSize == 1)
+        print(result)   // 2 units left margin
+    else
+        print("$result, ")
+}
+
+fun displayChildrenLine(it: ChildrenLine) {
+    var result = StringBuilder()
+
+    if (it.childrenNumb == 1) {
+        for (i in 0 until it.imageLength.toInt()) {
+            if (i == it.getLineMarkPos(1))
+                result.append('|')
+            else
+                result.append(" ")
+        }
+    } else {
+        var childrenMarks = it.getAllLineMarkPos()
+
+        for (i in 0 until it.imageLength.toInt()) {
+            if (i > childrenMarks[0] && i < childrenMarks[childrenMarks.size - 1]) {
+                result.append("-")
+            } else {
+                result.append(" ")
+            }
+        }
+
+        childrenMarks.forEach {
+            result.setCharAt(it, ',')
+        }
+        result.setCharAt(it.centerMarkPos, '^')
+    }
+
+    print(result)
 }
