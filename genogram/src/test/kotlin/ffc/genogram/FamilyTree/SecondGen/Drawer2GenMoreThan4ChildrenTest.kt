@@ -18,6 +18,7 @@
 package ffc.genogram.FamilyTree.SecondGen
 
 import ffc.genogram.FamilyTree
+import ffc.genogram.Util.displayObjectResult
 import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
@@ -33,9 +34,10 @@ class Drawer2GenMoreThan4ChildrenTest {
         val drawer = FamilyTree(
             getResourceAs("2ndGen/children/family-5-children.json")
         ).drawGenogram()
-        val canvas = StringBuilder().apply {
+        /*val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
-        }
+        }*/
+        val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]

@@ -45,10 +45,20 @@ class MarriageLine : Line() {
         setLineMarkPos(startingMarkPos, endingMarkPos)
     }
 
-    fun setSingleMarriageLine() {
+    fun setSingleMarriageLine(side: RelationshipLabel) {
         // Delete 2 left margin units
         val addMore = (Relationship.lengthLine / 2).toInt() - 2
-        setEndingMarkPos(getEndingMarkPos() + addMore)
-        imageLength += addMore
+
+        imageLength = if (side == RelationshipLabel.LEFT_HAND) {
+            setEndingMarkPos(getEndingMarkPos() + addMore)
+            imageLength + addMore
+        } else {
+            val startingMark = getStartingMarkPos() + addMore + 1
+            val endingMark = (startingMark + 1) + (imageLength - Relationship.indent.toInt()) + 1
+            setStartingMarkPos(startingMark)
+            setEndingMarkPos(endingMark)
+            // Delete 2 left margin units
+            imageLength + (imageLength - Relationship.indent.toInt()) - 2
+        }
     }
 }

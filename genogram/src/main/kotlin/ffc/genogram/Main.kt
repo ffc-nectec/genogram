@@ -17,10 +17,7 @@
 
 package ffc.genogram
 
-import ffc.genogram.Node.EmptyNode
-import ffc.genogram.Node.createGenderBorder
-import ffc.genogram.RelationshipLine.ChildrenLine
-import ffc.genogram.RelationshipLine.MarriageLine
+import ffc.genogram.Util.displayObjectResult
 import java.nio.charset.Charset
 
 private lateinit var familyObj: Family
@@ -33,7 +30,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/children/family-1-child-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-1.json")
-    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-3.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-4.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-5.json")
@@ -42,7 +39,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-8.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-9.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-10.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-11.json")
+    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-11.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-12.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-13.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-14.json")
@@ -178,31 +175,8 @@ fun main(args: Array<String>) {
     print(".\n====== OBJECT ======\n")
     print(".\n")
 
-    familyTreePic.personFamilyStorage.forEach { layer ->
-        print("[")
-        val elementSize = layer.size
-        layer.forEachIndexed { index, it ->
-            when (it) {
-                is Person -> {
-                    displayPerson(it, elementSize, index)
-                }
-                is EmptyNode -> {
-                    displayEmptyNode(it, layer[index+1])
-                }
-                is MarriageLine -> {
-                    displayMarriageLine(it, elementSize, index)
-                }
-                is ChildrenLine -> {
-                    displayChildrenLine(it)
-                }
-                else -> {
-                    print("else")
-                }
-            }
-        }
-        print("]")
-        print("\n")
-    }
+    val canvas = displayObjectResult(familyTreePic)
+    print(canvas.toString())
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {
@@ -216,84 +190,4 @@ inline fun <reified T> getResourceAs(filename: String): T {
 fun drawGenogram(): FamilyTreeDrawer {
     val familyPic = FamilyTree(familyObj)
     return familyPic.drawGenogram()
-}
-
-fun displayPerson(it: Person, elementSize: Int, index: Int) {
-    var nodeName = it.firstname
-    nodeName = if (it.getGender() == GenderLabel.MALE)
-        createGenderBorder(nodeName, GenderLabel.MALE)
-    else
-        createGenderBorder(nodeName, GenderLabel.FEMALE)
-
-    var margin = StringBuilder().toString()
-    for (i in 0 until it.nodeMargin)
-        margin += " "
-
-    if (index in 1..(elementSize - 1))
-        // 2 units left margin
-        print(", $margin$nodeName$margin")
-    else
-        print("$margin$nodeName$margin")
-
-    // Check digits
-//    print("${it.nodeMargin}$nodeName${it.nodeMargin}")
-}
-
-fun displayEmptyNode(it: EmptyNode, element: Any) {
-    if (element !is Person)
-        print("${it.drawEmptyNode()}, ")
-    else
-        print("${it.drawEmptyNode()}")
-}
-
-fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int) {
-    var result = StringBuilder()
-
-    for (i in 0 until it.imageLength.toInt()) {
-        if (i == it.getStartingMarkPos().toInt() ||
-            i == it.getEndingMarkPos().toInt()
-        )
-            result.append("|")
-        if (i >= it.getStartingMarkPos().toInt() &&
-            i < it.getEndingMarkPos().toInt()
-        )
-            result.append("_")
-        else
-            result.append(" ")
-    }
-
-    if (index in 1..(elementSize - 1) || elementSize == 1)
-        print(result)   // 2 units left margin
-    else
-        print("$result, ")
-}
-
-fun displayChildrenLine(it: ChildrenLine) {
-    var result = StringBuilder()
-
-    if (it.childrenNumb == 1) {
-        for (i in 0 until it.imageLength.toInt()) {
-            if (i == it.getLineMarkPos(1))
-                result.append('|')
-            else
-                result.append(" ")
-        }
-    } else {
-        var childrenMarks = it.getAllLineMarkPos()
-
-        for (i in 0 until it.imageLength.toInt()) {
-            if (i > childrenMarks[0] && i < childrenMarks[childrenMarks.size - 1]) {
-                result.append("-")
-            } else {
-                result.append(" ")
-            }
-        }
-
-        childrenMarks.forEach {
-            result.setCharAt(it, ',')
-        }
-        result.setCharAt(it.centerMarkPos, '^')
-    }
-
-    print(result)
 }

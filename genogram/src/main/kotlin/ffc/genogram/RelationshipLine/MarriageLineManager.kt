@@ -56,9 +56,11 @@ class MarriageLineManager(
                     }
                 } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
                     if (childrenNumb == 1) {
+                        marriageLine.drawLine()
+                        marriageLine.setSingleMarriageLine(handSide)
                         familyTreeDrawer.addFamilyNewLayer(
-                            singleChildMarriageLine(RelationshipLabel.RIGHT_HAND),
-                            null
+                            singleChildMarriageLine(handSide),
+                            marriageLine
                         )
                     } else {
                         // Find the focusedPerson's index
@@ -95,9 +97,9 @@ class MarriageLineManager(
                         // Check whether FocusedPerson has any siblings.
                         if (childrenNumb == 1) {
                             marriageLine.drawLine()
-                            marriageLine.setSingleMarriageLine()
+                            marriageLine.setSingleMarriageLine(handSide)
                             familyTreeDrawer.addFamilyNewLayer(
-                                singleChildMarriageLine(RelationshipLabel.LEFT_HAND),
+                                singleChildMarriageLine(handSide),
                                 marriageLine
                             )
                         } else {
