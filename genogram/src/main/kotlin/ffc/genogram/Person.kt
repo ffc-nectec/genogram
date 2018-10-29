@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
@@ -38,6 +39,8 @@ class Person(
     var linkedStack: List<Int>?
 ) {
 
+    var nodeMargin = 0
+
     fun getGender(): GenderLabel {
         return if (gender == 0) GenderLabel.MALE else GenderLabel.FEMALE
     }
@@ -48,7 +51,6 @@ class Person(
     fun hasBeenMarriedWith(relatedPersonId: Int): RelationshipLabel {
 
         if (getGender() == GenderLabel.MALE) {
-            // Male
             exWife?.find { it == relatedPersonId }?.let {
                 return RelationshipLabel.EX_WIFE
             }
@@ -56,7 +58,6 @@ class Person(
                 return RelationshipLabel.WIFE
             }
         } else {
-            // Female
             exHusband?.find { it == relatedPersonId }?.let {
                 return RelationshipLabel.EX_HUSBAND
             }
@@ -157,5 +158,10 @@ class Person(
         }
 
         return childrenList
+    }
+
+    fun setNodeMargin(siblings: Boolean) {
+        if (!siblings)
+            nodeMargin = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt() - 1
     }
 }

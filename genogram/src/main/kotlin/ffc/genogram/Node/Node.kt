@@ -20,6 +20,7 @@ package ffc.genogram.Node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
@@ -33,12 +34,13 @@ abstract class Node {
         const val nodeBorderSize = 2.0
     }
 
+    val nodeMargin = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
+
     abstract fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer?
 
     abstract fun getArea(): Double
 
     private fun setSingleNodePosition(nodeName: String, gender: GenderLabel, siblings: Boolean): String {
-        val diff = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt()
         val space = " "
         var resultSpace = ""
 
@@ -49,7 +51,7 @@ abstract class Node {
         }
 
         if (!siblings)
-            for (i in 0 until diff - 1) {
+            for (i in 0 until nodeMargin - 1) {
                 resultSpace += space
             }
 
@@ -98,6 +100,8 @@ abstract class Node {
         )
         val childrenNumb = familyTreeDrawer.findLineNumber(addingLayer)
 
+        // Set Person node's indent
+        addedPerson.setNodeMargin(siblings)
         // Add a single child
         familyTreeDrawer.addFamilyAtLayer(
             addingLayer,
@@ -299,9 +303,16 @@ abstract class Node {
                 parentInd
             )
             val parentLineLayer = parentLayer - 1
+            // Object Visualization
+            val childrenLine = ChildrenLine()
+            childrenLine.extendLine(drawSibListInd, parentInd)
+
             familyTreeDrawer.replaceFamilyStorageLayer(
-                parentLineLayer, startInd, extendedLine
+                parentLineLayer, startInd, extendedLine, childrenLine
             )
+            /*familyTreeDrawer.replaceFamilyStorageLayer(
+                parentLineLayer, startInd, extendedLine
+            )*/
 
             // Move the children sign
             val editedLine = familyTreeDrawer.moveChildrenLineSign(

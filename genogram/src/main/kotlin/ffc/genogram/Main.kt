@@ -17,10 +17,7 @@
 
 package ffc.genogram
 
-import ffc.genogram.Node.EmptyNode
-import ffc.genogram.Node.createGenderBorder
-import ffc.genogram.RelationshipLine.ChildrenLine
-import ffc.genogram.RelationshipLine.MarriageLine
+import ffc.genogram.Util.displayObjectResult
 import java.nio.charset.Charset
 
 private lateinit var familyObj: Family
@@ -36,7 +33,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-3.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-4.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1s-spouse-5.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-5.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-6.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-7.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-8.json")
@@ -45,7 +42,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-11.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-12.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-13.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-14.json")
+    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-14.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-15.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-16.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-17.json")
@@ -155,7 +152,6 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-7.json")
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-8.json")
 
-    
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-3.json")
@@ -165,57 +161,22 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-7.json")
 
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
-    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
 
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
 
+    print(".\n")
     val familyTreePic = drawGenogram()
     for (i in 0 until familyTreePic.findStorageSize()) {
         print("${familyTreePic.nameFamilyStorage[i]}\n")
     }
 
-//    familyTreePic.nameFamilyStorage.forEachIndexed { index, arrayList ->
-//        arrayList.forEach {
-//            print("$it  ")
-//        }
-//
-//        if (index < familyTreePic.findStorageSize() - 1)
-//            print("\n")
-//    }
+    print(".\n====== OBJECT ======\n")
+    print(".\n")
 
-    print("\n\n///////////////////////\n\n")
-
-    familyTreePic.personFamilyStorage.forEach { layer ->
-        layer.forEach {
-            when (it) {
-                is Person -> {
-                    var nodeName = it.firstname
-                    nodeName = if (it.getGender() == GenderLabel.MALE)
-                        createGenderBorder(nodeName, GenderLabel.MALE)
-                    else
-                        createGenderBorder(nodeName, GenderLabel.FEMALE)
-                    print("$nodeName  ")
-                }
-                is EmptyNode -> {
-                    print("${it.drawEmptyNode()}")
-                }
-                is MarriageLine -> {
-                    val line:MarriageLine = it
-                    print(" |____${line.imageLength}____| ")
-                }
-                is ChildrenLine -> {
-                    val line:ChildrenLine = it
-                    print(" ,----^----, ")
-                }
-                else -> {
-                    print("else")
-                }
-            }
-        }
-
-        print("\n")
-    }
+    val canvas = displayObjectResult(familyTreePic)
+    print(canvas.toString())
 }
 
 inline fun <reified T> getResourceAs(filename: String): T {

@@ -20,6 +20,7 @@ package ffc.genogram.Node
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
 class MaleNode(
@@ -36,7 +37,7 @@ class MaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
-
+            print("===> ${addedPerson.firstname}\n")
             if (focusedPerson != null) {
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
@@ -169,15 +170,25 @@ class MaleNode(
                                     else
                                         childrenNumber = childrenNumber - childrenListInd.size + 1
 
+                                    // String Visualization
                                     val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                                     val extendedLine = familyTreeDrawer.extendLine(
                                         expectedLength,
                                         childrenListInd,
                                         parentInd
                                     )
+
+                                    // Object Visualization
+                                    val childrenLine = ChildrenLine()
+                                    childrenLine.extendLine(childrenListInd, parentInd)
+
                                     familyTreeDrawer.replaceFamilyStorageLayer(
-                                        childrenLineLayer, startInd, extendedLine
+                                        childrenLineLayer, startInd, extendedLine, childrenLine
                                     )
+
+                                    /*familyTreeDrawer.replaceFamilyStorageLayer(
+                                        childrenLineLayer, startInd, extendedLine
+                                    )*/
                                 } else {
                                     startInd = parentLayer
                                 }
@@ -197,15 +208,23 @@ class MaleNode(
                                 }
 
                                 // Extend the children line.
+                                // String Visualization
                                 val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
                                 val extendedLine = familyTreeDrawer.extendLine(
                                     expectedLength,
                                     childrenListInd,
                                     parentInd
                                 )
+                                // Object Visualization
+                                val childrenLine = ChildrenLine()
+                                childrenLine.extendLine(childrenListInd, parentInd)
+
                                 familyTreeDrawer.replaceFamilyStorageLayer(
-                                    childrenLineLayer, startInd, extendedLine
+                                    childrenLineLayer, startInd, extendedLine, childrenLine
                                 )
+                                /*familyTreeDrawer.replaceFamilyStorageLayer(
+                                    childrenLineLayer, startInd, extendedLine
+                                )*/
                             }
 
                             // Move children sign

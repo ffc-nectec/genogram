@@ -39,9 +39,10 @@ class ChildrenLineManager(
         val generationSize = familyTreeDrawer.findStorageSize()
         val addingLayer = parentLayer + 2
         var childrenLineNumb = 0
+        childrenLine.drawLine(childrenList.size)
 
         if (addingLayer >= generationSize) {
-            familyTreeDrawer.addFamilyNewLayer(createLineDistance())
+            familyTreeDrawer.addFamilyNewLayer(createLineDistance(), childrenLine)
             familyTreeDrawer.addEmptyNewLayer()
         } else {
             childrenLineNumb = familyTreeDrawer.findLineNumber(addingLayer)

@@ -36,6 +36,7 @@ class Drawer2GenMoreThan4ChildrenTest {
         val canvas = StringBuilder().apply {
             drawer.nameFamilyStorage.forEach { append("$it\n") }
         }
+//        val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
