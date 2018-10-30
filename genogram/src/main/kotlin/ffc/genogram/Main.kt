@@ -29,13 +29,15 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/children/family-1-child.json")
 //    familyObj = getResourceAs("2ndGen/children/family-1-child-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse.json")
-    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-1.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-1.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-3.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-4.json")
 
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-5.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses.json") <<<<<
+    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-8.json")
 
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-6.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-7.json")
@@ -106,7 +108,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-38.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-39.json")
 
-//    familyObj = getResourceAs("2ndGen/children/family-3-children-2.json")
+    familyObj = getResourceAs("2ndGen/children/family-3-children-2.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-3.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-4.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-5.json")

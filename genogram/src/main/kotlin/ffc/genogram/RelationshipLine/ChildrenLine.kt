@@ -134,12 +134,9 @@ class ChildrenLine : Line() {
         ) {
             line = familyTreeDrawer.personFamilyStorage[lineLayer][ChildInd[0]]
             if (line is ChildrenLine) {
-                print("LineCenter1: ${line.centerMarkPos}\n")
             }
             centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() + parentEmptyNodeNumber
-            print("LineCenter2: $centerMarkPos\n")
         }
 
-        print("::2:: $line\n")
     }
 }
