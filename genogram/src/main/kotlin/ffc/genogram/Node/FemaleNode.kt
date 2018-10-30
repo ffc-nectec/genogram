@@ -190,11 +190,12 @@ class FemaleNode(
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                                 childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
+
                             // Object Visualization
-                            val childrenLine = ChildrenLine()
+                            var childrenLine = ChildrenLine()
                             childrenLine.moveChildrenLineSign(
-                                familyTreeDrawer, childrenLineLayer, addingEmptyNodes
-                            )
+                                    familyTreeDrawer, childrenLineLayer, addingEmptyNodes
+                                )
 
                             familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, startInd, editedLine, childrenLine

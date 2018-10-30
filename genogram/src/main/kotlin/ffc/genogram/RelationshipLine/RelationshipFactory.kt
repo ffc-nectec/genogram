@@ -17,6 +17,7 @@
 
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
@@ -25,6 +26,7 @@ class RelationshipFactory {
 
     fun getLine(
         focusedPerson: Person,
+        family: Family,
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel,
         addLayer: Int
@@ -50,7 +52,7 @@ class RelationshipFactory {
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND
-                MarriageLineManager(familyTreeDrawer, labelType, addLayer, focusedPerson)
+                MarriageLineManager(familyTreeDrawer, labelType, addLayer, focusedPerson, family)
             }
         } else {
             // TODO: Other relationship ig. Enemy
@@ -61,13 +63,14 @@ class RelationshipFactory {
     fun getLine(
         focusedListPerson: MutableList<Person>,
         parent: Person,
+        family: Family,
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel
     ): Relationship {
         return when (relationshipLabel) {
             RelationshipLabel.CHILDREN -> {
 
-                ChildrenLineManager(focusedListPerson, parent, familyTreeDrawer)
+                ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
             }
             else -> {
                 TwinLine()

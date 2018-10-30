@@ -1,11 +1,22 @@
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Person
+
 class MarriageLine : Line() {
 
+    private var spousesStorage: ArrayList<List<Person>> = arrayListOf()
     private var lineMarkPos = listOf<Double>()
     var spousesNumb = 1
     var imageLength: Double = 0.0
-    var lineColor = 0xff888888
+
+    fun addSpouse(p1: Person, p2: Person) {
+        var spouseList = listOf(p1, p2)
+        spousesStorage.add(spouseList)
+    }
+
+    fun getSpouseList(): ArrayList<List<Person>> {
+        return spousesStorage
+    }
 
     fun setLineMarkPos(startingMarkPos: Double, endingMarkPos: Double) {
         // Marriage line form is " |_________| "
