@@ -35,11 +35,17 @@ class ChildrenLineManager(
 
         // Add the children line
         val childrenLine = ChildrenLine()
-//        parent.children!!.forEach {
-//            childrenLine.addChildrenList(family.findPerson(it.toLong())!!)
-//        }
-//        print("childrenList: $childrenList")
-//        print("parent: ${parent.children}\n")
+        childrenLine.setChildrenList(childrenList as ArrayList<Person>)
+        var parent1 = childrenList[0].father
+        var parent2 = childrenList[0].mother
+        var parentList = arrayListOf<Person>()
+
+        if (parent1 != null)
+            parentList.add(family.findPerson(parent1.toLong())!!)
+        if (parent2 != null)
+            parentList.add(family.findPerson(parent2.toLong())!!)
+
+        childrenLine.addParentList(parentList)
 
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)

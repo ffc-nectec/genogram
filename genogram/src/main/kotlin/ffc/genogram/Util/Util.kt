@@ -38,13 +38,13 @@ fun displayObjectResult(drawer: FamilyTreeDrawer): StringBuilder {
                         append(displayPerson(it, elementSize, index))
                     }
                     is EmptyNode -> {
-                        append(displayEmptyNode(it, layer[index + 1]))
+                        append(displayEmptyNode(it, elementSize, index))
                     }
                     is MarriageLine -> {
                         append(displayMarriageLine(it, elementSize, index))
                     }
                     is ChildrenLine -> {
-                        append(displayChildrenLine(it))
+                        append(displayChildrenLine(it, elementSize, index))
                     }
                     else -> {
                         append("else")
@@ -78,11 +78,12 @@ fun displayPerson(it: Person, elementSize: Int, index: Int): String {
         "$margin$nodeName$margin"
 }
 
-fun displayEmptyNode(it: EmptyNode, element: Any): String {
-    return if (element !is Person)
-        "${it.drawEmptyNode()}$marginLeft"
-    else
+fun displayEmptyNode(it: EmptyNode, elementSize: Int, index: Int): String {
+    /*return if (index in 1..(elementSize - 1) || elementSize == 1)
         "${it.drawEmptyNode()}"
+    else
+        "${it.drawEmptyNode()}$marginLeft"*/
+    return it.drawEmptyNode()
 }
 
 fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int): String {
@@ -101,15 +102,18 @@ fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int): String 
             result.append(" ")
     }
 
-    if (index in 1..(elementSize - 1) || elementSize == 1)
+    if (index == 0) {
         return result.toString()
+    } else if (index in 1..(elementSize - 1) || elementSize == 1)
+        return "$marginLeft$result"
+//        return result.toString()
 //        return "$result - ${it.getSpouseList()}"
     else
-        return  "$result$marginLeft"
+        return "$result$marginLeft"
 //        return  "$result$marginLeft - ${it.getSpouseList()}"
 }
 
-fun displayChildrenLine(it: ChildrenLine): String {
+fun displayChildrenLine(it: ChildrenLine, elementSize: Int, index: Int): String {
     var result = StringBuilder()
 
     if (it.childrenNumb == 1) {
@@ -136,8 +140,16 @@ fun displayChildrenLine(it: ChildrenLine): String {
         result.setCharAt(it.centerMarkPos, '^')
     }
 
-    return result.toString()
-//    return "$result - ${it.getChildrenList()}"
+//    return result.toString()
+//    return "$result - ${it.getParentList()}"
+    if (index == 0) {
+        return result.toString()
+    } else if (index in 1..(elementSize - 1) || elementSize == 1)
+        return "$marginLeft$result"
+//        return result.toString()
+//        return "$result - ${it.getSpouseList()}"
+    else
+        return "$result$marginLeft"
 }
 
 

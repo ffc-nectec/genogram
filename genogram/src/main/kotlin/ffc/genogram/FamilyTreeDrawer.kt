@@ -289,6 +289,22 @@ class FamilyTreeDrawer {
         return count
     }
 
+    fun findNumberOfEmptyNodePerson(layerNumb: Int): Int {
+        var count = 0
+
+        if (personFamilyStorage.isNotEmpty())
+            if (layerNumb < findStorageSize()) {
+                val lineLayer = personFamilyStorage[layerNumb]
+                lineLayer.forEach {
+                    print("it: $it\n")
+                    if (it is EmptyNode)
+                        count++
+                }
+            }
+
+        return count
+    }
+
     fun findNumberOfMidEmptyNode(layerNumb: Int): Int {
         var count = 0
 
@@ -299,6 +315,24 @@ class FamilyTreeDrawer {
                 lineLayer.forEachIndexed { index, s ->
                     if ((index != 0) && (index != lastLineLayerInd)
                         && (s == emptyNode.drawEmptyNode())
+                    )
+                        count++
+                }
+            }
+
+        return count
+    }
+
+    fun findNumberOfMidEmptyNodePerson(layerNumb: Int): Int {
+        var count = 0
+
+        if (personFamilyStorage.isNotEmpty())
+            if (layerNumb < findStorageSize()) {
+                val lastLineLayerInd = findStorageLayerSize(layerNumb) - 1
+                val lineLayer = personFamilyStorage[layerNumb]
+                lineLayer.forEachIndexed { index, s ->
+                    if ((index != 0) && (index != lastLineLayerInd)
+                        && (s is EmptyNode)
                     )
                         count++
                 }
@@ -461,6 +495,7 @@ class FamilyTreeDrawer {
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
 
+        print("::1:: $line\n")
         // find the '^' index
         var signInd = 0
         line.forEachIndexed { index, c ->
