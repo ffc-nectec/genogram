@@ -7,7 +7,7 @@ import ffc.genogram.Person
 
 class ChildrenLine : Line() {
 
-    private var childrenList: ArrayList<Person> = arrayListOf()
+    private var childrenList: ArrayList<Person>? = null
     private var lineMarkPos: ArrayList<Int> = arrayListOf()
     var centerMarkPos = 0
     var childrenNumb: Int = 1
@@ -15,10 +15,13 @@ class ChildrenLine : Line() {
     var emptyLine = false
 
     fun addChildrenList(child: Person) {
-        childrenList.add(child)
+        if (childrenList == null)
+            childrenList = arrayListOf()
+
+        childrenList!!.add(child)
     }
 
-    fun getChildrenList(): ArrayList<Person> {
+    fun getChildrenList(): ArrayList<Person>? {
         return childrenList
     }
 
@@ -113,7 +116,7 @@ class ChildrenLine : Line() {
             lineMarkPos = line.lineMarkPos
             imageLength = line.imageLength
             childrenNumb = line.childrenNumb
-            childrenList = line.childrenList
+            childrenList = line.getChildrenList()
             emptyLine = line.emptyLine
         }
 
