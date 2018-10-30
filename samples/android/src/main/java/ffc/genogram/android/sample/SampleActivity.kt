@@ -20,7 +20,9 @@ package ffc.genogram.android.sample
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.RawRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +35,7 @@ import ffc.genogram.Person
 import ffc.genogram.android.Families
 import ffc.genogram.android.GenogramFragment
 import ffc.genogram.android.PersonViewHolder
+import ffc.genogram.android.RelationPath
 import ffc.genogram.android.relativePosition
 
 class SampleActivity : AppCompatActivity() {
@@ -41,9 +44,16 @@ class SampleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample)
 
+        RelationPath.customPaintPath = {
+            color = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+        }
+
         val genogram = supportFragmentManager.findFragmentById(R.id.genogram) as GenogramFragment
-        genogram.families = RawResourceFamilies(this, R.raw.family_3_children_3rd_gen)
-        genogram.personViewHolder = SimplePersonViewHolder()
+        with(genogram) {
+            view.itemMargin = dip(24)
+            families = RawResourceFamilies(this@SampleActivity, R.raw.family_3_children_3rd_gen)
+            personViewHolder = SimplePersonViewHolder()
+        }
     }
 
     class SimplePersonViewHolder : PersonViewHolder {
