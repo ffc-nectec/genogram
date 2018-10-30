@@ -48,7 +48,7 @@ class RelationshipFactory {
             return if (labelType == RelationshipLabel.DIVORCED)
                 DivorceLine()
             else {
-                labelType = if (focusedPerson.getGender() == GenderLabel.MALE)
+                labelType = if (focusedPerson.gender == GenderLabel.MALE)
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND

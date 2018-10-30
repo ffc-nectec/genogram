@@ -17,7 +17,11 @@
 
 package ffc.genogram
 
+import com.google.gson.annotations.SerializedName
+
 enum class GenderLabel {
+    @SerializedName("0")
     MALE,
+    @SerializedName("1")
     FEMALE
 }

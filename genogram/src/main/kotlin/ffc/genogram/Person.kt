@@ -22,33 +22,29 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
-    var idCard: Long,
-    var firstname: String,
-    var lastname: String,
-    private var gender: Int,
-    var father: Long?,
-    var mother: Long?,
-    var twin: List<Int>?,
-    var exHusband: List<Int>?,
-    var exWife: List<Int>?,
-    var husband: List<Int>?,
-    var wife: List<Int>?,
-    var children: List<Int>?,
-    var linkedStack: List<Int>?
+        var idCard: Long,
+        var firstname: String,
+        var lastname: String,
+        var gender: GenderLabel = GenderLabel.MALE,
+        var father: Long?,
+        var mother: Long?,
+        var twin: List<Int>?,
+        var exHusband: List<Int>?,
+        var exWife: List<Int>?,
+        var husband: List<Int>?,
+        var wife: List<Int>?,
+        var children: List<Int>?,
+        var linkedStack: List<Int>?
 ) {
     var properties: Any? = null
     var nodeMargin = 0
-
-    fun getGender(): GenderLabel {
-        return if (gender == 0) GenderLabel.MALE else GenderLabel.FEMALE
-    }
 
     // Whether the person has been divorced.
     fun hasBeenDivorced() = exHusband != null || exWife != null
 
     fun hasBeenMarriedWith(relatedPersonId: Int): RelationshipLabel {
 
-        if (getGender() == GenderLabel.MALE) {
+        if (gender == GenderLabel.MALE) {
             exWife?.find { it == relatedPersonId }?.let {
                 return RelationshipLabel.EX_WIFE
             }

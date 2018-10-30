@@ -40,7 +40,7 @@ class NodeFactory {
             if (parent == null)
                 parent = family.findPerson(focusedPerson.mother!!)
         }
-        return when (addedPerson.getGender()) {
+        return when (addedPerson.gender) {
             GenderLabel.MALE -> MaleNode(
                 familyTreeDrawer,
                 addedPerson,
