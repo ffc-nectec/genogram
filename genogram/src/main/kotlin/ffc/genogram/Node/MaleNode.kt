@@ -42,7 +42,7 @@ class MaleNode(
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
 
-                if (focusedPerson!!.getGender() == GenderLabel.FEMALE) {
+                if (focusedPerson!!.gender == GenderLabel.FEMALE) {
                     // Find whether the focusedPerson has any siblings.
                     val leftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
                         focusedPerson!!, addingLayer

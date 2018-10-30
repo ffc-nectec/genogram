@@ -63,7 +63,7 @@ private const val marginLeft = ", "
 
 fun displayPerson(it: Person, elementSize: Int, index: Int): String {
     var nodeName = it.firstname
-    nodeName = if (it.getGender() == GenderLabel.MALE)
+    nodeName = if (it.gender == GenderLabel.MALE)
         createGenderBorder(nodeName, GenderLabel.MALE)
     else
         createGenderBorder(nodeName, GenderLabel.FEMALE)
