@@ -14,11 +14,16 @@ abstract class RelationPath {
         setStrokeWidth(6f)
     }
 
+    init {
+        customPaintPath?.let { paint.apply(it) }
+    }
+
     abstract fun drawOn(canvas: Canvas)
 
     companion object {
-
         var generationMargin = 100
+
+        var customPaintPath: (Paint.() -> Unit)? = null
     }
 }
 
@@ -54,7 +59,7 @@ class ChildrenPath(val parent: Pair<Rect, Rect?>, val children: List<Rect>) : Re
             father.exactCenterY()
         val mergeY = father.bottom + (generationMargin * ChildrenPath.mergePointRatio)
 
-        val path = Path().apply { 
+        val path = Path().apply {
             moveTo(orgX, orgY)
             lineTo(orgX, mergeY)
             children.forEach {
