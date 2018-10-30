@@ -17,6 +17,7 @@
 
 package ffc.genogram.android
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -25,12 +26,9 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
-import android.widget.TextView
-import android.widget.Toast
 import ffc.genogram.Family
 import ffc.genogram.FamilyTree
 import ffc.genogram.FamilyTreeDrawer
-import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.MarriageLine
 
@@ -49,8 +47,6 @@ class GenogramView @JvmOverloads constructor(
     private val personViews: MutableMap<Person, View> = hashMapOf()
     private val relationPath: MutableList<RelationPath> = arrayListOf()
 
-    val dummyPersonforLine = mutableListOf<Person>()
-
     lateinit var drawer: FamilyTreeDrawer
 
     fun drawFamily(family: Family) {
@@ -61,7 +57,6 @@ class GenogramView @JvmOverloads constructor(
         this.columnCount = column
         this.rowCount = drawer.personFamilyStorage.size
 
-        var count = 0
         drawer.personFamilyStorage.forEachIndexed { row, layer ->
             layer.forEachIndexed { col, node ->
                 when (node) {
@@ -70,13 +65,9 @@ class GenogramView @JvmOverloads constructor(
                         val span = if (node.nodeMargin > 0) 2 else 1
                         addView(view, layoutParamsFor(row, col, colSpan = span))
                         personViews.put(node, view)
-                        if (count < 2) {
-                            dummyPersonforLine.add(node)
-                            count++
-                        }
                     }
-                    is EmptyNode -> {
-                        addView(TextView(context).apply { text = "$row : $col" }, layoutParamsFor(row, col).apply {
+                    else -> {
+                        addView(View(context), layoutParamsFor(row, col).apply {
                             height = RelationPath.generationMargin / 2
                         })
                     }
@@ -85,28 +76,29 @@ class GenogramView @JvmOverloads constructor(
         }
     }
 
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        Log.d("geno", "on Drawn ${relationPath.size}")
         drawer.personFamilyStorage.forEachIndexed { row, layer ->
             layer.forEachIndexed { col, node ->
                 when (node) {
                     is MarriageLine -> {
-                        val fatherRect = personViews[dummyPersonforLine[0]]!!.relativePosition
-                        val motherRect = personViews[dummyPersonforLine[1]]!!.relativePosition
-                        val line = MarriagePath(fatherRect to motherRect)
-                        relationPath.add(line)
-                        Log.d("geno", "father ${fatherRect.left}x${fatherRect.top}")
+                        node.getSpouseList().forEach { pair ->
+                            val first = personViews[pair[0]]!!.relativePosition
+                            val second = personViews[pair[1]]!!.relativePosition
+                            val line = MarriagePath(first to second)
+                            relationPath.add(line)
+                        }
                     }
                 }
             }
         }
-
-        relationPath[0].drawOn(canvas!!)
-        Toast.makeText(context, "on Draw", Toast.LENGTH_SHORT).show()
+        relationPath.forEach {
+            it.drawOn(canvas!!)
+        }
     }
 
-    fun layoutParamsFor(row: Int, col: Int, colSpan: Int = 1): GridLayout.LayoutParams {
+    private fun layoutParamsFor(row: Int, col: Int, colSpan: Int = 1): GridLayout.LayoutParams {
         return GridLayout.LayoutParams().apply {
             rowSpec = GridLayout.spec(row)
             columnSpec = GridLayout.spec(col, colSpan)
@@ -114,15 +106,15 @@ class GenogramView @JvmOverloads constructor(
         }
     }
 
-    val itemMargin: Int = dip(8)
+    var itemMargin: Int = dip(8)
 }
 
 val View.relativePosition: Rect
     get() {
-        val rect = Rect()
-        (parent as ViewGroup).offsetDescendantRectToMyCoords(this, rect)
-        rect.right = measuredWidth + rect.left
-        rect.bottom = measuredHeight + rect.top
-        Log.d("rect", "${rect.left} ${rect.top} ${rect.right} ${rect.bottom}")
-        return rect
+        return Rect().apply {
+            (parent as ViewGroup).offsetDescendantRectToMyCoords(this@relativePosition, this)
+            right = measuredWidth + left
+            bottom = measuredHeight + top
+            Log.d("rect", "left=$left top=$top right=$right bottom=$bottom")
+        }
     }
