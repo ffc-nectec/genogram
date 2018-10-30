@@ -1,0 +1,25 @@
+{
+  "idCard": 0,
+  "firstname": "Grandfather",
+  "lastname": "Smiths",
+  "birthDate": "1-1-1970",
+  "gender": 0,
+  "father": null,
+  "mother": null,
+  "twin": null,
+  "ex-husband": null,
+  "ex-wife": null,
+  "husband": null,
+  "wife": [
+    10
+  ],
+  "children": [
+    1,
+    2
+  ],
+  "linkedStack": [
+    10,
+    1,
+    2
+  ]
+}
