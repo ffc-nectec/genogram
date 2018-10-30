@@ -33,6 +33,7 @@ import ffc.genogram.Person
 import ffc.genogram.android.Families
 import ffc.genogram.android.GenogramFragment
 import ffc.genogram.android.PersonViewHolder
+import ffc.genogram.android.relativePosition
 
 class SampleActivity : AppCompatActivity() {
 
@@ -51,10 +52,11 @@ class SampleActivity : AppCompatActivity() {
             val icon = view.findViewById<Button>(R.id.icon)
             when (person.getGender()) {
                 GenderLabel.MALE -> icon.setBackgroundResource(R.drawable.male_node_icon)
-                GenderLabel.MALE -> icon.setBackgroundResource(R.drawable.female_node_icon)
+                GenderLabel.FEMALE -> icon.setBackgroundResource(R.drawable.female_node_icon)
             }
             icon.setOnClickListener {
-                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}\n" +
+                        "${view.relativePosition.left}x${view.relativePosition.top}", Toast.LENGTH_SHORT).show()
             }
             val name = view.findViewById<TextView>(R.id.name)
             name.text = person.firstname
