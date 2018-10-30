@@ -118,7 +118,7 @@ class GenogramView @JvmOverloads constructor(
     var itemMargin: Int = dip(8)
 }
 
-val View.relativePosition: Rect
+private val View.relativePosition: Rect
     get() {
         return Rect().apply {
             (parent as ViewGroup).offsetDescendantRectToMyCoords(this@relativePosition, this)

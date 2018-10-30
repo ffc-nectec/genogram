@@ -28,7 +28,7 @@ interface PersonViewHolder {
     fun viewFor(person: Person, context: Context, parent: ViewGroup): View
 }
 
-class DummyPersonViewHolder : PersonViewHolder {
+internal class DummyPersonViewHolder : PersonViewHolder {
 
     override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
         return Button(context).apply {
