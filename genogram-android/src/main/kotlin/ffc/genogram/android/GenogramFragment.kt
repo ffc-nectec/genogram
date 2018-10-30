@@ -27,8 +27,9 @@ import ffc.genogram.Family
 class GenogramFragment : Fragment() {
 
     lateinit var families: Families
-    var personViewHolder: PersonViewHolder? = null
     lateinit var view: GenogramView
+        private set
+    var personViewHolder: PersonViewHolder? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.genogram_fragment, container, false).apply {

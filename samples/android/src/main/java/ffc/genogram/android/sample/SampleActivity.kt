@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.support.annotation.RawRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.content.res.AppCompatResources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ import ffc.genogram.android.Families
 import ffc.genogram.android.GenogramFragment
 import ffc.genogram.android.PersonViewHolder
 import ffc.genogram.android.RelationPath
-import ffc.genogram.android.relativePosition
 
 class SampleActivity : AppCompatActivity() {
 
@@ -65,8 +63,7 @@ class SampleActivity : AppCompatActivity() {
                 GenderLabel.FEMALE -> icon.setBackgroundResource(R.drawable.female_node_icon)
             }
             icon.setOnClickListener {
-                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}\n" +
-                        "${view.relativePosition.left}x${view.relativePosition.top}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}", Toast.LENGTH_SHORT).show()
             }
             val name = view.findViewById<TextView>(R.id.name)
             name.text = person.firstname
