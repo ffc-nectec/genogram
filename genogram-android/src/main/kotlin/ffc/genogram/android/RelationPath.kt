@@ -52,7 +52,8 @@ class ChildrenPath(val parent: Pair<Rect, Rect?>, val children: List<Rect>) : Re
     private val mother = parent.second
 
     override fun drawOn(canvas: Canvas) {
-        val orgX: Float = (mother?.right ?: father.right).toFloat() - father.left
+        val right = (mother?.right ?: father.right).toFloat()
+        val orgX: Float = father.left + (right - father.left) / 2
         val orgY: Float = if (mother != null)
             father.bottom + (generationMargin * MarriagePath.crossPointRatio)
         else
