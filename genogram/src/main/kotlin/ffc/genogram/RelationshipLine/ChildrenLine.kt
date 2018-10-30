@@ -7,22 +7,28 @@ import ffc.genogram.Person
 
 class ChildrenLine : Line() {
 
-    private var childrenList: ArrayList<Person>? = null
+    private var childrenList: ArrayList<Person> = arrayListOf()
+    private var parentList: ArrayList<Person> = arrayListOf()
     private var lineMarkPos: ArrayList<Int> = arrayListOf()
     var centerMarkPos = 0
     var childrenNumb: Int = 1
     var imageLength: Double = 0.0
     var emptyLine = false
 
-    fun addChildrenList(child: Person) {
-        if (childrenList == null)
-            childrenList = arrayListOf()
-
-        childrenList!!.add(child)
+    fun setChildrenList(list: ArrayList<Person>) {
+        childrenList = list
     }
 
-    fun getChildrenList(): ArrayList<Person>? {
+    fun getChildrenList(): ArrayList<Person> {
         return childrenList
+    }
+
+    fun addParentList(list: ArrayList<Person>) {
+        parentList = list
+    }
+
+    fun getParentList(): ArrayList<Person>? {
+        return parentList
     }
 
     fun addLineMarkPos(pos: Int) {
@@ -99,7 +105,7 @@ class ChildrenLine : Line() {
 
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
-        lineLayer: Int, step: Int
+        lineLayer: Int, step: Int, ChildInd: List<Int>
     ) {
         val extraStep = step + 1
         // Delete 1 left margin
@@ -116,7 +122,7 @@ class ChildrenLine : Line() {
             lineMarkPos = line.lineMarkPos
             imageLength = line.imageLength
             childrenNumb = line.childrenNumb
-            childrenList = line.getChildrenList()
+//            childrenList = line.getChildrenList()
             emptyLine = line.emptyLine
         }
 
@@ -126,9 +132,14 @@ class ChildrenLine : Line() {
                             (line is EmptyNode) &&
                             childrenMidEmptyNodeNumber != 0))
         ) {
+            line = familyTreeDrawer.personFamilyStorage[lineLayer][ChildInd[0]]
+            if (line is ChildrenLine) {
+                print("LineCenter1: ${line.centerMarkPos}\n")
+            }
             centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() + parentEmptyNodeNumber
-         } else {
-            emptyLine = true
+            print("LineCenter2: $centerMarkPos\n")
         }
+
+        print("::2:: $line\n")
     }
 }

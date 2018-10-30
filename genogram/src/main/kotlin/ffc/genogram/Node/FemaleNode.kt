@@ -122,8 +122,7 @@ class FemaleNode(
                         )
                         // Object Visualization
                         childrenLine.moveChildrenLineSign(
-                            familyTreeDrawer, childrenLineLayer,
-                            addingEmptyNodes
+                            familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
                         )
 
                         familyTreeDrawer.replaceFamilyStorageLayer(
@@ -174,33 +173,61 @@ class FemaleNode(
                                     id.toLong(), childrenLayer
                                 )
                             )
-
-                            // Extend the CHILDREN Line the top layer of the AddedPerson.
-                            // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
-                            var startInd = childrenListInd[0]
-                            val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
-                            startInd = if ((startInd != 0) && (parentInd > startInd)) {
-                                parentInd - startInd
-                            } else {
-                                parentLayer
-                            }
-
-                            // Move children sign
-                            // String Visualization
-                            val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                                childrenLineLayer, addingEmptyNodes, childrenListInd
-                            )
-
-                            // Object Visualization
-                            var childrenLine = ChildrenLine()
-                            childrenLine.moveChildrenLineSign(
-                                    familyTreeDrawer, childrenLineLayer, addingEmptyNodes
-                                )
-
-                            familyTreeDrawer.replaceFamilyStorageLayer(
-                                childrenLineLayer, startInd, editedLine, childrenLine
-                            )
                         }
+
+                        // Extend the CHILDREN Line the top layer of the AddedPerson.
+                        // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
+                        var startInd = childrenListInd[0]
+                        val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+                        startInd = if ((startInd != 0) && (parentInd > startInd)) {
+                            parentInd - startInd
+                        } else {
+                            parentLayer
+                        }
+
+                        // Move children sign
+                        // String Visualization
+                        val editedLine = familyTreeDrawer.moveChildrenLineSign(
+                            childrenLineLayer, addingEmptyNodes, childrenListInd
+                        )
+
+                        // Object Visualization
+                        var personLayer = familyTreeDrawer.getPersonLayer(childrenLayer)
+                        var emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
+                        var midEmptyNodeCount = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLineLayer)
+                        emptyNodeCount = Math.abs(emptyNodeCount - midEmptyNodeCount)
+
+                        print("emptyNodeCount: $emptyNodeCount\n")
+                        print("addingEmptyNodes: $addingEmptyNodes\n")
+
+//                        var line:Any? = null
+                        /*if (addingEmptyNodes > 0 && emptyNodeCount != addingEmptyNodes) {
+                            line = ChildrenLine()
+                            line.moveChildrenLineSign(
+                                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+                            )
+                        }*/
+                        var line = ChildrenLine()
+                        line.moveChildrenLineSign(
+                            familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+                        )
+
+                        /*print("------- ${addedPerson.firstname} -------\n")
+                        if (familyTreeDrawer.personFamilyStorage.size > 1) {
+                            print("PersonList[2]: ${familyTreeDrawer.personFamilyStorage[2]}\n")
+                            print("PersonList[2]: ${familyTreeDrawer.personFamilyStorage[2].size}\n")
+                            print("startInd: $startInd\n")
+                        }*/
+
+                        familyTreeDrawer.replaceFamilyStorageLayer(
+                            childrenLineLayer, startInd, editedLine, line
+                        )
+
+                        /*print("------- ${addedPerson.firstname} 2 -------\n")
+                        if (familyTreeDrawer.personFamilyStorage.size > 1) {
+                            print("PersonList[2]: ${familyTreeDrawer.personFamilyStorage[2]}\n")
+                            print("PersonList[2]: ${familyTreeDrawer.personFamilyStorage[2].size}\n")
+                        }*/
                     }
                 }
             } else {

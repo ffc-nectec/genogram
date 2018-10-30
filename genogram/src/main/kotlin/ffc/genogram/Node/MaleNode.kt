@@ -203,7 +203,7 @@ class MaleNode(
 
                                     // Moving the children line by adding an empty node.
                                     familyTreeDrawer.replaceFamilyStorageLayer(
-                                        childrenLineLayer, 0, null
+                                        childrenLineLayer, 0, null, null
                                     )
                                     childrenNumber--
                                 }
