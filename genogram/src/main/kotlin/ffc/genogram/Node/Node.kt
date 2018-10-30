@@ -355,4 +355,23 @@ abstract class Node {
             }
         }
     }
+
+    fun getLineType(
+        familyTreeDrawer: FamilyTreeDrawer,
+        childrenLineLayer: Int, addingEmptyNodes: Int, childrenListInd: MutableList<Int>
+    ): Any? {
+        var emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
+        var midEmptyNodeCount = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLineLayer)
+        emptyNodeCount = Math.abs(emptyNodeCount - midEmptyNodeCount)
+
+        var line: Any? = null
+        if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
+            line = ChildrenLine()
+            line.moveChildrenLineSign(
+                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+            )
+        }
+
+        return line
+    }
 }

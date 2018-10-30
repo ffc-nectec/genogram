@@ -224,12 +224,18 @@ class MaleNode(
                                 )
                             }
 
+                            // Object Visualization
+                            var line: Any? = getLineType(
+                                familyTreeDrawer,
+                                childrenLineLayer, addingEmptyNodes, childrenListInd
+                            )
+
                             // Move children sign
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                                 childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
-                                childrenLineLayer, startInd, editedLine, childrenLine
+                                childrenLineLayer, startInd, editedLine, line
                             )
                         }
                     }

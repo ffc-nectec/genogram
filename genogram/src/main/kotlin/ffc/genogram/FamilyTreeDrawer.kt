@@ -296,7 +296,6 @@ class FamilyTreeDrawer {
             if (layerNumb < findStorageSize()) {
                 val lineLayer = personFamilyStorage[layerNumb]
                 lineLayer.forEach {
-                    print("it: $it\n")
                     if (it is EmptyNode)
                         count++
                 }
@@ -495,7 +494,6 @@ class FamilyTreeDrawer {
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
 
-        print("::1:: $line\n")
         // find the '^' index
         var signInd = 0
         line.forEachIndexed { index, c ->

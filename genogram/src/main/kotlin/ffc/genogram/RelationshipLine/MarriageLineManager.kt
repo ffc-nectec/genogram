@@ -42,10 +42,8 @@ class MarriageLineManager(
         if (focusedPerson.getGender() == GenderLabel.MALE) {
             focusedPerson.wife?.forEach {
                 marriageLine.addSpouse(focusedPerson, family.findPerson(it.toLong())!!)
-                print("1: ${family.findPerson(it.toLong())!!}\n")
             }
         } else {
-            print("--- 2\n")
             focusedPerson.husband?.forEach {
                 marriageLine.addSpouse(focusedPerson, family.findPerson(it.toLong())!!)
             }
