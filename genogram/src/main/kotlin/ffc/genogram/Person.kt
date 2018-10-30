@@ -25,8 +25,6 @@ class Person(
     var idCard: Long,
     var firstname: String,
     var lastname: String,
-//    private var birthDate: Date,
-    var birthDate: String?,
     private var gender: Int,
     var father: Long?,
     var mother: Long?,
@@ -38,7 +36,7 @@ class Person(
     var children: List<Int>?,
     var linkedStack: List<Int>?
 ) {
-
+    var properties: Any? = null
     var nodeMargin = 0
 
     fun getGender(): GenderLabel {
