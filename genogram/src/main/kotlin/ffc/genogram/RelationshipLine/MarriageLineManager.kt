@@ -17,14 +17,17 @@
 
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
 class MarriageLineManager(
     private var familyTreeDrawer: FamilyTreeDrawer,
     private var handSide: RelationshipLabel,
     private var addingLayer: Int,
-    var focusedPerson: Person
+    var focusedPerson: Person,
+    var family: Family
 ) : Relationship() {
 
     private val sign = '_'
@@ -35,6 +38,18 @@ class MarriageLineManager(
 
         val marriageLine = MarriageLine()
         marriageLine.drawLine()
+        // Add the focusedPerson's spouses
+        if (focusedPerson.getGender() == GenderLabel.MALE) {
+            focusedPerson.wife?.forEach {
+                marriageLine.addSpouse(focusedPerson, family.findPerson(it.toLong())!!)
+                print("1: ${family.findPerson(it.toLong())!!}\n")
+            }
+        } else {
+            print("--- 2\n")
+            focusedPerson.husband?.forEach {
+                marriageLine.addSpouse(focusedPerson, family.findPerson(it.toLong())!!)
+            }
+        }
 
         val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
         val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)

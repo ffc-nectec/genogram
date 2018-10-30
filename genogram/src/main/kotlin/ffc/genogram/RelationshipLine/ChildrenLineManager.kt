@@ -17,6 +17,7 @@
 
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Node.Node
 import ffc.genogram.Node.Node.Companion.nodeBorderSize
@@ -26,6 +27,7 @@ import ffc.genogram.Person
 class ChildrenLineManager(
     var childrenList: MutableList<Person>,
     var parent: Person,
+    var family: Family,
     var familyTreeDrawer: FamilyTreeDrawer
 ) : Relationship() {
 
@@ -33,6 +35,11 @@ class ChildrenLineManager(
 
         // Add the children line
         val childrenLine = ChildrenLine()
+//        parent.children!!.forEach {
+//            childrenLine.addChildrenList(family.findPerson(it.toLong())!!)
+//        }
+//        print("childrenList: $childrenList")
+//        print("parent: ${parent.children}\n")
 
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)

@@ -37,7 +37,7 @@ class MaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
-            print("===> ${addedPerson.firstname}\n")
+
             if (focusedPerson != null) {
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
@@ -110,6 +110,7 @@ class MaleNode(
                     // Then we don't change any sign of the line.
                     if (leftHandSiblings) {
                         // Adjust the children line
+                        val childrenLine = ChildrenLine()
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                         var childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
                         val childrenLineLayer = addingLayer - 1
@@ -147,8 +148,9 @@ class MaleNode(
                                 val extendedLine = familyTreeDrawer.extendRelationshipLineAtPosition(
                                     childrenLineLayer, addingInd, null, childrenListInd
                                 )
+
                                 familyTreeDrawer.replaceFamilyStorageLayer(
-                                    childrenLineLayer, parentLayer, extendedLine
+                                    childrenLineLayer, parentLayer, extendedLine, childrenLine
                                 )
                             }
 
@@ -161,7 +163,7 @@ class MaleNode(
                                 if ((startInd != 0) && (parentInd > startInd)) {
                                     // Moving the children line by adding an empty node.
                                     familyTreeDrawer.replaceFamilyStorageLayer(
-                                        childrenLineLayer, 0, null
+                                        childrenLineLayer, 0, null, null
                                     )
                                     // Extend the children line.
                                     var childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
@@ -185,12 +187,11 @@ class MaleNode(
                                     familyTreeDrawer.replaceFamilyStorageLayer(
                                         childrenLineLayer, startInd, extendedLine, childrenLine
                                     )
-
-                                    /*familyTreeDrawer.replaceFamilyStorageLayer(
-                                        childrenLineLayer, startInd, extendedLine
-                                    )*/
                                 } else {
                                     startInd = parentLayer
+
+                                    // Object Visualization
+                                    childrenLine.extendLine(childrenListInd, parentInd)
                                 }
                             } else {
                                 // Middle Child
@@ -216,15 +217,11 @@ class MaleNode(
                                     parentInd
                                 )
                                 // Object Visualization
-                                val childrenLine = ChildrenLine()
                                 childrenLine.extendLine(childrenListInd, parentInd)
 
                                 familyTreeDrawer.replaceFamilyStorageLayer(
                                     childrenLineLayer, startInd, extendedLine, childrenLine
                                 )
-                                /*familyTreeDrawer.replaceFamilyStorageLayer(
-                                    childrenLineLayer, startInd, extendedLine
-                                )*/
                             }
 
                             // Move children sign
@@ -232,7 +229,7 @@ class MaleNode(
                                 childrenLineLayer, addingEmptyNodes, childrenListInd
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
-                                childrenLineLayer, startInd, editedLine
+                                childrenLineLayer, startInd, editedLine, childrenLine
                             )
                         }
                     }

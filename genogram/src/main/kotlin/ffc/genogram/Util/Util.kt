@@ -59,7 +59,7 @@ fun displayObjectResult(drawer: FamilyTreeDrawer): StringBuilder {
     return canvas
 }
 
-private val marginLeft = ", "
+private const val marginLeft = ", "
 
 fun displayPerson(it: Person, elementSize: Int, index: Int): String {
     var nodeName = it.firstname
@@ -103,8 +103,10 @@ fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int): String 
 
     if (index in 1..(elementSize - 1) || elementSize == 1)
         return result.toString()
+//        return "$result - ${it.getSpouseList()}"
     else
         return  "$result$marginLeft"
+//        return  "$result$marginLeft - ${it.getSpouseList()}"
 }
 
 fun displayChildrenLine(it: ChildrenLine): String {
@@ -135,6 +137,7 @@ fun displayChildrenLine(it: ChildrenLine): String {
     }
 
     return result.toString()
+//    return "$result - ${it.getChildrenList()}"
 }
 
 

@@ -3,15 +3,27 @@ package ffc.genogram.RelationshipLine
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Node.Node
+import ffc.genogram.Person
 
 class ChildrenLine : Line() {
 
+    private var childrenList: ArrayList<Person>? = null
     private var lineMarkPos: ArrayList<Int> = arrayListOf()
     var centerMarkPos = 0
     var childrenNumb: Int = 1
     var imageLength: Double = 0.0
-    var thinkness = 3.0
-    var lineColor = 0xff888888
+    var emptyLine = false
+
+    fun addChildrenList(child: Person) {
+        if (childrenList == null)
+            childrenList = arrayListOf()
+
+        childrenList!!.add(child)
+    }
+
+    fun getChildrenList(): ArrayList<Person>? {
+        return childrenList
+    }
 
     fun addLineMarkPos(pos: Int) {
         lineMarkPos.add(pos)
@@ -104,8 +116,8 @@ class ChildrenLine : Line() {
             lineMarkPos = line.lineMarkPos
             imageLength = line.imageLength
             childrenNumb = line.childrenNumb
-            thinkness = line.thinkness
-            lineColor = line.lineColor
+            childrenList = line.getChildrenList()
+            emptyLine = line.emptyLine
         }
 
         if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
@@ -115,6 +127,8 @@ class ChildrenLine : Line() {
                             childrenMidEmptyNodeNumber != 0))
         ) {
             centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() + parentEmptyNodeNumber
+         } else {
+            emptyLine = true
         }
     }
 }

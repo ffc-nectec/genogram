@@ -103,7 +103,7 @@ class FamilyTreeDrawer {
 
         if (node == null || line == null) {
             nameLayer[replaceInd] = emptyNode.drawEmptyNode()
-            personLayer[replaceInd] = emptyNode.drawEmptyNode()
+            personLayer[replaceInd] = emptyNode
         }
 
         if (node !== null)

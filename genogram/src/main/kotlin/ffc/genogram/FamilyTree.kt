@@ -77,6 +77,7 @@ class FamilyTree(var family: Family) {
             val line = relationFactory.getLine(
                 childrenList,
                 parent,
+                family,
                 familyTreePic,
                 RelationshipLabel.CHILDREN
             )
@@ -102,6 +103,7 @@ class FamilyTree(var family: Family) {
                 // Draw a relationship line and Node.
                 val line = relationFactory.getLine(
                     focusedPerson!!,
+                    family,
                     familyTreePic,
                     relationLabel,
                     addLayer = familyTreePic.findPersonLayer(focusedPerson!!)
