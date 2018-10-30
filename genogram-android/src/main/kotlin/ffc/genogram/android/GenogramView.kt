@@ -30,6 +30,7 @@ import ffc.genogram.Family
 import ffc.genogram.FamilyTree
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.MarriageLine
 
 class GenogramView @JvmOverloads constructor(
@@ -79,16 +80,24 @@ class GenogramView @JvmOverloads constructor(
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        drawer.personFamilyStorage.forEachIndexed { row, layer ->
-            layer.forEachIndexed { col, node ->
-                when (node) {
+        drawer.personFamilyStorage.forEachIndexed { _, layer ->
+            layer.forEachIndexed { _, relation ->
+                when (relation) {
                     is MarriageLine -> {
-                        node.getSpouseList().forEach { pair ->
+                        relation.getSpouseList().forEach { pair ->
                             val first = personViews[pair[0]]!!.relativePosition
                             val second = personViews[pair[1]]!!.relativePosition
                             val line = MarriagePath(first to second)
                             relationPath.add(line)
                         }
+                    }
+                    is ChildrenLine -> {
+                        val first = personViews[relation.parentList[0]]!!.relativePosition
+                        val second = personViews[relation.parentList[1]]?.relativePosition
+                        val line = ChildrenPath(
+                                parent = first to second,
+                                children = relation.childrenList.map { personViews.get(it)!!.relativePosition })
+                        relationPath.add(line)
                     }
                 }
             }

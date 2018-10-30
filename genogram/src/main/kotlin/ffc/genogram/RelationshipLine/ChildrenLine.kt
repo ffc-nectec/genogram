@@ -7,29 +7,14 @@ import ffc.genogram.Person
 
 class ChildrenLine : Line() {
 
-    private var childrenList: ArrayList<Person> = arrayListOf()
-    private var parentList: ArrayList<Person> = arrayListOf()
+    var childrenList: ArrayList<Person> = arrayListOf()
+    var parentList: ArrayList<Person> = arrayListOf()
+        internal set
     private var lineMarkPos: ArrayList<Int> = arrayListOf()
     var centerMarkPos = 0
     var childrenNumb: Int = 1
     var imageLength: Double = 0.0
     var emptyLine = false
-
-    fun setChildrenList(list: ArrayList<Person>) {
-        childrenList = list
-    }
-
-    fun getChildrenList(): ArrayList<Person> {
-        return childrenList
-    }
-
-    fun addParentList(list: ArrayList<Person>) {
-        parentList = list
-    }
-
-    fun getParentList(): ArrayList<Person>? {
-        return parentList
-    }
 
     fun addLineMarkPos(pos: Int) {
         lineMarkPos.add(pos)
