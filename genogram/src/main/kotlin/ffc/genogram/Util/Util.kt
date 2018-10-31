@@ -83,7 +83,19 @@ fun displayEmptyNode(it: EmptyNode, elementSize: Int, index: Int): String {
         "${it.drawEmptyNode()}"
     else
         "${it.drawEmptyNode()}$marginLeft"*/
-    return it.drawEmptyNode()
+//    return it.drawEmptyNode()
+
+    val result = it.drawEmptyNode()
+
+    if (index == 0) {
+        return result
+    } else if (index in 1..(elementSize - 1) || elementSize == 1)
+        return "$marginLeft$result"
+//        return result.toString()
+//        return "$result - ${it.getSpouseList()}"
+    else
+        return "$result$marginLeft"
+//        return  "$result$marginLeft - ${it.getSpouseList()}"
 }
 
 fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int): String {

@@ -40,12 +40,12 @@ class ChildrenLine : Line() {
             addLineMarkPos(startedMark)
 
             for (i in 0 until childrenNumb - 1) {
-                addLineMarkPos(((startedMark + 1) + Relationship.distanceLine * (i + 1)).toInt())
+                addLineMarkPos(((startedMark + (i+1)) + Relationship.distanceLine * (i + 1)).toInt())
+                imageLength = ((Relationship.spaceLine * 2) + 1) +
+                        (Relationship.distanceLine * (childrenNumb - 1)) + 2 + i
             }
 
-            imageLength = ((Relationship.spaceLine * 2) + 1) +
-                    (Relationship.distanceLine * (childrenNumb - 1)) + 2
-            var markPosition = imageLength / 2
+            var markPosition = Math.ceil(imageLength / 2)
             if (childrenNumb % 2 != 0)
                 markPosition = (markPosition - ((Node.nodeSize + 1) - Node.nodeBorderSize))
             centerMarkPos = markPosition.toInt()
@@ -107,7 +107,8 @@ class ChildrenLine : Line() {
             lineMarkPos = line.lineMarkPos
             imageLength = line.imageLength
             childrenNumb = line.childrenNumb
-//            childrenList = line.getChildrenList()
+            childrenList = line.childrenList
+            parentList = line.parentList
             emptyLine = line.emptyLine
         }
 
