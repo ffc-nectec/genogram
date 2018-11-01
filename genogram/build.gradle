@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.2.71"
-}
+apply plugin: 'kotlin'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
