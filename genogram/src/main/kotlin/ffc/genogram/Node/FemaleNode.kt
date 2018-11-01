@@ -69,7 +69,7 @@ class FemaleNode(
                         // Find index of AddedPerson's siblings
                         var childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                         val childrenListId = parent!!.children!!
-                        val childrenListInd: MutableList<Int> = mutableListOf()
+                        var childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
@@ -77,6 +77,8 @@ class FemaleNode(
                                 )
                             )
                         }
+                        var cInd = childrenListInd.distinct() as MutableList<Int>
+                        childrenListInd = cInd
 
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
                         var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
@@ -107,9 +109,10 @@ class FemaleNode(
                             childrenListInd,
                             parentInd
                         )
+
                         // Object Visualization
-                        val childrenLine = ChildrenLine()
-                        childrenLine.extendLine(childrenListInd, parentInd)
+                        var childrenLine = ChildrenLine()
+                        childrenLine.extendLine(expectedLength, childrenListInd, parentInd)
 
                         familyTreeDrawer.replaceFamilyStorageLayer(
                             childrenLineLayer, startInd, extendedLine, childrenLine
@@ -120,13 +123,15 @@ class FemaleNode(
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes, childrenListInd
                         )
+
                         // Object Visualization
-                        childrenLine.moveChildrenLineSign(
-                            familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+                        var line: Any? = getLineType(
+                            familyTreeDrawer,
+                            childrenLineLayer, addingEmptyNodes, childrenListInd
                         )
 
                         familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, addingInd, editedLine, childrenLine
+                            childrenLineLayer, addingInd, editedLine, line
                         )
 
                         // Extend the MarriageLineManager of AddedPerson and FocusedPerson

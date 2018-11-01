@@ -149,6 +149,7 @@ fun displayChildrenLine(it: ChildrenLine, elementSize: Int, index: Int): String 
         childrenMarks.forEach {
             result.setCharAt(it, ',')
         }
+
         result.setCharAt(it.centerMarkPos, '^')
     }
 
