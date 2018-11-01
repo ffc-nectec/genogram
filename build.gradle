@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-group='com.github.ffc-nectec.genogram'
-
 buildscript {
     ext.kotlinVersion = '1.2.71'
     repositories {
@@ -31,6 +29,8 @@ buildscript {
 }
 
 allprojects {
+    group='com.github.ffc-nectec.genogram'
+
     repositories {
         google()
         jcenter()
