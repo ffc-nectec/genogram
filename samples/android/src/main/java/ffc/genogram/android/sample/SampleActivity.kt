@@ -34,9 +34,9 @@ import ffc.genogram.Family
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.android.Families
+import ffc.genogram.android.GenogramNodeBuilder
 import ffc.genogram.android.GenogramView
-import ffc.genogram.android.PersonViewHolder
-import ffc.genogram.android.RelationPath
+import ffc.genogram.android.relation.RelationPath
 
 class SampleActivity : AppCompatActivity() {
 
@@ -52,7 +52,7 @@ class SampleActivity : AppCompatActivity() {
         families.family {
             onSuccess {
                 val view = GenogramView(this@SampleActivity)
-                view.personViewHolder = SimplePersonViewHolder()
+                view.nodeBuilder = SimpleGenogramNodeBuilder()
                 view.drawFamily(it)
 
                 val container = findViewById<ZoomLayout>(R.id.container)
@@ -62,7 +62,7 @@ class SampleActivity : AppCompatActivity() {
         }
     }
 
-    class SimplePersonViewHolder : PersonViewHolder {
+    class SimpleGenogramNodeBuilder : GenogramNodeBuilder {
         override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
             val view = LayoutInflater.from(context).inflate(R.layout.node_item, parent, false)
             val icon = view.findViewById<Button>(R.id.icon)

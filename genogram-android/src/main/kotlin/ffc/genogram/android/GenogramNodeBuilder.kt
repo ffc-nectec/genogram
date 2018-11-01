@@ -23,12 +23,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import ffc.genogram.Person
 
-interface PersonViewHolder {
+interface GenogramNodeBuilder {
 
     fun viewFor(person: Person, context: Context, parent: ViewGroup): View
 }
 
-internal class DummyPersonViewHolder : PersonViewHolder {
+internal class DummyGenogramNodeBuilder : GenogramNodeBuilder {
 
     override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
         return Button(context).apply {
