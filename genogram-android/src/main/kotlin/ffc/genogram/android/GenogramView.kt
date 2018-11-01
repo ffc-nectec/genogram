@@ -23,6 +23,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
@@ -32,6 +33,9 @@ import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.MarriageLine
+import ffc.genogram.android.relation.ChildrenPath
+import ffc.genogram.android.relation.MarriagePath
+import ffc.genogram.android.relation.RelationPath
 
 class GenogramView @JvmOverloads constructor(
         context: Context,
@@ -45,7 +49,7 @@ class GenogramView @JvmOverloads constructor(
     }
 
     var onDrawFinished: (() -> Unit)? = null
-    var personViewHolder: PersonViewHolder = DummyPersonViewHolder()
+    var nodeBuilder: GenogramNodeBuilder = defaultNodeBuilder
     private val personViews: MutableMap<Person, View> = hashMapOf()
     private val relationPath: MutableList<RelationPath> = arrayListOf()
 
@@ -64,7 +68,7 @@ class GenogramView @JvmOverloads constructor(
             layer.forEachIndexed { col, node ->
                 when (node) {
                     is Person -> {
-                        val view = personViewHolder.viewFor(node, context, this)
+                        val view = nodeBuilder.viewFor(node, context, this)
                         val span = if (node.nodeMargin > 0) 2 else 1
                         addView(view, layoutParamsFor(row, col, colSpan = span))
                         personViews.put(node, view)
@@ -118,6 +122,10 @@ class GenogramView @JvmOverloads constructor(
     }
 
     var itemMargin: Int = dip(8)
+
+    companion object {
+        var defaultNodeBuilder: GenogramNodeBuilder = DummyGenogramNodeBuilder()
+    }
 }
 
 private val View.relativePosition: Rect
@@ -129,3 +137,6 @@ private val View.relativePosition: Rect
             Log.d("rect", "left=$left top=$top right=$right bottom=$bottom")
         }
     }
+
+internal fun View.dip(dipValue: Int): Int =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue.toFloat(), resources.displayMetrics).toInt()

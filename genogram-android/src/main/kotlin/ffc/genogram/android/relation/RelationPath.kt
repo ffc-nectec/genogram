@@ -15,10 +15,29 @@
  * limitations under the License.
  */
 
-package ffc.genogram.android
+package ffc.genogram.android.relation
 
-import android.util.TypedValue
-import android.view.View
+import android.graphics.Canvas
+import android.graphics.Paint
 
-internal fun View.dip(dipValue: Int): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue.toFloat(), resources.displayMetrics).toInt()
+abstract class RelationPath {
+
+    var paint: Paint = Paint().apply {
+        setAntiAlias(true)
+        setStyle(Paint.Style.STROKE)
+        setColor(-0x78000000)
+        setStrokeWidth(6f)
+    }
+
+    init {
+        customPaintPath?.let { paint.apply(it) }
+    }
+
+    abstract fun drawOn(canvas: Canvas)
+
+    companion object {
+        var generationMargin = 100
+
+        var customPaintPath: (Paint.() -> Unit)? = null
+    }
+}
