@@ -44,21 +44,23 @@ class GenogramView @JvmOverloads constructor(
         RelationPath.generationMargin = dip(120)
     }
 
+    var onDrawFinished: (() -> Unit)? = null
     var personViewHolder: PersonViewHolder = DummyPersonViewHolder()
     private val personViews: MutableMap<Person, View> = hashMapOf()
     private val relationPath: MutableList<RelationPath> = arrayListOf()
 
-    lateinit var drawer: FamilyTreeDrawer
+    private var drawer : FamilyTreeDrawer? = null
 
     fun drawFamily(family: Family) {
         drawer = FamilyTree(family).drawGenogram()
-        val column = drawer.personFamilyStorage.maxBy { it.size }!!.size
+
+        val column = drawer!!.personFamilyStorage.maxBy { it.size }!!.size
 
         alignmentMode = GridLayout.ALIGN_BOUNDS
         this.columnCount = column
-        this.rowCount = drawer.personFamilyStorage.size
+        this.rowCount = drawer!!.personFamilyStorage.size
 
-        drawer.personFamilyStorage.forEachIndexed { row, layer ->
+        drawer!!.personFamilyStorage.forEachIndexed { row, layer ->
             layer.forEachIndexed { col, node ->
                 when (node) {
                     is Person -> {
@@ -75,12 +77,14 @@ class GenogramView @JvmOverloads constructor(
                 }
             }
         }
+        invalidate()
+        onDrawFinished?.invoke()
     }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        drawer.personFamilyStorage.forEachIndexed { _, layer ->
+        drawer?.personFamilyStorage?.forEachIndexed { _, layer ->
             layer.forEachIndexed { _, relation ->
                 when (relation) {
                     is MarriageLine -> {
@@ -102,9 +106,7 @@ class GenogramView @JvmOverloads constructor(
                 }
             }
         }
-        relationPath.forEach {
-            it.drawOn(canvas!!)
-        }
+        relationPath.forEach { it.drawOn(canvas!!) }
     }
 
     private fun layoutParamsFor(row: Int, col: Int, colSpan: Int = 1): GridLayout.LayoutParams {
