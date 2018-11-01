@@ -100,12 +100,15 @@ class GenogramView @JvmOverloads constructor(
                         }
                     }
                     is ChildrenLine -> {
-                        val first = personViews[relation.parentList[0]]!!.relativePosition
-                        val second = personViews[relation.parentList[1]]?.relativePosition
-                        val line = ChildrenPath(
-                                parent = first to second,
-                                children = relation.childrenList.map { personViews.get(it)!!.relativePosition })
-                        relationPath.add(line)
+                        //TODO remove check
+                        if (relation.parentList.isNotEmpty() && relation.childrenList.isNotEmpty()) {
+                            val first = personViews[relation.parentList[0]]!!.relativePosition
+                            val second = personViews[relation.parentList[1]]?.relativePosition
+                            val line = ChildrenPath(
+                                    parent = first to second,
+                                    children = relation.childrenList.map { personViews.get(it)!!.relativePosition })
+                            relationPath.add(line)
+                        }
                     }
                 }
             }
