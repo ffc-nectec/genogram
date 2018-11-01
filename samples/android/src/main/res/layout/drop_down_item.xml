@@ -15,15 +15,14 @@
   ~ limitations under the License.
   -->
 
-<com.otaliastudios.zoom.ZoomLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:hasClickableChildren="true"
-    app:transformation="centerInside"
-    app:transformationGravity="top"
-    tools:context=".SimpleActivity">
-
-</com.otaliastudios.zoom.ZoomLayout>
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall" />

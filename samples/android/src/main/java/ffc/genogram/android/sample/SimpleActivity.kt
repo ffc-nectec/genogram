@@ -25,7 +25,7 @@ import com.otaliastudios.zoom.ZoomLayout
 import ffc.genogram.android.GenogramView
 import ffc.genogram.android.relation.RelationPath
 
-class SampleActivity : AppCompatActivity() {
+class SimpleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class SampleActivity : AppCompatActivity() {
         val families = RawResourceFamilies(this, R.raw.family_3_children_3rd_gen)
         families.family {
             onSuccess {
-                val view = GenogramView(this@SampleActivity)
+                val view = GenogramView(this@SimpleActivity)
                 view.nodeBuilder = SampleNodeBuilder()
                 view.drawFamily(it)
 
