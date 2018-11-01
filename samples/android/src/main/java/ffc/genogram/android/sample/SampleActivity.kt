@@ -19,6 +19,7 @@ package ffc.genogram.android.sample
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RawRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -49,6 +50,9 @@ class SampleActivity : AppCompatActivity() {
         val genogram = supportFragmentManager.findFragmentById(R.id.genogram) as GenogramFragment
         with(genogram) {
             view.itemMargin = dip(24)
+            view.onDrawFinished = {
+                Toast.makeText(context, "draw finish", Toast.LENGTH_SHORT).show()
+            }
             families = RawResourceFamilies(this@SampleActivity, R.raw.family_3_children_3rd_gen)
             personViewHolder = SimplePersonViewHolder()
         }
@@ -76,11 +80,13 @@ class SampleActivity : AppCompatActivity() {
 
         override fun family(callbackDsl: Families.Callback.() -> Unit) {
             val callback = Families.Callback().apply(callbackDsl)
-            try {
-                callback.onSuccess(context.rawAs<Family>(rawId))
-            } catch (exception: Exception) {
-                callback.onFail(exception)
-            }
+            Handler().postDelayed({
+                try {
+                    callback.onSuccess(context.rawAs<Family>(rawId))
+                } catch (exception: Exception) {
+                    callback.onFail(exception)
+                }
+            }, 500)
         }
     }
 }
