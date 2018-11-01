@@ -17,24 +17,11 @@
 
 package ffc.genogram.android.sample
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.RawRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import com.otaliastudios.zoom.ZoomLayout
-import ffc.genogram.Family
-import ffc.genogram.GenderLabel
-import ffc.genogram.Person
-import ffc.genogram.android.Families
-import ffc.genogram.android.GenogramNodeBuilder
 import ffc.genogram.android.GenogramView
 import ffc.genogram.android.relation.RelationPath
 
@@ -48,48 +35,17 @@ class SampleActivity : AppCompatActivity() {
             color = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
         }
 
-        val families = RawResourceFamilies(this@SampleActivity, R.raw.family_3_children_3rd_gen)
+        val families = RawResourceFamilies(this, R.raw.family_3_children_3rd_gen)
         families.family {
             onSuccess {
                 val view = GenogramView(this@SampleActivity)
-                view.nodeBuilder = SimpleGenogramNodeBuilder()
+                view.nodeBuilder = SampleNodeBuilder()
                 view.drawFamily(it)
 
                 val container = findViewById<ZoomLayout>(R.id.container)
                 container.addView(view)
                 Handler().postDelayed({ container.zoomOut() }, 150)
             }
-        }
-    }
-
-    class SimpleGenogramNodeBuilder : GenogramNodeBuilder {
-        override fun viewFor(person: Person, context: Context, parent: ViewGroup): View {
-            val view = LayoutInflater.from(context).inflate(R.layout.node_item, parent, false)
-            val icon = view.findViewById<Button>(R.id.icon)
-            when (person.gender) {
-                GenderLabel.MALE -> icon.setBackgroundResource(R.drawable.male_node_icon)
-                GenderLabel.FEMALE -> icon.setBackgroundResource(R.drawable.female_node_icon)
-            }
-            icon.setOnClickListener {
-                Toast.makeText(context, "Click ${person.firstname} ${person.lastname}", Toast.LENGTH_SHORT).show()
-            }
-            val name = view.findViewById<TextView>(R.id.name)
-            name.text = person.firstname
-            return view
-        }
-    }
-
-    class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Families {
-
-        override fun family(callbackDsl: Families.Callback.() -> Unit) {
-            val callback = Families.Callback().apply(callbackDsl)
-            Handler().postDelayed({
-                try {
-                    callback.onSuccess(context.rawAs<Family>(rawId))
-                } catch (exception: Exception) {
-                    callback.onFail(exception)
-                }
-            }, 500)
         }
     }
 }
