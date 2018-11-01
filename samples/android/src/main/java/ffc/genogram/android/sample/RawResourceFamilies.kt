@@ -18,12 +18,30 @@
 package ffc.genogram.android.sample
 
 import android.content.Context
+import android.os.Handler
 import android.support.annotation.RawRes
 import com.google.gson.Gson
+import ffc.genogram.Family
+import ffc.genogram.android.Families
 import java.io.BufferedReader
 import java.io.InputStreamReader
+
+class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Families {
+
+    override fun family(callbackDsl: Families.Callback.() -> Unit) {
+        val callback = Families.Callback().apply(callbackDsl)
+        Handler().postDelayed({
+            try {
+                callback.onSuccess(context.rawAs<Family>(rawId))
+            } catch (exception: Exception) {
+                callback.onFail(exception)
+            }
+        }, 500)
+    }
+}
 
 inline fun <reified T> Context.rawAs(@RawRes rawId: Int, gson: Gson = Gson()): T {
     val reader = BufferedReader(InputStreamReader(resources.openRawResource(rawId)))
     return gson.fromJson(reader.readText(), T::class.java)
 }
+
