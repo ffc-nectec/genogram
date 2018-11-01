@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-5.json")
-    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-8.json")
+//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-8.json")
 
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-6.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-7.json")
@@ -49,7 +49,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-13.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-14.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-15.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-16.json") <<<<< 2
+//    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-16.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-17.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-18.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-1-spouse-19.json")
@@ -108,7 +108,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-38.json")
 //    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-39.json")
 
-    familyObj = getResourceAs("2ndGen/children/family-3-children-2.json")
+//    familyObj = getResourceAs("2ndGen/children/family-3-children-2.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-3.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-4.json")
 //    familyObj = getResourceAs("2ndGen/children/family-3-children-5.json")
@@ -158,7 +158,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-8.json")
 
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
-//    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
+    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-3.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-4.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-5.json")

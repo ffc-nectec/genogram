@@ -121,7 +121,6 @@ class ChildrenLineManager(
 
             return "$resultSpace |$resultSpace"
         } else {
-
             for (i in 0 until spaceLine.toInt())
                 resultSpace += space
             resultSign = resultSpace

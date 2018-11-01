@@ -10,11 +10,10 @@ class ChildrenLine : Line() {
     var childrenList: ArrayList<Person> = arrayListOf()
     var parentList: ArrayList<Person> = arrayListOf()
         internal set
-    private var lineMarkPos: ArrayList<Int> = arrayListOf()
+    var lineMarkPos: ArrayList<Int> = arrayListOf()
     var centerMarkPos = 0
     var childrenNumb: Int = 1
     var imageLength: Double = 0.0
-    var emptyLine = false
 
     fun addLineMarkPos(pos: Int) {
         lineMarkPos.add(pos)
@@ -40,12 +39,12 @@ class ChildrenLine : Line() {
             addLineMarkPos(startedMark)
 
             for (i in 0 until childrenNumb - 1) {
-                addLineMarkPos(((startedMark + 1) + Relationship.distanceLine * (i + 1)).toInt())
+                addLineMarkPos(((startedMark + (i+1)) + Relationship.distanceLine * (i + 1)).toInt())
+                imageLength = ((Relationship.spaceLine * 2) + 1) +
+                        (Relationship.distanceLine * (childrenNumb - 1)) + 2 + i
             }
 
-            imageLength = ((Relationship.spaceLine * 2) + 1) +
-                    (Relationship.distanceLine * (childrenNumb - 1)) + 2
-            var markPosition = imageLength / 2
+            var markPosition = Math.ceil(imageLength / 2)
             if (childrenNumb % 2 != 0)
                 markPosition = (markPosition - ((Node.nodeSize + 1) - Node.nodeBorderSize))
             centerMarkPos = markPosition.toInt()
@@ -88,6 +87,42 @@ class ChildrenLine : Line() {
         childrenNumb = childrenListInd.size
     }
 
+    fun extendLine(expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int) {
+        imageLength = expectedLength.toDouble()
+        childrenNumb = childrenListInd.size
+
+        val indentNumb = 4
+        var length = (Relationship.lengthLine - 1).toInt()
+        val tmp = StringBuilder()
+        var startInd = childrenListInd[0]
+
+        // Find Children sign spot
+        childrenListInd.forEach { index ->
+            var shiftInd = index
+            var ind: Int
+            if (startInd != 0) {
+                shiftInd = index - startInd
+            }
+            ind = (indentNumb + (length * shiftInd)) - (shiftInd)
+            lineMarkPos.add(ind)
+        }
+
+        // Add Children Sign '^'
+        centerMarkPos = if (startInd == 0) {
+            (Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1
+        } else {
+            ((Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1) / 2
+        }
+        // Check Children Sign before adding
+        for (i in 0 until tmp.length) {
+            lineMarkPos.forEach {
+                if (centerMarkPos == it) {
+                    centerMarkPos++
+                }
+            }
+        }
+    }
+
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
         lineLayer: Int, step: Int, ChildInd: List<Int>
@@ -107,8 +142,8 @@ class ChildrenLine : Line() {
             lineMarkPos = line.lineMarkPos
             imageLength = line.imageLength
             childrenNumb = line.childrenNumb
-//            childrenList = line.getChildrenList()
-            emptyLine = line.emptyLine
+            childrenList = line.childrenList
+            parentList = line.parentList
         }
 
         if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
