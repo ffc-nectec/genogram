@@ -29,11 +29,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.otaliastudios.zoom.ZoomLayout
 import ffc.genogram.Family
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.android.Families
-import ffc.genogram.android.GenogramFragment
+import ffc.genogram.android.GenogramView
 import ffc.genogram.android.PersonViewHolder
 import ffc.genogram.android.RelationPath
 
@@ -47,14 +48,17 @@ class SampleActivity : AppCompatActivity() {
             color = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
         }
 
-        val genogram = supportFragmentManager.findFragmentById(R.id.genogram) as GenogramFragment
-        with(genogram) {
-            view.itemMargin = dip(24)
-            view.onDrawFinished = {
-                Toast.makeText(context, "draw finish", Toast.LENGTH_SHORT).show()
+        val families = RawResourceFamilies(this@SampleActivity, R.raw.family_3_children_3rd_gen)
+        families.family {
+            onSuccess {
+                val view = GenogramView(this@SampleActivity)
+                view.personViewHolder = SimplePersonViewHolder()
+                view.drawFamily(it)
+
+                val container = findViewById<ZoomLayout>(R.id.container)
+                container.addView(view)
+                Handler().postDelayed({ container.zoomOut() }, 150)
             }
-            families = RawResourceFamilies(this@SampleActivity, R.raw.family_3_children_3rd_gen)
-            personViewHolder = SimplePersonViewHolder()
         }
     }
 
@@ -73,7 +77,6 @@ class SampleActivity : AppCompatActivity() {
             name.text = person.firstname
             return view
         }
-
     }
 
     class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Families {

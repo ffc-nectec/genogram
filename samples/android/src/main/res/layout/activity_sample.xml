@@ -26,10 +26,4 @@
     app:transformationGravity="top"
     tools:context=".SampleActivity">
 
-    <fragment
-        android:id="@+id/genogram"
-        class="ffc.genogram.android.GenogramFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </com.otaliastudios.zoom.ZoomLayout>
