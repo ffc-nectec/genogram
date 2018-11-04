@@ -476,7 +476,7 @@ class FamilyTreeDrawer {
         return tmp.toString()
     }
 
-    fun moveChildrenLineSign(lineLayer: Int, step: Int, ChildInd: List<Int>): String {
+    fun moveChildrenLineSign(lineLayer: Int, step: Int, ChildInd: List<Int>, emptyNodeNumb: Int): String {
         val tmp = StringBuilder()
         val extraStep = step + 1
         var moveSteps = ((distanceLine.toInt() * extraStep) + extraStep)
@@ -497,6 +497,8 @@ class FamilyTreeDrawer {
             line = nameFamilyStorage[lineLayer][ChildInd[0]]
             moveSteps = (moveSteps - lengthLine).toInt() + parentEmptyNodeNumber
         }
+
+        moveSteps -= emptyNodeNumb
 
         // find the '^' index
         var signInd = 0

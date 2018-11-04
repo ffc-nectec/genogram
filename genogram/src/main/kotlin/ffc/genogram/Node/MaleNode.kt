@@ -224,15 +224,16 @@ class MaleNode(
                                 )
                             }
 
+                            // Move children sign
                             // Object Visualization
+                            val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
                             var line: Any? = getLineType(
                                 familyTreeDrawer,
-                                childrenLineLayer, addingEmptyNodes, childrenListInd
+                                childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                             )
 
-                            // Move children sign
                             val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                                childrenLineLayer, addingEmptyNodes, childrenListInd
+                                childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                             )
                             familyTreeDrawer.replaceFamilyStorageLayer(
                                 childrenLineLayer, startInd, editedLine, line

@@ -125,7 +125,7 @@ class ChildrenLine : Line() {
 
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
-        lineLayer: Int, step: Int, ChildInd: List<Int>
+        lineLayer: Int, step: Int, ChildInd: List<Int>, emptyNodeNumb: Int
     ) {
         val extraStep = step + 1
         // Delete 1 left margin
@@ -152,10 +152,8 @@ class ChildrenLine : Line() {
                             (line is EmptyNode) &&
                             childrenMidEmptyNodeNumber != 0))
         ) {
-            line = familyTreeDrawer.personFamilyStorage[lineLayer][ChildInd[0]]
-            if (line is ChildrenLine) {
-            }
-            centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() + parentEmptyNodeNumber
+            centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() +
+                    parentEmptyNodeNumber - emptyNodeNumb
         }
 
     }

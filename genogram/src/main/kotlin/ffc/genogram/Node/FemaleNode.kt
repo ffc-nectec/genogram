@@ -120,14 +120,15 @@ class FemaleNode(
 
                         // Move the children sign
                         // String Visualization
+                        val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                            childrenLineLayer, addingEmptyNodes, childrenListInd
+                            childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                         )
 
                         // Object Visualization
                         var line: Any? = getLineType(
                             familyTreeDrawer,
-                            childrenLineLayer, addingEmptyNodes, childrenListInd
+                            childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                         )
 
                         familyTreeDrawer.replaceFamilyStorageLayer(
@@ -192,14 +193,15 @@ class FemaleNode(
 
                         // Move children sign
                         // String Visualization
+                        val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                            childrenLineLayer, addingEmptyNodes, childrenListInd
+                            childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                         )
 
                         // Object Visualization
                         var line: Any? = getLineType(
                             familyTreeDrawer,
-                            childrenLineLayer, addingEmptyNodes, childrenListInd
+                            childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
                         )
 
                         familyTreeDrawer.replaceFamilyStorageLayer(

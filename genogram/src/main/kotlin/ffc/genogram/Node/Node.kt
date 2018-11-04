@@ -331,18 +331,19 @@ abstract class Node {
 
             // Move the children sign
             // String Visualization
+            val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
             val editedLine = familyTreeDrawer.moveChildrenLineSign(
-                parentLineLayer, addingEmptyNodes, drawSibListInd
+                parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
             )
             // Object Visualization
             var line: Any? = getLineType(
                 familyTreeDrawer,
-                parentLineLayer, addingEmptyNodes, drawSibListInd
+                parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
             )
 
             if (addingEmptyNodes > 0 && line == null) {
                 childrenLine.moveChildrenLineSign(
-                    familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd
+                    familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd, 0
                 )
                 childrenLine.centerMarkPos++
                 childrenLine.centerMarkPos
@@ -376,7 +377,7 @@ abstract class Node {
     fun getLineType(
         familyTreeDrawer: FamilyTreeDrawer,
         childrenLineLayer: Int, addingEmptyNodes:
-        Int, childrenListInd: MutableList<Int>
+        Int, childrenListInd: MutableList<Int>, extraNode: Int
     ): Any? {
         var emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
         var midEmptyNodeCount = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLineLayer)
@@ -386,13 +387,13 @@ abstract class Node {
         if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
             line = ChildrenLine()
             line.moveChildrenLineSign(
-                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
             )
         } else if ((Math.abs(addingEmptyNodes - emptyNodeCount) > 0) && emptyNodeCount > 0) {
             val preLine = familyTreeDrawer.personFamilyStorage[childrenLineLayer]
             line = preLine[preLine.size - 1] as ChildrenLine
             line.moveChildrenLineSign(
-                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd
+                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
             )
         }
 
