@@ -94,12 +94,31 @@ class ChildrenLineManager(
             // When the layer's is enough for moving the new children line
             // to the "parent"'s index.
             // Move the children line to "parent"'s index.
-            val addingMore = addingInd - childrenLineSize
-            for (i in 0 until addingMore + 1) {
-                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    addingLayer, addingInd - 1, null, null
-                )
+            val lineChildren = familyTreeDrawer.getPersonLayer(addingLayer)
+            var childrenNumb = 0
+            var childNumb = 0
+            lineChildren.forEachIndexed { index, any ->
+                if (index < childrenLineSize - 1)
+                    if (any is ChildrenLine) {
+                        if (any.childrenNumb == 1)
+                            childNumb++
+                        else
+                            childrenNumb += any.childrenNumb
+                    }
             }
+
+            val emptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNodePerson(addingLayer)
+            val emptyMidNodeNumb = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
+            val emptyFrontNodeNumb = Math.abs(emptyNodeNumb - emptyMidNodeNumb)
+            val addingMore = parentInd - childrenNumb - (childNumb * 2) - emptyFrontNodeNumb
+            addingInd = childrenLineSize - 1
+
+            if (addingMore > 0)
+                for (i in 0 until addingMore) {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, addingInd, null, null
+                    )
+                }
         }
         return familyTreeDrawer
     }

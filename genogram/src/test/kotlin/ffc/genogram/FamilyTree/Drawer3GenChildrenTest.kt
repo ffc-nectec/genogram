@@ -494,6 +494,34 @@ class Drawer3GenChildrenTest {
     }
 
     @Test
+    fun draw5Children3() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-5-children-3rd-gen-3.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        // String
+        /*canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,------------------,-----^--------------,---------,    ]
+            [[  M1  ], (  F1  ), [  M2  ], (  F2  ), (  F3  ), (  F4  ), [  M3  ]]
+            [    |_________|   ,     |_________|   ,         ,     |_________|   ]
+            [         |        ,     ,----^----,---------,   ,          |        ]
+            [     [  M4  ]     , [  M5  ], [  M6  ], (  F5  ),      (  F6  )     ]
+        """.trimIndent()*/
+
+        // Object
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,-------------------,----^--------------,---------,    ]
+            [[  M1  ], (  F1  ), [  M2  ], (  F2  ), (  F3  ), (  F4  ), [  M3  ]]
+            [    |_________|   ,     |_________|   ,         ,     |_________|   ]
+            [         |        ,     ,----^----,---------,   ,          |        ]
+            [     [  M4  ]     , [  M5  ], [  M6  ], (  F5  ),      (  F6  )     ]
+        """.trimIndent()
+    }
+
+    @Test
     fun draw6Children() {
         val drawer = FamilyTree(getResourceAs("3rdGen/family-6-children-3rd-gen.json")).drawGenogram()
         val canvas = displayObjectResult(drawer)
@@ -522,6 +550,54 @@ class Drawer3GenChildrenTest {
             [        ,         ,     |_________|   ]
             [    ,---------,---------,----^----,---------,---------,---------,   ]
             [[River ], [ Will ], (Sarah ), [Teddy ], ( Anne ), [Chirst], ( Maye )]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw7Children2() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-7-children-3rd-gen-2.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,     ,-------------------,-----^-------------,-------------------,    ]
+            [[  M1  ], (  F1  ),         , [  M2  ], ( F12  ), [  M3  ], (  F3  ), (  F4  ), [ F14  ]]
+            [    |_________|   ,         ,     |_________|   ,     |_________|   ,     |_________|   ]
+            [    ,----^----,---------,   ,     ,----^----,---------,   ,         ,          |        ]
+            [[  M5  ], (  F6  ), (  F7  ), [  M8  ], [  M9  ], ( M26  ),         ,      (  F8  )     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw8Children() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-8-children-3rd-gen.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [    ,-------------------,--------------^----,-------------------,    ]
+            [[  M1  ], (  F1  ), [  M2  ], [  M3  ], (  F3  ),         , [  M4  ], (  F3  )]
+            [    |_________|   ,         ,     |_________|   ,         ,     |_________|   ]
+            [    ,----^----,   ,         ,     ,----^----,---------,   ,     ,----^----,---------,   ]
+            [[  M5  ], (  F4  ),         , [  M7  ], (  F5  ), (  F6  ), (  F7  ), (  F8  ), (  F9  )]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw8Children2() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-8-children-3rd-gen-2.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,         ,     |_________|   ]
+            [        ,     ,-------------------,----------------^------------,-------------------,    ]
+            [[  M1  ], (  F1  ),         , [  M2  ], ( F12  ),         , [  M3  ], (  F3  ), (  F4  ), [ F14  ]]
+            [    |_________|   ,         ,     |_________|   ,         ,     |_________|   ,     |_________|   ]
+            [    ,----^----,---------,   ,     ,----^----,---------,   ,          |        ,          |        ]
+            [[  M5  ], (  F6  ), (  F7  ), [  M8  ], [  M9  ], ( M26  ),      ( F20  )     ,      (  F8  )     ]
         """.trimIndent()
     }
 }

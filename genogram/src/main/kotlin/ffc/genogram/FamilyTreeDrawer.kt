@@ -18,6 +18,7 @@
 package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -88,29 +89,20 @@ class FamilyTreeDrawer {
         }
     }
 
-    fun replaceFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?) {
-        val layer = nameFamilyStorage[layerNumb]
-
-        if (node != null)
-            layer[replaceInd] = node
-        else
-            layer[replaceInd] = emptyNode.drawEmptyNode()
-    }
-
     fun replaceFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?, line: Any?) {
-        val nameLayer = nameFamilyStorage[layerNumb]
-        val personLayer = personFamilyStorage[layerNumb]
+            val nameLayer = nameFamilyStorage[layerNumb]
+            val personLayer = personFamilyStorage[layerNumb]
 
-        if (node == null || line == null) {
-            nameLayer[replaceInd] = emptyNode.drawEmptyNode()
-            personLayer[replaceInd] = emptyNode
-        }
+            if (node == null || line == null) {
+                nameLayer[replaceInd] = emptyNode.drawEmptyNode()
+                personLayer[replaceInd] = emptyNode
+            }
 
-        if (node !== null)
-            nameLayer[replaceInd] = node
+            if (node !== null)
+                nameLayer[replaceInd] = node
 
-        if (line != null)
-            personLayer[replaceInd] = line
+            if (line != null)
+                personLayer[replaceInd] = line
     }
 
     fun findStorageSize(): Int = nameFamilyStorage.size
@@ -330,14 +322,26 @@ class FamilyTreeDrawer {
                 val lastLineLayerInd = findStorageLayerSize(layerNumb) - 1
                 val lineLayer = personFamilyStorage[layerNumb]
                 lineLayer.forEachIndexed { index, s ->
-                    if ((index != 0) && (index != lastLineLayerInd)
-                        && (s is EmptyNode)
-                    )
+                    if ((index != 0) && (index != lastLineLayerInd) && (s is EmptyNode))
                         count++
                 }
             }
 
         return count
+    }
+
+    fun findSingleChildNumb(childrenLineLayer: Int): Int {
+        val lineList = personFamilyStorage[childrenLineLayer]
+        var singleChildNumb = 0
+
+        lineList.forEach {
+            if (it is ChildrenLine) {
+                if (it.childrenNumb == 1)
+                    singleChildNumb++
+            }
+        }
+
+        return singleChildNumb
     }
 
     fun addEmptyNodeMarriageLine(partnerInd: Int, layerNumb: Int): String {

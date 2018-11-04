@@ -114,7 +114,7 @@ abstract class Node {
         // Find parent index, and add the addedPerson node at the index.
         // Move the addedPerson node.
         val addingLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
-        val addingInd = focusedPersonInd - childrenNumb
+        var addingInd = focusedPersonInd - childrenNumb
 
         if (addingLayerSize < addingInd) {
             // Add empty node(s), and move the node
@@ -136,6 +136,7 @@ abstract class Node {
             // to the "parent"'s index.
             // Move the child node to "parent"'s index.
             var addingMore = addingInd - addingLayerSize
+
             for (i in 0 until addingMore + 1) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     addingLayer, addingInd - 1, null, null
@@ -150,14 +151,30 @@ abstract class Node {
         parentLayer: Int,
         parentInd: Int
     ) {
+        val childrenLineLayer = parentLayer + 2
         val childrenLayer = parentLayer + 3
         var parentInd = parentInd
         val emptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNode(childrenLayer)
-        val cousinsLayerElNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+        var cousinsLayerElNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
         val cousinsNumb = Math.abs(cousinsLayerElNumb - emptyNodeNumb)
         val addingEmptyNode = parentInd - cousinsLayerElNumb
+        val childrenLineSize = familyTreeDrawer.findPersonLayerSize(childrenLineLayer)
+        val lineChildren = familyTreeDrawer.getPersonLayer(childrenLineLayer)
+        var childrenNumb = 0
+        var childNumb = 0
+        lineChildren.forEachIndexed { index, any ->
+            if (index < childrenLineSize - 1)
+                if (any is ChildrenLine) {
+                    if (any.childrenNumb == 1)
+                        childNumb++
+                    else
+                        childrenNumb += any.childrenNumb
+                }
+        }
 
-        if (addingEmptyNode > 0) {
+        val addingInd = (childNumb * 2) + childrenNumb
+        if (addingEmptyNode > 0 && addingInd != parentInd) {
+            // Problem here
             if (cousinsLayerElNumb != addingEmptyNode) {
                 if (cousinsLayerElNumb < addingEmptyNode) {
                     parentInd -= cousinsNumb
@@ -213,14 +230,18 @@ abstract class Node {
             }
 
             // Move the addedPerson's parent index
-            val addingParentMarriageLineInd = familyTreeDrawer.addMarriageLineInd(
-                parentLayer + 1, focusedPerson, null
-            )
-            for (i in addingParentMarriageLineInd until
-                    addingParentMarriageLineInd + emptyNodeNumb) {
+            val marriageLineLayer = parentLayer + 1
+            val marriageLineNumb = familyTreeDrawer.findLineNumber(marriageLineLayer) - 1
+            val emptyNodeNumbLine = familyTreeDrawer.findNumberOfEmptyNode(marriageLineLayer)
+            val emptyMidNodeNumbLine = familyTreeDrawer.findNumberOfMidEmptyNode(marriageLineLayer)
+            val emptyFrontMidNodeNumbLine = emptyNodeNumbLine - emptyMidNodeNumbLine
+            val addingInd = (marriageLineNumb * 2) + emptyFrontMidNodeNumbLine - 1
+
+            // Extend the MarriageLineManager by adding the empty node(s).
+            for (i in 0 until emptyNodeNumb) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     parentLayer + 1,
-                    i,
+                    addingInd,
                     null,
                     null
                 )
@@ -278,7 +299,6 @@ abstract class Node {
             val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
 
             if (childrenNumber > 3) {
-                // Extend the MarriageLineManager by adding the empty node(s).
                 familyTreeDrawer = addMoreNodes(
                     emptyNodeNumber, addingEmptyNodes, grandParentLayer, familyTreeDrawer
                 )
@@ -287,12 +307,10 @@ abstract class Node {
             // Extend the CHILDREN Line the top layer of the AddedPerson.
             // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
             var startInd = drawSibListInd[0]
-            var addingInd = parentInd - 1
             if (startInd != 0) {
                 childrenNumber -= 1
             } else {
                 startInd = 0
-                addingInd = 0
             }
 
             val expectedLength = familyTreeDrawer.childrenLineLength(nodeBetweenSibNumb)
@@ -302,6 +320,7 @@ abstract class Node {
                 parentInd
             )
             val parentLineLayer = parentLayer - 1
+
             // Object Visualization
             val childrenLine = ChildrenLine()
             childrenLine.extendLine(drawSibListInd, parentInd)
@@ -315,24 +334,24 @@ abstract class Node {
             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                 parentLineLayer, addingEmptyNodes, drawSibListInd
             )
-
             // Object Visualization
             var line: Any? = getLineType(
                 familyTreeDrawer,
                 parentLineLayer, addingEmptyNodes, drawSibListInd
             )
+
             if (addingEmptyNodes > 0 && line == null) {
                 childrenLine.moveChildrenLineSign(
                     familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd
                 )
                 childrenLine.centerMarkPos++
+                childrenLine.centerMarkPos
                 line = childrenLine
             }
 
             familyTreeDrawer.replaceFamilyStorageLayer(
-                parentLineLayer, addingInd, editedLine, line
+                parentLineLayer, startInd, editedLine, line
             )
-
         } else if (addedPersonInd < parentInd
             && isAddedPersonOldest
             && focusedPerson!!.children!!.size > 1
@@ -346,19 +365,6 @@ abstract class Node {
             for (i in addedPersonInd until parentInd) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     addingLayer,
-                    i,
-                    null,
-                    null
-                )
-            }
-
-            // Move the children line above the addedPerson.
-            val childrenLineLayer = addingLayer - 1
-            val childrenLineLastInd = familyTreeDrawer.findStorageLayerSize(childrenLineLayer) - 1
-
-            for (i in childrenLineLastInd until childrenLineLastInd + emptyNodeNumb) {
-                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    childrenLineLayer,
                     i,
                     null,
                     null

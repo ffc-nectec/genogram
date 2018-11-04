@@ -158,7 +158,7 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-3-children-3rd-gen-8.json")
 
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen.json")
-    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-2.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-3.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-4.json")
 //    familyObj = getResourceAs("3rdGen/family-4-children-3rd-gen-5.json")
@@ -167,9 +167,15 @@ fun main(args: Array<String>) {
 
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen-3.json")
 
 //    familyObj = getResourceAs("3rdGen/family-6-children-3rd-gen.json")
 //    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen.json")
+//    familyObj = getResourceAs("3rdGen/family-7-children-3rd-gen-2.json")
+//    familyObj = getResourceAs("3rdGen/family-8-children-3rd-gen.json")
+//    familyObj = getResourceAs("3rdGen/family-8-children-3rd-gen-2.json")     // fix children sign
+
+
 
     print(".\n")
     val familyTreePic = drawGenogram()
@@ -179,7 +185,6 @@ fun main(args: Array<String>) {
 
     print(".\n====== OBJECT ======\n")
     print(".\n")
-
     val canvas = displayObjectResult(familyTreePic)
     print(canvas.toString())
 }
