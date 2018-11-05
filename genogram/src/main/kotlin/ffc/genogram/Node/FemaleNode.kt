@@ -72,9 +72,7 @@ class FemaleNode(
                         var childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
                             childrenListInd.add(
-                                familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLayer
-                                )
+                                familyTreeDrawer.findPersonIndById(id, childrenLayer)
                             )
                         }
                         var cInd = childrenListInd.distinct() as MutableList<Int>
@@ -174,9 +172,7 @@ class FemaleNode(
                         val childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
                             childrenListInd.add(
-                                familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLayer
-                                )
+                                familyTreeDrawer.findPersonIndById(id, childrenLayer)
                             )
                         }
 
