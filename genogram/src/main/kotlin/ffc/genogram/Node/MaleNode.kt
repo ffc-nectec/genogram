@@ -17,6 +17,7 @@
 
 package ffc.genogram.Node
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
@@ -28,7 +29,8 @@ class MaleNode(
     private val addedPerson: Person,
     private var focusedPerson: Person?,
     private var nodeName: String,
-    var parent: Person?
+    var parent: Person?,
+    val family: Family
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {

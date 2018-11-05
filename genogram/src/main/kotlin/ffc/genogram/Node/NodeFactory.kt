@@ -46,14 +46,16 @@ class NodeFactory {
                 addedPerson,
                 focusedPerson,
                 addedPerson.firstname,
-                parent
+                parent,
+                family
             )
             else -> FemaleNode(
                 familyTreeDrawer,
                 addedPerson,
                 focusedPerson,
                 addedPerson.firstname,
-                parent
+                parent,
+                family
             )
         }
     }

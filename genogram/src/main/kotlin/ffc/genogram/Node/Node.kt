@@ -27,8 +27,6 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 abstract class Node {
 
     companion object {
-        const val borderline = 3.0
-        const val color = 0xff888888
         const val nodeSize = 6.0
         const val nodesDistance = 2.0
         const val nodeBorderSize = 2.0
@@ -218,7 +216,6 @@ abstract class Node {
             // When the addedPerson's parent node is on the left-hand of the addedPerson,
             // the addedPerson's parent's siblings (addedPerson's uncles/aunts) have
             // children equal to less than their parent nodes.
-
             // Replace an empty node at the addedPerson's parent index.
             for (i in parentInd until parentInd + emptyNodeNumb) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
@@ -251,23 +248,25 @@ abstract class Node {
             // Extend addedPerson's parent children line and grandparent's line
             // Extend the MarriageLineManager of AddedPerson's parent.
             var grandParentLayer = parentLayer - 3
-            val grandFatherId = focusedPerson.father
-            val grandMotherId = focusedPerson.mother
-            var grandFatherInd = 0
-            var grandMotherInd = 0
+            var grandParent: Person?
+            var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, grandParentLayer, focusedPerson)
+            if (targetParentInd == null) {
+                var addPersonFather = addedPerson.father
+                var addPersonMother = addedPerson.mother
+                // targetParentId = new FocusedPerson's Id
+                var targetParentId = if (focusedPerson.idCard == addPersonFather) {
+                    addPersonMother
+                } else {
+                    addPersonFather
+                }
 
-            if (grandFatherId != null)
-                grandFatherInd = familyTreeDrawer.findPersonIndById(
-                    grandFatherId, grandParentLayer
-                )
-            if (grandMotherId != null)
-                grandMotherInd = familyTreeDrawer.findPersonIndById(
-                    grandMotherId, grandParentLayer
-                )
+                // targetParent = new FocusedPerson
+                val targetPerson = familyTreeDrawer.getPersonById(targetParentId!!, parentLayer)
+                targetParentInd = getGrandParentInd(familyTreeDrawer, grandParentLayer, targetPerson!!)
+            }
 
-            val minParentInd = Math.min(grandFatherInd, grandMotherInd)
-            val grandParent = familyTreeDrawer.getPersonLayerInd(
-                grandParentLayer, minParentInd
+            grandParent = familyTreeDrawer.getPersonLayerInd(
+                grandParentLayer, targetParentInd!!
             )
 
             val childrenListId = grandParent!!.children!!
@@ -398,5 +397,29 @@ abstract class Node {
         }
 
         return line
+    }
+
+    private fun getGrandParentInd(familyTreeDrawer: FamilyTreeDrawer, grandParentLayer: Int, focusedPerson: Person): Int? {
+
+        var grandFatherId = focusedPerson.father
+        var grandMotherId = focusedPerson.mother
+        var grandFatherInd: Int? = null
+        var grandMotherInd: Int? = null
+        var targetParentInd: Int? = null
+
+        if (grandFatherId != null)
+            grandFatherInd = familyTreeDrawer.findPersonIndById(grandFatherId, grandParentLayer)
+
+        if (grandMotherId != null)
+            grandMotherInd = familyTreeDrawer.findPersonIndById(grandMotherId, grandParentLayer)
+
+        if (grandFatherInd != null && grandMotherInd != null)
+            targetParentInd = Math.min(grandFatherInd, grandMotherInd)
+        else if (grandFatherInd != null)
+            targetParentInd =  grandFatherInd
+        else if (grandMotherInd != null)
+            targetParentInd = grandMotherInd
+
+        return targetParentInd
     }
 }

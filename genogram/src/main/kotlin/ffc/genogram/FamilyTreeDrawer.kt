@@ -168,7 +168,7 @@ class FamilyTreeDrawer {
         return 0
     }
 
-    fun getPersonIndById(personId: Long, layerNumb: Int): Person? {
+    fun getPersonById(personId: Long, layerNumb: Int): Person? {
         val nodeList = personFamilyStorage[layerNumb]
 
         nodeList.forEachIndexed { index, person ->
