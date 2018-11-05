@@ -343,7 +343,7 @@ abstract class Node {
 
             if (addingEmptyNodes > 0 && line == null) {
                 childrenLine.moveChildrenLineSign(
-                    familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd, 0
+                    familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
                 )
                 childrenLine.centerMarkPos++
                 childrenLine.centerMarkPos

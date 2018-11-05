@@ -99,9 +99,9 @@ class MaleNode(
                             }
                         } else {
                             // Add an empty node between the marriage line
-                            familyTreeDrawer.addEmptyNodeMarriageLine(
-                                ownInd, addingLayer + 1
-                            )
+//                            familyTreeDrawer.addEmptyNodeMarriageLine(
+//                                ownInd, addingLayer + 1
+//                            )
                         }
                     }
 
@@ -210,7 +210,10 @@ class MaleNode(
 
                                 // Extend the children line.
                                 // String Visualization
-                                val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber)
+                                val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
+                                startInd -= midEmptyNode
+                                childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                                val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber - midEmptyNode)
                                 val extendedLine = familyTreeDrawer.extendLine(
                                     expectedLength,
                                     childrenListInd,
