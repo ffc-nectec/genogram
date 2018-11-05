@@ -616,4 +616,36 @@ class Drawer3GenChildrenTest {
             [[  M5  ], (  F6  ), (  F7  ), [  M8  ], [  M9  ], ( M26  ), ( F20  ), ( F21  ),      (  F8  )     ]
         """.trimIndent()
     }
+
+    @Test
+    fun draw9Children2() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-9-children-3rd-gen-2.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,     ,-------------------,----^----------------------------------,---------,    ]
+            [[  M1  ], (  F1  ),         , [  M2  ], ( F12  ),         , [  M3  ], (  F3  ), (  F4  )]
+            [    |_________|   ,         ,     |_________|   ,         ,     |_________|   ]
+            [    ,----^----,---------,   ,     ,----^----,---------,   ,     ,----^----,---------,   ]
+            [[  M5  ], (  F6  ), (  F7  ), [  M8  ], [  M9  ], ( M26  ), ( F20  ), ( F20  ), [ F27  ]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw10Children() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-10-children-3rd-gen.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,         ,     |_________|   ]
+            [        ,     ,-------------------,--------------^------------------------,-------------------,    ]
+            [[  M1  ], (  F1  ),         , [  M2  ], ( F12  ),         , [  M3  ], (  F3  ),         , (  F4  ), [ F14  ]]
+            [    |_________|   ,         ,     |_________|   ,         ,     |_________|   ,         ,     |_________|   ]
+            [    ,----^----,---------,   ,     ,----^----,---------,   ,     ,----^----,---------,   ,          |        ]
+            [[  M5  ], (  F6  ), (  F7  ), [  M8  ], [  M9  ], ( M26  ), ( F20  ), ( F21  ), [ F27  ],      (  F8  )     ]
+        """.trimIndent()
+    }
 }

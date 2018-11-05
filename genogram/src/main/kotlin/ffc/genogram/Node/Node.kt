@@ -172,7 +172,6 @@ abstract class Node {
 
         val addingInd = (childNumb * 2) + childrenNumb
         if (addingEmptyNode > 0 && addingInd != parentInd) {
-            // Problem here
             if (cousinsLayerElNumb != addingEmptyNode) {
                 if (cousinsLayerElNumb < addingEmptyNode) {
                     parentInd -= cousinsNumb
@@ -330,22 +329,25 @@ abstract class Node {
 
             // Move the children sign
             // String Visualization
-            val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
+            val extraNode = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
             val editedLine = familyTreeDrawer.moveChildrenLineSign(
                 parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
             )
             // Object Visualization
             var line: Any? = getLineType(
                 familyTreeDrawer,
-                parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
+                parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode - 1
             )
 
             if (addingEmptyNodes > 0 && line == null) {
                 childrenLine.moveChildrenLineSign(
-                    familyTreeDrawer, parentLineLayer, addingEmptyNodes, drawSibListInd, extraNode
+                    familyTreeDrawer,
+                    parentLineLayer,
+                    addingEmptyNodes,
+                    drawSibListInd,
+                    extraNode - 1
                 )
                 childrenLine.centerMarkPos++
-                childrenLine.centerMarkPos
                 line = childrenLine
             }
 
@@ -386,20 +388,32 @@ abstract class Node {
         if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
             line = ChildrenLine()
             line.moveChildrenLineSign(
-                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
+                familyTreeDrawer,
+                childrenLineLayer,
+                addingEmptyNodes,
+                childrenListInd,
+                extraNode
             )
         } else if ((Math.abs(addingEmptyNodes - emptyNodeCount) > 0) && emptyNodeCount > 0) {
             val preLine = familyTreeDrawer.personFamilyStorage[childrenLineLayer]
             line = preLine[preLine.size - 1] as ChildrenLine
             line.moveChildrenLineSign(
-                familyTreeDrawer, childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode
+                familyTreeDrawer,
+                childrenLineLayer,
+                addingEmptyNodes,
+                childrenListInd,
+                extraNode
             )
         }
 
         return line
     }
 
-    private fun getGrandParentInd(familyTreeDrawer: FamilyTreeDrawer, grandParentLayer: Int, focusedPerson: Person): Int? {
+    private fun getGrandParentInd(
+        familyTreeDrawer: FamilyTreeDrawer,
+        grandParentLayer: Int,
+        focusedPerson: Person
+    ): Int? {
 
         var grandFatherId = focusedPerson.father
         var grandMotherId = focusedPerson.mother
@@ -416,7 +430,7 @@ abstract class Node {
         if (grandFatherInd != null && grandMotherInd != null)
             targetParentInd = Math.min(grandFatherInd, grandMotherInd)
         else if (grandFatherInd != null)
-            targetParentInd =  grandFatherInd
+            targetParentInd = grandFatherInd
         else if (grandMotherInd != null)
             targetParentInd = grandMotherInd
 
