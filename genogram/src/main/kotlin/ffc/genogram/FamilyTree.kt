@@ -20,6 +20,7 @@ package ffc.genogram
 import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import kotlin.math.floor
 
 class FamilyTree(var family: Family) {
 
@@ -55,8 +56,6 @@ class FamilyTree(var family: Family) {
             while (personLinkedStack != null) {
                 personLinkedStack = setRelationship(listFocusedPerson, null, null)
             }
-
-            // TODO: Delete
             print("-2 FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
             drawGenogram()
         }
@@ -209,10 +208,10 @@ class FamilyTree(var family: Family) {
         val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
         if (childrenNumber > 3) {
 
-            val addingEmptyNodes = if (childrenNumber % 2 == 0)
+            val addingEmptyNodes: Int = if (childrenNumber % 2 == 0)
                 childrenNumber / 2 - 1
             else
-                Math.floorDiv(childrenNumber, 2) - 1
+                (floor(childrenNumber/ 2.0) - 1).toInt()
 
             for (i in (addingLayer + 1) downTo 0)
                 for (j in 1..addingEmptyNodes)
@@ -220,7 +219,7 @@ class FamilyTree(var family: Family) {
         }
 
         focusedList.forEach {
-            addedNodes.add(it.idCard.toInt())
+            addedNodes.add(it.idCard)
         }
     }
 
@@ -228,7 +227,7 @@ class FamilyTree(var family: Family) {
         var parent = parents[0]
         family.bloodFamily?.forEach { bloodId ->
             parents.forEach { person ->
-                if (bloodId == person.idCard.toInt()) {
+                if (bloodId == person.idCard) {
                     parent = person
                 }
             }
@@ -246,12 +245,12 @@ class FamilyTree(var family: Family) {
                 }
 
                 if ((parent.gender == GenderLabel.FEMALE) &&
-                    (parent.idCard.toInt() != parentSib[parentSib.size - 1])
+                    (parent.idCard != parentSib[parentSib.size - 1])
                 ) {
                     val husbandList = parent.husband
                     husbandList!!.forEach {
-                        if (it == parents[1].idCard.toInt())
-                            parent = family.findPerson(it.toLong())!!
+                        if (it == parents[1].idCard)
+                            parent = family.findPerson(it)!!
                     }
                 }
             }

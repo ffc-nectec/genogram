@@ -28,31 +28,18 @@ class Family(
 
     // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {
-
         var person: Person? = null
-
         if (bloodFamily != null) {
-            val personId = bloodFamily!![0]
-            members!!.forEach {
-                if (it.idCard.toInt() == personId)
-                    person = it
-            }
-
+            person = members!!.firstOrNull { it.idCard == bloodFamily!![0] }
             // delete that person from the bloodFamily stack
             val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
             tmp.removeAt(0)
             bloodFamily = cleanUpEmptyStack(tmp)
         }
-
         return person
     }
 
-    fun findPerson(id: Long): Person? {
-        members!!.forEach { person ->
-            if (person.idCard == id)
-                return person
-        }
-
-        return null
+    fun findPerson(id: Int): Person? {
+        return members!!.firstOrNull { it.idCard == id }
     }
 }

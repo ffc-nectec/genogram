@@ -118,9 +118,7 @@ class MaleNode(
                         val childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
                             childrenListInd.add(
-                                familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLineLayer
-                                )
+                                familyTreeDrawer.findPersonIndById(id, childrenLineLayer)
                             )
                         }
 
@@ -136,9 +134,7 @@ class MaleNode(
                             val childrenListInd: MutableList<Int> = mutableListOf()
                             childrenListId.forEach { id ->
                                 childrenListInd.add(
-                                    familyTreeDrawer.findPersonIndById(
-                                        id.toLong(), addingLayer
-                                    )
+                                    familyTreeDrawer.findPersonIndById(id, addingLayer)
                                 )
                             }
 

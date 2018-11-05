@@ -266,9 +266,7 @@ abstract class Node {
             val drawSibListInd: MutableList<Int> = mutableListOf()
             drawSibListId.forEach { id ->
                 drawSibListInd.add(
-                    familyTreeDrawer.findPersonIndById(
-                        id.toLong(), parentLayer
-                    )
+                    familyTreeDrawer.findPersonIndById(id, parentLayer)
                 )
             }
 

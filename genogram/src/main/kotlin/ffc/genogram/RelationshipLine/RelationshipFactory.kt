@@ -67,14 +67,6 @@ class RelationshipFactory {
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel
     ): Relationship {
-        return when (relationshipLabel) {
-            RelationshipLabel.CHILDREN -> {
-
-                ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
-            }
-            else -> {
-                TwinLine()
-            }
-        }
+        return ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
     }
 }

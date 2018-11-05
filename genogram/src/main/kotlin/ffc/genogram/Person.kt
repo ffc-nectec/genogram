@@ -22,20 +22,32 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
-        var idCard: Long,
+        var idCard: Int,
         var firstname: String,
         var lastname: String,
         var gender: GenderLabel = GenderLabel.MALE,
-        var father: Long?,
-        var mother: Long?,
+        var father: Int?,
+        var mother: Int?,
         var twin: List<Int>?,
         var exHusband: List<Int>?,
         var exWife: List<Int>?,
         var husband: List<Int>?,
         var wife: List<Int>?,
-        var children: List<Int>?,
-        var linkedStack: List<Int>?
+        var children: List<Int>?
 ) {
+
+    var linkedStack: List<Int>? = null
+    init {
+        val stack = mutableListOf<Int>()
+        father?.let { stack.add(it) }
+        mother?.let { stack.add(it) }
+        val links = listOf(twin, exHusband, exWife, husband, wife, children)
+        links.forEach { link ->
+            link?.let { stack.addAll(it) }
+        }
+        linkedStack = if (stack.isEmpty()) null else stack
+    }
+
     var properties: Any? = null
     var nodeMargin = 0
 
@@ -112,13 +124,12 @@ class Person(
 
     // Return a person and remove the person out of the stack
     fun popLinkedStack(familyMembers: List<Person>?): Person? {
-
         var person: Person? = null
-
         if (linkedStack != null) {
             val relatedPersonId = linkedStack!![0]
             familyMembers!!.find {
                 it.idCard.toInt() == relatedPersonId
+                // Return children whose has the same parents
             }?.let {
                 person = it
             }
@@ -131,7 +142,6 @@ class Person(
         return person
     }
 
-    // Return children whose has the same parents
     // and remove children's id out of the parents' link stack
     fun popChildren(childrenIdList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
             : ArrayList<Person> {

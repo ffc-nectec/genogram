@@ -41,9 +41,9 @@ class ChildrenLineManager(
         var parentList = arrayListOf<Person>()
 
         if (parent1 != null)
-            parentList.add(family.findPerson(parent1.toLong())!!)
+            parentList.add(family.findPerson(parent1)!!)
         if (parent2 != null)
-            parentList.add(family.findPerson(parent2.toLong())!!)
+            parentList.add(family.findPerson(parent2)!!)
 
         childrenLine.parentList = parentList
 
