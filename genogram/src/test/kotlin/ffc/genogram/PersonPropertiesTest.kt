@@ -26,7 +26,7 @@ import org.amshove.kluent.`should equal`
 import org.junit.Test
 import java.lang.reflect.Type
 
-class PersonTest {
+class PersonPropertiesTest {
 
     @Test
     fun customDeserializeForProperties() {

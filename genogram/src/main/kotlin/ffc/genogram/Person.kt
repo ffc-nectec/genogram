@@ -26,16 +26,15 @@ class Person(
         var firstname: String,
         var lastname: String,
         var gender: GenderLabel = GenderLabel.MALE,
-        var father: Int?,
-        var mother: Int?,
-        var twin: List<Int>?,
-        var exHusband: List<Int>?,
-        var exWife: List<Int>?,
-        var husband: List<Int>?,
-        var wife: List<Int>?,
-        var children: List<Int>?
+        var father: Int? = null,
+        var mother: Int? = null,
+        var twin: List<Int>? = null,
+        var exHusband: List<Int>? = null,
+        var exWife: List<Int>? = null,
+        var husband: List<Int>? = null,
+        var wife: List<Int>? = null,
+        var children: List<Int>? = null
 ) {
-
     var linkedStack: List<Int>? = null
     init {
         val stack = mutableListOf<Int>()
