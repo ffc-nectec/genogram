@@ -1,6 +1,6 @@
 package ffc.genogram
 
-import org.amshove.kluent.shouldContainSame
+import org.amshove.kluent.`should equal`
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -27,6 +27,6 @@ class FamilyTest(private val resource: String, private val expectBloodFamily: Li
     fun bloodFamily() {
         val family = Family(1, "Smiths", getResourceAs<Family>(resource).members)
 
-        family.bloodFamily!! shouldContainSame expectBloodFamily
+        family.bloodFamily!! `should equal` expectBloodFamily
     }
 }
