@@ -29,13 +29,13 @@ class Family(
     init {
         require(members.isNotEmpty()) { "member should not empty" }
 
-        bloodFamily = mutableListOf()
-        addBloodMemberTo(bloodFamily!!, members[0])
+        bloodFamily = mutableListOf(members[0].idCard)
+        bloodFamily!!.addDescendentOf(members[0])
     }
 
-    private fun addBloodMemberTo(list: MutableList<Int>, head: Person) {
-        list.add(head.idCard)
-        head.children?.forEach { addBloodMemberTo(list, findPerson(it)!!) }
+    private fun MutableList<Int>.addDescendentOf(head: Person) {
+        head.children?.let { addAll(it) }
+        head.children?.forEach { addDescendentOf(findPerson(it)!!) }
     }
 
     // Return a person who is the first person in the blood family stack at the time.
@@ -47,9 +47,6 @@ class Family(
             val tmp = bloodFamily
             tmp.removeAt(0)
             this.bloodFamily = cleanUpEmptyStack(tmp)
-        }
-        if (bloodFamily != null) {
-
         }
         return person
     }
