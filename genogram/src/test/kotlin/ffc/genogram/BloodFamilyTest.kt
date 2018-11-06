@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class FamilyTest(private val resource: String, private val expectBloodFamily: List<Int>) {
+class BloodFamilyTest(private val resource: String, private val expectBloodFamily: List<Int>) {
 
     companion object {
         @JvmStatic
