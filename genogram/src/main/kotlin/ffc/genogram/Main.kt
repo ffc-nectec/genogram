@@ -181,17 +181,6 @@ fun main(args: Array<String>) {
 //    familyObj = getResourceAs("3rdGen/family-12-children-3rd-gen-2.json")
     familyObj = getResourceAs("3rdGen/family-13-children-3rd-gen.json")
 
-    // Problem 1 - fixed
-//    familyObj = getResourceAs("3rdGen/family-2-children-3rd-gen-2.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-38.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-18.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-3-spouses-4.json")
-//    familyObj = getResourceAs("2ndGen/spouses/family-2-spouses-24.json")
-
-    // Problem 2
-//    familyObj = getResourceAs("2ndGen/children/family-6-children.json")
-//    familyObj = getResourceAs("3rdGen/family-5-children-3rd-gen.json")
-
 
     print(".\n")
     val familyTreePic = drawGenogram()

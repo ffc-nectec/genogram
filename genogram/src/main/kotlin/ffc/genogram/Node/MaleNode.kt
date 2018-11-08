@@ -253,6 +253,7 @@ class MaleNode(
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
         } else {
+
             // Children or Twin
             val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)

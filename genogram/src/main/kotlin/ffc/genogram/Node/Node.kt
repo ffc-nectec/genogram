@@ -375,6 +375,14 @@ abstract class Node {
                 parentLineLayer, startInd, extendedLine, childrenLine
             )
 
+            /*print("------A------\n")
+            print("add: ${addedPerson.firstname}\n")
+            val storageSizeA = familyTreeDrawer.findPersonStorageSize()
+            for (i in 0 until storageSizeA) {
+                print("line: ${familyTreeDrawer.nameFamilyStorage[i]}\n")
+            }
+            print("-------------\n")*/
+
             // Move the children sign
             // String Visualization
             val extraNode = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
@@ -402,6 +410,14 @@ abstract class Node {
             familyTreeDrawer.replaceFamilyStorageLayer(
                 parentLineLayer, startInd, editedLine, line
             )
+
+            print("------B------\n")
+            print("add: ${addedPerson.firstname}\n")
+            val storageSizeB = familyTreeDrawer.findPersonStorageSize()
+            for (i in 0 until storageSizeB) {
+                print("line: ${familyTreeDrawer.nameFamilyStorage[i]}\n")
+            }
+            print("-------------\n")
         } else if (addedPersonInd < parentInd
             && isAddedPersonOldest
             && focusedPerson!!.children!!.size > 1

@@ -125,7 +125,7 @@ class ChildrenLine : Line() {
 
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
-        lineLayer: Int, step: Int, ChildInd: List<Int>, emptyNodeNumb: Int
+        lineLayer: Int, step: Int, childInd: List<Int>, emptyNodeNumb: Int
     ) {
         val extraStep = step + 1
         // Delete 1 left margin
@@ -145,6 +145,14 @@ class ChildrenLine : Line() {
             childrenList = line.childrenList
             parentList = line.parentList
         }
+
+        val allEmptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLayer)
+        val emptyMidNodeNumb = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLayer)
+        val emptyFrontNodeNumb = allEmptyNodeNumb - emptyMidNodeNumb
+        val emptyMidNodeBetween = familyTreeDrawer.findNumberOfMidEmptyNode(childrenLayer, childInd[0], childInd[childInd.size - 1])
+        val emptyNodeStep = ((Relationship.distanceLine.toInt() * emptyMidNodeBetween) + emptyMidNodeBetween)
+        if (emptyFrontNodeNumb > 0)
+            centerMarkPos -= emptyNodeStep - 1
 
         if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
                     childrenFrontEmptyNodeNumber > 0) ||
