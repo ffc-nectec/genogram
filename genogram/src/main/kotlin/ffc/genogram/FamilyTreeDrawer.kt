@@ -241,6 +241,7 @@ class FamilyTreeDrawer {
     }
 
     fun getPersonLayerInd(layerNumb: Int, index: Int): Person? {
+
         val element = personFamilyStorage[layerNumb][index]
         return element as? Person
     }
@@ -249,8 +250,7 @@ class FamilyTreeDrawer {
         // Check the person gender, and find the person's
         val allPeople: MutableList<Int> = mutableListOf()
         personFamilyStorage[layerNumb - 1].forEach {
-            if (it is Person)
-                allPeople.add(it.idCard)
+            if (it is Person) allPeople.add(it.idCard)
         }
 
         // find the focusedPerson and addedPerson's index

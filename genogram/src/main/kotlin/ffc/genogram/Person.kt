@@ -142,25 +142,23 @@ class Person(
     }
 
     // and remove children's id out of the parents' link stack
-    fun popChildren(childrenIdList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
+    fun popChildren(childrenIdList: MutableList<Int>, person2: Person?, familyMembers: List<Person>)
             : ArrayList<Person> {
 
-        val childrenList: ArrayList<Person> = arrayListOf()
-
-        familyMembers!!.forEach { child ->
-            childrenIdList.find { it == child.idCard.toInt() }?.let {
-                val tmp = child.linkedStack as MutableList<Int>
+        val children = arrayListOf<Person>()
+        childrenIdList.mapTo(arrayListOf()) {
+            familyMembers.find { member -> member.idCard == it }?.let { member ->
+                val tmp = member.linkedStack as MutableList<Int>
                 // remove the child father/mother
-                tmp.remove(idCard.toInt())
+                tmp.remove(idCard)
                 if (person2 != null)
-                    tmp.remove(person2.idCard.toInt())
+                    tmp.remove(person2.idCard)
 
-                child.linkedStack = cleanUpEmptyStack(tmp)
-                childrenList.add(child)
+                member.linkedStack = cleanUpEmptyStack(tmp)
+                children.add(member)
             }
         }
-
-        return childrenList
+        return children
     }
 
     fun setNodeMargin(siblings: Boolean) {
