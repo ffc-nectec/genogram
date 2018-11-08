@@ -38,6 +38,7 @@ class MarriageLineManager(
 
         val marriageLine = MarriageLine()
         marriageLine.drawLine()
+
         // Add the focusedPerson's spouses
         if (focusedPerson.gender == GenderLabel.MALE) {
             focusedPerson.wife?.forEach {

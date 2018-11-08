@@ -204,11 +204,11 @@ class FamilyTree(var family: Family) {
                 node.drawNode(relationLabel, siblings = true)
         }
 
+        // Adjust the parent layer when the more than three children were added.
         // Add indent for the previous layers if the number of children is even number.
         // The number of empty nodes will be the number of children / 2.
         val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
-        if (childrenNumber > 3) {
-
+        if (addingLayer == 0 && childrenNumber > 3) {
             val addingEmptyNodes = if (childrenNumber % 2 == 0)
                 childrenNumber / 2 - 1
             else

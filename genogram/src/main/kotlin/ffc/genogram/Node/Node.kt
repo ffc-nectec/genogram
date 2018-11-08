@@ -69,7 +69,6 @@ abstract class Node {
         parentLayer: Int,
         familyTreeDrawer: FamilyTreeDrawer
     ): FamilyTreeDrawer {
-
         val addMore = Math.abs(addingEmptyNodes - emptyNodeNumber)
         if (addMore > 0) {
             for (i in (parentLayer + 1) downTo 0)
@@ -97,15 +96,53 @@ abstract class Node {
             focusedPerson!!, focusedPersonLayer
         )
         val childrenNumb = familyTreeDrawer.findLineNumber(addingLayer)
+        val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
 
         // Set Person node's indent
         addedPerson.setNodeMargin(siblings)
+
+        // Test Here
+        // Edit the addingIndex
+        val childrenLineLayer = addingLayer - 1
+        var siblingsNumb = 0
+        var childPosition = 0
+        val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
+        var childrenLine: ChildrenLine? = null
+        childrenLineStorage.forEachIndexed { index, line ->
+            if (line is ChildrenLine) {
+                val childrenList: MutableList<Person> = line.childrenList
+                childrenList.forEachIndexed { pos, list ->
+                    if (list.idCard == addedPerson.idCard ) {
+                        childrenLine = childrenLineStorage[index] as ChildrenLine
+                        childPosition = pos
+                    }
+                }
+            }
+        }
+        if (childrenLine != null)
+            siblingsNumb = childrenLine!!.childrenNumb
+
         // Add a single child
         familyTreeDrawer.addFamilyAtLayer(
             addingLayer,
             setSingleNodePosition(nodeName, gender, siblings),
             addedPerson
         )
+
+        // Here
+        // Adjust the parent layer when the more than three children were added.
+        // Add indent for the previous layers if the number of children is even number.
+        // The number of empty nodes will be the number of children / 2.
+        if (addingLayer > 5 && childPosition == 0 && siblingsNumb > 3) {
+            val addingEmptyNodes = if (siblingsNumb % 2 == 0)
+                siblingsNumb / 2 - 1
+            else
+                Math.floorDiv(siblingsNumb, 2) - 1
+
+            for (i in (childrenLineLayer - 1) downTo 0)
+                for (j in 1..addingEmptyNodes)
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0, null, null)
+        }
 
         // "focusedPerson" = parent, when the generation is greater than 2.
         // "parent" = grandparent
@@ -149,6 +186,17 @@ abstract class Node {
         parentLayer: Int,
         parentInd: Int
     ) {
+
+        /*print("------B------\n")
+        if (focusedPerson.firstname == "M5") {
+            print("added: ${focusedPerson.firstname}\n")
+            val storageSizeB = familyTreeDrawer.findPersonStorageSize()
+            for (i in 0 until storageSizeB) {
+                print("line: ${familyTreeDrawer.nameFamilyStorage[i]}\n")
+            }
+        }
+        print("-------------\n")*/
+
         val childrenLineLayer = parentLayer + 2
         val childrenLayer = parentLayer + 3
         var parentInd = parentInd

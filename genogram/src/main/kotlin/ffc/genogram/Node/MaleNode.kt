@@ -214,6 +214,9 @@ class MaleNode(
                                 // String Visualization
                                 val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
                                 startInd -= midEmptyNode
+                                if (startInd < 0)
+                                    startInd = 0
+
                                 childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
                                 val expectedLength = familyTreeDrawer.childrenLineLength(childrenNumber - midEmptyNode)
                                 val extendedLine = familyTreeDrawer.extendLine(

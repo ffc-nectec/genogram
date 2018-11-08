@@ -120,6 +120,14 @@ class FemaleNode(
                             childrenLineLayer, startInd, extendedLine, childrenLine
                         )
 
+                        // Problem here
+                        // When the focusedPerson has more than 3 siblings
+                        // the parent layer will be added the empty node(s).
+                        val siblingsNumb = childrenListInd.size
+                        if (startInd != addingInd && startInd > addingInd && siblingsNumb > 3) {
+                            addingInd = startInd
+                        }
+
                         // Move the children sign
                         // String Visualization
                         val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
@@ -166,11 +174,16 @@ class FemaleNode(
                     val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
                     if (parent != null) {
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
-                        var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+                        var emptyParentNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
+                        val emptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNodePerson(addingLayer)
+                        val emptyMidNodeNumb = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
+                        val emptyFrontNodeNumb = emptyNodeNumb - emptyMidNodeNumb
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
-                        familyTreeDrawer = addMoreNodes(
-                            emptyNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
-                        )
+
+                        if (addingEmptyNodes != emptyFrontNodeNumb)
+                            familyTreeDrawer = addMoreNodes(
+                                emptyParentNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
+                            )
 
                         // Find index of AddedPerson's siblings
                         val childrenListId = parent!!.children!!
@@ -195,6 +208,11 @@ class FemaleNode(
 
                         // Move children sign
                         // String Visualization
+                        val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
+                        startInd -= midEmptyNode
+                        if (startInd < 0)
+                            startInd = 0
+
                         val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
                         val editedLine = familyTreeDrawer.moveChildrenLineSign(
                             childrenLineLayer, addingEmptyNodes, childrenListInd, extraNode

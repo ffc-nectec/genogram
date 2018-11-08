@@ -193,6 +193,19 @@ class FamilyTreeDrawer {
         return 0
     }
 
+    fun findPersonLayerById(personId: Int): Int {
+        personFamilyStorage.forEachIndexed { index, arrayList ->
+            arrayList.forEach { element ->
+                if (element is Person) {
+                    if (personId == element.idCard.toInt())
+                        return index
+                }
+            }
+        }
+
+        return 0
+    }
+
     fun findPerson(focusedPerson: Person, layerNumb: Int): Person? {
         personFamilyStorage[layerNumb].forEach {
             if (it is Person) {
