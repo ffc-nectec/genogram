@@ -23,6 +23,7 @@ import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.Util.displayObjectResult
 
 abstract class Node {
 
@@ -112,7 +113,7 @@ abstract class Node {
             if (line is ChildrenLine) {
                 val childrenList: MutableList<Person> = line.childrenList
                 childrenList.forEachIndexed { pos, list ->
-                    if (list.idCard == addedPerson.idCard ) {
+                    if (list.idCard == addedPerson.idCard) {
                         childrenLine = childrenLineStorage[index] as ChildrenLine
                         childPosition = pos
                     }
@@ -375,14 +376,6 @@ abstract class Node {
                 parentLineLayer, startInd, extendedLine, childrenLine
             )
 
-            /*print("------A------\n")
-            print("add: ${addedPerson.firstname}\n")
-            val storageSizeA = familyTreeDrawer.findPersonStorageSize()
-            for (i in 0 until storageSizeA) {
-                print("line: ${familyTreeDrawer.nameFamilyStorage[i]}\n")
-            }
-            print("-------------\n")*/
-
             // Move the children sign
             // String Visualization
             val extraNode = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
@@ -403,21 +396,14 @@ abstract class Node {
                     drawSibListInd,
                     extraNode - 1
                 )
-                childrenLine.centerMarkPos++
+                if (addingEmptyNodes - 1 == 0)
+                    childrenLine.centerMarkPos++
                 line = childrenLine
             }
 
             familyTreeDrawer.replaceFamilyStorageLayer(
                 parentLineLayer, startInd, editedLine, line
             )
-
-            print("------B------\n")
-            print("add: ${addedPerson.firstname}\n")
-            val storageSizeB = familyTreeDrawer.findPersonStorageSize()
-            for (i in 0 until storageSizeB) {
-                print("line: ${familyTreeDrawer.nameFamilyStorage[i]}\n")
-            }
-            print("-------------\n")
         } else if (addedPersonInd < parentInd
             && isAddedPersonOldest
             && focusedPerson!!.children!!.size > 1
@@ -446,8 +432,13 @@ abstract class Node {
     ): Any? {
         var emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
         var midEmptyNodeCount = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLineLayer)
-        emptyNodeCount = Math.abs(emptyNodeCount - midEmptyNodeCount)
+        midEmptyNodeCount = Math.abs(emptyNodeCount - midEmptyNodeCount)
 
+        print("addingEmptyNodes: $addingEmptyNodes\n")
+        print("emptyNodeCount: $emptyNodeCount\n")
+        print("midEmptyNodeCount: $midEmptyNodeCount\n")
+
+        // Problem here
         var line: Any? = null
         if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
             line = ChildrenLine()
@@ -458,7 +449,11 @@ abstract class Node {
                 childrenListInd,
                 extraNode
             )
-        } else if ((Math.abs(addingEmptyNodes - emptyNodeCount) > 0) && emptyNodeCount > 0) {
+        } else if ((Math.abs(addingEmptyNodes - emptyNodeCount) > 0)
+            && (emptyNodeCount > 0)
+            && (addingEmptyNodes != emptyNodeCount)
+            && (addingEmptyNodes > emptyNodeCount)
+        ) {
             val preLine = familyTreeDrawer.personFamilyStorage[childrenLineLayer]
             line = preLine[preLine.size - 1] as ChildrenLine
             line.moveChildrenLineSign(

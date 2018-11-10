@@ -120,7 +120,6 @@ class FemaleNode(
                             childrenLineLayer, startInd, extendedLine, childrenLine
                         )
 
-                        // Problem here
                         // When the focusedPerson has more than 3 siblings
                         // the parent layer will be added the empty node(s).
                         val siblingsNumb = childrenListInd.size
@@ -128,6 +127,7 @@ class FemaleNode(
                             addingInd = startInd
                         }
 
+                        // TODO: Move the children sign
                         // Move the children sign
                         // String Visualization
                         val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)

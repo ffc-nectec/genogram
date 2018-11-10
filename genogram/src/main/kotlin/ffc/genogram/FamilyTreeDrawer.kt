@@ -408,6 +408,7 @@ class FamilyTreeDrawer {
     fun extendLine(
         expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int
     ): String {
+
         // String Visualization
         val tmp = StringBuilder()
         val lineSign = '-'

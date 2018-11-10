@@ -538,6 +538,22 @@ class Drawer3GenChildrenTest {
     }
 
     @Test
+    fun draw6Children2() {
+        val drawer = FamilyTree(getResourceAs("3rdGen/family-6-children-3rd-gen-2.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [        ,         ,     ,----^--------------,    ]
+            [        , [  M1  ], (  F1  ),         , [  M2  ], ( F12  )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [    ,---------,----^----,---------,   ,     ,----^----,---------,   ]
+            [[  M5  ], [  M6  ], [  M7  ], [ M30  ], [  M8  ], [  M9  ], ( M19  )]
+        """.trimIndent()
+    }
+
+    @Test
     fun draw7Children() {
         val drawer = FamilyTree(getResourceAs("3rdGen/family-7-children-3rd-gen.json")).drawGenogram()
         val canvas = displayObjectResult(drawer)
@@ -689,11 +705,11 @@ class Drawer3GenChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [        ,         , [Grandf], (Grandm)]
             [        ,         ,     |_________|   ]
-            [        ,         ,     ,----^--------------,    ]
-            [        , [  M1  ], (  F1  ),         , [  M2  ], ( F12  )]
+            [        ,         ,     ,----^--------------,-------------------,    ]
+            [        , [  M1  ], (  F1  ),         , [  M2  ], ( F12  ), [  M3  ]]
             [        ,     |_________|   ,         ,     |_________|   ]
-            [    ,---------,----^----,---------,   ,          |        ]
-            [[  M5  ], [  M6  ], [  M7  ], [ M30  ],      [  M8  ]     ]
+            [    ,---------,----^----,---------,   ,     ,----^----,---------,   ]
+            [[  M5  ], [  M6  ], [  M7  ], [ M30  ], [  M8  ], [  M9  ], ( M19  )]
         """.trimIndent()
     }
 }

@@ -88,8 +88,11 @@ class ChildrenLine : Line() {
     }
 
     fun extendLine(expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int) {
-        imageLength = expectedLength.toDouble()
         childrenNumb = childrenListInd.size
+        // TODO: Clean up imageLength2
+        imageLength = expectedLength.toDouble()
+//        val imageLength2 = ((4 + (11 * (childrenNumb)) - (childrenNumb)) + 5).toDouble()
+//        imageLength = imageLength2
 
         val indentNumb = 4
         var length = (Relationship.lengthLine - 1).toInt()
