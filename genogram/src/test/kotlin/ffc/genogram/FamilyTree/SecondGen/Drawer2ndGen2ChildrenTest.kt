@@ -98,7 +98,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [    |_________|   ]
-            [    ,----^--------------,    ]
+            [    ,----^--------------,   ]
             [[Teddy ], ( Cara ), [  Ed  ]]
             [    |_________|   ]
         """.trimIndent()
@@ -130,7 +130,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
             [        ,     |_________|   ]
-            [    ,--------------^----,    ]
+            [    ,--------------^----,   ]
             [[Teddy ], (Kitty ), [  Ed  ], ( Cara )]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -146,7 +146,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [    |_________|   ]
-            [    ,----^--------------,    ]
+            [    ,----^--------------,   ]
             [[  Ed  ], ( Mary ), ( Lisa )]
             [    |_________|   ]
         """.trimIndent()
@@ -178,7 +178,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
             [        ,     |_________|   ]
-            [    ,--------------^----,    ]
+            [    ,--------------^----,   ]
             [[  Ed  ], ( Mary ), ( Lisa ), [ Bill ]]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()

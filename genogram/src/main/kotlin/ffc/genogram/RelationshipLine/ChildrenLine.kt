@@ -1,7 +1,6 @@
 package ffc.genogram.RelationshipLine
 
 import ffc.genogram.FamilyTreeDrawer
-import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Node.Node
 import ffc.genogram.Person
 
@@ -27,8 +26,10 @@ class ChildrenLine : Line() {
         return lineMarkPos[peopleNumb - 1]
     }
 
-    fun drawLine(peopleNumb: Int) {
+    fun drawLine(peopleNumb: Int, mParentList: MutableList<Person>, mChildrenList: MutableList<Person>) {
         childrenNumb = peopleNumb
+        parentList = mParentList as ArrayList<Person>
+        childrenList = mChildrenList as ArrayList<Person>
 
         if (childrenNumb == 1) {
             val nodeDistance = ((Relationship.lengthLine / 2) + Node.nodesDistance).toInt()
@@ -39,7 +40,7 @@ class ChildrenLine : Line() {
             addLineMarkPos(startedMark)
 
             for (i in 0 until childrenNumb - 1) {
-                addLineMarkPos(((startedMark + (i+1)) + Relationship.distanceLine * (i + 1)).toInt())
+                addLineMarkPos(((startedMark + (i + 1)) + Relationship.distanceLine * (i + 1)).toInt())
                 imageLength = ((Relationship.spaceLine * 2) + 1) +
                         (Relationship.distanceLine * (childrenNumb - 1)) + 2 + i
             }
@@ -51,121 +52,197 @@ class ChildrenLine : Line() {
         }
     }
 
-    fun extendLine(childrenListInd: MutableList<Int>, parentInd: Int) {
-        val indentNumb = 4
-        var length = (Relationship.lengthLine - 1).toInt()
-        val tmp = StringBuilder()
-        var startInd = childrenListInd[0]
+    fun extendLine(
+        familyTreeDrawer: FamilyTreeDrawer,
+        extendLayer: Int,
+        childrenListInd: MutableList<Int>,
+        gradparentInd: Int,
+        parentListInd: MutableList<Int>?
+    ) {
+        childrenNumb = childrenListInd.size
 
-        // Find Children sign spot
-        childrenListInd.forEach { index ->
-            var shiftInd = index
-            var ind: Int
-            if (startInd != 0) {
-                shiftInd = index - startInd
+        // Add Children sign spot ','
+        val arrayMargin = 2
+        val emptyNodeSize = (Node.nodeSize + Node.nodeBorderSize) + arrayMargin
+        val halfEmptyNodeSize = (emptyNodeSize / 2) - 1
+        lineMarkPos = arrayListOf()
+        childrenListInd.forEachIndexed { index, el ->
+            var markPos = halfEmptyNodeSize
+            var firstIndex = childrenListInd[0]
+            if (el != firstIndex) {
+                markPos = emptyNodeSize * (el - firstIndex) + (halfEmptyNodeSize)
             }
-            ind = (indentNumb + (length * shiftInd)) - (shiftInd)
-            lineMarkPos.add(ind)
+            lineMarkPos.add(markPos.toInt())
         }
+        imageLength = lineMarkPos[lineMarkPos.size - 1] + halfEmptyNodeSize
 
         // Add Children Sign '^'
-        centerMarkPos = if (startInd == 0) {
-            (Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1
-        } else {
-            ((Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1) / 2
-        }
-        // Check Children Sign before adding
-        for (i in 0 until tmp.length) {
-            lineMarkPos.forEach {
-                if (centerMarkPos == it) {
-                    centerMarkPos++
+        // Find the parent of addedPerson
+        var parentChildrenLineInd: Int? = null
+        var parentChildrenLine: ChildrenLine? = null
+
+        // Find the the index of the children line above the parent layer (in the extend layer).
+        val parentChildrenLineStorage = familyTreeDrawer.getPersonLayer(extendLayer)
+        parentChildrenLineStorage.forEachIndexed { index, any ->
+            if (any is ChildrenLine && any != this) {
+                // For "separateParentSib"
+                any.childrenList.forEach { parentSib ->
+                    // print("= Parent: ${parentSib.firstname}\n")
+                    parentList.forEach { parent ->
+                        // print("= Children: ${parent.firstname}\n")
+                        if (parentSib.idCard == parent.idCard) {
+                            parentChildrenLine = any
+                            parentChildrenLineInd = index
+                            return@forEachIndexed
+                        }
+                    }
                 }
+            } else {
+                // For normal move the centerMark
+                parentChildrenLine = this
+                parentChildrenLineInd = index
             }
         }
 
-        imageLength = (indentNumb * 2.0) + lineMarkPos[lineMarkPos.size - 1] - 3
-        childrenNumb = childrenListInd.size
-    }
+        if (parentChildrenLineInd != null) {
+            // For "separateParentSib"
+            // Find the grandparent's index (the grandparent's index is equal to the grandparent
+            // marriage line's index.
+            val parent = parentChildrenLine!!.parentList[0]
+            val parentLayer = extendLayer - 2
+            val parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
 
-    fun extendLine(expectedLength: Int, childrenListInd: MutableList<Int>, parentInd: Int) {
-        childrenNumb = childrenListInd.size
-        // TODO: Clean up imageLength2
-        imageLength = expectedLength.toDouble()
-//        val imageLength2 = ((4 + (11 * (childrenNumb)) - (childrenNumb)) + 5).toDouble()
-//        imageLength = imageLength2
+            // Find the different index of the "parentInd" and "parentChildrenLineInd" and use
+            // this different index values to be the factor to find the "centerMark"
+            var diffInd = parentInd - parentChildrenLineInd!!
 
-        val indentNumb = 4
-        var length = (Relationship.lengthLine - 1).toInt()
-        val tmp = StringBuilder()
-        var startInd = childrenListInd[0]
-
-        // Find Children sign spot
-        childrenListInd.forEach { index ->
-            var shiftInd = index
-            var ind: Int
-            if (startInd != 0) {
-                shiftInd = index - startInd
+            if (parentChildrenLine!!.parentList.size == 2) {
+                // Not a single parent
+                diffInd++
             }
-            ind = (indentNumb + (length * shiftInd)) - (shiftInd)
-            lineMarkPos.add(ind)
-        }
+            centerMarkPos = (emptyNodeSize * diffInd).toInt() - 1
 
-        // Add Children Sign '^'
-        centerMarkPos = if (startInd == 0) {
-            (Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1
-        } else {
-            ((Relationship.distanceLine.toInt() + 1) * (parentInd + 1) - 1) / 2
-        }
-        // Check Children Sign before adding
-        for (i in 0 until tmp.length) {
-            lineMarkPos.forEach {
-                if (centerMarkPos == it) {
-                    centerMarkPos++
-                }
+
+
+            /*print("####################################\n")
+            print("extendLayer: $extendLayer\n")
+            print("parentChildrenLine: $parentChildrenLine\n")
+            print("parentChildrenLineInd: $parentChildrenLineInd\n")
+            print("this-parent:\n")
+            parentChildrenLine!!.parentList.forEach { parent ->
+                print(" - ${parent.firstname}\n")
             }
+            print("this-children:\n")
+            childrenList.forEach { parent ->
+                print(" - ${parent.firstname}\n")
+            }
+            val canvasB = displayObjectResult(familyTreeDrawer)
+            print(canvasB.toString())
+            print("####################################\n")*/
         }
     }
 
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
-        lineLayer: Int, step: Int, childInd: List<Int>, emptyNodeNumb: Int
+        lineLayer: Int,
+        step: Int,
+        emptyNodeNumb: Int,
+        childrenId: List<Int>,
+        focusedPerson: Person
     ) {
-        val extraStep = step + 1
-        // Delete 1 left margin
-        centerMarkPos = ((Relationship.distanceLine.toInt() * extraStep) + extraStep) - 1
-
-        val parentLayer = lineLayer - 1
+        val parentLayer = lineLayer - 2
+        val parentLineLayer = lineLayer - 1
         val childrenLayer = lineLayer + 1
-        var parentEmptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-        var childrenFrontEmptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(lineLayer)
-        var childrenMidEmptyNodeNumber = familyTreeDrawer.findNumberOfMidEmptyNode(childrenLayer)
+        val marriageChildrenLineLayer = childrenLayer + 1
+
+        /*val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
+        val parentLineLayer = parentLayer + 1
+        val childrenLayer = parentLayer + 3
+        val marriageChildrenLineLayer = parentLayer + 4*/
+
+        familyTreeDrawer.findNumberOfMidEmptyNode(marriageChildrenLineLayer)
         var line = familyTreeDrawer.personFamilyStorage[lineLayer][0]
         if (line is ChildrenLine) {
             // Copy the previous object attributions.
-            lineMarkPos = line.lineMarkPos
-            imageLength = line.imageLength
-            childrenNumb = line.childrenNumb
-            childrenList = line.childrenList
-            parentList = line.parentList
+            var previousChildrenLine = familyTreeDrawer.findChildrenLine(
+                lineLayer, focusedPerson!!
+            )
+            if (previousChildrenLine != null) {
+                line = previousChildrenLine
+            }
         }
 
-        val allEmptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLayer)
-        val emptyMidNodeNumb = familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLayer)
-        val emptyFrontNodeNumb = allEmptyNodeNumb - emptyMidNodeNumb
-        val emptyMidNodeBetween = familyTreeDrawer.findNumberOfMidEmptyNode(childrenLayer, childInd[0], childInd[childInd.size - 1])
-        val emptyNodeStep = ((Relationship.distanceLine.toInt() * emptyMidNodeBetween) + emptyMidNodeBetween)
-        if (emptyFrontNodeNumb > 0)
-            centerMarkPos -= emptyNodeStep - 1
-
-        if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
-                    childrenFrontEmptyNodeNumber > 0) ||
-                    ((parentEmptyNodeNumber == childrenFrontEmptyNodeNumber) &&
-                            (line is EmptyNode) &&
-                            childrenMidEmptyNodeNumber != 0))
-        ) {
-            centerMarkPos = (centerMarkPos - Relationship.lengthLine).toInt() +
-                    parentEmptyNodeNumber - emptyNodeNumb
+        var parent1Ind: Int? = null
+        var parent2Ind: Int? = null
+        var parent1Id: Long? = null
+        var parent2Id: Long? = null
+        if (parentList.size > 0) {
+            parent1Ind = familyTreeDrawer.findPersonInd(parentList[0], parentLayer)
+        }
+        if (parentList.size > 1) {
+            parent2Ind = familyTreeDrawer.findPersonInd(parentList[1], parentLayer)
         }
 
+        /*print("****** ChildrenLine *******\n")
+        print("parentLayer: $parentLayer\n")
+        print("parentList[0]: ${parentList[0].firstname}\n")
+        print("parentList[1]: ${parentList[1].firstname}\n")
+        print("parent1Ind: $parent1Ind\n")
+        print("parent2Ind: $parent2Ind\n")
+        print("childrenId: $childrenId\n")
+        print("focusedPerson: ${focusedPerson.firstname}\n")
+        print("...............\n")
+        val canvasB = displayObjectResult(familyTreeDrawer)
+        print(canvasB.toString())
+        print("**************\n")*/
+
+        if (parent1Ind != null) {
+            val parent1IdObj = familyTreeDrawer.getPersonLayerInd(parentLayer, parent1Ind) as Person
+            parent1Id = parent1IdObj.idCard
+        }
+        if (parent2Ind != null) {
+            val parent2IdObj = familyTreeDrawer.getPersonLayerInd(parentLayer, parent2Ind) as Person
+            parent2Id = parent2IdObj.idCard
+        }
+
+        // Get the parent marriage line
+        // When addedPerson has two parents.
+        val marriageLineStorage = familyTreeDrawer.getPersonLayer(parentLineLayer)
+        var marriageLine: MarriageLine? = null
+        var marriageLineInd = 0
+        marriageLineStorage.forEachIndexed { index, any ->
+            if (any is MarriageLine) {
+                any.getSpouseList().forEach { coupleList ->
+                    val parentId = coupleList[1].idCard
+                    if (parentId == parent1Id || parentId == parent2Id) {
+                        marriageLine = marriageLineStorage[index] as MarriageLine
+                        marriageLineInd = index
+                    }
+                }
+            }
+        }
+        // Find the children line index
+        val childrenLineStorage = familyTreeDrawer.getPersonLayer(lineLayer)
+        var childrenLineInd = 0
+        childrenLineStorage.forEachIndexed { index, any ->
+            if (any is ChildrenLine) {
+                any.childrenList.forEach {
+                    if (it.idCard == childrenList[0].idCard) {
+                        childrenLineInd = index
+                    }
+                }
+            }
+        }
+
+        val extraSpace = Math.abs(childrenLineInd - marriageLineInd)
+        val arrayMargin = 2
+        val emptyNodeSize = (Node.nodeSize + Node.nodeBorderSize) + arrayMargin
+        val parentEmptyFrontNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(parentLayer)
+        var marriageLineCenter = marriageLine!!.imageLength / 2 + 1
+        if (marriageLineInd > childrenLineInd) {
+            centerMarkPos = ((emptyNodeSize * extraSpace) + marriageLineCenter).toInt()
+        } else if (marriageLineInd == childrenLineInd) {
+            centerMarkPos = marriageLineCenter.toInt()
+        }
     }
 }

@@ -55,4 +55,16 @@ class Family(
 
         return null
     }
+
+    fun findPersonList(idList: List<Int>): ArrayList<Person> {
+        var childrenList: ArrayList<Person> = arrayListOf()
+
+        idList.forEach {
+            val childId = findPerson(it.toLong())
+            if (childId != null)
+                childrenList.add(childId)
+        }
+
+        return childrenList
+    }
 }

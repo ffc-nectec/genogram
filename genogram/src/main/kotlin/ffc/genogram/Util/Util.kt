@@ -130,6 +130,7 @@ fun displayChildrenLine(it: ChildrenLine, elementSize: Int, index: Int): String 
 
     if (it.childrenNumb == 1) {
         for (i in 0 until it.imageLength.toInt()) {
+//            print("test: ${it.getLineMarkPos(1)}")
             if (i == it.getLineMarkPos(1))
                 result.append('|')
             else

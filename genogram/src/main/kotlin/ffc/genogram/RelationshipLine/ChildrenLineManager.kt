@@ -53,7 +53,7 @@ class ChildrenLineManager(
         val addingLayer = parentLayer + 2
         var childrenLineNumb = 0
         var childrenNumber = childrenList.size
-        childrenLine.drawLine(childrenNumber)
+        childrenLine.drawLine(childrenNumber, parentList, childrenList)
 
         if (addingLayer >= generationSize) {
             familyTreeDrawer.addFamilyNewLayer(createLineDistance(), childrenLine)

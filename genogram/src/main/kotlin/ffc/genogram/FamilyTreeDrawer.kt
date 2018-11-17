@@ -245,9 +245,8 @@ class FamilyTreeDrawer {
         return nameFamilyStorage[layerNumb][index]
     }
 
-    fun getPersonLayerInd(layerNumb: Int, index: Int): Person? {
-        val element = personFamilyStorage[layerNumb][index]
-        return element as? Person
+    fun getPersonLayerInd(layerNumb: Int, index: Int): Any? {
+        return personFamilyStorage[layerNumb][index]
     }
 
     fun addMarriageLineInd(layerNumb: Int, focusedPerson: Person, addedPerson: Person?): Int {
@@ -509,21 +508,30 @@ class FamilyTreeDrawer {
 
     fun moveChildrenLineSign(lineLayer: Int, step: Int, childInd: List<Int>, emptyNodeNumb: Int): String {
 
-        val tmp = StringBuilder()
-        val extraStep = step + 1
-        var moveSteps = ((distanceLine.toInt() * extraStep) + extraStep)
-        var count = 1
-
         val parentLayer = lineLayer - 1
         val childrenLayer = lineLayer + 1
         var parentEmptyNodeNumber = findNumberOfEmptyNode(parentLayer)
-        var childrenFrontEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
+        var childrenLineFrontEmptyNodeNumber = findNumberOfEmptyNode(lineLayer)
+        var childrenEmptyNodeNumber = findNumberOfEmptyNode(childrenLayer)
         var childrenMidEmptyNodeNumber = findNumberOfMidEmptyNode(childrenLayer)
         var line = nameFamilyStorage[lineLayer][0]
+        val tmp = StringBuilder()
+        var count = 1
 
-        if (((Math.abs(parentEmptyNodeNumber - childrenFrontEmptyNodeNumber) > 0 &&
-                    childrenFrontEmptyNodeNumber > 0) ||
-                    ((parentEmptyNodeNumber == childrenFrontEmptyNodeNumber) &&
+        // Different of "moveChildrenLineSign" in ChildrenLine
+        val extraNode = Math.abs(childrenMidEmptyNodeNumber - emptyNodeNumb)
+        var extraStep = step + 1
+        if (childrenLineFrontEmptyNodeNumber > 1) {
+            extraStep = step + 1 + extraNode
+        }
+        var moveSteps = ((distanceLine.toInt() * extraStep) + extraStep)
+        if (childrenLineFrontEmptyNodeNumber > 0) {
+            moveSteps -= childrenEmptyNodeNumber
+        }
+
+        if (((Math.abs(parentEmptyNodeNumber - childrenLineFrontEmptyNodeNumber) > 0 &&
+                    childrenLineFrontEmptyNodeNumber > 0) ||
+                    ((parentEmptyNodeNumber == childrenLineFrontEmptyNodeNumber) &&
                             line == emptyNode.drawEmptyNode() && childrenMidEmptyNodeNumber != 0))
         ) {
             line = nameFamilyStorage[lineLayer][childInd[0]]
@@ -534,9 +542,15 @@ class FamilyTreeDrawer {
         val emptyMidNodeNumb = findNumberOfMidEmptyNodePerson(childrenLayer)
         val emptyFrontNodeNumb = emptyNodeNumb - emptyMidNodeNumb
         val emptyMidNodeBetween = findNumberOfMidEmptyNode(childrenLayer, childInd[0], childInd[childInd.size - 1])
-        val emptyNodeStep = ((distanceLine.toInt() * emptyMidNodeBetween) + emptyMidNodeBetween)
+        val emptyNodeStep = (distanceLine.toInt() * emptyMidNodeBetween) + emptyMidNodeBetween
         if (emptyFrontNodeNumb > 0)
             moveSteps -= emptyNodeStep + 1
+
+        /*print("----------\n")
+        print("childInd: $childInd\n")
+        print("extraStep: $extraStep\n")
+        print("moveSteps: $moveSteps\n")
+        print("----------\n")*/
 
         // find the '^' index
         var signInd = 0
@@ -569,4 +583,53 @@ class FamilyTreeDrawer {
 
     fun childrenLineLength(childrenNumb: Int)
             : Int = (4 + (11 * (childrenNumb - 1)) - (childrenNumb - 1)) + 5
+
+    fun findChildrenLine(childrenLineLayer: Int, focusedPerson: Person): ChildrenLine? {
+        val childrenLineStorage = personFamilyStorage[childrenLineLayer]
+        var childrenLine: ChildrenLine? = null
+
+        childrenLineStorage.forEachIndexed { index, any ->
+            if (any is ChildrenLine) {
+                val childrenList = any.childrenList
+                childrenList.forEach {child ->
+                    if (child == focusedPerson) {
+                        childrenLine = childrenLineStorage[index] as ChildrenLine
+                    }
+                }
+            }
+        }
+
+        return childrenLine
+    }
+
+    fun findChildrenLineById(listId: List<Int>, childrenLineLayer: Int): ChildrenLine? {
+        val childrenLineStorage = personFamilyStorage[childrenLineLayer]
+        var childrenLine: ChildrenLine? = null
+        var tmpListId = listId as MutableList<Int>
+
+        print("childrenLineLayer: $childrenLineLayer\n")
+        print("size: ${childrenLineStorage.size}\n")
+        childrenLineStorage.forEachIndexed { index, line ->
+            if (line is ChildrenLine) {
+                print("line: ${line.childrenList[0].firstname}\n")
+//                val childrenPerson = line.childrenList
+//                childrenPerson.forEach { person ->
+//                    print("idCard: ${person.idCard}\n")
+//                    // "focusedPerson" is the addedPerson husband
+//                    childrenId.forEach { id ->
+////                        print("childrenId: $id\n")
+//                        if (person.idCard == id.toLong()) {
+//                            tmpChildrenId.remove(id)
+//                        }
+//                    }
+//                }
+            }
+
+            if (tmpListId.size == 0) {
+                childrenLine = childrenLineStorage[index] as ChildrenLine
+            }
+        }
+
+        return childrenLine
+    }
 }
