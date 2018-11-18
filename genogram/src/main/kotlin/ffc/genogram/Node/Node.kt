@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -134,7 +134,7 @@ abstract class Node {
         // Here
         // Adjust the parent layer when the more than three children were added.
         // Add indent for the previous layers if the number of children is even number.
-        // The number of empty nodes will be the number of children / 2.
+        // The number of empty nodes will be the number of children / FamilyTree2.
         if (addingLayer > 5 && childPosition == 0 && siblingsNumb > 3) {
             val addingEmptyNodes = if (siblingsNumb % 2 == 0)
                 siblingsNumb / 2 - 1
@@ -146,7 +146,7 @@ abstract class Node {
                     familyTreeDrawer.addFamilyStorageReplaceIndex(i, 0, null, null)
         }
 
-        // "focusedPerson" = parent, when the generation is greater than 2.
+        // "focusedPerson" = parent, when the generation is greater than FamilyTree2.
         // "parent" = grandparent
         // Find parent index, and add the addedPerson node at the index.
         // Move the addedPerson node.
@@ -407,9 +407,27 @@ abstract class Node {
             // Object Visualization
             var childrenLine = ChildrenLine()
             // childrenLine.extendLine(drawSibListInd, parentInd)
+
+            // TODO: Find the way to get the blood family by this method
+            // Find the blood family parent
+            /*var bloodFamilyParent = focusedPerson
+            if (anotherParent != null)
+                family.bloodFamily?.forEach {
+                    if (it == anotherParent.idCard.toInt())
+                        bloodFamilyParent = anotherParent
+                }*/
+
             var previousChildrenLine = familyTreeDrawer.findChildrenLine(
-                parentLineLayer, focusedPerson!!
+                parentLineLayer, focusedPerson
             )
+
+            // If previousChildrenLine is null means the focusedPerson isn't the blood family.
+            if (previousChildrenLine == null && anotherParent != null) {
+                // the anotherParent is the blood family.
+                previousChildrenLine = familyTreeDrawer.findChildrenLine(
+                    parentLineLayer, anotherParent
+                )
+            }
 
             // Check for update the childrenLine
             var updateLine = false
@@ -420,11 +438,13 @@ abstract class Node {
                 }
             }
 
-            /*// Check
-            if (addedPerson.firstname == "M8") {
+            // Check
+            if (addedPerson.firstname == "F20") {
                 print("------Node------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("focusedPerson: ${focusedPerson!!.firstname}\n")
+                print("family: ${family!!.bloodFamily}\n")
+                print("anotherParent: ${anotherParent!!.firstname}\n")
                 print("previousChildrenLine: $previousChildrenLine\n")
                 print("parentLayer: $parentLayer\n")
                 print("parentLineLayer: $parentLineLayer\n")
@@ -443,7 +463,7 @@ abstract class Node {
                 val canvasB = displayObjectResult(familyTreeDrawer)
                 print(canvasB.toString())
                 print("-------------\n")
-            }*/
+            }
 
 //            if (previousChildrenLine != null && !updateLine) {
             if (previousChildrenLine != null) {
@@ -473,7 +493,7 @@ abstract class Node {
                 childrenParentLineLayer, startInd, extendedLine, childrenLine
             )
 
-            // Check
+            /*// Check
             if (addedPerson.firstname == "M8") {
                 print("------Node------\n")
                 val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
@@ -502,7 +522,7 @@ abstract class Node {
                 val canvasB = displayObjectResult(familyTreeDrawer)
                 print(canvasB.toString())
                 print("-------------\n")
-            }
+            }*/
 
             /*// Check
             if (addedPerson.firstname == "F20") {
@@ -550,7 +570,7 @@ abstract class Node {
 
             /*// Check
             if (addedPerson.firstname == "M8") {
-                print("------Node 2------\n")
+                print("------Node FamilyTree2------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("childrenLine: ${childrenLine.centerMarkPos}\n")
                 print("parentListInd: $parentListInd\n")

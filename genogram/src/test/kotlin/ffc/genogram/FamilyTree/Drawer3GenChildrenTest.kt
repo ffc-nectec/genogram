@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -705,7 +705,7 @@ class Drawer3GenChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [        ,         ,         ,         , [Grandf], (Grandm)]
             [        ,         ,         ,         ,     |_________|   ]
-            [    ,---------------------------------------,----^--------------,-----------------------------,    ]
+            [    ,---------------------------------------,----^--------------,-----------------------------,   ]
             [[  M1  ], (  F1  ),         , [ M12  ], (  F2  ),         , [  M3  ], (  F3  ),         , [  M4  ], ( F14  )]
             [    |_________|   ,         ,     |_________|   ,         ,     |_________|   ,         ,     |_________|   ]
             [    ,----^----,---------,   ,     ,----^----,---------,   ,     ,----^----,---------,   ,     ,----^----,---------,   ]

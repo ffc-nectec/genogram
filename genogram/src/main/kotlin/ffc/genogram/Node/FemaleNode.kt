@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -194,7 +194,8 @@ class FemaleNode(
 
                         if (previousChildrenLine != null) {
                             childrenLine = previousChildrenLine
-                        } else if (previousChildrenLine == null || updateLine) {
+//                        } else if (previousChildrenLine == null || updateLine) {
+                        } else if (previousChildrenLine == null) {
                             // Create a new children line
                             // Draw a new childrenLine with new parentList, new childrenList, and etc.
                             val addedPersonSibList: MutableList<Person> = mutableListOf()
@@ -355,8 +356,37 @@ class FemaleNode(
 
             /*// Check
             if (addedPerson.firstname == "F8") {
-                print("------MaleNode 1------\n")
+                print("------FemaleNode 1------\n")
                 print("add: ${addedPerson.firstname}\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("-------------\n")
+            }*/
+
+            /*// Check
+            if (addedPerson.firstname == "F20") {
+                print("------Female 1------\n")
+                val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
+                val childrenLineLayer = childrenLayer - 1
+                var previousChildrenLine2 = familyTreeDrawer.findChildrenLine(
+                    childrenLineLayer, focusedPerson!!
+                )
+
+                print("add: ${addedPerson.firstname}\n")
+                print("focusedPerson: ${focusedPerson!!.firstname}\n")
+                print("previousChildrenLine2: $previousChildrenLine2\n")
+                print("childrenLineLayer: $childrenLineLayer\n")
+                if (previousChildrenLine2 is ChildrenLine) {
+                    print("this-childrenList:\n")
+                    previousChildrenLine2.childrenList.forEach { it ->
+                        print(" - ${it.firstname}\n")
+                    }
+                    print("this-parentList:\n")
+                    previousChildrenLine2.parentList.forEach { it ->
+                        print(" - ${it.firstname}\n")
+                    }
+                }
                 print("...............\n")
                 val canvasB = displayObjectResult(familyTreeDrawer)
                 print(canvasB.toString())

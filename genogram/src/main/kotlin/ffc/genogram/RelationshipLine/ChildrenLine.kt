@@ -122,8 +122,6 @@ class ChildrenLine : Line() {
             }
             centerMarkPos = (emptyNodeSize * diffInd).toInt() - 1
 
-
-
             /*print("####################################\n")
             print("extendLayer: $extendLayer\n")
             print("parentChildrenLine: $parentChildrenLine\n")

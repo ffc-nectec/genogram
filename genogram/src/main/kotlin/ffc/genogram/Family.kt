@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -25,6 +25,11 @@ class Family(
     var bloodFamily: List<Int>?,
     var members: List<Person>?
 ) {
+
+    fun copy(familyId: Long = this.familyId,
+        familyName: String = this.familyName,
+        bloodFamily: List<Int>? = this.bloodFamily,
+        members: List<Person>? = this.members) = Family(familyId, familyName, bloodFamily, members)
 
     // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {

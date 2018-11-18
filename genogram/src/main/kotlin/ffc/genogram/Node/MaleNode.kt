@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -166,7 +166,8 @@ class MaleNode(
                         val addedPersonSibList: MutableList<Person> = mutableListOf()
                         if (previousChildrenLine != null) {
                             childrenLine = previousChildrenLine
-                        } else if (previousChildrenLine == null || updateLine) {
+//                        } else if (previousChildrenLine == null || updateLine) {
+                        } else if (previousChildrenLine == null) {
                             // Create a new children line
                             // Draw a new childrenLine with new parentList, new childrenList, and etc.
                             addedPersonSibListId.forEach {
@@ -175,6 +176,30 @@ class MaleNode(
                             }
                             childrenLine.drawLine(addedPersonSibListId.size, addedPersonParent, addedPersonSibList)
                         }
+
+                        /*// Check
+                        if (addedPerson.firstname == "F14") {
+                            print("------Male 1------\n")
+                            print("add: ${addedPerson.firstname}\n")
+                            print("focusedPerson: ${focusedPerson!!.firstname}\n")
+                            print("previousChildrenLine: $previousChildrenLine\n")
+                            print("childrenLine: $childrenLine\n")
+                            print("childrenLineLayer: $childrenLineLayer\n")
+                            if (childrenLine is ChildrenLine) {
+                                print("this-childrenList:\n")
+                                childrenLine.childrenList.forEach { it ->
+                                    print(" - ${it.firstname}\n")
+                                }
+                                print("this-parentList:\n")
+                                childrenLine.parentList.forEach { it ->
+                                    print(" - ${it.firstname}\n")
+                                }
+                            }
+                            print("...............\n")
+                            val canvasB = displayObjectResult(familyTreeDrawer)
+                            print(canvasB.toString())
+                            print("-------------\n")
+                        }*/
 
                         // FocusedPerson's siblings
                         val childrenListId = parent!!.children!!
@@ -225,6 +250,7 @@ class MaleNode(
                             var startInd = childrenListInd[0]
                             val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
                             if (!rightHandSiblings) {
+
                                 // Extend the CHILDREN Line the top layer of the AddedPerson.
                                 // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
                                 // Check an empty node.
@@ -258,7 +284,6 @@ class MaleNode(
                                     if (previousChildrenLine != null) {
                                         childrenLine = previousChildrenLine
                                     }*/
-
 
                                     childrenLine.extendLine(
                                         familyTreeDrawer,
@@ -325,7 +350,7 @@ class MaleNode(
 
                                 /*// Check
                                 if (addedPerson.firstname == "M3") {
-                                    print("------MaleNode 2------\n")
+                                    print("------MaleNode FamilyTree2------\n")
                                     print("add: ${addedPerson.firstname}\n")
                                     print("...............\n")
                                     val canvasB = displayObjectResult(familyTreeDrawer)
