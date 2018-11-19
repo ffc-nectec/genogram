@@ -89,6 +89,22 @@ class FamilyTreeDrawer {
         }
     }
 
+    fun moveFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?, line: Any?) {
+        val nameLayer = nameFamilyStorage[layerNumb]
+        val personLayer = personFamilyStorage[layerNumb]
+
+        if (node == null || line == null) {
+            nameFamilyStorage[layerNumb].add(replaceInd + 1, emptyNode.drawEmptyNode())
+            personFamilyStorage[layerNumb].add(replaceInd + 1, emptyNode.drawEmptyNode())
+        }
+
+        if (node !== null)
+            nameLayer[replaceInd] = node
+
+        if (line != null)
+            personLayer[replaceInd] = line
+    }
+
     fun replaceFamilyStorageLayer(layerNumb: Int, replaceInd: Int, node: String?, line: Any?) {
         val nameLayer = nameFamilyStorage[layerNumb]
         val personLayer = personFamilyStorage[layerNumb]
@@ -631,5 +647,17 @@ class FamilyTreeDrawer {
         }
 
         return childrenLine
+    }
+
+    fun findChildrenLineInd(childrenLine: ChildrenLine, childrenLineLayer: Int): Int? {
+        val childrenLineStorage = personFamilyStorage[childrenLineLayer]
+        var lineInd: Int? = null
+
+        childrenLineStorage.forEachIndexed { index, any ->
+            if (any == childrenLine)
+                lineInd = index
+        }
+
+        return lineInd
     }
 }

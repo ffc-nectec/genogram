@@ -379,13 +379,13 @@ abstract class Node {
             val nodeBetweenSibNumb = (drawParentSibListInd[drawParentSibListInd.size - 1] - drawParentSibListInd[0]) + 1
             var childrenNumber = familyTreeDrawer.findPersonLayerSize(parentLayer)
             var emptyNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(grandParentLayer)
-            val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
+            var addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
 
-            if (childrenNumber > 3) {
+            /*if (childrenNumber > 3) {
                 familyTreeDrawer = addMoreNodes(
                     emptyNodeNumber, addingEmptyNodes, grandParentLayer, familyTreeDrawer
                 )
-            }
+            }*/
 
             // Extend the CHILDREN Line the top layer of the AddedPerson.
             // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
@@ -438,34 +438,6 @@ abstract class Node {
                 }
             }
 
-            // Check
-            if (addedPerson.firstname == "F20") {
-                print("------Node------\n")
-                print("add: ${addedPerson.firstname}\n")
-                print("focusedPerson: ${focusedPerson!!.firstname}\n")
-                print("family: ${family!!.bloodFamily}\n")
-                print("anotherParent: ${anotherParent!!.firstname}\n")
-                print("previousChildrenLine: $previousChildrenLine\n")
-                print("parentLayer: $parentLayer\n")
-                print("parentLineLayer: $parentLineLayer\n")
-                print("updateLine: $updateLine\n")
-                if (childrenLine is ChildrenLine) {
-                    print("this-childrenList:\n")
-                    childrenLine.childrenList.forEach { it ->
-                        print(" - ${it.firstname}\n")
-                    }
-                    print("this-parentList:\n")
-                    childrenLine.parentList.forEach { it ->
-                        print(" - ${it.firstname}\n")
-                    }
-                }
-                print("...............\n")
-                val canvasB = displayObjectResult(familyTreeDrawer)
-                print(canvasB.toString())
-                print("-------------\n")
-            }
-
-//            if (previousChildrenLine != null && !updateLine) {
             if (previousChildrenLine != null) {
                 childrenLine = previousChildrenLine
             } else if (previousChildrenLine == null || updateLine) {
@@ -481,6 +453,85 @@ abstract class Node {
             val childrenParentLineLayer = parentLayer - 1
 
             // Extend the ChildrenLine and move the childrenLine sign
+            /*childrenLine.extendLine(
+                familyTreeDrawer,
+                childrenParentLineLayer, // the childrenLine above the parent layer
+                drawParentSibListInd,
+                targetParentInd, // GrandParentInd
+                parentListInd
+            )*/
+
+            // Find the "ChildrenLine" index
+            val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine, childrenParentLineLayer)
+            val parentSibList = childrenLine.childrenList
+            val firstChildInd = familyTreeDrawer.findPersonInd(parentSibList[0], parentLayer)
+            val lastChildInd = familyTreeDrawer.findPersonInd(parentSibList[parentSibList.size - 1], parentLayer)
+            val parentSibNumb = (lastChildInd - firstChildInd) + 1
+            var expectingMoreNode = 0
+            if (parentSibNumb > 3)
+                expectingMoreNode = if (parentSibNumb % 2 == 0)
+                    (parentSibNumb / 2) - 1
+                else
+                    Math.floorDiv(parentSibNumb, 2) - 1
+
+            // Find the left-hand grandparent
+            val grandParentList = childrenLine.parentList
+            val leftGrandParentInd = familyTreeDrawer.findPersonInd(grandParentList[0], grandParentLayer)
+
+            // Adjust the grandparent position
+            val expectingPos = childrenLineInd!! + expectingMoreNode
+            addingEmptyNodes = Math.abs(leftGrandParentInd - expectingPos)
+            var isAdjustPos = (leftGrandParentInd - childrenLineInd) - 1 != expectingMoreNode
+            // Check
+            if (addedPerson.firstname == "F23") {
+                print("------MaleNode 1------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("parentSibList: $parentSibList\n")
+                print("firstChildInd: $firstChildInd\n")
+                print("lastChildInd: $lastChildInd\n")
+                print("parentSibNumb: $parentSibNumb\n")
+                print("expectingMoreNode: $expectingMoreNode\n")
+                print("childrenLineInd: $childrenLineInd\n")
+                print("expectingPos: $expectingPos\n")
+                print("leftGrandParentInd: $leftGrandParentInd\n")
+                print("grandParentLayer: $grandParentLayer\n")
+                print("addingEmptyNodes: $addingEmptyNodes\n")
+                print("isAdjustPos: $isAdjustPos\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("-------------\n")
+            }
+
+            /*familyTreeDrawer.replaceFamilyStorageLayer(
+                childrenParentLineLayer, startInd, extendedLine, childrenLine
+            )*/
+
+
+            if (isAdjustPos)
+                if (addingEmptyNodes > 1) {
+                    // When the children line of the parent index is greater than the the grandparent's index
+                    for (i in 0 until addingEmptyNodes) {
+                        familyTreeDrawer.replaceFamilyStorageLayer(
+                            grandParentLayer,
+                            leftGrandParentInd,
+                            null,
+                            null
+                        )
+                    }
+                } else if (addingEmptyNodes == 1) {
+                    // When the children line of the parent is the same index of the grandparent index
+                    // Then more than one layer will be moved.
+                    for (j in grandParentLayer until (grandParentLayer + 2)) {
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            j,
+                            leftGrandParentInd,
+                            null,
+                            null
+                        )
+                    }
+                }
+
             childrenLine.extendLine(
                 familyTreeDrawer,
                 childrenParentLineLayer, // the childrenLine above the parent layer
@@ -492,6 +543,16 @@ abstract class Node {
             familyTreeDrawer.replaceFamilyStorageLayer(
                 childrenParentLineLayer, startInd, extendedLine, childrenLine
             )
+
+            // Check
+            if (addedPerson.firstname == "F23") {
+                print("------MaleNode 2------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("-------------\n\n\n")
+            }
 
             /*// Check
             if (addedPerson.firstname == "M8") {

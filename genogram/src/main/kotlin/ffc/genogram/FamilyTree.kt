@@ -59,8 +59,8 @@ class FamilyTree(_family: Family) {
             familyTreePic
         } else {
             print("LOADING...\n")
-            print("this.orgFamily: ${orgFamily.bloodFamily}\n")
-            print("family: ${family.bloodFamily}\n")
+            /*print("this.orgFamily: ${orgFamily.bloodFamily}\n")
+            print("family: ${family.bloodFamily}\n")*/
             if (!isDrawn(focusedPerson))
                 drawNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
