@@ -19,6 +19,7 @@ package ffc.genogram
 
 import ffc.genogram.Node.EmptyNode
 import ffc.genogram.RelationshipLine.ChildrenLine
+import ffc.genogram.RelationshipLine.MarriageLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.distanceLine
 import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
@@ -245,6 +246,58 @@ class FamilyTreeDrawer {
         return count
     }
 
+    fun findChildrenLineIndSize(childrenLineLayer: Int): Int {
+//        , ind1: Int, ind2: Int): Int {
+        var singleChildNumb = 0
+        var childrenNumb = 0
+
+        if (findPersonStorageSize() - 1 >= childrenLineLayer) {
+            val childrenLineStorage = personFamilyStorage[childrenLineLayer]
+            childrenLineStorage.forEachIndexed { index, any ->
+                //                if (index in ind1..ind2)
+                if (any is ChildrenLine) {
+                    when (any.childrenNumb) {
+                        1 -> {
+                            singleChildNumb++
+                        }
+                        else -> {
+                            childrenNumb++
+                        }
+                    }
+                }
+            }
+        }
+
+        return (singleChildNumb * 2) + childrenNumb
+    }
+
+    fun findChildrenLineIndSize2(childrenLineLayer: Int, ind1: Int, ind2: Int): Int {
+        var singleChildNumb = 0
+        var childrenNumb = 0
+        var emptyNodeNumb = 0
+
+        if (findPersonStorageSize() - 1 >= childrenLineLayer) {
+            val childrenLineStorage = personFamilyStorage[childrenLineLayer]
+            childrenLineStorage.forEachIndexed { index, any ->
+                if (index in ind1..ind2)
+                    if (any is ChildrenLine) {
+                        when (any.childrenNumb) {
+                            1 -> {
+                                singleChildNumb++
+                            }
+                            else -> {
+                                childrenNumb += any.childrenNumb
+                            }
+                        }
+                    } else if (any is EmptyNode) {
+                        emptyNodeNumb++
+                    }
+            }
+        }
+
+        return (singleChildNumb * 2) + childrenNumb + emptyNodeNumb
+    }
+
     fun getLineLayer(layerNumb: Int): String {
         return nameFamilyStorage[layerNumb][0]
     }
@@ -359,6 +412,7 @@ class FamilyTreeDrawer {
     }
 
     fun findNumberOfMidEmptyNode(personLayer: Int, pInd1: Int, pInd2: Int): Int {
+        // pInd1 < pInd2
         var count = 0
 
         if (personFamilyStorage.isNotEmpty()) {
@@ -366,6 +420,45 @@ class FamilyTreeDrawer {
                 val lineLayer = personFamilyStorage[personLayer]
                 lineLayer.forEachIndexed { index, any ->
                     if (index in (pInd1 + 1)..(pInd2 - 1) && any is EmptyNode) {
+                        count++
+                    }
+                }
+            }
+        }
+
+        return count
+    }
+
+    fun findNumberOfFrontEmptyNode(personLayer: Int): Int {
+        var count = 0
+        var stop = false
+
+        if (personFamilyStorage.isNotEmpty()) {
+            if (personLayer < findStorageSize()) {
+                val lineLayer = personFamilyStorage[personLayer]
+                lineLayer.forEachIndexed { index, any ->
+                    if (any is EmptyNode && !stop) {
+                        count++
+                    } else {
+                        stop = true
+                        return@forEachIndexed
+                    }
+
+                }
+            }
+        }
+
+        return count
+    }
+
+    fun findNumberOfFrontEmptyNode(personLayer: Int, pInd: Int): Int {
+        var count = 0
+
+        if (personFamilyStorage.isNotEmpty()) {
+            if (personLayer < findStorageSize()) {
+                val lineLayer = personFamilyStorage[personLayer]
+                lineLayer.forEachIndexed { index, any ->
+                    if (index < (pInd + 1) && any is EmptyNode) {
                         count++
                     }
                 }
@@ -384,6 +477,21 @@ class FamilyTreeDrawer {
                 if (it.childrenNumb == 1)
                     singleChildNumb++
             }
+        }
+
+        return singleChildNumb
+    }
+
+    fun findSingleChildNumb(childrenLineLayer: Int, ind1: Int, ind2: Int): Int {
+        val lineList = personFamilyStorage[childrenLineLayer]
+        var singleChildNumb = 0
+
+        lineList.forEachIndexed { index, any ->
+            if (index in ind1 until ind2)
+                if (any is ChildrenLine) {
+                    if (any.childrenNumb == 1)
+                        singleChildNumb++
+                }
         }
 
         return singleChildNumb
@@ -607,7 +715,7 @@ class FamilyTreeDrawer {
         childrenLineStorage.forEachIndexed { index, any ->
             if (any is ChildrenLine) {
                 val childrenList = any.childrenList
-                childrenList.forEach {child ->
+                childrenList.forEach { child ->
                     if (child == focusedPerson) {
                         childrenLine = childrenLineStorage[index] as ChildrenLine
                     }
@@ -616,6 +724,32 @@ class FamilyTreeDrawer {
         }
 
         return childrenLine
+    }
+
+    fun findMarriageLine(parentMarriageLineLayer: Int, parent1: Person, parent2: Person?):
+            MarriageLine? {
+        val marriageLineStorage = personFamilyStorage[parentMarriageLineLayer]
+        var marriageLine: MarriageLine? = null
+
+        marriageLineStorage.forEachIndexed { index, any ->
+            if (any is MarriageLine) {
+                val spousesStorage = any.getSpouseList()
+                spousesStorage.forEach {
+                    if (it.size > 1) {
+                        val person1 = it[0]
+                        val person2 = it[1]
+                        if ((person1 == parent1 && person2 == parent2) ||
+                            (person1 == parent2 && person2 == parent1)
+                        )
+                            marriageLine = marriageLineStorage[index] as MarriageLine
+                    } else {
+                        // Single parent
+                    }
+                }
+            }
+        }
+
+        return marriageLine
     }
 
     fun findChildrenLineById(listId: List<Int>, childrenLineLayer: Int): ChildrenLine? {
@@ -655,6 +789,18 @@ class FamilyTreeDrawer {
 
         childrenLineStorage.forEachIndexed { index, any ->
             if (any == childrenLine)
+                lineInd = index
+        }
+
+        return lineInd
+    }
+
+    fun findLineInd(line: Any, lineLayer: Int): Int? {
+        val lineStorage = personFamilyStorage[lineLayer]
+        var lineInd: Int? = null
+
+        lineStorage.forEachIndexed { index, any ->
+            if (any == line)
                 lineInd = index
         }
 

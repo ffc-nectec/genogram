@@ -176,9 +176,9 @@ class Drawer2NdGenFamilyTree2ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,--------------^----,   ]
+            [[Grandf], (Grandm)]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
             [[  Ed  ], ( Mary ), ( Lisa ), [ Bill ]]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()

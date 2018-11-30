@@ -55,10 +55,9 @@ class ChildrenLine : Line() {
     fun extendLine(
         familyTreeDrawer: FamilyTreeDrawer,
         extendLayer: Int,
-        childrenListInd: MutableList<Int>,
-        gradparentInd: Int,
-        parentListInd: MutableList<Int>?
+        childrenListInd: MutableList<Int>
     ) {
+
         childrenNumb = childrenListInd.size
 
         // Add Children sign spot ','
@@ -121,22 +120,6 @@ class ChildrenLine : Line() {
                 diffInd++
             }
             centerMarkPos = (emptyNodeSize * diffInd).toInt() - 1
-
-            /*print("####################################\n")
-            print("extendLayer: $extendLayer\n")
-            print("parentChildrenLine: $parentChildrenLine\n")
-            print("parentChildrenLineInd: $parentChildrenLineInd\n")
-            print("this-parent:\n")
-            parentChildrenLine!!.parentList.forEach { parent ->
-                print(" - ${parent.firstname}\n")
-            }
-            print("this-children:\n")
-            childrenList.forEach { parent ->
-                print(" - ${parent.firstname}\n")
-            }
-            val canvasB = displayObjectResult(familyTreeDrawer)
-            print(canvasB.toString())
-            print("####################################\n")*/
         }
     }
 

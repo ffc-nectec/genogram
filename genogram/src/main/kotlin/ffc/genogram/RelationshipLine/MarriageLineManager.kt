@@ -168,7 +168,6 @@ class MarriageLineManager(
             for (i in 0 until addMore - 1) {
                 tmp.append(sign)
             }
-
         } else {
             for (i in 0 until addMore - 1) {
                 tmp.append(space)

@@ -338,21 +338,11 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
             getResourceAs("2ndGen/spouses/family-1-spouse-14.json")
         ).drawGenogram()
         val canvas = displayObjectResult(drawer)
-
-        // String Visualization
-        /*canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,--------,-----^----,   ]
-            [[ Bill ], [  Ed  ], ( Lisa ), [ Mike ]]
-            [        ,         ,     |_________|   ]
-        """.trimIndent()*/
-
         // Object Visualization
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,---------,----^----,   ]
+            [[Grandf], (Grandm)]
+            [    |_________|   ]
+            [    ,----^----,---------,   ]
             [[ Bill ], [  Ed  ], ( Lisa ), [ Mike ]]
             [        ,         ,     |_________|   ]
         """.trimIndent()
@@ -422,21 +412,11 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
             getResourceAs("2ndGen/spouses/family-3-spouses-1.json")
         ).drawGenogram()
         val canvas = displayObjectResult(drawer)
-
-        // String Visualization
-        /*canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,------------------,-----^--------------,    ]
-            [[  Ed  ], ( Mary ), [Chris ], ( Cara ), (Sarah ), [Teddy ]]
-            [    |_________|   ,     |_________|   ,     |_________|   ]
-        """.trimIndent()*/
-
         // Object Visualization
         canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,-------------------,----^--------------,   ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [    ,--------------^----,-------------------,   ]
             [[  Ed  ], ( Mary ), [Chris ], ( Cara ), (Sarah ), [Teddy ]]
             [    |_________|   ,     |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -640,9 +620,9 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [        ,     ,----^----,-------------------,   ]
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [        ,     ,---------,----^--------------,   ]
             [[ Bill ], ( Lisa ), [  Ed  ], (Kitty ), [Teddy ]]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -764,9 +744,9 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
 
         // Object Visualization
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,---------,----^----,   ]
+            [[Grandf], (Grandm)]
+            [    |_________|   ]
+            [    ,----^----,---------,   ]
             [[  Ed  ], ( Lisa ), ( Cara ), [ Bill ]]
             [        ,         ,     |_________|   ]
         """.trimIndent()
@@ -828,9 +808,9 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,------------------------^----,---------,   ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [    ,--------------^--------------,---------,   ]
             [[  Ed  ], (Sarah ), [ Bill ], ( Lisa ), ( Cara ), [ Bill ]]
             [    |_________|   ,     |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -884,21 +864,11 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
             getResourceAs("2ndGen/spouses/family-1-spouse-26.json")
         ).drawGenogram()
         val canvas = displayObjectResult(drawer)
-
-        // String
-        /*canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,--------,-----^----,   ]
-            [(Sarah ), [  Ed  ], ( Cara ), [ Bill ]]
-            [        ,         ,     |_________|   ]
-        """.trimIndent()*/
-
         // Object
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,---------,----^----,   ]
+            [[Grandf], (Grandm)]
+            [    |_________|   ]
+            [    ,----^----,---------,   ]
             [(Sarah ), [  Ed  ], ( Cara ), [ Bill ]]
             [        ,         ,     |_________|   ]
         """.trimIndent()
@@ -912,9 +882,9 @@ class DrawerFamilyTree2NdGen3ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [        ,     ,----^----,-------------------,   ]
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [        ,     ,---------,----^--------------,   ]
             [[ Bill ], (Sarah ), [  Ed  ], ( Cara ), ( Cara )]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()

@@ -4,8 +4,8 @@ import ffc.genogram.Person
 
 class MarriageLine : Line() {
 
-    private var spousesStorage: ArrayList<List<Person>> = arrayListOf()
-    private var lineMarkPos = listOf<Double>()
+    var spousesStorage: ArrayList<List<Person>> = arrayListOf()
+    var lineMarkPos = listOf<Double>()
     var spousesNumb = 1
     var imageLength: Double = 0.0
 
@@ -23,10 +23,6 @@ class MarriageLine : Line() {
         // Mark means "|"
         // startingMarkPos and startingMarkPos starts at position 1.
         lineMarkPos = listOf(startingMarkPos, endingMarkPos)
-    }
-
-    fun getLineMarkPos(): List<Double> {
-        return lineMarkPos
     }
 
     fun getStartingMarkPos(): Double {

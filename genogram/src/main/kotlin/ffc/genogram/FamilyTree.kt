@@ -20,7 +20,6 @@ package ffc.genogram
 import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import kotlin.properties.Delegates
 
 class FamilyTree(_family: Family) {
 
@@ -222,7 +221,7 @@ class FamilyTree(_family: Family) {
         // Add indent for the previous layers if the number of children is even number.
         // The number of empty nodes will be the number of children / FamilyTree.
         val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
-        if (addingLayer == 0 && childrenNumber > 3) {
+        /*if (addingLayer == 0 && childrenNumber > 3) {
             val addingEmptyNodes = if (childrenNumber % 2 == 0)
                 childrenNumber / 2 - 1
             else
@@ -231,7 +230,7 @@ class FamilyTree(_family: Family) {
             for (i in (addingLayer + 1) downTo 0)
                 for (j in 1..addingEmptyNodes)
                     familyTreePic.addFamilyStorageReplaceIndex(i, 0, null, null)
-        }
+        }*/
 
         focusedList.forEach {
             addedNodes.add(it.idCard.toInt())

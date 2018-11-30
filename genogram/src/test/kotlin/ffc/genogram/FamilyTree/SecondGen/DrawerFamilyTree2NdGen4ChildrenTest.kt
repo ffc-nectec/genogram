@@ -204,9 +204,9 @@ class DrawerFamilyTree2NdGen4ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [        ,     ,--------------^----,-------------------,---------,   ]
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,     ,-------------------,----^--------------,---------,   ]
             [[  Ed  ], ( Lisa ), [ Bill ], ( Cara ), [Chris ], ( Lucy ), ( Anne )]
             [    |_________|   ,     |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -388,9 +388,9 @@ class DrawerFamilyTree2NdGen4ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,---------,--------------^----,---------,   ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [    ,---------,----^--------------,---------,   ]
             [[  Ed  ], [Chris ], ( Lisa ), ( Lucy ), ( Anne ), [ Bill ]]
             [        ,     |_________|   ,         ,     |_________|   ]
         """.trimIndent()
@@ -418,21 +418,11 @@ class DrawerFamilyTree2NdGen4ChildrenTest {
             getResourceAs("2ndGen/spouses/family-2-spouses-37.json")
         ).drawGenogram()
         val canvas = displayObjectResult(drawer)
-
-        // String
-        /*canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,------------------,-----^----,---------,    ]
-            [[ Bill ], [  Ed  ], ( Lisa ), [ Ted  ], ( Anne ), [Chris ]]
-            [        ,     |_________|   ,         ,     |_________|   ]
-        """.trimIndent()*/
-
         // Object
         canvas.toString().trimIndent() `should equal` """
-            [        ,         , [Grandf], (Grandm)]
-            [        ,         ,     |_________|   ]
-            [    ,-------------------,----^----,---------,   ]
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [    ,--------------^----,---------,---------,   ]
             [[ Bill ], [  Ed  ], ( Lisa ), [ Ted  ], ( Anne ), [Chris ]]
             [        ,     |_________|   ,         ,     |_________|   ]
         """.trimIndent()
