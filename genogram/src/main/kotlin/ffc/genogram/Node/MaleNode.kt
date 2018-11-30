@@ -172,7 +172,7 @@ class MaleNode(
                             // Create a new children line
                             // Draw a new childrenLine with new parentList, new childrenList, and etc.
                             addedPersonSibListId.forEach {
-                                val child = family.findPerson(it.toLong())
+                                val child = family.findPerson(it)
                                 addedPersonSibList.add(child!!)
                             }
                             childrenLine.drawLine(addedPersonSibListId.size, addedPersonParent, addedPersonSibList)
@@ -184,7 +184,7 @@ class MaleNode(
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLineLayer
+                                    id, childrenLineLayer
                                 )
                             )
                         }

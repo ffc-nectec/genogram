@@ -22,12 +22,12 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
-        var idCard: Long,
+        var idCard: Int,
         var firstname: String,
         var lastname: String,
         var gender: GenderLabel = GenderLabel.MALE,
-        var father: Long?,
-        var mother: Long?,
+        var father: Int?,
+        var mother: Int?,
         var twin: List<Int>?,
         var exHusband: List<Int>?,
         var exWife: List<Int>?,

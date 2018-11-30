@@ -136,11 +136,6 @@ class ChildrenLine : Line() {
         val childrenLayer = lineLayer + 1
         val marriageChildrenLineLayer = childrenLayer + 1
 
-        /*val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
-        val parentLineLayer = parentLayer + 1
-        val childrenLayer = parentLayer + 3
-        val marriageChildrenLineLayer = parentLayer + 4*/
-
         familyTreeDrawer.findNumberOfMidEmptyNode(marriageChildrenLineLayer)
         var line = familyTreeDrawer.personFamilyStorage[lineLayer][0]
         if (line is ChildrenLine) {
@@ -155,27 +150,14 @@ class ChildrenLine : Line() {
 
         var parent1Ind: Int? = null
         var parent2Ind: Int? = null
-        var parent1Id: Long? = null
-        var parent2Id: Long? = null
+        var parent1Id: Int? = null
+        var parent2Id: Int? = null
         if (parentList.size > 0) {
             parent1Ind = familyTreeDrawer.findPersonInd(parentList[0], parentLayer)
         }
         if (parentList.size > 1) {
             parent2Ind = familyTreeDrawer.findPersonInd(parentList[1], parentLayer)
         }
-
-        /*print("****** ChildrenLine *******\n")
-        print("parentLayer: $parentLayer\n")
-        print("parentList[0]: ${parentList[0].firstname}\n")
-        print("parentList[1]: ${parentList[1].firstname}\n")
-        print("parent1Ind: $parent1Ind\n")
-        print("parent2Ind: $parent2Ind\n")
-        print("childrenId: $childrenId\n")
-        print("focusedPerson: ${focusedPerson.firstname}\n")
-        print("...............\n")
-        val canvasB = displayObjectResult(familyTreeDrawer)
-        print(canvasB.toString())
-        print("**************\n")*/
 
         if (parent1Ind != null) {
             val parent1IdObj = familyTreeDrawer.getPersonLayerInd(parentLayer, parent1Ind) as Person

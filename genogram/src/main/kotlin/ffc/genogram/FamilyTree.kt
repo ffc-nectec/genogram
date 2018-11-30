@@ -259,12 +259,12 @@ class FamilyTree(_family: Family) {
                 }
 
                 if ((parent.gender == GenderLabel.FEMALE) &&
-                    (parent.idCard.toInt() != parentSib[parentSib.size - 1])
+                    (parent.idCard != parentSib[parentSib.size - 1])
                 ) {
                     val husbandList = parent.husband
                     husbandList!!.forEach {
-                        if (it == parents[1].idCard.toInt())
-                            parent = family.findPerson(it.toLong())!!
+                        if (it == parents[1].idCard)
+                            parent = family.findPerson(it)!!
                     }
                 }
             }

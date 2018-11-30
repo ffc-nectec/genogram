@@ -75,7 +75,7 @@ class FemaleNode(
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLayer
+                                    id, childrenLayer
                                 )
                             )
                         }
@@ -153,7 +153,7 @@ class FemaleNode(
                             val addedPersonSibList: MutableList<Person> = mutableListOf()
 
                             addedPersonSibListId.forEach {
-                                val child = family.findPerson(it.toLong())
+                                val child = family.findPerson(it)
                                 addedPersonSibList.add(child!!)
                             }
                             childrenLine.drawLine(addedPersonSibListId.size, addedPersonParent, addedPersonSibList)
@@ -197,7 +197,7 @@ class FemaleNode(
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
-                                    id.toLong(), childrenLayer
+                                    id, childrenLayer
                                 )
                             )
                         }

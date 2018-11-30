@@ -20,13 +20,14 @@ package ffc.genogram
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
-    var familyId: Long,
+    var familyId: Int,
     var familyName: String,
     var bloodFamily: List<Int>?,
     var members: List<Person>?
 ) {
 
-    fun copy(familyId: Long = this.familyId,
+    fun copy(
+        familyId: Int = this.familyId,
         familyName: String = this.familyName,
         bloodFamily: List<Int>? = this.bloodFamily,
         members: List<Person>? = this.members) = Family(familyId, familyName, bloodFamily, members)
@@ -52,7 +53,7 @@ class Family(
         return person
     }
 
-    fun findPerson(id: Long): Person? {
+    fun findPerson(id: Int): Person? {
         members!!.forEach { person ->
             if (person.idCard == id)
                 return person
@@ -65,7 +66,7 @@ class Family(
         var childrenList: ArrayList<Person> = arrayListOf()
 
         idList.forEach {
-            val childId = findPerson(it.toLong())
+            val childId = findPerson(it)
             if (childId != null)
                 childrenList.add(childId)
         }

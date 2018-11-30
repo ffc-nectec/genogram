@@ -302,19 +302,6 @@ abstract class Node {
                 }
             }
 
-            // Check
-            if (addedPerson.firstname == "M9") {
-                print("------ Node 252 ------\n")
-                print("add: ${addedPerson.firstname}\n")
-                print("expectingInd: $expectingInd\n")
-                print("parentInd: $parentInd\n")
-                print("childrenLineInd: $childrenLineInd\n")
-                print("...............\n")
-                val canvasB = displayObjectResult(familyTreeDrawer)
-                print(canvasB.toString())
-                print("---------------------------------------\n")
-            }
-
             // AddedPerson's parent adjusting zone.
             // Extend addedPerson's parent children line and grandparent's line
             // Extend the MarriageLineManager of AddedPerson's parent.
@@ -613,7 +600,7 @@ abstract class Node {
         drawParentSibListId.forEach { id ->
             drawParentSibListInd.add(
                 familyTreeDrawer.findPersonIndById(
-                    id.toLong(), parentLayer2
+                    id, parentLayer2
                 )
             )
         }
@@ -626,7 +613,7 @@ abstract class Node {
     fun findParentSibList(drawParentSibListId: MutableList<Int>, family: Family): MutableList<Person> {
         val parentSibList: MutableList<Person> = mutableListOf()
         drawParentSibListId.forEach {
-            val parentSib = family.findPerson(it.toLong())
+            val parentSib = family.findPerson(it)
             parentSibList.add(parentSib!!)
         }
 

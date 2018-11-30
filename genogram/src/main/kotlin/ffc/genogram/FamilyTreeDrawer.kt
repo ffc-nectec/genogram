@@ -173,7 +173,7 @@ class FamilyTreeDrawer {
         return 0
     }
 
-    fun findPersonIndById(personId: Long, layerNumb: Int): Int {
+    fun findPersonIndById(personId: Int, layerNumb: Int): Int {
         val nodeList = personFamilyStorage[layerNumb]
 
         nodeList.forEachIndexed { index, person ->
@@ -185,7 +185,7 @@ class FamilyTreeDrawer {
         return 0
     }
 
-    fun getPersonById(personId: Long, layerNumb: Int): Person? {
+    fun getPersonById(personId: Int, layerNumb: Int): Person? {
         val nodeList = personFamilyStorage[layerNumb]
 
         nodeList.forEachIndexed { index, person ->
@@ -320,7 +320,7 @@ class FamilyTreeDrawer {
 
     fun addMarriageLineInd(layerNumb: Int, focusedPerson: Person, addedPerson: Person?): Int {
         // Check the person gender, and find the person's
-        val allPeople: MutableList<Long> = mutableListOf()
+        val allPeople: MutableList<Int> = mutableListOf()
         personFamilyStorage[layerNumb - 1].forEach {
             if (it is Person)
                 allPeople.add(it.idCard)
