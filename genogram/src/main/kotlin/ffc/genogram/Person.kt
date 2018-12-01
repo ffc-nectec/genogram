@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -22,12 +22,12 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
-        var idCard: Int,
+        var idCard: Long,
         var firstname: String,
         var lastname: String,
         var gender: GenderLabel = GenderLabel.MALE,
-        var father: Int?,
-        var mother: Int?,
+        var father: Long?,
+        var mother: Long?,
         var twin: List<Int>?,
         var exHusband: List<Int>?,
         var exWife: List<Int>?,

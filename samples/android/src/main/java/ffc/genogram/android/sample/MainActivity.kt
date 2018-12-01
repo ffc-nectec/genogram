@@ -31,6 +31,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.otaliastudios.zoom.ZoomLayout
 import ffc.genogram.android.GenogramView
 import kotlinx.android.synthetic.main.activity_main.spinner
@@ -44,7 +45,11 @@ class MainActivity : AppCompatActivity() {
             "3 gen 4 child #7" to R.raw.family_4_children_3rd_gen_7,
             "3 gen 7 child" to R.raw.family_7_children_3rd_gen,
             "2 gen 2 spouses #6" to R.raw.family_2_spouses_6,
-            "2 gen 2 spouses #13" to R.raw.family_2_spouses_13
+            "2 gen 2 spouses #13" to R.raw.family_2_spouses_13,
+            "In Family we trust 2018 (easy-1)" to R.raw.in_family_we_trust_2018_easy_1,
+            "In Family we trust 2018 (easy-2)" to R.raw.in_family_we_trust_2018_easy_2,
+            "In Family we trust 2018 (Simple)" to R.raw.in_family_we_trust_2018_simple,
+            "In Family we trust 2018" to R.raw.in_family_we_trust_2018
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,12 +113,20 @@ class MainActivity : AppCompatActivity() {
             val families = RawResourceFamilies(context!!, arguments!!.getInt(ARG_RAW))
             families.family {
                 onSuccess {
-                    val view = GenogramView(context!!)
-                    view.nodeBuilder = SampleNodeBuilder()
-                    view.drawFamily(it)
-
-                    container.addView(view)
-                    Handler().postDelayed({ container.zoomOut() }, 150)
+                    try {
+                        val view = GenogramView(context!!)
+                        view.nodeBuilder = SampleNodeBuilder()
+                        view.drawFamily(it)
+                        container.addView(view)
+                        Handler().postDelayed({ container.zoomOut() }, 150)
+                    } catch (it: Exception) {
+                        Toast.makeText(context, "${it.javaClass.name}: ${it.message}", Toast.LENGTH_SHORT).show()
+                        it.printStackTrace()
+                    }
+                }
+                onFail {
+                    Toast.makeText(context, it?.message, Toast.LENGTH_SHORT).show()
+                    it?.printStackTrace()
                 }
             }
         }

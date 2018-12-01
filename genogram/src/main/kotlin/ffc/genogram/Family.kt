@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -20,17 +20,11 @@ package ffc.genogram
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
-    var familyId: Int,
+    var familyId: Long,
     var familyName: String,
     var bloodFamily: List<Int>?,
     var members: List<Person>?
 ) {
-
-    fun copy(
-        familyId: Int = this.familyId,
-        familyName: String = this.familyName,
-        bloodFamily: List<Int>? = this.bloodFamily,
-        members: List<Person>? = this.members) = Family(familyId, familyName, bloodFamily, members)
 
     // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {
@@ -53,24 +47,12 @@ class Family(
         return person
     }
 
-    fun findPerson(id: Int): Person? {
+    fun findPerson(id: Long): Person? {
         members!!.forEach { person ->
             if (person.idCard == id)
                 return person
         }
 
         return null
-    }
-
-    fun findPersonList(idList: List<Int>): ArrayList<Person> {
-        var childrenList: ArrayList<Person> = arrayListOf()
-
-        idList.forEach {
-            val childId = findPerson(it)
-            if (childId != null)
-                childrenList.add(childId)
-        }
-
-        return childrenList
     }
 }

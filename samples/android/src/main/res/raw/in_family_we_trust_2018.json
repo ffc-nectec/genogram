@@ -1,0 +1,1157 @@
+{
+  "bloodFamily": [
+    1393414347,
+    1670030195,
+    200451287,
+    1607161586,
+    1801386413,
+    1868639714,
+    169646432,
+    549450420,
+    313875492,
+    183547297,
+    752893399,
+    1912831964,
+    1912757006,
+    305814635,
+    381432301,
+    1509256505
+  ],
+  "familyId": 0,
+  "familyName": "จิระอนันต์",
+  "members": [
+    {
+      "linkedStack": [
+        281033158,
+        1670030195,
+        200451287,
+        1607161586,
+        1801386413,
+        1868639714
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "อากง",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{อากง}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.161+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1393414347,
+      "firstname": "อากง",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "wife": [
+        281033158
+      ],
+      "children": [
+        1670030195,
+        200451287,
+        1607161586,
+        1801386413,
+        1868639714
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        1670030195,
+        200451287,
+        1607161586,
+        1801386413,
+        1868639714
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "อาม่า",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{อาม่า}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 281033158,
+      "firstname": "อาม่า",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "husband": [
+        1393414347
+      ],
+      "children": [
+        1670030195,
+        200451287,
+        1607161586,
+        1801386413,
+        1868639714
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        281033158,
+        356973275,
+        381432301,
+        1509256505
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Married",
+            "id": "{{น้ำผึ้ง}}",
+            "name": "น้ำผึ้ง จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เวกัส}}",
+            "name": "เวกัส จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{มาเก๋า}}",
+            "name": "มาเก๋า จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "กรกันต์",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{กรกันต์}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1868639714,
+      "firstname": "กรกันต์",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1393414347,
+      "mother": 281033158,
+      "wife": [
+        356973275
+      ],
+      "children": [
+        381432301,
+        1509256505
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        281033158,
+        313875492
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เหม่เหม}}",
+            "name": "เหม่เหม จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เมธ",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เมธ}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 200451287,
+      "firstname": "เมธ",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1393414347,
+      "mother": 281033158,
+      "children": [
+        313875492
+      ]
+    },
+    {
+      "linkedStack": [
+        1670030195,
+        169646432
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{พีท}}",
+            "name": "พีท จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "คริส",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{คริส}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 207319317,
+      "firstname": "คริส",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "husband": [
+        1670030195
+      ],
+      "children": [
+        169646432
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        281033158,
+        305814635
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ก๋วยเตี๋ยว}}",
+            "name": "ก๋วยเตี๋ยว จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "มนฤดี",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{มนฤดี}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1801386413,
+      "firstname": "มนฤดี",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "father": 1393414347,
+      "mother": 281033158,
+      "children": [
+        305814635
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        281033158,
+        823643213,
+        169646432,
+        549450420
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Divorced",
+            "id": "{{คริส}}",
+            "name": "คริส จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{พีท}}",
+            "name": "พีท จิระอนันต์"
+          },
+          {
+            "relate": "Married",
+            "id": "{{นิภา}}",
+            "name": "นิภา จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ฉี}}",
+            "name": "ฉี จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "ประเสริฐ",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{ประเสริฐ}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1670030195,
+      "firstname": "ประเสริฐ",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1393414347,
+      "mother": 281033158,
+      "wife": [
+        823643213
+      ],
+      "children": [
+        169646432,
+        549450420
+      ]
+    },
+    {
+      "linkedStack": [
+        1393414347,
+        281033158,
+        1013365983,
+        183547297,
+        752893399,
+        1912831964,
+        1912757006
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{อากง}}",
+            "name": "อากง จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{อาม่า}}",
+            "name": "อาม่า จิระอนันต์"
+          },
+          {
+            "relate": "Married",
+            "id": "{{วิเชียร}}",
+            "name": "วิเชียร จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{อี้}}",
+            "name": "อี้ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เอิร์น}}",
+            "name": "เอิร์น จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เต๋า}}",
+            "name": "เต๋า จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เต้ย}}",
+            "name": "เต้ย จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "ภัสสร",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{ภัสสร}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1607161586,
+      "firstname": "ภัสสร",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "father": 1393414347,
+      "mother": 281033158,
+      "husband": [
+        1013365983
+      ],
+      "children": [
+        183547297,
+        752893399,
+        1912831964,
+        1912757006
+      ]
+    },
+    {
+      "linkedStack": [
+        1607161586,
+        183547297,
+        752893399,
+        1912831964,
+        1912757006
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{อี้}}",
+            "name": "อี้ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เอิร์น}}",
+            "name": "เอิร์น จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เต๋า}}",
+            "name": "เต๋า จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เต้ย}}",
+            "name": "เต้ย จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "วิเชียร",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{วิเชียร}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1013365983,
+      "firstname": "วิเชียร",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "wife": [
+        1607161586
+      ],
+      "children": [
+        183547297,
+        752893399,
+        1912831964,
+        1912757006
+      ]
+    },
+    {
+      "linkedStack": [
+        1670030195,
+        549450420
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{ฉี}}",
+            "name": "ฉี จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "นิภา",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{นิภา}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 823643213,
+      "firstname": "นิภา",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "husband": [
+        1670030195
+      ],
+      "children": [
+        549450420
+      ]
+    },
+    {
+      "linkedStack": [
+        1868639714,
+        381432301,
+        1509256505
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Married",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{เวกัส}}",
+            "name": "เวกัส จิระอนันต์"
+          },
+          {
+            "relate": "Child",
+            "id": "{{มาเก๋า}}",
+            "name": "มาเก๋า จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "น้ำผึ้ง",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{น้ำผึ้ง}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 356973275,
+      "firstname": "น้ำผึ้ง",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "husband": [
+        1868639714
+      ],
+      "children": [
+        381432301,
+        1509256505
+      ]
+    },
+    {
+      "linkedStack": [
+        1670030195,
+        823643213
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{นิภา}}",
+            "name": "นิภา จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "ฉี",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{ฉี}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 549450420,
+      "firstname": "ฉี",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1670030195,
+      "mother": 823643213
+    },
+    {
+      "linkedStack": [
+        1013365983,
+        1607161586
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{วิเชียร}}",
+            "name": "วิเชียร จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{อี้}}",
+            "name": "อี้ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เอิร์น}}",
+            "name": "เอิร์น จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต๋า}}",
+            "name": "เต๋า จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เต้ย",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เต้ย}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1912757006,
+      "firstname": "เต้ย",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1013365983,
+      "mother": 1607161586
+    },
+    {
+      "linkedStack": [
+        1868639714,
+        356973275
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{น้ำผึ้ง}}",
+            "name": "น้ำผึ้ง จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เวกัส}}",
+            "name": "เวกัส จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "มาเก๋า",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{มาเก๋า}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1509256505,
+      "firstname": "มาเก๋า",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1868639714,
+      "mother": 356973275
+    },
+    {
+      "linkedStack": [
+        1868639714,
+        356973275
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{กรกันต์}}",
+            "name": "กรกันต์ จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{น้ำผึ้ง}}",
+            "name": "น้ำผึ้ง จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{มาเก๋า}}",
+            "name": "มาเก๋า จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เวกัส",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เวกัส}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 381432301,
+      "firstname": "เวกัส",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1868639714,
+      "mother": 356973275
+    },
+    {
+      "linkedStack": [
+        1801386413
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{มนฤดี}}",
+            "name": "มนฤดี จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "ก๋วยเตี๋ยว",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{ก๋วยเตี๋ยว}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 305814635,
+      "firstname": "ก๋วยเตี๋ยว",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1801386413
+    },
+    {
+      "linkedStack": [
+        200451287
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{เมธ}}",
+            "name": "เมธ จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เหม่เหม",
+        "lastname": "จิระอนันต์",
+        "sex": "FEMALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เหม่เหม}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 313875492,
+      "firstname": "เหม่เหม",
+      "lastname": "จิระอนันต์",
+      "gender": "1",
+      "father": 200451287
+    },
+    {
+      "linkedStack": [
+        1013365983,
+        1607161586
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{วิเชียร}}",
+            "name": "วิเชียร จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เอิร์น}}",
+            "name": "เอิร์น จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต๋า}}",
+            "name": "เต๋า จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต้ย}}",
+            "name": "เต้ย จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "อี้",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{อี้}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 183547297,
+      "firstname": "อี้",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1013365983,
+      "mother": 1607161586
+    },
+    {
+      "linkedStack": [
+        1013365983,
+        1607161586
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{วิเชียร}}",
+            "name": "วิเชียร จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{อี้}}",
+            "name": "อี้ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต๋า}}",
+            "name": "เต๋า จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต้ย}}",
+            "name": "เต้ย จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เอิร์น",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เอิร์น}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 752893399,
+      "firstname": "เอิร์น",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1013365983,
+      "mother": 1607161586
+    },
+    {
+      "linkedStack": [
+        1670030195,
+        207319317
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{ประเสริฐ}}",
+            "name": "ประเสริฐ จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{คริส}}",
+            "name": "คริส จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "พีท",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{พีท}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 169646432,
+      "firstname": "พีท",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1670030195,
+      "mother": 207319317
+    },
+    {
+      "linkedStack": [
+        1013365983,
+        1607161586
+      ],
+      "properties": {
+        "identities": [],
+        "chronics": [],
+        "relationships": [
+          {
+            "relate": "Father",
+            "id": "{{วิเชียร}}",
+            "name": "วิเชียร จิระอนันต์"
+          },
+          {
+            "relate": "Mother",
+            "id": "{{ภัสสร}}",
+            "name": "ภัสสร จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{อี้}}",
+            "name": "อี้ จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เอิร์น}}",
+            "name": "เอิร์น จิระอนันต์"
+          },
+          {
+            "relate": "Sibling",
+            "id": "{{เต้ย}}",
+            "name": "เต้ย จิระอนันต์"
+          }
+        ],
+        "prename": "",
+        "firstname": "เต๋า",
+        "lastname": "จิระอนันต์",
+        "sex": "MALE",
+        "houseId": "{{house_id_for_geno}}",
+        "id": "{{เต๋า}}",
+        "type": "Person",
+        "timestamp": "2018-11-08T11:02:35.223+07:00"
+      },
+      "nodeMargin": 0,
+      "idCard": 1912831964,
+      "firstname": "เต๋า",
+      "lastname": "จิระอนันต์",
+      "gender": "0",
+      "father": 1013365983,
+      "mother": 1607161586
+    }
+  ]
+}

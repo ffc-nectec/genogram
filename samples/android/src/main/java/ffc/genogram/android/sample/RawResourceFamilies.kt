@@ -31,11 +31,7 @@ class RawResourceFamilies(val context: Context, @RawRes val rawId: Int) : Famili
     override fun family(callbackDsl: Families.Callback.() -> Unit) {
         val callback = Families.Callback().apply(callbackDsl)
         Handler().postDelayed({
-            try {
                 callback.onSuccess(context.rawAs<Family>(rawId))
-            } catch (exception: Exception) {
-                callback.onFail(exception)
-            }
         }, 500)
     }
 }
