@@ -1,12 +1,14 @@
 package ffc.genogram
 
 import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should not equal`
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class BloodFamilyTest(private val resource: String, private val expectBloodFamily: List<Int>) {
+
     companion object {
         @JvmStatic
         @Parameterized.Parameters
@@ -21,9 +23,19 @@ class BloodFamilyTest(private val resource: String, private val expectBloodFamil
             )
         }
     }
+
     @Test
     fun bloodFamily() {
         val family = Family(1, "Smiths", getResourceAs<Family>(resource).members)
+        family.bloodFamily!! `should equal` expectBloodFamily
+    }
+
+    @Test
+    fun specifyRootPerson() {
+        val members = getResourceAs<Family>(resource).members
+        val disorder = members.sortedByDescending { it.idCard }
+        disorder `should not equal` members
+        val family = Family(1, "Smiths", disorder, rootPerson = members[0])
         family.bloodFamily!! `should equal` expectBloodFamily
     }
 }

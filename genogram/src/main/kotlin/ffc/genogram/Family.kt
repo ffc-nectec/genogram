@@ -22,14 +22,15 @@ import ffc.genogram.Util.cleanUpEmptyStack
 class Family(
     var familyId: Long,
     var familyName: String,
-    var members: List<Person>
+    var members: List<Person>,
+    rootPerson: Person = members[0]
 ) {
     var bloodFamily: MutableList<Int>?
 
     init {
         require(members.isNotEmpty()) { "member should not empty" }
-        bloodFamily = mutableListOf(members[0].idCard)
-        bloodFamily!!.addDescendentOf(members[0])
+        bloodFamily = mutableListOf(rootPerson.idCard)
+        bloodFamily!!.addDescendentOf(rootPerson)
     }
 
     private fun MutableList<Int>.addDescendentOf(head: Person) {
