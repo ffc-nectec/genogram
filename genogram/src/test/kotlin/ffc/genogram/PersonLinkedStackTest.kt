@@ -1,14 +1,11 @@
 package ffc.genogram
 
-import org.amshove.kluent.`should equal`
-import org.junit.Test
-
 /**
  * test data from 3rdGen/family-3-children-3rd-gen-6.json
  */
 class PersonLinkedStackTest {
 
-    @Test
+    /*@Test
     fun linkStack() {
         val person = Person(0, "Grandpa", "Smith",
                 wife = listOf(10),
@@ -40,5 +37,5 @@ class PersonLinkedStackTest {
         )
 
         person.linkedStack `should equal` listOf(0, 10, 12, 6, 7)
-    }
+    }*/
 }
