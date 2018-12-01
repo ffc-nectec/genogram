@@ -64,8 +64,7 @@ class RelationshipFactory {
         focusedListPerson: MutableList<Person>,
         parent: Person,
         family: Family,
-        familyTreeDrawer: FamilyTreeDrawer,
-        relationshipLabel: RelationshipLabel
+        familyTreeDrawer: FamilyTreeDrawer
     ): Relationship {
         return ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
     }
