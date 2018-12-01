@@ -14,7 +14,7 @@ class ChildrenLine : Line() {
     var childrenNumb: Int = 1
     var imageLength: Double = 0.0
 
-    fun addLineMarkPos(pos: Int) {
+    private fun addLineMarkPos(pos: Int) {
         lineMarkPos.add(pos)
     }
 
@@ -67,7 +67,7 @@ class ChildrenLine : Line() {
         lineMarkPos = arrayListOf()
         childrenListInd.forEachIndexed { index, el ->
             var markPos = halfEmptyNodeSize
-            var firstIndex = childrenListInd[0]
+            val firstIndex = childrenListInd[0]
             if (el != firstIndex) {
                 markPos = emptyNodeSize * (el - firstIndex) + (halfEmptyNodeSize)
             }
@@ -84,11 +84,8 @@ class ChildrenLine : Line() {
         val parentChildrenLineStorage = familyTreeDrawer.getPersonLayer(extendLayer)
         parentChildrenLineStorage.forEachIndexed { index, any ->
             if (any is ChildrenLine && any != this) {
-                // For "separateParentSib"
                 any.childrenList.forEach { parentSib ->
-                    // print("= Parent: ${parentSib.firstname}\n")
                     parentList.forEach { parent ->
-                        // print("= Children: ${parent.firstname}\n")
                         if (parentSib.idCard == parent.idCard) {
                             parentChildrenLine = any
                             parentChildrenLineInd = index
@@ -125,29 +122,10 @@ class ChildrenLine : Line() {
 
     fun moveChildrenLineSign(
         familyTreeDrawer: FamilyTreeDrawer,
-        lineLayer: Int,
-        step: Int,
-        emptyNodeNumb: Int,
-        childrenId: List<Int>,
-        focusedPerson: Person
+        lineLayer: Int
     ) {
         val parentLayer = lineLayer - 2
         val parentLineLayer = lineLayer - 1
-        val childrenLayer = lineLayer + 1
-        val marriageChildrenLineLayer = childrenLayer + 1
-
-        familyTreeDrawer.findNumberOfMidEmptyNode(marriageChildrenLineLayer)
-        var line = familyTreeDrawer.personFamilyStorage[lineLayer][0]
-        if (line is ChildrenLine) {
-            // Copy the previous object attributions.
-            var previousChildrenLine = familyTreeDrawer.findChildrenLine(
-                lineLayer, focusedPerson!!
-            )
-            if (previousChildrenLine != null) {
-                line = previousChildrenLine
-            }
-        }
-
         var parent1Ind: Int? = null
         var parent2Ind: Int? = null
         var parent1Id: Int? = null
@@ -200,8 +178,7 @@ class ChildrenLine : Line() {
         val extraSpace = Math.abs(childrenLineInd - marriageLineInd)
         val arrayMargin = 2
         val emptyNodeSize = (Node.nodeSize + Node.nodeBorderSize) + arrayMargin
-        val parentEmptyFrontNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(parentLayer)
-        var marriageLineCenter = marriageLine!!.imageLength / 2 + 1
+        val marriageLineCenter = marriageLine!!.imageLength / 2 + 1
         if (marriageLineInd > childrenLineInd) {
             centerMarkPos = ((emptyNodeSize * extraSpace) + marriageLineCenter).toInt()
         } else if (marriageLineInd == childrenLineInd) {

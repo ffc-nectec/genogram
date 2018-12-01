@@ -35,31 +35,18 @@ class FamilyTree(_family: Family) {
     var family: Family = _family
     var orgFamily: Family = _family
 
-    /*var family: Family = Family(_family.familyId, _family.familyName, _family.bloodFamily, _family.members)
-    var orgFamily: Family = _family.copy()
-
-    init {
-        print("family: $family\n")
-        print("orgFamily: $orgFamily\n")
-    }*/
-
     fun drawGenogram(): FamilyTreeDrawer {
 
         focusedPerson = family.popBloodFamily()
 
         return if (focusedPerson == null) {
-            /*print("==== ${family.familyName} Family =====\n")*/
             familyTreePic
         } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) &&
             (family.bloodFamily == null)
         ) {
-            /*print("==== ${family.familyName} Family | ${focusedPerson!!.firstname} =====\n")*/
-            // here
             familyTreePic
         } else {
             print("LOADING...\n")
-            /*print("this.orgFamily: ${orgFamily.bloodFamily}\n")
-            print("family: ${family.bloodFamily}\n")*/
             if (!isDrawn(focusedPerson))
                 drawNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
@@ -69,8 +56,6 @@ class FamilyTree(_family: Family) {
             while (personLinkedStack != null) {
                 personLinkedStack = setRelationship(listFocusedPerson, null, null)
             }
-
-            /*print("-FamilyTree FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")*/
             drawGenogram()
         }
     }
@@ -91,8 +76,7 @@ class FamilyTree(_family: Family) {
                 childrenList,
                 parent,
                 family,
-                familyTreePic,
-                RelationshipLabel.CHILDREN
+                familyTreePic
             )
             line.drawLine()
             drawListNode(childrenList, list1, RelationshipLabel.CHILDREN)
@@ -106,12 +90,6 @@ class FamilyTree(_family: Family) {
                 val relatedPersonList: ArrayList<Person> = ArrayList()
                 relatedPersonList.add(relatedPerson)
                 val relationLabel = findRelationship(list1, relatedPersonList)
-
-                // TODO: Delete
-                /*print(
-                    "Relationship: ${relatedPerson.firstname} is " +
-                            "a $relationLabel of ${focusedPerson!!.firstname} \n"
-                )*/
 
                 // Draw a relationship line and Node.
                 val line = relationFactory.getLine(
@@ -147,7 +125,7 @@ class FamilyTree(_family: Family) {
 
     private fun isDrawn(focusedPerson: Person?): Boolean {
         if (focusedPerson != null)
-            addedNodes.find { it == focusedPerson.idCard.toInt() }?.let {
+            addedNodes.find { it == focusedPerson.idCard }?.let {
                 return true
             } ?: kotlin.run {
                 return false
@@ -197,7 +175,7 @@ class FamilyTree(_family: Family) {
         val node = nodeFactory
             .getNode(familyTreePic, focusedPerson, relatedPerson, orgFamily)
         node.drawNode(relationLabel, siblings = false)
-        addedNodes.add(relatedPerson.idCard.toInt())
+        addedNodes.add(relatedPerson.idCard)
     }
 
     private fun drawListNode(
@@ -208,7 +186,7 @@ class FamilyTree(_family: Family) {
         val childrenNumber = focusedList.size
         focusedList.forEach {
             // Find the left-hand parent
-            var parent = findLeftHandParent(parents, family)
+            val parent = findLeftHandParent(parents, family)
             val node = nodeFactory.getNode(familyTreePic, parent, it, orgFamily)
 
             if (childrenNumber == 1)
@@ -220,20 +198,9 @@ class FamilyTree(_family: Family) {
         // Adjust the parent layer when the more than three children were added.
         // Add indent for the previous layers if the number of children is even number.
         // The number of empty nodes will be the number of children / FamilyTree.
-        val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
-        /*if (addingLayer == 0 && childrenNumber > 3) {
-            val addingEmptyNodes = if (childrenNumber % 2 == 0)
-                childrenNumber / 2 - 1
-            else
-                Math.floorDiv(childrenNumber, 2) - 1
-
-            for (i in (addingLayer + 1) downTo 0)
-                for (j in 1..addingEmptyNodes)
-                    familyTreePic.addFamilyStorageReplaceIndex(i, 0, null, null)
-        }*/
-
+        familyTreePic.findPersonLayer(focusedPerson!!)
         focusedList.forEach {
-            addedNodes.add(it.idCard.toInt())
+            addedNodes.add(it.idCard)
         }
     }
 
@@ -241,7 +208,7 @@ class FamilyTree(_family: Family) {
         var parent = parents[0]
         family.bloodFamily?.forEach { bloodId ->
             parents.forEach { person ->
-                if (bloodId == person.idCard.toInt()) {
+                if (bloodId == person.idCard) {
                     parent = person
                 }
             }

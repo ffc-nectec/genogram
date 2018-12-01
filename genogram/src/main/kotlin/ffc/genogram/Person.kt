@@ -22,20 +22,32 @@ import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Person(
-        var idCard: Int,
-        var firstname: String,
-        var lastname: String,
-        var gender: GenderLabel = GenderLabel.MALE,
-        var father: Int?,
-        var mother: Int?,
-        var twin: List<Int>?,
-        var exHusband: List<Int>?,
-        var exWife: List<Int>?,
-        var husband: List<Int>?,
-        var wife: List<Int>?,
-        var children: List<Int>?,
-        var linkedStack: List<Int>?
+    var idCard: Int,
+    var firstname: String,
+    var lastname: String,
+    var gender: GenderLabel = GenderLabel.MALE,
+    var father: Int? = null,
+    var mother: Int? = null,
+    var twin: List<Int>? = null,
+    var exHusband: List<Int>? = null,
+    var exWife: List<Int>? = null,
+    var husband: List<Int>? = null,
+    var wife: List<Int>? = null,
+    var children: List<Int>? = null
 ) {
+    var linkedStack: List<Int>? = null
+
+    init {
+        val stack = mutableListOf<Int>()
+        father?.let { stack.add(it) }
+        mother?.let { stack.add(it) }
+        val links = listOf(twin, exHusband, exWife, husband, wife, children)
+        links.forEach { link ->
+            link?.let { stack.addAll(it) }
+        }
+        linkedStack = if (stack.isEmpty()) null else stack
+    }
+
     var properties: Any? = null
     var nodeMargin = 0
 
@@ -112,13 +124,11 @@ class Person(
 
     // Return a person and remove the person out of the stack
     fun popLinkedStack(familyMembers: List<Person>?): Person? {
-
         var person: Person? = null
-
         if (linkedStack != null) {
             val relatedPersonId = linkedStack!![0]
             familyMembers!!.find {
-                it.idCard.toInt() == relatedPersonId
+                it.idCard == relatedPersonId
             }?.let {
                 person = it
             }
@@ -131,20 +141,19 @@ class Person(
         return person
     }
 
-    // Return children whose has the same parents
-    // and remove children's id out of the parents' link stack
+    // Return children whose has the same parents and remove children's id out of the parents' link stack
     fun popChildren(childrenIdList: MutableList<Int>, person2: Person?, familyMembers: List<Person>?)
             : ArrayList<Person> {
 
         val childrenList: ArrayList<Person> = arrayListOf()
 
         familyMembers!!.forEach { child ->
-            childrenIdList.find { it == child.idCard.toInt() }?.let {
+            childrenIdList.find { it == child.idCard }?.let {
                 val tmp = child.linkedStack as MutableList<Int>
                 // remove the child father/mother
-                tmp.remove(idCard.toInt())
+                tmp.remove(idCard)
                 if (person2 != null)
-                    tmp.remove(person2.idCard.toInt())
+                    tmp.remove(person2.idCard)
 
                 child.linkedStack = cleanUpEmptyStack(tmp)
                 childrenList.add(child)

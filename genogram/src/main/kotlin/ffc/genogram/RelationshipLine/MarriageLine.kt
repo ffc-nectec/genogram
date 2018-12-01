@@ -6,11 +6,10 @@ class MarriageLine : Line() {
 
     var spousesStorage: ArrayList<List<Person>> = arrayListOf()
     var lineMarkPos = listOf<Double>()
-    var spousesNumb = 1
     var imageLength: Double = 0.0
 
     fun addSpouse(p1: Person, p2: Person) {
-        var spouseList = listOf(p1, p2)
+        val spouseList = listOf(p1, p2)
         spousesStorage.add(spouseList)
     }
 
@@ -18,7 +17,7 @@ class MarriageLine : Line() {
         return spousesStorage
     }
 
-    fun setLineMarkPos(startingMarkPos: Double, endingMarkPos: Double) {
+    private fun setLineMarkPos(startingMarkPos: Double, endingMarkPos: Double) {
         // Marriage line form is " |_________| "
         // Mark means "|"
         // startingMarkPos and startingMarkPos starts at position 1.
@@ -33,21 +32,21 @@ class MarriageLine : Line() {
         return lineMarkPos[lineMarkPos.size - 1]
     }
 
-    fun setStartingMarkPos(v: Double) {
+    private fun setStartingMarkPos(v: Double) {
         val tmp: MutableList<Double> = lineMarkPos as MutableList<Double>
         tmp[0] = v
         lineMarkPos = tmp
     }
 
-    fun setEndingMarkPos(v: Double) {
+    private fun setEndingMarkPos(v: Double) {
         val tmp: MutableList<Double> = lineMarkPos as MutableList<Double>
         tmp[tmp.size - 1] = v
         lineMarkPos = tmp
     }
 
     fun drawLine() {
-        var startingMarkPos = (Relationship.spaceLine + 1)
-        var endingMarkPos = startingMarkPos + Relationship.distanceLine
+        val startingMarkPos = (Relationship.spaceLine + 1)
+        val endingMarkPos = startingMarkPos + Relationship.distanceLine
         imageLength = ((Relationship.spaceLine * 2) + 1) + Relationship.distanceLine
         setLineMarkPos(startingMarkPos, endingMarkPos)
     }

@@ -36,9 +36,9 @@ class ChildrenLineManager(
         // Add the children line
         val childrenLine = ChildrenLine()
         childrenLine.childrenList = childrenList as ArrayList<Person>
-        var parent1 = childrenList[0].father
-        var parent2 = childrenList[0].mother
-        var parentList = arrayListOf<Person>()
+        val parent1 = childrenList[0].father
+        val parent2 = childrenList[0].mother
+        val parentList = arrayListOf<Person>()
 
         if (parent1 != null)
             parentList.add(family.findPerson(parent1)!!)
@@ -50,17 +50,15 @@ class ChildrenLineManager(
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         val addingLayer = parentLayer + 2
 
-        var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
+        val parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val generationSize = familyTreeDrawer.findStorageSize()
-        var childrenLineNumb = 0
-        var childrenNumber = childrenList.size
+        val childrenNumber = childrenList.size
         childrenLine.drawLine(childrenNumber, parentList, childrenList)
 
         if (addingLayer >= generationSize) {
             familyTreeDrawer.addFamilyNewLayer(createLineDistance(), childrenLine)
             familyTreeDrawer.addEmptyNewLayer()
         } else {
-            childrenLineNumb = familyTreeDrawer.findLineNumber(addingLayer)
             familyTreeDrawer.addFamilyAtLayer(
                 addingLayer,
                 createLineDistance(),
@@ -69,16 +67,10 @@ class ChildrenLineManager(
         }
 
         // Find the indexSize of the children line before compare to the person node size
-        val childrenLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer + 1)
         val addingLineInd = familyTreeDrawer.findPersonLayerSize(addingLayer)
         val childrenLineInd = addingLineInd - 1
-        // var addingInd = parentInd - childrenLineNumb
-
-        // Check
-        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize2(addingLayer, 0, addingLineInd - 2)
+        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(addingLayer, 0, addingLineInd - 2)
         val addingMore = parentInd - childrenLineIndSize
-        var expectingPos = addingLineInd + addingMore
-
         if (childrenNumber <= 3)
             for (i in 0 until addingMore) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(

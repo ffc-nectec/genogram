@@ -159,7 +159,7 @@ class MarriageLineManager(
     private fun singleChildMarriageLine(side: RelationshipLabel): String {
         val line = createLineDistance()
         val addMore = (lengthLine / 2).toInt()
-        var tmp = StringBuilder()
+        val tmp = StringBuilder()
 
         if (side == RelationshipLabel.LEFT_HAND) {
             for (i in 0 until (line.length - indent.toInt() - 1)) {

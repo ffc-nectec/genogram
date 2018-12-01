@@ -246,32 +246,7 @@ class FamilyTreeDrawer {
         return count
     }
 
-    fun findChildrenLineIndSize(childrenLineLayer: Int): Int {
-//        , ind1: Int, ind2: Int): Int {
-        var singleChildNumb = 0
-        var childrenNumb = 0
-
-        if (findPersonStorageSize() - 1 >= childrenLineLayer) {
-            val childrenLineStorage = personFamilyStorage[childrenLineLayer]
-            childrenLineStorage.forEachIndexed { index, any ->
-                //                if (index in ind1..ind2)
-                if (any is ChildrenLine) {
-                    when (any.childrenNumb) {
-                        1 -> {
-                            singleChildNumb++
-                        }
-                        else -> {
-                            childrenNumb++
-                        }
-                    }
-                }
-            }
-        }
-
-        return (singleChildNumb * 2) + childrenNumb
-    }
-
-    fun findChildrenLineIndSize2(childrenLineLayer: Int, ind1: Int, ind2: Int): Int {
+    fun findChildrenLineIndSize(childrenLineLayer: Int, ind1: Int, ind2: Int): Int {
         var singleChildNumb = 0
         var childrenNumb = 0
         var emptyNodeNumb = 0

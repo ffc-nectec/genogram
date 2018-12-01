@@ -20,57 +20,37 @@ package ffc.genogram
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
-    var familyId: Int,
+    var familyId: Long,
     var familyName: String,
-    var bloodFamily: List<Int>?,
-    var members: List<Person>?
+    var members: List<Person>
 ) {
+    var bloodFamily: MutableList<Int>?
 
-    fun copy(
-        familyId: Int = this.familyId,
-        familyName: String = this.familyName,
-        bloodFamily: List<Int>? = this.bloodFamily,
-        members: List<Person>? = this.members) = Family(familyId, familyName, bloodFamily, members)
+    init {
+        require(members.isNotEmpty()) { "member should not empty" }
+        bloodFamily = mutableListOf(members[0].idCard)
+        bloodFamily!!.addDescendentOf(members[0])
+    }
+
+    private fun MutableList<Int>.addDescendentOf(head: Person) {
+        head.children?.let { addAll(it) }
+        head.children?.forEach { addDescendentOf(findPerson(it)!!) }
+    }
 
     // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {
-
         var person: Person? = null
-
-        if (bloodFamily != null) {
-            val personId = bloodFamily!![0]
-            members!!.forEach {
-                if (it.idCard.toInt() == personId)
-                    person = it
-            }
-
+        bloodFamily?.let { bloodFamily ->
+            person = members.firstOrNull { it.idCard == bloodFamily[0] }
             // delete that person from the bloodFamily stack
-            val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
+            val tmp = bloodFamily
             tmp.removeAt(0)
-            bloodFamily = cleanUpEmptyStack(tmp)
+            this.bloodFamily = cleanUpEmptyStack(tmp)
         }
-
         return person
     }
 
     fun findPerson(id: Int): Person? {
-        members!!.forEach { person ->
-            if (person.idCard == id)
-                return person
-        }
-
-        return null
-    }
-
-    fun findPersonList(idList: List<Int>): ArrayList<Person> {
-        var childrenList: ArrayList<Person> = arrayListOf()
-
-        idList.forEach {
-            val childId = findPerson(it)
-            if (childId != null)
-                childrenList.add(childId)
-        }
-
-        return childrenList
+        return members.firstOrNull { it.idCard == id }
     }
 }
