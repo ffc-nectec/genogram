@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -23,10 +23,10 @@ import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class Drawer2ndGen2ChildrenTest {
+class Drawer2NdGenFamilyTree2ChildrenTest {
 
     /************************************************************************************
-     **  2 Children
+     **  FamilyTree2 Children
      *************************************************************************************/
     @Test
     fun draw2Children() {
@@ -98,7 +98,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [    |_________|   ]
-            [    ,----^--------------,    ]
+            [    ,----^--------------,   ]
             [[Teddy ], ( Cara ), [  Ed  ]]
             [    |_________|   ]
         """.trimIndent()
@@ -130,7 +130,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
             [        ,     |_________|   ]
-            [    ,--------------^----,    ]
+            [    ,--------------^----,   ]
             [[Teddy ], (Kitty ), [  Ed  ], ( Cara )]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()
@@ -146,7 +146,7 @@ class Drawer2ndGen2ChildrenTest {
         canvas.toString().trimIndent() `should equal` """
             [[Grandf], (Grandm)]
             [    |_________|   ]
-            [    ,----^--------------,    ]
+            [    ,----^--------------,   ]
             [[  Ed  ], ( Mary ), ( Lisa )]
             [    |_________|   ]
         """.trimIndent()
@@ -176,9 +176,9 @@ class Drawer2ndGen2ChildrenTest {
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
-            [        , [Grandf], (Grandm)]
-            [        ,     |_________|   ]
-            [    ,--------------^----,    ]
+            [[Grandf], (Grandm)]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
             [[  Ed  ], ( Mary ), ( Lisa ), [ Bill ]]
             [    |_________|   ,     |_________|   ]
         """.trimIndent()

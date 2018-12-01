@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -20,39 +20,57 @@ package ffc.genogram
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
-        var familyId: Long,
-        var familyName: String,
-        var members: List<Person>,
-        rootPerson: Person = members[0]
+    var familyId: Int,
+    var familyName: String,
+    var bloodFamily: List<Int>?,
+    var members: List<Person>?
 ) {
-    var bloodFamily: MutableList<Int>?
 
-    init {
-        require(members.isNotEmpty()) { "member should not empty" }
-
-        bloodFamily = mutableListOf(rootPerson.idCard)
-        bloodFamily!!.addDescendentOf(rootPerson)
-    }
-
-    private fun MutableList<Int>.addDescendentOf(head: Person) {
-        head.children?.let { addAll(it) }
-        head.children?.forEach { addDescendentOf(findPerson(it)!!) }
-    }
+    fun copy(
+        familyId: Int = this.familyId,
+        familyName: String = this.familyName,
+        bloodFamily: List<Int>? = this.bloodFamily,
+        members: List<Person>? = this.members) = Family(familyId, familyName, bloodFamily, members)
 
     // Return a person who is the first person in the blood family stack at the time.
     fun popBloodFamily(): Person? {
+
         var person: Person? = null
-        bloodFamily?.let { bloodFamily ->
-            person = members.firstOrNull { it.idCard == bloodFamily[0] }
+
+        if (bloodFamily != null) {
+            val personId = bloodFamily!![0]
+            members!!.forEach {
+                if (it.idCard.toInt() == personId)
+                    person = it
+            }
+
             // delete that person from the bloodFamily stack
-            val tmp = bloodFamily
+            val tmp: MutableList<Int> = bloodFamily as MutableList<Int>
             tmp.removeAt(0)
-            this.bloodFamily = cleanUpEmptyStack(tmp)
+            bloodFamily = cleanUpEmptyStack(tmp)
         }
+
         return person
     }
 
     fun findPerson(id: Int): Person? {
-        return members.firstOrNull { it.idCard == id }
+        members!!.forEach { person ->
+            if (person.idCard == id)
+                return person
+        }
+
+        return null
+    }
+
+    fun findPersonList(idList: List<Int>): ArrayList<Person> {
+        var childrenList: ArrayList<Person> = arrayListOf()
+
+        idList.forEach {
+            val childId = findPerson(it)
+            if (childId != null)
+                childrenList.add(childId)
+        }
+
+        return childrenList
     }
 }

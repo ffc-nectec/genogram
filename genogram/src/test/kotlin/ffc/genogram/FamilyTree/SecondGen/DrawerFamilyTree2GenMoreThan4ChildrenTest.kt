@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -23,70 +23,57 @@ import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class Drawer2ndGen1ChildTest {
+class DrawerFamilyTree2GenMoreThan4ChildrenTest {
 
     /************************************************************************************
-     **  1 Child
+     **  More Than 4 Children
      *************************************************************************************/
-    @Test
-    fun draw1Child() {
-        val drawer = FamilyTree(
-            getResourceAs("2ndGen/children/family-1-child-2.json")
-        ).drawGenogram()
-        val canvas = displayObjectResult(drawer)
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|   ]
-            [         |        ]
-            [     [  Ed  ]     ]
-        """.trimIndent()
-    }
 
     @Test
-    fun draw1Child2() {
+    fun drawFiveChildren() {
         val drawer = FamilyTree(
-            getResourceAs("2ndGen/children/family-1-child.json")
+            getResourceAs("2ndGen/children/family-5-children.json")
         ).drawGenogram()
-        val canvas = displayObjectResult(drawer)
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|   ]
-            [         |        ]
-            [     ( Lisa )     ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun draw1Child3() {
-        val drawer = FamilyTree(
-            getResourceAs("2ndGen/spouses/family-1-spouse-2.json")
-        ).drawGenogram()
-        val canvas = displayObjectResult(drawer)
-
-        canvas.toString().trimIndent() `should equal` """
-            [[Grandf], (Grandm)]
-            [    |_________|   ]
-            [         |        ]
-            [     [ Bill ]     , ( Lisa )]
-            [         |______________|   ]
-        """.trimIndent()
-    }
-
-    @Test
-    fun draw1Child4() {
-        val drawer = FamilyTree(
-            getResourceAs("2ndGen/spouses/family-1-spouse-1.json")
-        ).drawGenogram()
+        /*val canvas = StringBuilder().apply {
+            drawer.nameFamilyStorage.forEach { append("$it\n") }
+        }*/
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """
             [        , [Grandf], (Grandm)]
             [        ,     |_________|   ]
-            [        ,          |        ]
-            [[ Bill ],      ( Lisa )     ]
-            [    |_____________|   ]
+            [    ,---------,----^----,---------,---------,   ]
+            [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun drawSixChildren() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-6-children.json")
+        ).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,---------,----^----,---------,---------,   ]
+            [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst], ( May  )]
+        """.trimIndent()
+    }
+
+    @Test
+    fun drawSevenChildren() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/children/family-7-children.json")
+        ).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,---------,----^----,---------,---------,---------,   ]
+            [( Lisa ), [  Ed  ], [Teddy ], ( Anne ), [Chirst], ( Maye ), ( Kaye )]
         """.trimIndent()
     }
 }

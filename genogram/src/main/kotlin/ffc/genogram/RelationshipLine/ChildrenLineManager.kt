@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -48,11 +48,13 @@ class ChildrenLineManager(
         childrenLine.parentList = parentList
 
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
+        val addingLayer = parentLayer + 2
+
         var parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val generationSize = familyTreeDrawer.findStorageSize()
-        val addingLayer = parentLayer + 2
         var childrenLineNumb = 0
-        childrenLine.drawLine(childrenList.size)
+        var childrenNumber = childrenList.size
+        childrenLine.drawLine(childrenNumber, parentList, childrenList)
 
         if (addingLayer >= generationSize) {
             familyTreeDrawer.addFamilyNewLayer(createLineDistance(), childrenLine)
@@ -66,41 +68,24 @@ class ChildrenLineManager(
             )
         }
 
-        val childrenLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer + 1)
-        val childrenLineSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
-        val childrenLineInd = childrenLineSize - 1
-        var addingInd = parentInd - childrenLineNumb
+        // Find the indexSize of the children line before compare to the person node size
+        val childrenLayerSize = familyTreeDrawer.findPersonLayerSize(addingLayer + 1)
+        val addingLineInd = familyTreeDrawer.findPersonLayerSize(addingLayer)
+        val childrenLineInd = addingLineInd - 1
+        // var addingInd = parentInd - childrenLineNumb
 
-        if (childrenLayerSize > childrenLineNumb)
-            addingInd = parentInd - (childrenLayerSize - 1)
+        // Check
+        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize2(addingLayer, 0, addingLineInd - 2)
+        val addingMore = parentInd - childrenLineIndSize
+        var expectingPos = addingLineInd + addingMore
 
-        // The number of empty node(s) should be equal to the parentInd
-        // Add the empty node(s), move the line
-        if (childrenLineSize < addingInd) {
-            for (i in childrenLineInd until addingInd) {
-                if (i == addingInd) {
-                    familyTreeDrawer.addFamilyAtLayer(
-                        addingLayer,
-                        createLineDistance(),
-                        childrenLine
-                    )
-                } else {
-                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer, i, null, null
-                    )
-                }
-            }
-        } else {
-            // When the layer's is enough for moving the new children line
-            // to the "parent"'s index.
-            // Move the children line to "parent"'s index.
-            val addingMore = addingInd - childrenLineSize
-            for (i in 0 until addingMore + 1) {
+        if (childrenNumber <= 3)
+            for (i in 0 until addingMore) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    addingLayer, addingInd - 1, null, null
+                    addingLayer, childrenLineInd, null, null
                 )
             }
-        }
+
         return familyTreeDrawer
     }
 

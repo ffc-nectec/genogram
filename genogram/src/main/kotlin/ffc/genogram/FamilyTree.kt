@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -20,9 +20,8 @@ package ffc.genogram
 import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import kotlin.math.floor
 
-class FamilyTree(var family: Family) {
+class FamilyTree(_family: Family) {
 
     private var familyTreePic: FamilyTreeDrawer = FamilyTreeDrawer()
     private var focusedPerson: Person? = null
@@ -31,22 +30,36 @@ class FamilyTree(var family: Family) {
     private val nodeFactory = NodeFactory()
     private val addedNodes: MutableList<Int> = mutableListOf()
 
+    // TODO: try to clone _family to orgFamily due to "family" and "_family" are pointing
+    // at the same reference, due to the need of using the original family value.
+    var family: Family = _family
+    var orgFamily: Family = _family
+
+    /*var family: Family = Family(_family.familyId, _family.familyName, _family.bloodFamily, _family.members)
+    var orgFamily: Family = _family.copy()
+
+    init {
+        print("family: $family\n")
+        print("orgFamily: $orgFamily\n")
+    }*/
+
     fun drawGenogram(): FamilyTreeDrawer {
 
         focusedPerson = family.popBloodFamily()
-//        print("-1 FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
 
         return if (focusedPerson == null) {
-            print("==== ${family.familyName} Family =====\n")
+            /*print("==== ${family.familyName} Family =====\n")*/
             familyTreePic
         } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) &&
             (family.bloodFamily == null)
         ) {
-            print("==== ${family.familyName} Family | ${focusedPerson!!.firstname} =====\n")
+            /*print("==== ${family.familyName} Family | ${focusedPerson!!.firstname} =====\n")*/
             // here
             familyTreePic
         } else {
             print("LOADING...\n")
+            /*print("this.orgFamily: ${orgFamily.bloodFamily}\n")
+            print("family: ${family.bloodFamily}\n")*/
             if (!isDrawn(focusedPerson))
                 drawNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()
@@ -56,7 +69,8 @@ class FamilyTree(var family: Family) {
             while (personLinkedStack != null) {
                 personLinkedStack = setRelationship(listFocusedPerson, null, null)
             }
-            print("-2 FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")
+
+            /*print("-FamilyTree FamilyObj: ${family.bloodFamily}, focusedPerson: ${focusedPerson!!.firstname}\n")*/
             drawGenogram()
         }
     }
@@ -94,10 +108,10 @@ class FamilyTree(var family: Family) {
                 val relationLabel = findRelationship(list1, relatedPersonList)
 
                 // TODO: Delete
-                print(
+                /*print(
                     "Relationship: ${relatedPerson.firstname} is " +
                             "a $relationLabel of ${focusedPerson!!.firstname} \n"
-                )
+                )*/
 
                 // Draw a relationship line and Node.
                 val line = relationFactory.getLine(
@@ -181,7 +195,7 @@ class FamilyTree(var family: Family) {
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
         val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson, family)
+            .getNode(familyTreePic, focusedPerson, relatedPerson, orgFamily)
         node.drawNode(relationLabel, siblings = false)
         addedNodes.add(relatedPerson.idCard.toInt())
     }
@@ -195,7 +209,7 @@ class FamilyTree(var family: Family) {
         focusedList.forEach {
             // Find the left-hand parent
             var parent = findLeftHandParent(parents, family)
-            val node = nodeFactory.getNode(familyTreePic, parent, it, family)
+            val node = nodeFactory.getNode(familyTreePic, parent, it, orgFamily)
 
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
@@ -203,23 +217,23 @@ class FamilyTree(var family: Family) {
                 node.drawNode(relationLabel, siblings = true)
         }
 
+        // Adjust the parent layer when the more than three children were added.
         // Add indent for the previous layers if the number of children is even number.
-        // The number of empty nodes will be the number of children / 2.
+        // The number of empty nodes will be the number of children / FamilyTree.
         val addingLayer = familyTreePic.findPersonLayer(focusedPerson!!)
-        if (childrenNumber > 3) {
-
-            val addingEmptyNodes: Int = if (childrenNumber % 2 == 0)
+        /*if (addingLayer == 0 && childrenNumber > 3) {
+            val addingEmptyNodes = if (childrenNumber % 2 == 0)
                 childrenNumber / 2 - 1
             else
-                (floor(childrenNumber/ 2.0) - 1).toInt()
+                Math.floorDiv(childrenNumber, 2) - 1
 
             for (i in (addingLayer + 1) downTo 0)
                 for (j in 1..addingEmptyNodes)
                     familyTreePic.addFamilyStorageReplaceIndex(i, 0, null, null)
-        }
+        }*/
 
         focusedList.forEach {
-            addedNodes.add(it.idCard)
+            addedNodes.add(it.idCard.toInt())
         }
     }
 
@@ -227,7 +241,7 @@ class FamilyTree(var family: Family) {
         var parent = parents[0]
         family.bloodFamily?.forEach { bloodId ->
             parents.forEach { person ->
-                if (bloodId == person.idCard) {
+                if (bloodId == person.idCard.toInt()) {
                     parent = person
                 }
             }

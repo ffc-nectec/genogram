@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -38,6 +38,7 @@ class MarriageLineManager(
 
         val marriageLine = MarriageLine()
         marriageLine.drawLine()
+
         // Add the focusedPerson's spouses
         if (focusedPerson.gender == GenderLabel.MALE) {
             focusedPerson.wife?.forEach {
@@ -167,7 +168,6 @@ class MarriageLineManager(
             for (i in 0 until addMore - 1) {
                 tmp.append(sign)
             }
-
         } else {
             for (i in 0 until addMore - 1) {
                 tmp.append(space)

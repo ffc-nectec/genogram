@@ -2,7 +2,7 @@
  * Copyright 2018 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version FamilyTree2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -87,14 +87,14 @@ fun displayEmptyNode(it: EmptyNode, elementSize: Int, index: Int): String {
 
     val result = it.drawEmptyNode()
 
-    if (index == 0) {
-        return result
+    return if (index == 0) {
+        result
     } else if (index in 1..(elementSize - 1) || elementSize == 1)
-        return "$marginLeft$result"
-//        return result.toString()
-//        return "$result - ${it.getSpouseList()}"
+        "$marginLeft$result"
+//        result.toString()
+//        "$result - ${it.getSpouseList()}"
     else
-        return "$result$marginLeft"
+        "$result$marginLeft"
 //        return  "$result$marginLeft - ${it.getSpouseList()}"
 }
 
@@ -114,14 +114,14 @@ fun displayMarriageLine(it: MarriageLine, elementSize: Int, index: Int): String 
             result.append(" ")
     }
 
-    if (index == 0) {
-        return result.toString()
+    return if (index == 0) {
+        result.toString()
     } else if (index in 1..(elementSize - 1) || elementSize == 1)
-        return "$marginLeft$result"
-//        return result.toString()
-//        return "$result - ${it.getSpouseList()}"
+        "$marginLeft$result"
+//        result.toString()
+//        "$result - ${it.getSpouseList()}"
     else
-        return "$result$marginLeft"
+        "$result$marginLeft"
 //        return  "$result$marginLeft - ${it.getSpouseList()}"
 }
 
@@ -130,6 +130,7 @@ fun displayChildrenLine(it: ChildrenLine, elementSize: Int, index: Int): String 
 
     if (it.childrenNumb == 1) {
         for (i in 0 until it.imageLength.toInt()) {
+//            print("test: ${it.getLineMarkPos(1)}")
             if (i == it.getLineMarkPos(1))
                 result.append('|')
             else
@@ -150,19 +151,20 @@ fun displayChildrenLine(it: ChildrenLine, elementSize: Int, index: Int): String 
             result.setCharAt(it, ',')
         }
 
+        // Here
         result.setCharAt(it.centerMarkPos, '^')
     }
 
 //    return result.toString()
 //    return "$result - ${it.getParentList()}"
-    if (index == 0) {
-        return result.toString()
+    return if (index == 0) {
+        result.toString()
     } else if (index in 1..(elementSize - 1) || elementSize == 1)
-        return "$marginLeft$result"
-//        return result.toString()
-//        return "$result - ${it.getSpouseList()}"
+        "$marginLeft$result"
+//        result.toString()
+//        "$result - ${it.getSpouseList()}"
     else
-        return "$result$marginLeft"
+        "$result$marginLeft"
 }
 
 
