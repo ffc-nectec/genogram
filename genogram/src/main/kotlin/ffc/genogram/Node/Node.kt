@@ -224,7 +224,7 @@ abstract class Node {
             val marriageLineNumb = familyTreeDrawer.findLineNumber(marriageLineLayer) - 1
 
             // Find marriageLineInd
-            val anotherParent = findAnotherParent(addedPerson, focusedPerson, family)
+            val anotherParent = addedPerson.findAnotherParent(focusedPerson, family)
             val marriageLine = familyTreeDrawer.findMarriageLine(
                 marriageLineLayer, focusedPerson, anotherParent
             )
@@ -586,7 +586,7 @@ abstract class Node {
         var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, targetLayer, focusedPerson)
         val anotherParent: Person?
         if (targetParentInd == null) {
-            anotherParent = findAnotherParent(addedPerson, focusedPerson, family)
+            anotherParent = addedPerson.findAnotherParent(focusedPerson, family)
             if (anotherParent != null)
                 targetParentInd = getGrandParentInd(familyTreeDrawer, targetLayer, anotherParent)
         }
@@ -812,12 +812,12 @@ abstract class Node {
         parentLayer: Int,
         family: Family
     ) {
-
         val childrenLineLayer = addingLayer - 1
         // Find the target parent
         val targetPerson = findTargetParent(childrenLineLayer, addedPerson, focusedPerson!!, familyTreeDrawer)
         // Find the children line above the parent layer
-        val parentChildrenLine = familyTreeDrawer.findChildrenLine(childrenLineLayer, targetPerson)
+        val parentChildrenLine =
+            familyTreeDrawer.findChildrenLine(childrenLineLayer, targetPerson) as ChildrenLine
 
         // Find that line index for using to move the children line parent
         val childrenLineInd: Int?
@@ -843,6 +843,7 @@ abstract class Node {
                 expectingMoreNode = if (addingPersonSibNumb % 2 == 0) (addingPersonSibNumb / 2) - 1
                 else
                     (floor(addingPersonSibNumb / 2.0) - 1).toInt()
+
 
             // Adjust the grandparent position
             val expectingPos = childrenLineInd!! + expectingMoreNode
@@ -884,23 +885,5 @@ abstract class Node {
                 )
             }
         }
-    }
-
-    private fun findAnotherParent(child: Person, focusingParent: Person, family: Family): Person? {
-        val childFather = child.father
-        val childMother = child.mother
-        var anotherParent: Person? = null
-
-        if (childFather != null && childFather == focusingParent.idCard) {
-            if (childMother != null) {
-                anotherParent = family.findPerson(childMother)
-            }
-        } else if (childMother != null && childMother == focusingParent.idCard) {
-            if (childFather != null) {
-                anotherParent = family.findPerson(childFather)
-            }
-        }
-
-        return anotherParent
     }
 }

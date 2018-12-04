@@ -167,4 +167,18 @@ class Person(
         if (!siblings)
             nodeMargin = ((Relationship.spaceLine + Relationship.distanceLine) / 2).toInt() - 1
     }
+
+    fun findAnotherParent(focusingParent: Person, family: Family): Person? {
+        if (father != null && father == focusingParent.idCard) {
+            if (mother != null) {
+                return family.findPerson(mother!!)
+            }
+        } else if (mother != null && mother == focusingParent.idCard) {
+            if (father != null) {
+                return family.findPerson(father!!)
+            }
+        }
+
+        return null
+    }
 }
