@@ -48,28 +48,39 @@ class FemaleNode(
                 val childrenLineLayer = childrenLayer - 1
 
                 // Find whether the focusedPerson has any siblings.
-                val hasRightHandSib = familyTreeDrawer.hasPeopleOnTheRight(
+                val hasRightHandPeople = familyTreeDrawer.hasPeopleOnTheRight(
                     focusedPerson!!,
                     addingLayer
                 )
 
-                if (hasRightHandSib) {
+                if (hasRightHandPeople) {
                     // FocusedPerson(addedPerson's husband) has older siblings
                     // Reorder the array's position
                     val addingInd = familyTreeDrawer.findPersonInd(
                         focusedPerson!!, addingLayer
                     )
-                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer, addingInd, nodeName, addedPerson
-                    )
+
+                    // If the addingInd is the empty node, it'll use replaceFamilyStorageLayer()
+                    val isEmptyNode =
+                        familyTreeDrawer.getPersonLayerInd(addingLayer, addingInd + 1) is EmptyNode
+
+                    if (isEmptyNode) {
+                        familyTreeDrawer.replaceFamilyStorageLayer(
+                            addingLayer, addingInd + 1, nodeName, addedPerson
+                        )
+                    } else {
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            addingLayer, addingInd, nodeName, addedPerson
+                        )
+                    }
 
                     if (parent != null) {
                         // AddedPerson has no parents, focus only on draw "MarriageLineManager"
                         // Find AddedPerson's parent index
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
+
                         // Find index of AddedPerson's siblings
-                        var childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
-                        val childrenListId = parent!!.children!!
+                        val childrenListId = parent!!.children!! as MutableList<Int>
                         var childrenListInd: MutableList<Int> = mutableListOf()
                         childrenListId.forEach { id ->
                             childrenListInd.add(
@@ -78,90 +89,44 @@ class FemaleNode(
                                 )
                             )
                         }
-                        val cInd = childrenListInd.distinct() as MutableList<Int>
-                        childrenListInd = cInd
+                        childrenListInd = childrenListInd.distinct() as MutableList<Int>
+                        // var childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+
+                        var childrenNumber = if (childrenListId.size == 1) 1
+                        else
+                            childrenListInd[childrenListInd.size - 1] - childrenListInd[0] + 1
 
                         // Extend the MarriageLineManager of AddedPerson's parent.
                         if (childrenNumber > 3) {
                             movingParentPosition(
                                 familyTreeDrawer,
-                                addedPerson, focusedPerson!!, parent!!, addingLayer, parentLayer, family
+                                addedPerson,
+                                focusedPerson!!,
+                                parent!!,
+                                addingLayer,
+                                parentLayer,
+                                family
                             )
                         }
 
-                        // TODO: Refactor with "Node.kt"
-                        // The same "Node.kt"
-                        val startInd = childrenListInd[0]
-                        if (startInd != 0) {
-                            childrenNumber -= 1
-                        }
+                        // Extend the children line
+                        if (childrenNumber > 2) {
+                            var childrenLine = ChildrenLine()
+                            val previousChildrenLine = familyTreeDrawer.findChildrenLine(
+                                childrenLineLayer, focusedPerson!!
+                            )
 
-                        // Find the focusedPerson's parent
-                        val fpParentListInd: MutableList<Int> = mutableListOf()
-                        val fpFatherId = focusedPerson?.father
-                        val fpMotherId = focusedPerson?.mother
-                        var anotherParent: Person? = null
-
-                        if (fpFatherId != null) {
-                            val fpFatherInd = familyTreeDrawer.findPersonIndById(fpFatherId, parentLayer)
-                            fpParentListInd.add(fpFatherInd)
-                        }
-                        if (fpMotherId != null) {
-                            val fpMotherInd = familyTreeDrawer.findPersonIndById(fpMotherId, parentLayer)
-                            fpParentListInd.add(fpMotherInd)
-                        }
-
-                        if (parent != null) {
-                            if (fpFatherId == parent!!.idCard) {
-                                if (fpMotherId != null)
-                                    anotherParent = familyTreeDrawer.getPersonById(fpMotherId, parentLayer)
-                            } else if (fpMotherId == parent!!.idCard) {
-                                if (fpFatherId != null)
-                                    anotherParent = familyTreeDrawer.getPersonById(fpFatherId, parentLayer)
+                            if (previousChildrenLine != null) {
+                                childrenLine = previousChildrenLine
                             }
+                            childrenLine.extendLine(
+                                familyTreeDrawer,
+                                addingLayer - 1,
+                                childrenListInd
+                            )
                         }
-
-                        val focusedPersonParent: MutableList<Person> = mutableListOf()
-                        focusedPersonParent.add(parent!!)
-                        if (anotherParent != null) {
-                            focusedPersonParent.add(anotherParent)
-                        }
-
-                        // Find children that focusedPerson and anotherParent has together
-                        val focusedPersonChildren = focusedPerson!!.children as MutableList<Int>?
-                        val addedPersonValues =
-                            findPersonSibListIdInd(parent, anotherParent, focusedPersonChildren)
-                        val addedPersonSibListId: MutableList<Int> = addedPersonValues[0] as MutableList<Int>
-                        val addedPersonParent: MutableList<Person> = addedPersonValues[1] as MutableList<Person>
-
-                        // Object Visualization
-                        // find the children line that has "addedPerson"'s husband
-                        var childrenLine = ChildrenLine()
-                        val previousChildrenLine = familyTreeDrawer.findChildrenLine(
-                            childrenLineLayer, focusedPerson!!
-                        )
-
-                        if (previousChildrenLine != null) {
-                            childrenLine = previousChildrenLine
-                        } else {
-                            // Create a new children line
-                            // Draw a new childrenLine with new parentList, new childrenList, and etc.
-                            val addedPersonSibList: MutableList<Person> = mutableListOf()
-
-                            addedPersonSibListId.forEach {
-                                val child = family.findPerson(it)
-                                addedPersonSibList.add(child!!)
-                            }
-                            childrenLine.drawLine(addedPersonSibListId.size, addedPersonParent, addedPersonSibList)
-                        }
-
-                        childrenLine.extendLine(
-                            familyTreeDrawer,
-                            addingLayer - 1,
-                            childrenListInd
-                        )
                     }
-                } else if (!hasRightHandSib) {
+                } else if (!hasRightHandPeople) {
                     // When AddedPerson's husband is the youngest children.
                     // Add AddedPerson at the end of the layer.
                     // No reorder the array's position, only extend the line.
