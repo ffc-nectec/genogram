@@ -84,7 +84,7 @@ abstract class Node {
     }
 
     fun addMiddleChild(
-        focusedPerson: Person,
+        parent: Person,
         nodeName: String,
         gender: GenderLabel,
         addedPerson: Person,
@@ -94,12 +94,11 @@ abstract class Node {
     ) {
         // Children or Twin
         val addingLayer = familyTreeDrawer.findStorageSize() - 1
-        val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
+        val parentLayer = familyTreeDrawer.findPersonLayer(parent)
 
         // Set Person node's indent
         addedPerson.setNodeMargin(siblings)
 
-        // Test Here
         // Edit the addingIndex
         val childrenLineLayer = addingLayer - 1
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
@@ -111,6 +110,27 @@ abstract class Node {
                     if (list.idCard == addedPerson.idCard) {
                         childrenLine = childrenLineStorage[index] as ChildrenLine
                     }
+                }
+            }
+        }
+        val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine!!, childrenLineLayer)
+
+        // For the 4th Generation, when addingPerson's parent is the only child
+        val parentSib = parent.findSiblingByParent(family)
+        val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
+
+        if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+            childrenLineInd?.let {
+                if (childrenLineInd > addingLayerSize + 1) {
+                    val addMore = Math.abs(childrenLineInd!! - addingLayerSize)
+                    for (i in addingLayerSize until addMore)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            addingLayer, i, null, null
+                        )
+                } else {
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, it - 1, null, null
+                    )
                 }
             }
         }
@@ -141,7 +161,7 @@ abstract class Node {
         val addingPersonSibNumb = (lastChildInd - firstChildInd) + 1
 
         // Adjust the grandparent position
-        val leftParentInd = familyTreeDrawer.findPersonInd(focusedPerson, parentLayer)
+        val leftParentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val addingPersonInd = familyTreeDrawer.findPersonInd(addedPerson, addingLayer)
         val addingMore = leftParentInd - childrenLineIndSize
         var expectingPos = addingPersonInd + addingMore
@@ -395,14 +415,12 @@ abstract class Node {
         }
     }
 
-    fun getLineType(
+    fun moveChildrenLine(
         familyTreeDrawer: FamilyTreeDrawer,
         childrenLineLayer: Int,
         addingEmptyNodes: Int,
-        extraNode: Int,
-        childrenListId: List<Int>,
         focusedPerson: Person
-    ): Any? {
+    ) {
         val emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
         var line: Any? = null
         if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
@@ -428,35 +446,6 @@ abstract class Node {
                 childrenLineLayer
             )
         }
-
-        return line
-    }
-
-    private fun getGrandParentInd(
-        familyTreeDrawer: FamilyTreeDrawer,
-        grandParentLayer: Int,
-        focusedPerson: Person
-    ): Int? {
-        val grandFatherId = focusedPerson.father
-        val grandMotherId = focusedPerson.mother
-        var grandFatherInd: Int? = null
-        var grandMotherInd: Int? = null
-        var targetParentInd: Int? = null
-
-        if (grandFatherId != null)
-            grandFatherInd = familyTreeDrawer.findPersonIndById(grandFatherId, grandParentLayer)
-
-        if (grandMotherId != null)
-            grandMotherInd = familyTreeDrawer.findPersonIndById(grandMotherId, grandParentLayer)
-
-        if (grandFatherInd != null && grandMotherInd != null)
-            targetParentInd = Math.min(grandFatherInd, grandMotherInd)
-        else if (grandFatherInd != null)
-            targetParentInd = grandFatherInd
-        else if (grandMotherInd != null)
-            targetParentInd = grandMotherInd
-
-        return targetParentInd
     }
 
     fun findPersonSibListIdInd(
@@ -510,7 +499,7 @@ abstract class Node {
             else -> parentLayer
         }
 
-        var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, parentLayer1, parent)
+        var targetParentInd: Int? = familyTreeDrawer.getGrandParentInd(parentLayer1, parent)
 
         if (targetParentInd == null && parentLayer1 > 0) {
             val addPersonFather = addedPerson.father
@@ -524,7 +513,7 @@ abstract class Node {
 
             // targetParent = new FocusedPerson
             val targetPerson = familyTreeDrawer.getPersonById(targetParentId!!, parentLayer)
-            targetParentInd = getGrandParentInd(familyTreeDrawer, parentLayer1, targetPerson!!)
+            targetParentInd = familyTreeDrawer.getGrandParentInd(parentLayer1, targetPerson!!)
         } else if (targetParentInd == null && parentLayer1 == 0) {
             // Use in "FemaleNode"
             targetParentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
@@ -583,12 +572,12 @@ abstract class Node {
             else -> parentLayer - 3
         }
 
-        var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, targetLayer, focusedPerson)
+        var targetParentInd: Int? = familyTreeDrawer.getGrandParentInd(targetLayer, focusedPerson)
         val anotherParent: Person?
         if (targetParentInd == null) {
             anotherParent = addedPerson.findAnotherParent(focusedPerson, family)
             if (anotherParent != null)
-                targetParentInd = getGrandParentInd(familyTreeDrawer, targetLayer, anotherParent)
+                targetParentInd = familyTreeDrawer.getGrandParentInd(targetLayer, anotherParent)
         }
 
         targetParent = if (targetParentInd == null) {
@@ -843,7 +832,6 @@ abstract class Node {
                 expectingMoreNode = if (addingPersonSibNumb % 2 == 0) (addingPersonSibNumb / 2) - 1
                 else
                     (floor(addingPersonSibNumb / 2.0) - 1).toInt()
-
 
             // Adjust the grandparent position
             val expectingPos = childrenLineInd!! + expectingMoreNode

@@ -21,7 +21,7 @@ import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
 
-class FamilyTree(_family: Family) {
+class FamilyTree(var family: Family) {
 
     private var familyTreePic: FamilyTreeDrawer = FamilyTreeDrawer()
     private var focusedPerson: Person? = null
@@ -29,11 +29,13 @@ class FamilyTree(_family: Family) {
     private val relationFactory = RelationshipFactory()
     private val nodeFactory = NodeFactory()
     private val addedNodes: MutableList<Int> = mutableListOf()
+    var keepBloodFamily: MutableList<Int>
 
-    // TODO: try to clone _family to orgFamily due to "family" and "_family" are pointing
-    // at the same reference, due to the need of using the original family value.
-    var family: Family = _family
-    var orgFamily: Family = _family
+    init {
+        var rootPerson = family.members[0]
+        keepBloodFamily = mutableListOf(rootPerson.idCard)
+        rootPerson.children?.let { keepBloodFamily?.addAll(rootPerson.children!!)}
+    }
 
     fun drawGenogram(): FamilyTreeDrawer {
 
@@ -75,6 +77,7 @@ class FamilyTree(_family: Family) {
             val line = relationFactory.getLine(
                 childrenList,
                 parent,
+                keepBloodFamily,
                 family,
                 familyTreePic
             )
@@ -173,7 +176,7 @@ class FamilyTree(_family: Family) {
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
         val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson, orgFamily)
+            .getNode(familyTreePic, focusedPerson, relatedPerson, family)
         node.drawNode(relationLabel, siblings = false)
         addedNodes.add(relatedPerson.idCard)
     }
@@ -187,7 +190,7 @@ class FamilyTree(_family: Family) {
         focusedList.forEach {
             // Find the left-hand parent
             val parent = findLeftHandParent(parents, family)
-            val node = nodeFactory.getNode(familyTreePic, parent, it, orgFamily)
+            val node = nodeFactory.getNode(familyTreePic, parent, it, family)
 
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)

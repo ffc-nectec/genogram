@@ -63,9 +63,10 @@ class RelationshipFactory {
     fun getLine(
         focusedListPerson: MutableList<Person>,
         parent: Person,
+        keepBloodFamily: MutableList<Int>,
         family: Family,
         familyTreeDrawer: FamilyTreeDrawer
     ): Relationship {
-        return ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
+        return ChildrenLineManager(focusedListPerson, parent, keepBloodFamily, family, familyTreeDrawer)
     }
 }

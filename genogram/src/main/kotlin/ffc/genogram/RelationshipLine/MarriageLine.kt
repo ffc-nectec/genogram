@@ -1,5 +1,6 @@
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Person
 
 class MarriageLine : Line() {
@@ -66,5 +67,9 @@ class MarriageLine : Line() {
             // Delete FamilyTree2 left margin units
             imageLength + (imageLength - Relationship.indent.toInt()) - 2
         }
+    }
+
+    fun extendLeftHandLine() {
+        imageLength += EmptyNode().nodeSize
     }
 }

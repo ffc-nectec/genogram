@@ -147,13 +147,13 @@ class FamilyTreeDrawer {
             0
     }
 
-    fun hasPeopleOnTheRight(focusedPerson: Person, layerNumb: Int): Boolean {
+    fun hasNodeOnTheRight(focusedPerson: Person, layerNumb: Int): Boolean {
         val personInd = findPersonInd(focusedPerson, layerNumb)
 
         return personInd < findStorageLayerSize(layerNumb) - 1
     }
 
-    fun hasPeopleOnTheLeft(focusedPerson: Person, layerNumb: Int): Boolean {
+    fun hasNodeOnTheLeft(focusedPerson: Person, layerNumb: Int): Boolean {
         val personInd = findPersonInd(focusedPerson, layerNumb)
 
         return personInd > 0
@@ -272,6 +272,10 @@ class FamilyTreeDrawer {
 
         return (singleChildNumb * 2) + childrenNumb + emptyNodeNumb
     }
+
+    /*fun findMarriageLineIndSize(marriageLineLayer: Int, parent1: Person, parent2: Person?): Int {
+
+    }*/
 
     fun getLineLayer(layerNumb: Int): String {
         return nameFamilyStorage[layerNumb][0]
@@ -780,5 +784,33 @@ class FamilyTreeDrawer {
         }
 
         return lineInd
+    }
+
+    fun generationNumber(layerNumb: Int) = (layerNumb / 3) + 1
+
+    fun getGrandParentInd(
+        grandParentLayer: Int,
+        focusedPerson: Person
+    ): Int? {
+        val grandFatherId = focusedPerson.father
+        val grandMotherId = focusedPerson.mother
+        var grandFatherInd: Int? = null
+        var grandMotherInd: Int? = null
+        var targetParentInd: Int? = null
+
+        if (grandFatherId != null)
+            grandFatherInd = findPersonIndById(grandFatherId, grandParentLayer)
+
+        if (grandMotherId != null)
+            grandMotherInd = findPersonIndById(grandMotherId, grandParentLayer)
+
+        if (grandFatherInd != null && grandMotherInd != null)
+            targetParentInd = Math.min(grandFatherInd, grandMotherInd)
+        else if (grandFatherInd != null)
+            targetParentInd = grandFatherInd
+        else if (grandMotherInd != null)
+            targetParentInd = grandMotherInd
+
+        return targetParentInd
     }
 }

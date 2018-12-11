@@ -5,7 +5,8 @@
     0,
     1,
     2,
-    3
+    3,
+    4
   ],
   "members": [
     {
@@ -137,16 +138,9 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": null,
-      "wife": [
-        2
-      ],
-      "children": [
-        3
-      ],
-      "linkedStack": [
-        2,
-        3
-      ]
+      "wife": [2],
+      "children": [3],
+      "linkedStack": [2, 3]
     },
     {
       "idCard": 3,
@@ -159,13 +153,42 @@
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
+      "husband": [15],
+      "wife": null,
+      "children": [4],
+      "linkedStack": [14, 2, 15, 4]
+    },
+    {
+      "idCard": 15,
+      "firstname": "Teddy",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [3],
+      "children": [4],
+      "linkedStack": [3, 4]
+    },
+    {
+      "idCard": 4,
+      "firstname": "Jane",
+      "lastname": "Snow",
+      "birthDate": "12-11-2001",
+      "gender": 1,
+      "father": 15,
+      "mother": 3,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
       "husband": null,
       "wife": null,
       "children": null,
-      "linkedStack": [
-        14,
-        2
-      ]
+      "linkedStack": [15, 3]
     }
   ]
 }

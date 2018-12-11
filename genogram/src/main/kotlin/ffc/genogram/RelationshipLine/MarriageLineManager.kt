@@ -20,12 +20,13 @@ package ffc.genogram.RelationshipLine
 import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
+import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Person
 
 class MarriageLineManager(
     private var familyTreeDrawer: FamilyTreeDrawer,
     private var handSide: RelationshipLabel,
-    private var addingLayer: Int,
+    private var personLayer: Int,
     var focusedPerson: Person,
     var family: Family
 ) : Relationship() {
@@ -52,14 +53,14 @@ class MarriageLineManager(
 
         val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
         val childrenNumb = familyTreeDrawer.findPersonLayerSize(childrenLayer)
-        val lineLayer = addingLayer + 1
+        val lineLayer = personLayer + 1
 
         if (handSide == RelationshipLabel.RIGHT_HAND) {
-            if (addingLayer > 0) {
-                if (familyTreeDrawer.findStorageSize() > (addingLayer + 1)) {
+            if (personLayer > 0) {
+                if (familyTreeDrawer.findStorageSize() > (personLayer + 1)) {
                     // Add a marriage line
                     familyTreeDrawer.addFamilyAtLayer(
-                        addingLayer + 1,
+                        personLayer + 1,
                         createLineDistance(),
                         marriageLine
                     )
@@ -68,26 +69,40 @@ class MarriageLineManager(
                     if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
                         addEmptyNode(lineLayer)
                     }
-                } else if (familyTreeDrawer.findStorageSize() == (addingLayer + 1)) {
-                    if (childrenNumb == 1) {
+                } else if (familyTreeDrawer.findStorageSize() == (personLayer + 1)) {
+                    val focusedPersonSib = focusedPerson.findSiblingByParent(family)
+                    if (focusedPersonSib.size == 0) {
                         marriageLine.drawLine()
                         marriageLine.setSingleMarriageLine(handSide)
                         familyTreeDrawer.addFamilyNewLayer(
                             singleChildMarriageLine(handSide),
                             marriageLine
                         )
+
+                        // For the 4th Generation, when addingPerson's parent is the only child
+                        val focusedPersonInd = familyTreeDrawer.findPersonInd(
+                            focusedPerson, personLayer
+                        )
+                        val marriageLineInd = familyTreeDrawer.findLineInd(marriageLine, lineLayer)!!
+
+                        if (focusedPersonInd >= 3 && focusedPersonInd > marriageLineInd) {
+                            for (i in 0 until focusedPersonInd)
+                                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                    lineLayer, marriageLineInd, null, null
+                                )
+                        }
                     } else {
                         // Find the focusedPerson's index
                         familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
                         val personInd = familyTreeDrawer.findPersonIndById(
-                            focusedPerson.idCard, addingLayer
+                            focusedPerson.idCard, personLayer
                         )
                         // When we have only one marriage line.
                         // Relocate the marriage line's position.
                         if (personInd != 0) {
                             for (i in 0 until personInd) {
                                 familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                    addingLayer + 1, 0, null, null
+                                    personLayer + 1, 0, null, null
                                 )
                             }
                         }
@@ -98,12 +113,12 @@ class MarriageLineManager(
             }
         } else {
             // Add line on left hand side
-            if (addingLayer > 0) {
-                if (addingLayer == 0) {
+            if (personLayer > 0) {
+                if (personLayer == 0) {
                     familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
                 } else {
-                    val hasLeftHandSiblings = familyTreeDrawer.hasPeopleOnTheLeft(
-                        focusedPerson, addingLayer
+                    val hasLeftHandSiblings = familyTreeDrawer.hasNodeOnTheLeft(
+                        focusedPerson, personLayer
                     )
 
                     if (!hasLeftHandSiblings) {
@@ -121,9 +136,29 @@ class MarriageLineManager(
                         }
                     } else {
                         // When husband node is added on the right-hand.
+                        val marriageLineLayer = personLayer + 1
+                        // For the 4th Generation, when addingPerson's parent is the only child
+                        val parentSib = focusedPerson.findSiblingByParent(family)
+                        if (familyTreeDrawer.generationNumber(personLayer) >= 3 && parentSib.size == 0) {
+                            val focusedPersonInd = familyTreeDrawer.findPersonInd(
+                                focusedPerson, personLayer
+                            )
+
+                            for (i in 0 until focusedPersonInd - 1)
+                                familyTreeDrawer.addFamilyAtLayer(
+                                    marriageLineLayer,
+                                    createLineDistance(),
+                                    EmptyNode()
+                                )
+
+                            // Create a special marriageLine
+                            marriageLine.setSingleMarriageLine(handSide)
+                            marriageLine.extendLeftHandLine()
+                        }
+
                         // Add a marriage line
                         familyTreeDrawer.addFamilyAtLayer(
-                            addingLayer + 1,
+                            marriageLineLayer,
                             createLineDistance(),
                             marriageLine
                         )
@@ -206,13 +241,13 @@ class MarriageLineManager(
             for (i in lastLineLayerInd until addingInd) {
                 if (i == addingInd) {
                     familyTreeDrawer.addFamilyAtLayer(
-                        addingLayer + 1,
+                        personLayer + 1,
                         createLineDistance(),
                         marriageLine
                     )
                 } else {
                     familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer + 1, i, null, null
+                        personLayer + 1, i, null, null
                     )
                 }
             }
@@ -223,7 +258,7 @@ class MarriageLineManager(
             val addingMore = addingInd - lineLayerSize
             for (i in 0 until addingMore + 1) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    addingLayer + 1, addingInd - 1, null, null
+                    personLayer + 1, addingInd - 1, null, null
                 )
             }
         }

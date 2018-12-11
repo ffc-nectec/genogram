@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
@@ -181,4 +182,42 @@ class Person(
 
         return null
     }
+
+    fun findSiblingByParent(family: Family): MutableList<Person> {
+        val siblingsList = mutableListOf<Person>()
+
+        if (father != null || mother != null)
+            family.members.forEach {
+                if (it != this && father == it.father && mother == it.mother) {
+                    siblingsList.add(it)
+                }
+            }
+
+        return siblingsList
+    }
+
+    fun findSiblingByDrawer(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int)
+            : MutableList<MutableList<out Any>> {
+        var childrenList: MutableList<Person>?
+        var childrenIndList: MutableList<Int> = mutableListOf()
+        val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
+        var childrenLine: ChildrenLine? = null
+        childrenLineStorage.forEachIndexed { index, line ->
+            if (line is ChildrenLine) {
+                childrenList = line.childrenList
+                childrenList!!.forEachIndexed { pos, list ->
+                    if (list.idCard == idCard) {
+                        childrenLine = childrenLineStorage[index] as ChildrenLine
+                        childrenIndList.add(pos)
+                    }
+                }
+            }
+        }
+
+        return mutableListOf(childrenLine!!.childrenList, childrenIndList)
+    }
+
+    /*fun findTargetParent(parent1: Person, parent2: Person): Person {
+
+    }*/
 }

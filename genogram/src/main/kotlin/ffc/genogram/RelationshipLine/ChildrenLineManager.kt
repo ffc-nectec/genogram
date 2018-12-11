@@ -27,13 +27,13 @@ import ffc.genogram.Person
 class ChildrenLineManager(
     var childrenList: MutableList<Person>,
     var parent: Person,
+    var keepBloodFamily: MutableList<Int>,
     var family: Family,
     var familyTreeDrawer: FamilyTreeDrawer
 ) : Relationship() {
 
     override fun drawLine(): FamilyTreeDrawer {
 
-        // Add the children line
         val childrenLine = ChildrenLine()
         childrenLine.childrenList = childrenList as ArrayList<Person>
         val parent1 = childrenList[0].father
@@ -49,7 +49,6 @@ class ChildrenLineManager(
 
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         val addingLayer = parentLayer + 2
-
         val parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val generationSize = familyTreeDrawer.findStorageSize()
         val childrenNumber = childrenList.size
@@ -71,12 +70,46 @@ class ChildrenLineManager(
         val childrenLineInd = addingLineInd - 1
         val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(addingLayer, 0, addingLineInd - 2)
         val addingMore = parentInd - childrenLineIndSize
-        if (childrenNumber <= 3)
+        val anotherParent = childrenList[0].findAnotherParent(parent, family)
+        val anotherParentInd = anotherParent?.let {
+            familyTreeDrawer.findPersonInd(it, parentLayer)
+        }
+        var leftParent: Person = parent
+        if (anotherParentInd != null && anotherParentInd < parentInd)
+            leftParent = anotherParent
+        val bloodParent: Person = anotherParent?.let {
+            if (keepBloodFamily.firstOrNull { it -> it == parent.idCard } == null) {
+                anotherParent
+            } else {
+                parent
+            }
+        }.run {
+            parent
+        }
+
+        val parentSib = leftParent.findSiblingByParent(family)
+        if (childrenNumber <= 3 && bloodParent == leftParent) {
             for (i in 0 until addingMore) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     addingLayer, childrenLineInd, null, null
                 )
             }
+            // For the 4th Generation, when addingPerson's parent is the only child
+            if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                    addingLayer, childrenLineInd, null, null
+                )
+            }
+        } else {
+            // For the 4th Generation, when addingPerson's parent is the only child
+            if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+                val leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
+                for (i in 0 until leftParentInd)
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        addingLayer, childrenLineInd, null, null
+                    )
+            }
+        }
 
         return familyTreeDrawer
     }

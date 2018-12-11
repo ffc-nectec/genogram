@@ -48,7 +48,7 @@ class FemaleNode(
                 val childrenLineLayer = childrenLayer - 1
 
                 // Find whether the focusedPerson has any siblings.
-                val hasRightHandPeople = familyTreeDrawer.hasPeopleOnTheRight(
+                val hasRightHandPeople = familyTreeDrawer.hasNodeOnTheRight(
                     focusedPerson!!,
                     addingLayer
                 )
@@ -135,15 +135,14 @@ class FemaleNode(
                     // Extend "MarriageLineManager" of the FocusedPerson's parents.
                     // Extend by adding the empty node(s).
                     val childrenNumber = familyTreeDrawer.findPersonLayerSize(childrenLayer)
+                    val childrenNumber2 = focusedPerson!!.findSiblingByParent(family).size
+
                     if (parent != null) {
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                         val emptyParentNodeNumber = familyTreeDrawer.findNumberOfEmptyNode(parentLayer)
-                        val emptyNodeNumb = familyTreeDrawer.findNumberOfEmptyNodePerson(addingLayer)
-                        val emptyMidNodeNumb = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
-                        val emptyFrontNodeNumb = emptyNodeNumb - emptyMidNodeNumb
                         val addingEmptyNodes = findAddingEmptyNodesParent(childrenNumber)
 
-                        if (addingEmptyNodes != emptyFrontNodeNumb)
+                        if (childrenNumber2 > 3)
                             familyTreeDrawer = addMoreNodes(
                                 emptyParentNodeNumber, addingEmptyNodes, parentLayer, familyTreeDrawer
                             )
@@ -159,42 +158,15 @@ class FemaleNode(
                             )
                         }
 
+                        // TODO: Delete
                         // Extend the CHILDREN Line the top layer of the AddedPerson.
                         // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
-                        var startInd = childrenListInd[0]
-                        val parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
-                        startInd = if ((startInd != 0) && (parentInd > startInd)) {
-                            parentInd - startInd
-                        } else {
-                            parentLayer
-                        }
-
                         // Move children sign
-                        val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
-                        val childrenLineMidEmptyNode =
-                            familyTreeDrawer.findNumberOfMidEmptyNodePerson(childrenLineLayer)
-                        if (childrenLineMidEmptyNode > 0)
-                            startInd += midEmptyNode
-                        else
-                            startInd -= midEmptyNode
-
-                        if (startInd < 0)
-                            startInd = 0
-
-                        val extraNode = familyTreeDrawer.findNumberOfEmptyNode(addingLayer)
-
-                        // Object Visualization
-                        val line: Any? = getLineType(
+                        moveChildrenLine(
                             familyTreeDrawer,
                             childrenLineLayer,
                             addingEmptyNodes,
-                            extraNode,
-                            childrenListId,
                             focusedPerson!!
-                        )
-
-                        familyTreeDrawer.replaceFamilyStorageLayer(
-                            childrenLineLayer, startInd, null, line
                         )
                     }
                 }
@@ -203,7 +175,7 @@ class FemaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Lisa") {
+            /*if (addedPerson.firstname == "Jane") {
                 print("------ Started ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -220,7 +192,7 @@ class FemaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "Lisa") {
+            /*if (addedPerson.firstname == "Jane") {
                 print("------ After SeparateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -233,7 +205,7 @@ class FemaleNode(
             separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd, family)
 
             // Check
-            /*if (addedPerson.firstname == "Lisa") {
+            /*if (addedPerson.firstname == "Jane") {
                 print("------ After SeparateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -254,7 +226,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Lisa") {
+            /*if (addedPerson.firstname == "Jane") {
                 print("------ After AddMiddleChild ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
