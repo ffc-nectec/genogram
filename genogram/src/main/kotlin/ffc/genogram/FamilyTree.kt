@@ -105,9 +105,9 @@ class FamilyTree(var family: Family) {
                 line.drawLine()
                 drawNode(relatedPerson, focusedPerson, relationLabel)
 
-                val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard.toInt())
+                val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard)
                 relatedPerson.removeLinkedStack(tmp)
-                val childrenId = focusedPerson!!.haveChildren(relatedPerson)
+                val childrenId = focusedPerson!!.getChildrenId(relatedPerson)
 
                 if (childrenId != null) {
                     val children = focusedPerson!!.popChildren(

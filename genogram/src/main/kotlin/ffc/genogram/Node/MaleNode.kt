@@ -282,7 +282,7 @@ class MaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Mark") {
+            /*if (addedPerson.firstname == "Jimmy") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -299,7 +299,7 @@ class MaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "Mark") {
+            /*if (addedPerson.firstname == "Jimmy") {
                 print("------ After separateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -312,7 +312,7 @@ class MaleNode(
             separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd, family)
 
             // Check
-            /*if (addedPerson.firstname == "Mark") {
+            /*if (addedPerson.firstname == "Jimmy") {
                 print("------ After separateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -333,7 +333,7 @@ class MaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Mark") {
+            /*if (addedPerson.firstname == "Jimmy") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

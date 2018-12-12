@@ -90,18 +90,20 @@ class Person(
 
     // Whether the person has any child with the relatedPerson,
     // and remove the parents (person and the related person) out of children'stack
-    fun haveChildren(relatedPerson: Person): ArrayList<Int>? {
-
+    fun getChildrenId(relatedPerson: Person?): ArrayList<Int>? {
         return if (children != null) {
             val childrenList: ArrayList<Int>? = arrayListOf()
             children!!.forEach { child ->
-                relatedPerson.children!!.find { it == child }?.let {
-                    childrenList!!.add(it)
+                relatedPerson?.let {
+                    it.children!!.find { it == child }?.let {
+                        childrenList!!.add(it)
+                    }
+
+                    removeLinkedStack(childrenList!!)
+                    relatedPerson.removeLinkedStack(childrenList)
                 }
             }
 
-            removeLinkedStack(childrenList!!)
-            relatedPerson.removeLinkedStack(childrenList)
             childrenList
         } else
             null

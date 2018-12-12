@@ -118,7 +118,6 @@ abstract class Node {
         // For the 4th Generation, when addingPerson's parent is the only child
         val parentSib = parent.findSiblingByParent(family)
         val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
-
         if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
             childrenLineInd?.let {
                 if (childrenLineInd > addingLayerSize + 1) {
@@ -128,9 +127,17 @@ abstract class Node {
                             addingLayer, i, null, null
                         )
                 } else {
-                    familyTreeDrawer.addFamilyStorageReplaceIndex(
-                        addingLayer, it - 1, null, null
+                    val anotherParent = addedPerson.findAnotherParent(
+                        parent, family
                     )
+                    val parentChildren = parent.getChildrenId(anotherParent)
+                    var isOldestChild = false
+                    if (parentChildren != null && parentChildren.isNotEmpty())
+                        isOldestChild = parentChildren[0] == addedPerson.idCard
+                    if (isOldestChild)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            addingLayer, it - 1, null, null
+                        )
                 }
             }
         }
