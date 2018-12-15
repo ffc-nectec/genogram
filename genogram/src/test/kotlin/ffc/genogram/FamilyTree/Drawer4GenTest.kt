@@ -236,4 +236,233 @@ class Drawer4GenTest {
             [        ,         ,         ,         , [ Jame ], [ Sam  ]]
         """.trimIndent()
     }
+
+    @Test
+    fun draw1Child7() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-7.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [        ,     ,----^----,   ]
+            [[ Bill ], ( Lisa ), [  Ed  ]]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
+            [[River ], ( Jane ), [ Will ], ( Jane )]
+            [    |_________|   ,     |_________|   ]
+            [         |        ]
+            [     [Sarah ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw2Child7() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-2-children-4rd-gen-7.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [        ,     ,----^----,   ]
+            [[ Bill ], ( Lisa ), [  Ed  ]]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
+            [[River ], ( Jane ), [ Will ], ( June )]
+            [    |_________|   ,     |_________|   ]
+            [         |        ,          |        ]
+            [     (Sarah )     ,      [Chris ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw2Child8() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-2-children-4rd-gen-8.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [        ,     ,----^----,   ]
+            [[ Bill ], ( Lisa ), [  Ed  ]]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
+            [[River ], ( Jane ), [ Will ], ( June )]
+            [    |_________|   ,     |_________|   ]
+            [    ,----^----,   ,          |        ]
+            [(Sarah ), [Micky ],      [Chris ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw2Child9() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-2-children-4rd-gen-9.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        , [Grandf], (Grandm)]
+            [        ,     |_________|   ]
+            [        ,     ,----^----,   ]
+            [[ Bill ], ( Lisa ), [  Ed  ]]
+            [    |_________|   ]
+            [    ,----^--------------,   ]
+            [[River ], ( Jane ), [ Will ], ( June )]
+            [    |_________|   ,     |_________|   ]
+            [    ,----^----,   ,     ,----^----,   ]
+            [(Sarah ), [Micky ], [Chris ], [Jimmy ]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child8() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-8.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,         ,     ,---------,----^----,-------------------,   ]
+            [        , [ Bill ], ( Anne ), ( Lisa ), [Chris ], ( Cara ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [[ Jim  ],      (Kitty )     ,         ,      [ Mike ]     , ( Kim  )]
+            [    |_____________|         ,         ,          |______________|   ]
+            [    ,----^----,   ,         ,         ,         ,          |        ]
+            [( Jane ), (Sarah ),         ,         ,         ,      [  Ed  ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child9() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-9.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,         ,     ,---------,----^----,-------------------,   ]
+            [        , [ Bill ], ( Anne ), ( Lisa ), [Chris ], ( Cara ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [[ Jim  ],      (Kitty )     ,         ,      [ Mike ]     , ( Kim  )]
+            [    |_____________|         ,         ,          |______________|   ]
+            [         |        ,         ,         ,         ,          |        ]
+            [     ( Jane )     ,         ,         ,         ,      [  Ed  ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw2Child10() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-2-children-4rd-gen-10.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         ,         , [Grandf], (Grandm)]
+            [        ,         ,         ,     |_________|   ]
+            [        ,         ,     ,---------,----^----,-------------------,   ]
+            [        , [ Bill ], ( Anne ), ( Lisa ), [Chris ], ( Cara ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [[ Jim  ],      (Kitty )     ,         ,      [ Mike ]     , ( Kim  )]
+            [    |_____________|         ,         ,          |______________|   ]
+            [    ,----^----,   ,         ,         ,         ,     ,----^----,   ]
+            [( Jane ), (Sarah ),         ,         ,         , [  Ed  ], [ Tim  ]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child10() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-10.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,--------------^------------------------,---------,   ]
+            [[ Bill ], [Chris ], ( Lisa ),         , [  Ed  ], (Kitty ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [        ,      [ Mike ]     , ( Ruby ),      [ Kaye ]     , (Lilly )]
+            [        ,          |______________|   ,          |______________|   ]
+            [        ,         ,          |        ]
+            [        ,         ,      ( Cara )     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child11() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-11.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,--------------^------------------------,---------,   ]
+            [[ Bill ], [Chris ], ( Lisa ),         , [  Ed  ], (Kitty ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [        ,      [ Mike ]     , ( Ruby ),      [ Kaye ]     , (Lilly )]
+            [        ,          |______________|   ,          |______________|   ]
+            [        ,         ,          |        ,         ,          |        ]
+            [        ,         ,      ( Cara )     ,         ,      [ Sam  ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child12() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-12.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,--------------^------------------------,---------,   ]
+            [[ Bill ], [Chris ], ( Lisa ),         , [  Ed  ], (Kitty ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [        ,      [ Mike ]     , ( Ruby ),      [ Kaye ]     , (Lilly )]
+            [        ,          |______________|   ,          |______________|   ]
+            [        ,         ,         ,         ,         ,          |        ]
+            [        ,         ,         ,         ,         ,      [ Sam  ]     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child13() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4rd-gen-13.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,--------------^------------------------,---------,   ]
+            [[ Bill ], [Chris ], ( Lisa ),         , [  Ed  ], (Kitty ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [        ,      [ Mike ]     , ( Ruby ),      [ Kaye ]     , (Lilly )]
+            [        ,          |______________|   ,          |______________|   ]
+            [        ,         ,          |        ,         ,     ,----^----,   ]
+            [        ,         ,      ( Cara )     ,         , [ Sam  ], [ Will ]]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw2Child12() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-2-children-4rd-gen-12.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [    ,---------,--------------^------------------------,---------,   ]
+            [[ Bill ], [Chris ], ( Lisa ),         , [  Ed  ], (Kitty ), ( Anne )]
+            [        ,     |_________|   ,         ,     |_________|   ]
+            [        ,          |        ,         ,          |        ]
+            [        ,      [ Mike ]     , ( Ruby ),      [ Kaye ]     , (Lilly )]
+            [        ,          |______________|   ,          |______________|   ]
+            [        ,         ,     ,----^----,   ,         ,     ,----^----,   ]
+            [        ,         , ( Cara ), [ Andy ],         , [ Sam  ], [ Will ]]
+        """.trimIndent()
+    }
+
 }

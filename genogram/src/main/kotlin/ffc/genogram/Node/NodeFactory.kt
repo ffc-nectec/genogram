@@ -28,7 +28,8 @@ class NodeFactory {
         familyTreeDrawer: FamilyTreeDrawer,
         focusedPerson: Person?,
         addedPerson: Person,
-        family: Family
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ): Node {
         // focusedPerson = parent
         var parent: Person? = null
@@ -47,7 +48,8 @@ class NodeFactory {
                 focusedPerson,
                 addedPerson.firstname,
                 parent,
-                family
+                family,
+                bloodFamilyId
             )
             else -> FemaleNode(
                 familyTreeDrawer,
@@ -55,7 +57,8 @@ class NodeFactory {
                 focusedPerson,
                 addedPerson.firstname,
                 parent,
-                family
+                family,
+                bloodFamilyId
             )
         }
     }

@@ -30,7 +30,8 @@ class MaleNode(
     private var focusedPerson: Person?,
     private var nodeName: String,
     var parent: Person?,
-    val family: Family
+    val family: Family,
+    val bloodFamilyId: MutableList<Int>
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
@@ -263,8 +264,8 @@ class MaleNode(
                                 startInd -= midEmptyNode
 
                                 childrenLineLayer = addingLayer - 1
-                                val addedPersonSib = findParentSibIdInd(
-                                    familyTreeDrawer, addedPerson, parent!!, parentLayer
+                                val addedPersonSib = familyTreeDrawer.findParentSibIdInd(
+                                    addedPerson, parent!!, parentLayer
                                 )
 
                                 // Object Visualization
@@ -282,7 +283,7 @@ class MaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Jimmy") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -299,7 +300,7 @@ class MaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "Jimmy") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ After separateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -309,10 +310,18 @@ class MaleNode(
             }*/
 
             // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
-            separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd, family)
+            separateParentSib(
+                familyTreeDrawer,
+                focusedPerson!!,
+                addedPerson,
+                parentLayer,
+                parentInd,
+                family,
+                bloodFamilyId
+            )
 
             // Check
-            /*if (addedPerson.firstname == "Jimmy") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ After separateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -329,11 +338,12 @@ class MaleNode(
                 addedPerson,
                 siblings,
                 family,
-                familyTreeDrawer
+                familyTreeDrawer,
+                bloodFamilyId
             )
 
             // Check
-            /*if (addedPerson.firstname == "Jimmy") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

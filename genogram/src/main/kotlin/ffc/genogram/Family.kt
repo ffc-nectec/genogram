@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.Util.addDescendentOf
 import ffc.genogram.Util.cleanUpEmptyStack
 
 class Family(
@@ -30,12 +31,7 @@ class Family(
     init {
         require(members.isNotEmpty()) { "member should not empty" }
         bloodFamily = mutableListOf(rootPerson.idCard)
-        bloodFamily!!.addDescendentOf(rootPerson)
-    }
-
-    private fun MutableList<Int>.addDescendentOf(head: Person) {
-        head.children?.let { addAll(it) }
-        head.children?.forEach { addDescendentOf(findPerson(it)!!) }
+        bloodFamily!!.addDescendentOf(rootPerson, this)
     }
 
     // Return a person who is the first person in the blood family stack at the time.

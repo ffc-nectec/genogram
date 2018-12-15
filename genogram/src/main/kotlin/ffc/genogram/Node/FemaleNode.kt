@@ -31,7 +31,8 @@ class FemaleNode(
     var focusedPerson: Person?,
     var nodeName: String,
     var parent: Person?,
-    val family: Family
+    val family: Family,
+    val bloodFamilyId: MutableList<Int>
 ) : Node() {
 
     override fun drawNode(relationLabel: RelationshipLabel?, siblings: Boolean): FamilyTreeDrawer {
@@ -72,6 +73,25 @@ class FemaleNode(
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
                             addingLayer, addingInd, nodeName, addedPerson
                         )
+                    }
+
+                    // Arrange the previous layer position
+                    if (familyTreeDrawer.generationNumber(addingLayer) >= 3) {
+                        val parentLayer = addingLayer - 3
+
+                        // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
+                        // When the person in the 4th generation get married
+                        if (parent != null && focusedPerson != null) {
+                            separateParent4Gen(
+                                familyTreeDrawer,
+                                parent!!,
+                                focusedPerson!!,
+                                addedPerson,
+                                parentLayer,
+                                family,
+                                bloodFamilyId
+                            )
+                        }
                     }
 
                     if (parent != null) {
@@ -175,7 +195,7 @@ class FemaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Jane") {
+            /*if (addedPerson.firstname == "Andy") {
                 print("------ Started ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -202,7 +222,15 @@ class FemaleNode(
             }*/
 
             // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
-            separateParentSib(familyTreeDrawer, focusedPerson!!, addedPerson, parentLayer, parentInd, family)
+            separateParentSib(
+                familyTreeDrawer,
+                focusedPerson!!,
+                addedPerson,
+                parentLayer,
+                parentInd,
+                family,
+                bloodFamilyId
+            )
 
             // Check
             /*if (addedPerson.firstname == "Jane") {
@@ -222,7 +250,8 @@ class FemaleNode(
                 addedPerson,
                 siblings,
                 family,
-                familyTreeDrawer
+                familyTreeDrawer,
+                bloodFamilyId
             )
 
             // Check

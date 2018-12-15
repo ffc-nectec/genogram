@@ -68,12 +68,23 @@ class ChildrenLineManager(
         // Find the indexSize of the children line before compare to the person node size
         val addingLineInd = familyTreeDrawer.findPersonLayerSize(addingLayer)
         val childrenLineInd = addingLineInd - 1
-        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(addingLayer, 0, addingLineInd - 2)
-        val addingMore = parentInd - childrenLineIndSize
+        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
+            addingLayer, 0, addingLineInd - 2
+        )
+        // The marriage line below the parent layer
         val anotherParent = childrenList[0].findAnotherParent(parent, family)
         val anotherParentInd = anotherParent?.let {
             familyTreeDrawer.findPersonInd(it, parentLayer)
         }
+        val parentMarriageLine = familyTreeDrawer.findMarriageLine(
+            parentLayer + 1, parent, anotherParent
+        )!!
+        val parentMarriageLineIndSize = familyTreeDrawer.findMarriageLineIndSize(
+            parentLayer + 1,
+            0,
+            familyTreeDrawer.findLineInd(parentMarriageLine, parentLayer + 1)!! - 1
+        )
+        var addingMore = parentInd - childrenLineIndSize
         var leftParent: Person = parent
         if (anotherParentInd != null && anotherParentInd < parentInd)
             leftParent = anotherParent
@@ -89,13 +100,28 @@ class ChildrenLineManager(
 
         val parentSib = leftParent.findSiblingByParent(family)
         if (childrenNumber <= 3 && bloodParent == leftParent) {
+            // Delete 1; the addingPerson's children line
+            val previousLine = familyTreeDrawer.findLineNumber(addingLayer) - 1
+            if (previousLine == 0) {
+                addingMore = (parentMarriageLineIndSize - addingLineInd) + 1
+            }
             for (i in 0 until addingMore) {
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     addingLayer, childrenLineInd, null, null
                 )
             }
+
             // For the 4th Generation, when addingPerson's parent is the only child
             if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+                anotherParentInd?.let {
+                    val layerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                    if (anotherParentInd > layerSize) {
+                        familyTreeDrawer.addFamilyStorageAtIndex(
+                            addingLayer, layerSize - 1, null, null
+                        )
+                    }
+                }
+
                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                     addingLayer, childrenLineInd, null, null
                 )

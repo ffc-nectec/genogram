@@ -20,6 +20,7 @@ package ffc.genogram
 import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.Util.addDescendentOf
 
 class FamilyTree(var family: Family) {
 
@@ -29,12 +30,12 @@ class FamilyTree(var family: Family) {
     private val relationFactory = RelationshipFactory()
     private val nodeFactory = NodeFactory()
     private val addedNodes: MutableList<Int> = mutableListOf()
-    var keepBloodFamily: MutableList<Int>
+    private var keepBloodFamily: MutableList<Int>
 
     init {
         var rootPerson = family.members[0]
         keepBloodFamily = mutableListOf(rootPerson.idCard)
-        rootPerson.children?.let { keepBloodFamily?.addAll(rootPerson.children!!)}
+        keepBloodFamily.addDescendentOf(rootPerson, family)
     }
 
     fun drawGenogram(): FamilyTreeDrawer {
@@ -56,7 +57,9 @@ class FamilyTree(var family: Family) {
             personLinkedStack = focusedPerson!!.linkedStack
 
             while (personLinkedStack != null) {
-                personLinkedStack = setRelationship(listFocusedPerson, null, null)
+                personLinkedStack = setRelationship(
+                    listFocusedPerson, null, null
+                )
             }
             drawGenogram()
         }
@@ -100,7 +103,8 @@ class FamilyTree(var family: Family) {
                     family,
                     familyTreePic,
                     relationLabel,
-                    addLayer = familyTreePic.findPersonLayer(focusedPerson!!)
+                    familyTreePic.findPersonLayer(focusedPerson!!),
+                    keepBloodFamily
                 )
                 line.drawLine()
                 drawNode(relatedPerson, focusedPerson, relationLabel)
@@ -176,7 +180,7 @@ class FamilyTree(var family: Family) {
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
         val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson, family)
+            .getNode(familyTreePic, focusedPerson, relatedPerson, family, keepBloodFamily)
         node.drawNode(relationLabel, siblings = false)
         addedNodes.add(relatedPerson.idCard)
     }
@@ -190,7 +194,7 @@ class FamilyTree(var family: Family) {
         focusedList.forEach {
             // Find the left-hand parent
             val parent = findLeftHandParent(parents, family)
-            val node = nodeFactory.getNode(familyTreePic, parent, it, family)
+            val node = nodeFactory.getNode(familyTreePic, parent, it, family, keepBloodFamily)
 
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)

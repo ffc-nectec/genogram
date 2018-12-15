@@ -219,7 +219,8 @@ class Person(
         return mutableListOf(childrenLine!!.childrenList, childrenIndList)
     }
 
-    /*fun findTargetParent(parent1: Person, parent2: Person): Person {
+    fun isBloodFamily(bloodFamilyId: MutableList<Int>): Boolean {
+        return bloodFamilyId.firstOrNull { idCard == it } != null
 
-    }*/
+    }
 }
