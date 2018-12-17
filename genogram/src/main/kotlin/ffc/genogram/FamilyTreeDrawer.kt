@@ -298,6 +298,21 @@ class FamilyTreeDrawer {
             }
         }
 
+        /*if (ind1 == 0 && ind2 == 0) {
+            val marriageLine = marriageLineStorage[0]
+            if (marriageLine is MarriageLine)
+                count += (marriageLine.imageLength / (Node.nodeSize + Node.nodeBorderSize)).toInt()
+        } else
+            marriageLineStorage.forEachIndexed { index, any ->
+                if (index in ind1..ind2) {
+                    if (any is MarriageLine) {
+                        count += (any.imageLength / (Node.nodeSize + Node.nodeBorderSize)).toInt()
+                    } else if (any is EmptyNode) {
+                        count++
+                    }
+                }
+            }*/
+
         return count
     }
 

@@ -221,6 +221,27 @@ class Person(
 
     fun isBloodFamily(bloodFamilyId: MutableList<Int>): Boolean {
         return bloodFamilyId.firstOrNull { idCard == it } != null
+    }
 
+    fun getFather(family: Family): Person? = if (father != null) family.findPerson(father!!) else null
+
+    fun getMother(family: Family): Person? = if (mother != null) family.findPerson(mother!!) else null
+
+    fun getBloodFParent(family: Family, bloodFamilyId: MutableList<Int>): Person? {
+        val father = getFather(family)
+        val mother = getMother(family)
+
+        return if (father != null) {
+            if (father.isBloodFamily(bloodFamilyId)) father else mother
+        } else {
+            mother
+        }
+    }
+
+    fun getLeftHandParent(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int): Person {
+        val childrenLine = familyTreeDrawer.findChildrenLine(
+            childrenLineLayer, this
+        )!!
+        return childrenLine.parentList[0]
     }
 }

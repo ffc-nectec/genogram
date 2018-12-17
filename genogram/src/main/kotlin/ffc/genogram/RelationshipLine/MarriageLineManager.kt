@@ -172,13 +172,26 @@ class MarriageLineManager(
                             val focusedPersonInd = familyTreeDrawer.findPersonInd(
                                 focusedPerson, personLayer
                             )
+                            val marriageLineLayer = personLayer + 1
 
-                            for (i in 0 until focusedPersonInd - 1)
-                                familyTreeDrawer.addFamilyAtLayer(
-                                    marriageLineLayer,
-                                    createLineDistance(),
-                                    EmptyNode()
+                            if (familyTreeDrawer.findPersonStorageSize() - 1 == marriageLineLayer) {
+                                val focusedPersonIndSize = familyTreeDrawer.findPersonIndSize(
+                                    personLayer, 0, focusedPersonInd - 1
                                 )
+                                val marriageLineLayerSize = familyTreeDrawer.findPersonLayerSize(
+                                    marriageLineLayer
+                                )
+                                val marriageLineIndSize = familyTreeDrawer.findMarriageLineIndSize(
+                                    marriageLineLayer,
+                                    0,
+                                    marriageLineLayerSize
+                                )
+                                val addingPersonInd = focusedPersonIndSize - 1
+                                if (addingPersonInd > marriageLineIndSize)
+                                    makeSpaceForAddingLine(focusedPersonInd, marriageLineLayer)
+                            } else {
+                                makeSpaceForAddingLine(focusedPersonInd, marriageLineLayer)
+                            }
 
                             // Create a special marriageLine
                             marriageLine.setSingleMarriageLine(handSide)
@@ -291,5 +304,14 @@ class MarriageLineManager(
                 )
             }
         }
+    }
+
+    private fun makeSpaceForAddingLine(focusedPersonInd: Int, marriageLineLayer: Int) {
+        for (i in 0 until focusedPersonInd - 1)
+            familyTreeDrawer.addFamilyAtLayer(
+                marriageLineLayer,
+                createLineDistance(),
+                EmptyNode()
+            )
     }
 }

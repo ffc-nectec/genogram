@@ -24,9 +24,8 @@ private lateinit var familyObj: Family
 
 fun main(args: Array<String>) {
 
-//    familyObj = getResourceAs("4thGen/family-1-children-4rd-gen-2.json")
-//    familyObj = getResourceAs("4thGen/family-1-children-4rd-gen-11.json")
-    familyObj = getResourceAs("4thGen/family-2-children-4rd-gen-12.json")
+    familyObj = getResourceAs("4thGen/family-1-children-4th-gen-14.json")
+//    familyObj = getResourceAs("4thGen/family-1-children-4th-gen-3.json")
 
     val familyTreePic = drawGenogram()
 
