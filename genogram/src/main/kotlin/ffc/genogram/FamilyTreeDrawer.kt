@@ -977,16 +977,6 @@ class FamilyTreeDrawer {
         } else {
             val bloodFGrandPa = if (leftGrandPa.isBloodFamily(bloodFamilyId)) leftGrandPa else
                 parent.findAnotherParent(leftGrandPa, family)
-
-            /*if (person.firstname == "Sam") {
-                print("------ Node 966 ------\n")
-                print("add: ${person.firstname}\n")
-                print("bloodFGrandPa: ${bloodFGrandPa!!.firstname}\n")
-                print("...............\n")
-                val canvasB = displayObjectResult(this)
-                print(canvasB.toString())
-                print("-------------\n")
-            }*/
         }
 
         if (generationNumber(parentLayer) < 3)

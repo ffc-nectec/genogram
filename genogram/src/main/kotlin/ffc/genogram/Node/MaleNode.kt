@@ -194,13 +194,14 @@ class MaleNode(
                         childrenListId.forEach { id ->
                             childrenListInd.add(
                                 familyTreeDrawer.findPersonIndById(
-                                    id, childrenLineLayer
+                                    id, childrenLineLayer + 1
                                 )
                             )
                         }
 
                         // Extend the MarriageLineManager of AddedPerson's parent.
-                        if (childrenNumber > 3) {
+                        var childrenIndLength = childrenListInd[childrenListInd.size - 1] - childrenListInd[0] + 1
+                        if (childrenIndLength > 3) {
                             movingParentPosition(
                                 familyTreeDrawer,
                                 addedPerson, focusedPerson!!, parent!!, addingLayer, parentLayer, family

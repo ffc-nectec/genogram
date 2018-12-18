@@ -156,9 +156,7 @@ class MarriageLineManager(
                                 marriageLine
                             )
                         } else {
-                            if (familyTreeDrawer.generationNumber(personLayer) >= 3
-                                && focusedPerson.isBloodFamily(bloodFamily)
-                            )
+                            if (focusedPersonSib.size == 0)
                                 marriageLine.setSingleMarriageLine(handSide)
 
                             familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
@@ -173,11 +171,12 @@ class MarriageLineManager(
                                 focusedPerson, personLayer
                             )
                             val marriageLineLayer = personLayer + 1
+                            val focusedPersonIndSize = familyTreeDrawer.findPersonIndSize(
+                                personLayer, 0, focusedPersonInd - 1
+                            )
+                            val storageSize = familyTreeDrawer.findPersonStorageSize()
 
-                            if (familyTreeDrawer.findPersonStorageSize() - 1 == marriageLineLayer) {
-                                val focusedPersonIndSize = familyTreeDrawer.findPersonIndSize(
-                                    personLayer, 0, focusedPersonInd - 1
-                                )
+                            if ((storageSize - 1 >= marriageLineLayer)) {
                                 val marriageLineLayerSize = familyTreeDrawer.findPersonLayerSize(
                                     marriageLineLayer
                                 )

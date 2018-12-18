@@ -9,7 +9,8 @@
     4,
     5,
     6,
-    7
+    7,
+    8
   ],
   "members": [
     {
@@ -255,12 +256,13 @@
       "ex-wife": null,
       "husband": [31],
       "wife": null,
-      "children": [7],
+      "children": [7, 8],
       "linkedStack": [
         4,
         12,
         31,
-        7
+        7,
+        8
       ]
     },
     {
@@ -278,15 +280,33 @@
       "wife": [
         6
       ],
-      "children": [7],
-      "linkedStack": [6, 7]
+      "children": [7, 8],
+      "linkedStack": [6, 7, 8]
     },
     {
       "idCard": 7,
-      "firstname": "Anne",
+      "firstname": "Billy",
       "lastname": "Smiths",
       "birthDate": "12-11-1980",
       "gender": 0,
+      "father": 31,
+      "mother": 6,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        31, 6
+      ]
+    },
+    {
+      "idCard": 8,
+      "firstname": "Anne",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1980",
+      "gender": 1,
       "father": 31,
       "mother": 6,
       "twin": null,
