@@ -109,6 +109,84 @@ class Person(
             null
     }
 
+    fun findChildrenListIdInd(
+        relatedPerson: Person?,
+        parentLayer: Int,
+        family: Family,
+        familyTreeDrawer: FamilyTreeDrawer
+    ): MutableList<Any>? {
+        val childrenLayer = parentLayer + 3
+        val idIndList = mutableListOf<Any>()
+        val idList = mutableListOf<Int>()
+        val indList = mutableListOf<Int>()
+        val personList = mutableListOf<Person>()
+
+        // Identify a father and mother
+        var father: Person? = null
+        var mother: Person? = null
+        when {
+            relatedPerson == null -> {
+                when (gender) {
+                    GenderLabel.MALE -> father = this
+                    GenderLabel.FEMALE -> mother = this
+                }
+            }
+            relatedPerson != null -> {
+                when (gender) {
+                    GenderLabel.MALE -> {
+                        father = this
+                        mother = relatedPerson
+                    }
+                    GenderLabel.FEMALE -> {
+                        father = relatedPerson
+                        mother = this
+                    }
+                }
+            }
+        }
+
+        // Find children list
+        when {
+            father != null && mother == null -> {
+                father.children?.forEach { childId ->
+                    val child = family.findPerson(childId)!!
+                    val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                    idList.add(childId)
+                    indList.add(childInd)
+                    personList.add(child)
+                }
+            }
+            father != null && mother != null -> {
+                father.children?.forEach { childId ->
+                    val child = family.findPerson(childId)
+                    child?.let {
+                        val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                        if (child.mother == mother.idCard) {
+                            idList.add(childId)
+                            indList.add(childInd)
+                            personList.add(child)
+                        }
+                    }
+                }
+            }
+            father == null && mother != null -> {
+                mother.children?.forEach { childId ->
+                    val child = family.findPerson(childId)!!
+                    val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                    idList.add(childId)
+                    indList.add(childInd)
+                    personList.add(child)
+                }
+            }
+        }
+
+        idIndList.add(idList)
+        idIndList.add(indList)
+        idIndList.add(personList)
+
+        return idIndList
+    }
+
     // Remove the person(s) out of the stack
     fun removeLinkedStack(removeList: MutableList<Int>) {
         val tmp = linkedStack as MutableList<Int>?
@@ -243,5 +321,11 @@ class Person(
             childrenLineLayer, this
         )!!
         return childrenLine.parentList[0]
+    }
+
+    fun getTargetParent(family: Family, bloodFamilyId: MutableList<Int>): Person {
+        val isFather = bloodFamilyId.find { id -> id == father }
+        return if (isFather != null) family.findPerson(father!!)!! else family.findPerson(mother!!)!!
+
     }
 }

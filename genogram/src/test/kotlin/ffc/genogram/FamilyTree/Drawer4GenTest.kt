@@ -865,4 +865,21 @@ class Drawer4GenTest {
         """.trimIndent()
     }
 
+    @Test
+    fun draw1Child25() {
+        val drawer = FamilyTree(getResourceAs("4thGen/family-1-children-4th-gen-25.json")).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [        ,         , [Grandf], (Grandm)]
+            [        ,         ,     |_________|   ]
+            [        ,         ,     ,----^----,   ]
+            [        , [ Bill ], ( Lisa ), [  Ed  ]]
+            [        ,     |_________|   ]
+            [    ,---------,----^--------------,   ]
+            [[River ], [ Will ], (Sandy ), (Sarah )]
+            [        ,     |_________|   ]
+        """.trimIndent()
+    }
+
 }

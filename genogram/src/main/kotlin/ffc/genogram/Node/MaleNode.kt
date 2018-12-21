@@ -204,7 +204,13 @@ class MaleNode(
                         if (childrenIndLength > 3) {
                             movingParentPosition(
                                 familyTreeDrawer,
-                                addedPerson, focusedPerson!!, parent!!, addingLayer, parentLayer, family
+                                addedPerson,
+                                focusedPerson!!,
+                                parent!!,
+                                addingLayer,
+                                parentLayer,
+                                family,
+                                bloodFamilyId
                             )
 
                             var startInd = childrenListInd[0]

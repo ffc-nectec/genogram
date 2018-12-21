@@ -21,7 +21,6 @@ import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
-import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import kotlin.math.PI
 
@@ -125,21 +124,19 @@ class FemaleNode(
                                 parent!!,
                                 addingLayer,
                                 parentLayer,
-                                family
+                                family,
+                                bloodFamilyId
                             )
                         }
 
                         // Extend the children line
                         if (childrenNumber > 2) {
-                            var childrenLine = ChildrenLine()
-                            val previousChildrenLine = familyTreeDrawer.findChildrenLine(
+
+                            var childrenLine = familyTreeDrawer.findChildrenLine(
                                 childrenLineLayer, focusedPerson!!
                             )
 
-                            if (previousChildrenLine != null) {
-                                childrenLine = previousChildrenLine
-                            }
-                            childrenLine.extendLine(
+                            childrenLine?.extendLine(
                                 familyTreeDrawer,
                                 addingLayer - 1,
                                 childrenListInd

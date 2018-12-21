@@ -746,15 +746,15 @@ class FamilyTreeDrawer {
     fun childrenLineLength(childrenNumb: Int)
             : Int = (4 + (11 * (childrenNumb - 1)) - (childrenNumb - 1)) + 5
 
-    fun findChildrenLine(childrenLineLayer: Int, focusedPerson: Person): ChildrenLine? {
+    fun findChildrenLine(childrenLineLayer: Int, child: Person): ChildrenLine? {
         val childrenLineStorage = personFamilyStorage[childrenLineLayer]
         var childrenLine: ChildrenLine? = null
 
         childrenLineStorage.forEachIndexed { index, any ->
             if (any is ChildrenLine) {
                 val childrenList = any.childrenList
-                childrenList.forEach { child ->
-                    if (child == focusedPerson) {
+                childrenList.forEach { it ->
+                    if (it == child) {
                         childrenLine = childrenLineStorage[index] as ChildrenLine
                     }
                 }
@@ -910,18 +910,17 @@ class FamilyTreeDrawer {
             targetParentInd = findPersonInd(parent, parentLayer)
         }
 
-        val grandParent: Person?
-        grandParent = getPersonLayerInd(
-            parentLayer1, targetParentInd!!
-        ) as Person
+        val grandParent = getPersonLayerInd(parentLayer1, targetParentInd!!)
 
-        val parentSibListId = grandParent!!.children!!
-        val childrenParentLayer = getPersonLayer(parentLayer2)
-        childrenParentLayer.forEachIndexed { index, element ->
-            if (element is Person) {
-                parentSibListId.forEach { id ->
-                    if (element.idCard == id) {
-                        drawParentSibListId.add(id)
+        if (grandParent is Person) {
+            val parentSibListId = grandParent.children
+            val childrenParentLayer = getPersonLayer(parentLayer2)
+            childrenParentLayer.forEachIndexed { index, element ->
+                if (element is Person) {
+                    parentSibListId?.forEach { id ->
+                        if (element.idCard == id) {
+                            drawParentSibListId.add(id)
+                        }
                     }
                 }
             }
@@ -930,6 +929,7 @@ class FamilyTreeDrawer {
         drawParentSibListId.forEach { id ->
             drawParentSibListInd.add(findPersonIndById(id, parentLayer2))
         }
+
         drawParentSibList.add(drawParentSibListId)
         drawParentSibList.add(drawParentSibListInd)
 
@@ -938,7 +938,10 @@ class FamilyTreeDrawer {
 
     fun adjustUpperLayerPos(
         person: Person,
-        parent: Person, parentLayer: Int, family: Family, bloodFamilyId: MutableList<Int>
+        parent: Person,
+        parentLayer: Int,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ) {
 
         // Adjust the children line above the parent layer
@@ -981,5 +984,63 @@ class FamilyTreeDrawer {
 
         if (generationNumber(parentLayer) < 3)
             parentChildrenLine.extendLine(this, parentLayer - 1, parentSibInd)
+    }
+
+    fun getMovingInd(
+        child: Person, // focusedPerson
+        movingPerson: Person,
+        movingPersonLayer: Int,
+        family: Family,
+        addingMoreNode: Int,
+        bloodFamilyId: MutableList<Int>
+    ) {
+        var focusedLayer = movingPersonLayer
+
+        if (focusedLayer == 0) {
+            val movingPersonInd = findPersonInd(movingPerson, movingPersonLayer)
+            for (i in 0 until addingMoreNode) {
+                for (layer in movingPersonLayer..movingPersonLayer + 1)
+                    addFamilyStorageReplaceIndex(layer, movingPersonInd, null, null)
+            }
+        } else if (focusedLayer >= 3) {
+            // Move 2 layers; the layer above and the layer below movingParentLayer
+            // MovingPerson must be on the left-hand
+            val parentChildrenLine = findChildrenLine(
+                movingPersonLayer + 2, child
+            )!!
+            val leftHandPerson = parentChildrenLine.parentList[0]
+            val leftHandPersonInd = findPersonInd(leftHandPerson, movingPersonLayer)
+            val anotherParent = child.findAnotherParent(movingPerson, family)
+            // The marriage line below the movingPersonLayer
+            val marriageLineLayer = movingPersonLayer + 1
+            val marriageLine = findMarriageLine(
+                marriageLineLayer, movingPerson, anotherParent
+            )!!
+            val marriageLineInd = findLineInd(marriageLine, marriageLineLayer)!!
+
+            // The children line above the movingPersonLayer
+            val childrenLineLayer = movingPersonLayer - 1
+            val childrenLine = findChildrenLine(childrenLineLayer, movingPerson)!!
+            val childrenLineInd = findChildrenLineInd(childrenLine, childrenLineLayer)!!
+
+            for (i in 0 until addingMoreNode) {
+                addFamilyStorageReplaceIndex(childrenLineLayer, childrenLineInd, null, null)
+                addFamilyStorageReplaceIndex(movingPersonLayer, leftHandPersonInd, null, null)
+                addFamilyStorageReplaceIndex(marriageLineLayer, marriageLineInd, null, null)
+            }
+
+            focusedLayer -= 3
+            val targetParent = movingPerson.getTargetParent(family, bloodFamilyId)
+            val targetParentLayer = findPersonLayer(targetParent)
+
+            getMovingInd(
+                movingPerson,
+                targetParent,
+                targetParentLayer,
+                family,
+                addingMoreNode,
+                bloodFamilyId
+            )
+        }
     }
 }
