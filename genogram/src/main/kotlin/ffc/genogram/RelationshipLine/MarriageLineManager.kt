@@ -37,7 +37,6 @@ class MarriageLineManager(
     private val endSign = '|'
 
     override fun drawLine(): FamilyTreeDrawer {
-
         val marriageLine = MarriageLine()
         marriageLine.drawLine()
 
@@ -142,8 +141,16 @@ class MarriageLineManager(
                     val hasLeftHandSiblings = familyTreeDrawer.hasNodeOnTheLeft(
                         focusedPerson, personLayer
                     )
+                    /*val focusedPersonSib = focusedPerson.findSiblingByParent(family)
+                    val isFPOldest = if (focusedPersonSib.isNotEmpty()) {
+                        focusedPerson == focusedPersonSib[0]
+                    } else {
+                        false
+                    }*/
 
                     if (!hasLeftHandSiblings) {
+//                    if (isFPOldest) {
+
                         // Add node husband node on the left hand.
                         // Check whether FocusedPerson has any siblings.
                         val focusedPersonSib = focusedPerson.findSiblingByParent(family)
@@ -171,12 +178,12 @@ class MarriageLineManager(
                                 focusedPerson, personLayer
                             )
                             val marriageLineLayer = personLayer + 1
-                            val focusedPersonIndSize = familyTreeDrawer.findPersonIndSize(
+                            var focusedPersonIndSize = familyTreeDrawer.findPersonIndSize(
                                 personLayer, 0, focusedPersonInd - 1
                             )
                             val storageSize = familyTreeDrawer.findPersonStorageSize()
 
-                            if ((storageSize - 1 >= marriageLineLayer)) {
+                            if (storageSize - 1 >= marriageLineLayer) {
                                 val marriageLineLayerSize = familyTreeDrawer.findPersonLayerSize(
                                     marriageLineLayer
                                 )
@@ -189,7 +196,11 @@ class MarriageLineManager(
                                 if (addingPersonInd > marriageLineIndSize)
                                     makeSpaceForAddingLine(focusedPersonInd, marriageLineLayer)
                             } else {
-                                makeSpaceForAddingLine(focusedPersonInd, marriageLineLayer)
+                                val movingNumb = if (focusedPersonIndSize != focusedPersonInd)
+                                    focusedPersonIndSize + 1
+                                else
+                                    focusedPersonIndSize
+                                makeSpaceForAddingLine(movingNumb, marriageLineLayer)
                             }
 
                             // Create a special marriageLine

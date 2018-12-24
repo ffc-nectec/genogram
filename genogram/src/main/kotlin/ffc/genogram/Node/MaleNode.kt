@@ -40,10 +40,10 @@ class MaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
             nodeName = createGenderBorder(nodeName, GenderLabel.MALE)
-
             if (focusedPerson != null) {
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
+                var isReplace = false
 
                 if (focusedPerson!!.gender == GenderLabel.FEMALE) {
                     // Find whether the focusedPerson has any siblings.
@@ -67,9 +67,19 @@ class MaleNode(
                         // on the left of the female node, and make indent(s) at the
                         // FocusedPerson's parent layer.
                         if (hasOlderSib && familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer) != 0) {
-                            familyTreeDrawer.replaceFamilyStorageLayer(
-                                addingLayer, addingInd - 1, nodeName, addedPerson
-                            )
+                            if (familyTreeDrawer.getPersonLayerInd(addingLayer, addingInd - 1)
+                                        is EmptyNode
+                            ) {
+                                isReplace = true
+                                familyTreeDrawer.replaceFamilyStorageLayer(
+                                    addingLayer, addingInd - 1, nodeName, addedPerson
+                                )
+                            } else {
+                                isReplace = false
+                                familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                    addingLayer, addingInd - 1, nodeName, addedPerson
+                                )
+                            }
                         } else {
                             familyTreeDrawer.addFamilyStorageAtIndex(
                                 addingLayer, addingInd, nodeName, addedPerson
@@ -282,6 +292,37 @@ class MaleNode(
                                     addedPersonSib[1] //childrenListInd
                                 )
                             }
+                        }
+                    } else {
+                        // When the addingPerson is added in the front of the focusedPerson.
+                        // The layers above the focusedPerson will be changed the position.
+                        val addingPersonInd = familyTreeDrawer.findPersonInd(
+                            addedPerson, addingLayer
+                        )
+                        val leftHandNodes = familyTreeDrawer.hasNodeOnTheLeft(
+                            addedPerson, addingLayer
+                        )
+                        if (leftHandNodes) {
+                            // Extend only their parent layer
+                            val addingPersonIndSize = familyTreeDrawer.findPersonIndSize(
+                                addingLayer, 0, addingInd - 1
+                            )
+                            val parentLayer = addingLayer - 3
+                            val anotherParent = focusedPerson!!.findAnotherParent(parent!!, family)!!
+                            val previousObj = familyTreeDrawer.getPersonLayerInd(
+                                addingLayer, addingPersonInd - 1
+                            )
+                            if (previousObj !is EmptyNode && !isReplace)
+                                familyTreeDrawer.moveParentnLindLayer(
+                                    1, addingPersonIndSize, parent!!, anotherParent, parentLayer
+                                )
+
+                            // Adjust the parent position after adding the addingPerson
+                            val bloodParent = focusedPerson?.getBloodFParent(family, bloodFamilyId)!!
+                            val bloodParentLayer = familyTreeDrawer.findPersonLayer(bloodParent)
+                            familyTreeDrawer.adjustUpperLayerPos(
+                                focusedPerson!!, bloodParent, bloodParentLayer, family, bloodFamilyId
+                            )
                         }
                     }
                 }

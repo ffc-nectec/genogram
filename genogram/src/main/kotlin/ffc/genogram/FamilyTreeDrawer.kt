@@ -943,7 +943,6 @@ class FamilyTreeDrawer {
         family: Family,
         bloodFamilyId: MutableList<Int>
     ) {
-
         // Adjust the children line above the parent layer
         val parentSib = findParentSibIdInd(person, parent, parentLayer)
         val parentSibInd = parentSib[1]
@@ -1041,6 +1040,31 @@ class FamilyTreeDrawer {
                 addingMoreNode,
                 bloodFamilyId
             )
+        }
+    }
+
+    fun moveParentnLindLayer(
+        movingNumb: Int,
+        addingPersonIndSize: Int,
+        parent1: Person,
+        parent2: Person,
+        parentLayer: Int
+    ) {
+        val parentMarriageLineLayer = parentLayer + 1
+        val parentMarriageLine = findMarriageLine(
+            parentMarriageLineLayer, parent1, parent2
+        )!!
+        val parentMarriageLineInd = findLineInd(parentMarriageLine, parentMarriageLineLayer)!!
+        for (i in 0 until movingNumb) {
+            // Move the parent Layer
+            addFamilyStorageReplaceIndex(
+                parentLayer, addingPersonIndSize, null, null
+            )
+            // Move the parent's marriage line layer and children line
+            for (layer in parentMarriageLineLayer..parentMarriageLineLayer + 1)
+                addFamilyStorageReplaceIndex(
+                    layer, parentMarriageLineInd, null, null
+                )
         }
     }
 }

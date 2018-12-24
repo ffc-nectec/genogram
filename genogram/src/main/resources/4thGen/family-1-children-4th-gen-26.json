@@ -10,7 +10,9 @@
     5,
     6,
     7,
-    8
+    8,
+    9,
+    20
   ],
   "members": [
     {
@@ -131,12 +133,46 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": null,
-      "wife": null,
-      "children": null,
+      "wife": [19],
+      "children": [20],
       "linkedStack": [
         13,
-        1
+        1,
+        19,
+        20
       ]
+    },
+    {
+      "idCard": 19,
+      "firstname": "Anne",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [3],
+      "wife": null,
+      "children": [20],
+      "linkedStack": [3, 20]
+    },
+    {
+      "idCard": 20,
+      "firstname": "Lilly",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 1,
+      "father": 3,
+      "mother": 19,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [3, 19]
     },
     {
       "idCard": 4,
@@ -215,12 +251,13 @@
       "ex-wife": null,
       "husband": [18],
       "wife": null,
-      "children": [8],
+      "children": [8, 9],
       "linkedStack": [
         13,
         1,
         18,
-        8
+        8,
+        9
       ]
     },
     {
@@ -236,8 +273,8 @@
       "ex-wife": null,
       "husband": null,
       "wife": [5],
-      "children": [8],
-      "linkedStack": [5, 8]
+      "children": [8, 9],
+      "linkedStack": [5, 8, 9]
     },
     {
       "idCard": 8,
@@ -245,6 +282,22 @@
       "lastname": "Snow",
       "birthDate": "12-11-2003",
       "gender": 0,
+      "father": 18,
+      "mother": 5,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [18, 5]
+    },
+    {
+      "idCard": 9,
+      "firstname": "Lucy",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 1,
       "father": 18,
       "mother": 5,
       "twin": null,
