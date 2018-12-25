@@ -121,7 +121,7 @@ abstract class Node {
         val parentSib = parent.findSiblingByParent(family)
         val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
         if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
-            childrenLineInd?.let { ind ->
+            childrenLineInd?.let { childrenLineInd ->
                 val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
                     childrenLineLayer, 0, childrenLineInd - 1
                 )
@@ -149,16 +149,26 @@ abstract class Node {
                         val leftParent = childrenLine!!.parentList[0]
 
                         // Number of person's index in the adding layer
-                        val personNumbIndSize = familyTreeDrawer.findPersonIndSize(
+                        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
+                            childrenLineLayer, 0, childrenLineInd - 1
+                        )
+                        val personLayerIndSize = familyTreeDrawer.findPersonIndSize(
                             addingLayer, 0, addingLayerSize - 1
                         )
+                        val replaceInd = if (addingLayerSize >= personLayerIndSize && addingLayerSize > 0)
+                            childrenLineInd else childrenLineInd - 1
 
-                        val replaceInd = if (addingLayerSize >= personNumbIndSize && addingLayerSize > 0)
-                            ind else ind - 1
-                        if (isOldestChild && leftParent == bloodFParent)
+                        if (isOldestChild && leftParent == bloodFParent) {
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
                                 addingLayer, replaceInd, null, null
                             )
+                        } else if (isOldestChild && leftParent != bloodFParent) {
+                            val addingMore = childrenLineIndSize - personLayerIndSize
+                            for (i in 0 until addingMore)
+                                familyTreeDrawer.addFamilyStorageAtIndex(
+                                    addingLayer, addingLayerSize, null, null
+                                )
+                        }
                     }
                 }
             }

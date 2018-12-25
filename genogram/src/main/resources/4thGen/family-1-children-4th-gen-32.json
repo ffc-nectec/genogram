@@ -1,7 +1,7 @@
 {
   "familyId": 2,
   "familyName": "Smiths",
-  "bloodFamily": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "bloodFamily": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   "members": [
     {
       "idCard": 0,
@@ -80,8 +80,8 @@
       "ex-wife": null,
       "husband": null,
       "wife": [18],
-      "children": [8],
-      "linkedStack": [1, 11, 18, 8]
+      "children": [8, 9],
+      "linkedStack": [1, 11, 18, 8, 9]
     },
     {
       "idCard": 18,
@@ -96,12 +96,28 @@
       "ex-wife": null,
       "husband": [4],
       "wife": null,
-      "children": [8],
-      "linkedStack": [4, 8]
+      "children": [8, 9],
+      "linkedStack": [4, 8, 9]
     },
     {
       "idCard": 8,
       "firstname": "Jeff",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": 4,
+      "mother": 18,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [4, 18]
+    },
+    {
+      "idCard": 9,
+      "firstname": "Tim",
       "lastname": "Smiths",
       "birthDate": "12-11-1980",
       "gender": 0,

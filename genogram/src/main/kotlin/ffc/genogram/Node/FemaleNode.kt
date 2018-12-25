@@ -192,15 +192,15 @@ class FemaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Andy") {
+            /*if (addedPerson.firstname == "Jane") {
                 print("------ Started ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
                 val canvasB = displayObjectResult(familyTreeDrawer)
                 print(canvasB.toString())
                 print("---------------------------------------\n")
-            }*/
-
+            }
+*/
             // Children or Twin
             val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)
