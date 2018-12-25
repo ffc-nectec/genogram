@@ -1,0 +1,278 @@
+{
+  "familyId": 2,
+  "familyName": "Smiths",
+  "bloodFamily": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "members": [
+    {
+      "idCard": 0,
+      "firstname": "Grandfather",
+      "lastname": "Smiths",
+      "birthDate": "1-1-1970",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [
+        10
+      ],
+      "children": [
+        1,
+        2
+      ],
+      "linkedStack": [
+        10,
+        1,
+        2
+      ]
+    },
+    {
+      "idCard": 10,
+      "firstname": "Grandmother",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1972",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [
+        0
+      ],
+      "wife": null,
+      "children": [
+        1,
+        2
+      ],
+      "linkedStack": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "idCard": 1,
+      "firstname": "Lisa",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 1,
+      "father": 0,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [
+        13
+      ],
+      "wife": null,
+      "children": [
+        3,
+        4,
+        5
+      ],
+      "linkedStack": [
+        0,
+        10,
+        13,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "idCard": 13,
+      "firstname": "Bill",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [
+        1
+      ],
+      "children": [
+        3,
+        4,
+        5
+      ],
+      "linkedStack": [
+        1,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "idCard": 3,
+      "firstname": "River",
+      "lastname": "Snow",
+      "birthDate": "12-11-2001",
+      "gender": 0,
+      "father": 13,
+      "mother": 1,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        13,
+        1
+      ]
+    },
+    {
+      "idCard": 4,
+      "firstname": "Will",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 0,
+      "father": 13,
+      "mother": 1,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [14],
+      "children": [6, 7],
+      "linkedStack": [13, 1, 14, 6, 7]
+    },
+    {
+      "idCard": 14,
+      "firstname": "Sandy",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1972",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [4],
+      "wife": null,
+      "children": [6, 7],
+      "linkedStack": [4, 6, 7]
+    },
+    {
+      "idCard": 6,
+      "firstname": "Micky",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 0,
+      "father": 4,
+      "mother": 14,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [4, 14]
+    },
+    {
+      "idCard": 7,
+      "firstname": "Mike",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 0,
+      "father": 4,
+      "mother": 14,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [4, 14]
+    },
+    {
+      "idCard": 5,
+      "firstname": "Sarah",
+      "lastname": "Snow",
+      "birthDate": "12-11-2004",
+      "gender": 1,
+      "father": 13,
+      "mother": 1,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [18],
+      "wife": null,
+      "children": [8],
+      "linkedStack": [
+        13,
+        1,
+        18,
+        8
+      ]
+    },
+    {
+      "idCard": 18,
+      "firstname": "Cole",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1972",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [5],
+      "children": [8],
+      "linkedStack": [5, 8]
+    },
+    {
+      "idCard": 8,
+      "firstname": "Mike",
+      "lastname": "Snow",
+      "birthDate": "12-11-2003",
+      "gender": 0,
+      "father": 18,
+      "mother": 5,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [18, 5]
+    },
+    {
+      "idCard": 2,
+      "firstname": "Ed",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
+      "father": 0,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        0,
+        10
+      ]
+    }
+  ]
+}

@@ -24,6 +24,7 @@ import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.Util.findMovingNodeNumb
 import kotlin.math.floor
 
 abstract class Node {
@@ -84,22 +85,22 @@ abstract class Node {
     }
 
     fun addMiddleChild(
-        focusedPerson: Person,
+        parent: Person,
         nodeName: String,
         gender: GenderLabel,
         addedPerson: Person,
         siblings: Boolean,
         family: Family,
-        familyTreeDrawer: FamilyTreeDrawer
+        familyTreeDrawer: FamilyTreeDrawer,
+        bloodFamilyId: MutableList<Int>
     ) {
         // Children or Twin
         val addingLayer = familyTreeDrawer.findStorageSize() - 1
-        val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson)
+        val parentLayer = familyTreeDrawer.findPersonLayer(parent)
 
         // Set Person node's indent
         addedPerson.setNodeMargin(siblings)
 
-        // Test Here
         // Edit the addingIndex
         val childrenLineLayer = addingLayer - 1
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
@@ -110,6 +111,64 @@ abstract class Node {
                 childrenList.forEachIndexed { pos, list ->
                     if (list.idCard == addedPerson.idCard) {
                         childrenLine = childrenLineStorage[index] as ChildrenLine
+                    }
+                }
+            }
+        }
+        val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine!!, childrenLineLayer)
+
+        // For the 4th Generation, when addingPerson's parent is the only child
+        val parentSib = parent.findSiblingByParent(family)
+        val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
+        if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+            childrenLineInd?.let { childrenLineInd ->
+                val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
+                    childrenLineLayer, 0, childrenLineInd - 1
+                )
+                val personLineIndSize = familyTreeDrawer.findPersonIndSize(
+                    addingLayer, 0, addingLayerSize
+                )
+                val lastAddingInd = childrenLineIndSize - (personLineIndSize - addingLayerSize)
+                if (childrenLineInd > addingLayerSize + 1) {
+                    for (i in addingLayerSize until lastAddingInd)
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            addingLayer, i, null, null
+                        )
+                } else {
+                    val anotherParent = addedPerson.findAnotherParent(
+                        parent, family
+                    )
+                    val parentChildren = parent.getChildrenId(anotherParent)
+                    var isOldestChild: Boolean
+                    if (parentChildren != null && parentChildren.isNotEmpty()) {
+                        isOldestChild = parentChildren[0] == addedPerson.idCard
+                        val bloodFParent = if (parent.isBloodFamily(bloodFamilyId)) parent
+                        else {
+                            addedPerson.findAnotherParent(parent, family)!!
+                        }
+                        val leftParent = childrenLine!!.parentList[0]
+
+                        // Number of person's index in the adding layer
+                        val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
+                            childrenLineLayer, 0, childrenLineInd - 1
+                        )
+                        val personLayerIndSize = familyTreeDrawer.findPersonIndSize(
+                            addingLayer, 0, addingLayerSize - 1
+                        )
+                        val replaceInd = if (addingLayerSize >= personLayerIndSize && addingLayerSize > 0)
+                            childrenLineInd else childrenLineInd - 1
+
+                        if (isOldestChild && leftParent == bloodFParent) {
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                addingLayer, replaceInd, null, null
+                            )
+                        } else if (isOldestChild && leftParent != bloodFParent) {
+                            val addingMore = childrenLineIndSize - personLayerIndSize
+                            for (i in 0 until addingMore)
+                                familyTreeDrawer.addFamilyStorageAtIndex(
+                                    addingLayer, addingLayerSize, null, null
+                                )
+                        }
                     }
                 }
             }
@@ -141,10 +200,10 @@ abstract class Node {
         val addingPersonSibNumb = (lastChildInd - firstChildInd) + 1
 
         // Adjust the grandparent position
-        val leftParentInd = familyTreeDrawer.findPersonInd(focusedPerson, parentLayer)
+        val leftParentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
         val addingPersonInd = familyTreeDrawer.findPersonInd(addedPerson, addingLayer)
         val addingMore = leftParentInd - childrenLineIndSize
-        var expectingPos = addingPersonInd + addingMore
+        var expectingPos: Int
 
         if (addingPersonSibNumb < 3 && addingMore >= 0) {
             childrenLine = familyTreeDrawer.findChildrenLine(
@@ -199,15 +258,16 @@ abstract class Node {
 
     fun separateParentSib(
         familyTreeDrawer: FamilyTreeDrawer,
-        focusedPerson: Person,
-        addedPerson: Person,
+        focusedPerson: Person, // Parent
+        addedPerson: Person, // Child
         parentLayer: Int,
         parentInd: Int,
-        family: Family
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ) {
         val familyTreeDrawer = familyTreeDrawer
         val parentChildren = focusedPerson.children
-        val isAddedPersonOldest = parentChildren!![0] == addedPerson.idCard.toInt()
+        val isAddedPersonOldest = parentChildren!![0] == addedPerson.idCard
 
         // Find index the addedPerson will be added.
         val addingLayer = familyTreeDrawer.findStorageSize() - 1
@@ -244,91 +304,20 @@ abstract class Node {
             else
                 parentInd + Math.abs(childrenLineInd - parentInd)
 
-            for (layer in parentLayer until marriageLineLayer + 1) {
-                val movingInd = if (layer == parentLayer) {
-                    parentInd
-                } else {
-                    marriageLineInd
-                }
-
-                for (index in parentInd until expectingInd) {
-                    if (movingInd != null) {
-                        familyTreeDrawer.addFamilyStorageReplaceIndex(
-                            layer,
-                            movingInd,
-                            null,
-                            null
-                        )
+            val parentIndSize = familyTreeDrawer.findPersonIndSize(parentLayer, 0, parentInd - 1)
+            if (parentIndSize != lastChildrenLineInd)
+                for (layer in parentLayer until marriageLineLayer + 1) {
+                    val movingInd = if (layer == parentLayer) {
+                        parentInd
+                    } else {
+                        marriageLineInd
                     }
-                }
-            }
 
-            // AddedPerson's parent adjusting zone.
-            // Extend addedPerson's parent children line and grandparent's line
-            // Extend the MarriageLineManager of AddedPerson's parent.
-            val parentLineLayer = parentLayer - 1
-
-            // Find the targetParent between parent1 and parent2
-            // val anotherParent = findAnotherParent(addedPerson, focusedPerson, family)
-            val targetPerson: Person = if (anotherParent != null)
-                findTargetParent(
-                    parentLayer - 1, anotherParent!!, focusedPerson!!, familyTreeDrawer
-                )
-            else
-                focusedPerson
-
-            // Object Visualization
-            var childrenLine = ChildrenLine()
-            val previousChildrenLine = familyTreeDrawer.findChildrenLine(
-                parentLineLayer, targetPerson
-            )
-
-            if (previousChildrenLine != null) {
-                childrenLine = previousChildrenLine
-            }
-
-            // Update drawParentSibListInd
-            val childrenParentLineLayer = parentLayer - 1
-            val parentSib = findParentSibIdInd(
-                familyTreeDrawer,
-                addedPerson,
-                targetPerson!!,
-                parentLayer
-            )
-
-            val parentSibId = parentSib[0]
-            val parentSibInd = parentSib[1]
-
-            // Move the parent of parent's position (the layers are above the parent layer)
-            // Find whether the addingPerson has grandparent or not
-            val hasGrandParent = parentLayer >= 3
-
-            if (hasGrandParent) {
-                // Find the left-hand parent of parent's addingPerson
-                val grandParentLayer = parentLayer - 3
-                val leftGrandPa = childrenLine.parentList[0]
-                val leftGrandPaInd = familyTreeDrawer.findPersonInd(leftGrandPa, grandParentLayer)
-
-                // Find how many index leftGrandPaInd has to move
-                val parentSibNumb = parentSibId.size
-                val parentSibIndLength = parentSibInd[parentSibNumb - 1] - parentSibInd[0] + 1
-                var expectingMoreNode = 0
-                if (parentSibIndLength > 3)
-                    expectingMoreNode = if (parentSibIndLength % 2 == 0) (parentSibIndLength / 2) - 1
-                    else
-                        (floor(parentSibIndLength / 2.0) - 1).toInt()
-
-                // Find expecting the parent of the parent position
-                val expectingPos = parentSibInd[0] + expectingMoreNode
-                val addingEmptyNodes = Math.abs(leftGrandPaInd - expectingPos)
-
-                // Moving the parent position
-                if (addingEmptyNodes > 0) {
-                    for (i in 0 until addingEmptyNodes) {
-                        for (j in grandParentLayer + 1 downTo 0) {
+                    for (index in parentInd until expectingInd) {
+                        if (movingInd != null) {
                             familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                j,
-                                leftGrandPaInd,
+                                layer,
+                                movingInd,
                                 null,
                                 null
                             )
@@ -336,10 +325,26 @@ abstract class Node {
                     }
                 }
 
-                childrenLine.extendLine(
-                    familyTreeDrawer,
-                    childrenParentLineLayer, // the childrenLine above the parent layer
-                    parentSibInd
+            // AddedPerson's parent adjusting zone.
+            // Extend addedPerson's parent children line and grandparent's line
+            // Extend the MarriageLineManager of AddedPerson's parent.
+            val targetParent: Person = if (anotherParent != null)
+                findTargetParent(
+                    parentLayer - 1, anotherParent!!, focusedPerson!!, familyTreeDrawer
+                )
+            else
+                focusedPerson
+
+            // Move the parent of parent's position (the layers are above the parent layer)
+            // Find whether the addingPerson has grandparent or not
+            val hasGrandParent = parentLayer >= 3
+            if (hasGrandParent) {
+                familyTreeDrawer.adjustUpperLayerPos(
+                    addedPerson,
+                    targetParent,
+                    parentLayer,
+                    family,
+                    bloodFamilyId
                 )
             }
         } else if (isAddedPersonOldest && parentInd >= addedPersonInd) {
@@ -356,9 +361,7 @@ abstract class Node {
 
             var expectingMoreNode = 0
             if (addingPersonSibNumb > 3) {
-                expectingMoreNode = if (addingPersonSibNumb % 2 == 0) (addingPersonSibNumb / 2) - 1
-                else
-                    (floor(addingPersonSibNumb / 2.0) - 1).toInt()
+                expectingMoreNode = findMovingNodeNumb(addingPersonSibNumb)
             }
 
             // Find parent index
@@ -395,14 +398,57 @@ abstract class Node {
         }
     }
 
-    fun getLineType(
+    fun separateParent4Gen(
+        familyTreeDrawer: FamilyTreeDrawer,
+        parent: Person,
+        focusedPerson: Person,
+        addedPerson: Person,
+        parentLayer: Int,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
+    ) {
+        val childrenLineLayer = parentLayer + 2
+        val childrenLine = familyTreeDrawer.findChildrenLine(childrenLineLayer, focusedPerson)!!
+        val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine, childrenLineLayer)!!
+
+        // Check the right-hand element of the childrenLine
+        if (childrenLineInd + 1 < familyTreeDrawer.findStorageLayerSize(childrenLineLayer)) {
+            val nextElement = familyTreeDrawer.getPersonLayerInd(
+                childrenLineLayer, childrenLineInd + 1
+            )
+            if (nextElement !is EmptyNode) {
+                // Rearrange all the layers above the children line
+                // Move the parent's children line and the parent's marriage line
+                var movingInd = childrenLineInd + 1
+                for (i in childrenLineLayer downTo childrenLineLayer - 2) {
+                    if (i == parentLayer)
+                        movingInd = familyTreeDrawer.findChildrenLineIndSize(
+                            childrenLineLayer, 0, childrenLineInd
+                        )
+
+                    familyTreeDrawer.addFamilyStorageReplaceIndex(
+                        i, movingInd, null, null
+                    )
+                }
+
+                // Adjust all the layer above the parent layer
+                familyTreeDrawer.adjustUpperLayerPos(
+                    addedPerson,
+                    parent,
+                    parentLayer,
+                    family,
+                    bloodFamilyId
+                )
+            }
+        }
+    }
+
+    fun moveChildrenLine(
         familyTreeDrawer: FamilyTreeDrawer,
         childrenLineLayer: Int,
         addingEmptyNodes: Int,
-        extraNode: Int,
-        childrenListId: List<Int>,
         focusedPerson: Person
-    ): Any? {
+    ) {
         val emptyNodeCount = familyTreeDrawer.findNumberOfEmptyNodePerson(childrenLineLayer)
         var line: Any? = null
         if (addingEmptyNodes == 0 || emptyNodeCount == 0) {
@@ -428,35 +474,6 @@ abstract class Node {
                 childrenLineLayer
             )
         }
-
-        return line
-    }
-
-    private fun getGrandParentInd(
-        familyTreeDrawer: FamilyTreeDrawer,
-        grandParentLayer: Int,
-        focusedPerson: Person
-    ): Int? {
-        val grandFatherId = focusedPerson.father
-        val grandMotherId = focusedPerson.mother
-        var grandFatherInd: Int? = null
-        var grandMotherInd: Int? = null
-        var targetParentInd: Int? = null
-
-        if (grandFatherId != null)
-            grandFatherInd = familyTreeDrawer.findPersonIndById(grandFatherId, grandParentLayer)
-
-        if (grandMotherId != null)
-            grandMotherInd = familyTreeDrawer.findPersonIndById(grandMotherId, grandParentLayer)
-
-        if (grandFatherInd != null && grandMotherInd != null)
-            targetParentInd = Math.min(grandFatherInd, grandMotherInd)
-        else if (grandFatherInd != null)
-            targetParentInd = grandFatherInd
-        else if (grandMotherInd != null)
-            targetParentInd = grandMotherInd
-
-        return targetParentInd
     }
 
     fun findPersonSibListIdInd(
@@ -492,74 +509,6 @@ abstract class Node {
         return result
     }
 
-    fun findParentSibIdInd(
-        familyTreeDrawer: FamilyTreeDrawer,
-        addedPerson: Person,
-        parent: Person,
-        parentLayer: Int
-    ): MutableList<MutableList<Int>> {
-        val drawParentSibList: MutableList<MutableList<Int>> = mutableListOf()
-        val drawParentSibListId: MutableList<Int> = mutableListOf()
-        val drawParentSibListInd: MutableList<Int> = mutableListOf()
-        val parentLayer1: Int = when (parentLayer) {
-            0 -> parentLayer
-            else -> parentLayer - 3
-        }
-        val parentLayer2: Int = when (parentLayer) {
-            0 -> parentLayer + 3
-            else -> parentLayer
-        }
-
-        var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, parentLayer1, parent)
-
-        if (targetParentInd == null && parentLayer1 > 0) {
-            val addPersonFather = addedPerson.father
-            val addPersonMother = addedPerson.mother
-            // targetParentId = new FocusedPerson's Id
-            val targetParentId = if (parent.idCard == addPersonFather) {
-                addPersonMother
-            } else {
-                addPersonFather
-            }
-
-            // targetParent = new FocusedPerson
-            val targetPerson = familyTreeDrawer.getPersonById(targetParentId!!, parentLayer)
-            targetParentInd = getGrandParentInd(familyTreeDrawer, parentLayer1, targetPerson!!)
-        } else if (targetParentInd == null && parentLayer1 == 0) {
-            // Use in "FemaleNode"
-            targetParentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
-        }
-
-        val grandParent: Person?
-        grandParent = familyTreeDrawer.getPersonLayerInd(
-            parentLayer1, targetParentInd!!
-        ) as Person
-
-        val parentSibListId = grandParent!!.children!!
-        val childrenParentLayer = familyTreeDrawer.getPersonLayer(parentLayer2)
-        childrenParentLayer.forEachIndexed { index, element ->
-            if (element is Person) {
-                parentSibListId.forEach { id ->
-                    if (element.idCard == id) {
-                        drawParentSibListId.add(id)
-                    }
-                }
-            }
-        }
-
-        drawParentSibListId.forEach { id ->
-            drawParentSibListInd.add(
-                familyTreeDrawer.findPersonIndById(
-                    id, parentLayer2
-                )
-            )
-        }
-        drawParentSibList.add(drawParentSibListId)
-        drawParentSibList.add(drawParentSibListInd)
-
-        return drawParentSibList
-    }
-
     fun findParentSibList(drawParentSibListId: MutableList<Int>, family: Family): MutableList<Person> {
         val parentSibList: MutableList<Person> = mutableListOf()
         drawParentSibListId.forEach {
@@ -570,10 +519,10 @@ abstract class Node {
         return parentSibList
     }
 
-    private fun findTargetParent(
+    private fun findTargetParentOfParent(
         parentLayer: Int,
-        addedPerson: Person, // child
-        focusedPerson: Person, // parent
+        child: Person, // child
+        parent: Person, // parent
         family: Family,
         familyTreeDrawer: FamilyTreeDrawer
     ): Person? {
@@ -583,19 +532,19 @@ abstract class Node {
             else -> parentLayer - 3
         }
 
-        var targetParentInd: Int? = getGrandParentInd(familyTreeDrawer, targetLayer, focusedPerson)
+        var targetParentInd: Int? = familyTreeDrawer.getGrandParentInd(targetLayer, parent)
         val anotherParent: Person?
         if (targetParentInd == null) {
-            anotherParent = addedPerson.findAnotherParent(focusedPerson, family)
+            anotherParent = child.findAnotherParent(parent, family)
             if (anotherParent != null)
-                targetParentInd = getGrandParentInd(familyTreeDrawer, targetLayer, anotherParent)
+                targetParentInd = familyTreeDrawer.getGrandParentInd(targetLayer, anotherParent)
         }
 
         targetParent = if (targetParentInd == null) {
-            val addPersonFather = addedPerson.father
-            val addPersonMother = addedPerson.mother
+            val addPersonFather = child.father
+            val addPersonMother = child.mother
             // targetParentId = new FocusedPerson's Id
-            val targetParentId = if (focusedPerson.idCard == addPersonFather) {
+            val targetParentId = if (parent.idCard == addPersonFather) {
                 addPersonMother
             } else {
                 addPersonFather
@@ -612,11 +561,11 @@ abstract class Node {
 
     private fun findTargetParent(
         childrenLineLayer: Int, // ChildrenLine under the parent 1 and parent 2
-        addedPerson: Person, // Parent 1
-        focusedPerson: Person, // Parent 2
+        parent1: Person, // Parent 1
+        parent2: Person, // Parent 2
         familyTreeDrawer: FamilyTreeDrawer
     ): Person {
-        var targetPerson: Person = addedPerson
+        var targetPerson: Person = parent1
 
         // Find the children line
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
@@ -626,12 +575,12 @@ abstract class Node {
             if (any is ChildrenLine)
                 any.childrenList.forEach {
                     when (it) {
-                        focusedPerson -> {
-                            targetPerson = focusedPerson
+                        parent2 -> {
+                            targetPerson = parent2
                             return@forEach
                         }
-                        addedPerson -> {
-                            targetPerson = addedPerson
+                        parent1 -> {
+                            targetPerson = parent1
                             return@forEach
                         }
                     }
@@ -645,16 +594,17 @@ abstract class Node {
         familyTreeDrawer: FamilyTreeDrawer,
         addedPerson: Person,
         focusedPerson: Person,
+        parent: Person,
+        anotherParent: Person?,
         addingEmptyNodes: Int,
         adjustLayer: Int,
         leftParentInd: Int,
         childrenLine: ChildrenLine,
         family: Family,
+        bloodFamilyId: MutableList<Int>,
         funLabel: FunLabel
     ) {
-
         if (addingEmptyNodes > 1) {
-            // Find the first parent sib index
             val parentList = childrenLine.parentList
             val targetParent = findTargetParent(
                 adjustLayer - 1,
@@ -690,117 +640,38 @@ abstract class Node {
                     )
             }
         } else if (addingEmptyNodes == 1) {
-            // When the children line of the parent is the same index of the grandparent index
-            // Then more than one layer will be moved.
-            // Find the parent who is the blood family
-
-            // adjustLayer = parentLayer when it's from addMiddleChild()
-            val targetPerson: Person? = when (funLabel) {
-                FunLabel.MOVE_PARENT_POSITION -> {
-                    findTargetParent(
-                        adjustLayer, addedPerson, focusedPerson, family, familyTreeDrawer
-                    )
-                }
-                FunLabel.ADD_MID_CHILD -> {
-                    focusedPerson
-                }
-            }
-
-            // Find the children line that has the targetParent
-//            val childrenLine: ChildrenLine?
-            var childrenLineInd: Int? = null
-            if (targetPerson != null) {
-                val findingPerson: Person?
-                val parentChildrenLine: Int
-                when (adjustLayer) {
-                    0 -> {
-                        parentChildrenLine = adjustLayer + 2
-                        findingPerson = focusedPerson
-                    }
-                    else -> {
-                        parentChildrenLine = adjustLayer - 1
-                        findingPerson = targetPerson
-                    }
-                }
-                val childrenLineTmp = familyTreeDrawer.findChildrenLine(
-                    parentChildrenLine,
-                    findingPerson
-                )
-
-                if (childrenLineTmp != null)
-                    childrenLineInd = familyTreeDrawer.findChildrenLineInd(
-                        childrenLineTmp, parentChildrenLine
-                    )
-            }
-
-            val startingLayer: Int
-            val endingLayer: Int
+            // When the children line of the parent is the same index of the grandparent index.
             when (funLabel) {
                 FunLabel.MOVE_PARENT_POSITION -> {
-                    startingLayer = when (adjustLayer) {
-                        0 -> adjustLayer
-                        else -> adjustLayer - 3
-                    }
-                    endingLayer = when (adjustLayer) {
-                        0 -> adjustLayer + 2
-                        else -> adjustLayer + 2
-                    }
+                    // find targetParent for each layer for moving all the layer above
+                    val targetPerson = focusedPerson.getTargetParent(family, bloodFamilyId)
+                    familyTreeDrawer.getMovingInd(
+                        focusedPerson,
+                        targetPerson,
+                        adjustLayer,
+                        family,
+                        addingEmptyNodes,
+                        bloodFamilyId
+                    )
                 }
-
                 FunLabel.ADD_MID_CHILD -> {
                     // adjustLayer = parentLayer
-                    startingLayer = adjustLayer + 3
-                    endingLayer = adjustLayer + 4
-                }
-            }
-
-            for (j in startingLayer until endingLayer) {
-                var movingInd: Int = leftParentInd
-
-                when (funLabel) {
-                    FunLabel.MOVE_PARENT_POSITION -> {
-                        movingInd = leftParentInd
-                        if (j >= adjustLayer)
-                            movingInd = leftParentInd
-                        else if (j < adjustLayer && j >= adjustLayer - 3 && childrenLineInd != null)
-                            movingInd = childrenLineInd!!
-                    }
-                    FunLabel.ADD_MID_CHILD -> {
-                        movingInd = familyTreeDrawer.findPersonInd(addedPerson, adjustLayer + 2)
-                    }
-                }
-
-
-                familyTreeDrawer.addFamilyStorageReplaceIndex(
-                    j,
-                    movingInd,
-                    null,
-                    null
-                )
-            }
-        }
-    }
-
-    fun findPersonSib(
-        familyTreeDrawer: FamilyTreeDrawer,
-        addedPerson: Person,
-        childrenLineLayer: Int
-    ): MutableList<Person>? {
-        var childrenList: ArrayList<Person>?
-        val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
-        var childrenLine: ChildrenLine? = null
-        childrenLineStorage.forEachIndexed { index, line ->
-            if (line is ChildrenLine) {
-                childrenList = line.childrenList
-                childrenList!!.forEachIndexed { pos, list ->
-                    if (list.idCard == addedPerson.idCard) {
-                        childrenLine = childrenLineStorage[index] as ChildrenLine
+                    val startingLayer = adjustLayer + 3
+                    val endingLayer = adjustLayer + 4
+                    for (layer in endingLayer - 1 downTo startingLayer) {
+                        var movingInd = familyTreeDrawer.findPersonInd(
+                            addedPerson, adjustLayer + 2
+                        )
+                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                            layer,
+                            movingInd,
+                            null,
+                            null
+                        )
                     }
                 }
             }
         }
-
-        return childrenLine!!.childrenList
     }
 
     fun movingParentPosition(
@@ -810,7 +681,8 @@ abstract class Node {
         parent: Person,
         addingLayer: Int,
         parentLayer: Int,
-        family: Family
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ) {
         val childrenLineLayer = addingLayer - 1
         // Find the target parent
@@ -830,10 +702,17 @@ abstract class Node {
             leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
 
             // Find the focusedPerson sib
-            val focusedPersonSib = findParentSibIdInd(
-                familyTreeDrawer, focusedPerson!!, parent!!, parentLayer
+            val focusedPersonSib = familyTreeDrawer.findParentSibIdInd(
+                focusedPerson!!, parent!!, parentLayer
             )
-            val focusedPersonSibInd = focusedPersonSib[1]
+            val anotherParent = focusedPerson.findAnotherParent(parent, family)
+
+            val parentChildren = parent.findChildrenListIdInd(
+                anotherParent, parentLayer, family, familyTreeDrawer
+            )
+
+//            val focusedPersonSibInd = focusedPersonSib[1]
+            val focusedPersonSibInd = parentChildren?.get(1) as MutableList<Int>
             val oldestFocusedInd = focusedPersonSibInd[0]
             val youngestFocusedInd = focusedPersonSibInd[focusedPersonSibInd.size - 1]
             val addingPersonSibNumb = youngestFocusedInd - oldestFocusedInd + 1
@@ -844,9 +723,9 @@ abstract class Node {
                 else
                     (floor(addingPersonSibNumb / 2.0) - 1).toInt()
 
-
-            // Adjust the grandparent position
+            // Adjust the above layer position
             val expectingPos = childrenLineInd!! + expectingMoreNode
+
             if (expectingPos != leftParentInd) {
                 val addingEmptyNodes = Math.abs(leftParentInd!! - expectingPos)
                 val isAdjustPos = (leftParentInd - childrenLineInd) - 1 != expectingMoreNode
@@ -855,33 +734,24 @@ abstract class Node {
                     adjustParentChildrenLinePos(
                         familyTreeDrawer,
                         addedPerson,
-                        focusedPerson!!,
+                        focusedPerson,
+                        parent,
+                        anotherParent,
                         addingEmptyNodes,
                         parentLayer,
                         leftParentInd,
                         parentChildrenLine,
                         family,
+                        bloodFamilyId,
                         FunLabel.MOVE_PARENT_POSITION
                     )
                 }
 
-                // Find the parent sib
-                val leftGrandparent = parentChildrenLine.parentList[0]
-                val parentSibList = findParentSibIdInd(
-                    familyTreeDrawer, parent, leftGrandparent, parentLayer
-                )
-
-                // Update ParentSibListInd
-                val parentSibListInd = parentSibList[1]
-
+                // Update the children line above the focusedPerson
                 parentChildrenLine.extendLine(
                     familyTreeDrawer,
                     childrenLineLayer, // the childrenLine above the parent layer
-                    parentSibListInd
-                )
-
-                familyTreeDrawer.replaceFamilyStorageLayer(
-                    childrenLineLayer, childrenLineInd, null, parentChildrenLine
+                    focusedPersonSibInd
                 )
             }
         }

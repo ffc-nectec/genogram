@@ -17,6 +17,7 @@
 
 package ffc.genogram
 
+import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.Relationship
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.cleanUpEmptyStack
@@ -89,21 +90,101 @@ class Person(
 
     // Whether the person has any child with the relatedPerson,
     // and remove the parents (person and the related person) out of children'stack
-    fun haveChildren(relatedPerson: Person): ArrayList<Int>? {
-
+    fun getChildrenId(relatedPerson: Person?): ArrayList<Int>? {
         return if (children != null) {
             val childrenList: ArrayList<Int>? = arrayListOf()
             children!!.forEach { child ->
-                relatedPerson.children!!.find { it == child }?.let {
-                    childrenList!!.add(it)
+                relatedPerson?.let {
+                    it.children!!.find { it == child }?.let {
+                        childrenList!!.add(it)
+                    }
+
+                    removeLinkedStack(childrenList!!)
+                    relatedPerson.removeLinkedStack(childrenList)
                 }
             }
 
-            removeLinkedStack(childrenList!!)
-            relatedPerson.removeLinkedStack(childrenList)
             childrenList
         } else
             null
+    }
+
+    fun findChildrenListIdInd(
+        relatedPerson: Person?,
+        parentLayer: Int,
+        family: Family,
+        familyTreeDrawer: FamilyTreeDrawer
+    ): MutableList<Any>? {
+        val childrenLayer = parentLayer + 3
+        val idIndList = mutableListOf<Any>()
+        val idList = mutableListOf<Int>()
+        val indList = mutableListOf<Int>()
+        val personList = mutableListOf<Person>()
+
+        // Identify a father and mother
+        var father: Person? = null
+        var mother: Person? = null
+        when {
+            relatedPerson == null -> {
+                when (gender) {
+                    GenderLabel.MALE -> father = this
+                    GenderLabel.FEMALE -> mother = this
+                }
+            }
+            relatedPerson != null -> {
+                when (gender) {
+                    GenderLabel.MALE -> {
+                        father = this
+                        mother = relatedPerson
+                    }
+                    GenderLabel.FEMALE -> {
+                        father = relatedPerson
+                        mother = this
+                    }
+                }
+            }
+        }
+
+        // Find children list
+        when {
+            father != null && mother == null -> {
+                father.children?.forEach { childId ->
+                    val child = family.findPerson(childId)!!
+                    val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                    idList.add(childId)
+                    indList.add(childInd)
+                    personList.add(child)
+                }
+            }
+            father != null && mother != null -> {
+                father.children?.forEach { childId ->
+                    val child = family.findPerson(childId)
+                    child?.let {
+                        val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                        if (child.mother == mother.idCard) {
+                            idList.add(childId)
+                            indList.add(childInd)
+                            personList.add(child)
+                        }
+                    }
+                }
+            }
+            father == null && mother != null -> {
+                mother.children?.forEach { childId ->
+                    val child = family.findPerson(childId)!!
+                    val childInd = familyTreeDrawer.findPersonInd(child, childrenLayer)
+                    idList.add(childId)
+                    indList.add(childInd)
+                    personList.add(child)
+                }
+            }
+        }
+
+        idIndList.add(idList)
+        idIndList.add(indList)
+        idIndList.add(personList)
+
+        return idIndList
     }
 
     // Remove the person(s) out of the stack
@@ -180,5 +261,71 @@ class Person(
         }
 
         return null
+    }
+
+    fun findSiblingByParent(family: Family): MutableList<Person> {
+        val siblingsList = mutableListOf<Person>()
+
+        if (father != null || mother != null)
+            family.members.forEach {
+                if (it != this && father == it.father && mother == it.mother) {
+                    siblingsList.add(it)
+                }
+            }
+
+        return siblingsList
+    }
+
+    fun findSiblingByDrawer(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int)
+            : MutableList<MutableList<out Any>> {
+        var childrenList: MutableList<Person>?
+        var childrenIndList: MutableList<Int> = mutableListOf()
+        val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
+        var childrenLine: ChildrenLine? = null
+        childrenLineStorage.forEachIndexed { index, line ->
+            if (line is ChildrenLine) {
+                childrenList = line.childrenList
+                childrenList!!.forEachIndexed { pos, list ->
+                    if (list.idCard == idCard) {
+                        childrenLine = childrenLineStorage[index] as ChildrenLine
+                        childrenIndList.add(pos)
+                    }
+                }
+            }
+        }
+
+        return mutableListOf(childrenLine!!.childrenList, childrenIndList)
+    }
+
+    fun isBloodFamily(bloodFamilyId: MutableList<Int>): Boolean {
+        return bloodFamilyId.firstOrNull { idCard == it } != null
+    }
+
+    fun getFather(family: Family): Person? = if (father != null) family.findPerson(father!!) else null
+
+    fun getMother(family: Family): Person? = if (mother != null) family.findPerson(mother!!) else null
+
+    fun getBloodFParent(family: Family, bloodFamilyId: MutableList<Int>): Person {
+        val father = getFather(family)
+        val mother = getMother(family)
+
+        return if (father != null) {
+            if (father.isBloodFamily(bloodFamilyId)) father else mother!!
+        } else {
+            mother!!
+        }
+    }
+
+    fun getLeftHandParent(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int): Person {
+        val childrenLine = familyTreeDrawer.findChildrenLine(
+            childrenLineLayer, this
+        )!!
+        return childrenLine.parentList[0]
+    }
+
+    fun getTargetParent(family: Family, bloodFamilyId: MutableList<Int>): Person {
+        val isFather = bloodFamilyId.find { id -> id == father }
+        return if (isFather != null) family.findPerson(father!!)!! else family.findPerson(mother!!)!!
+
     }
 }

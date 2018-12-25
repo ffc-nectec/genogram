@@ -29,7 +29,8 @@ class RelationshipFactory {
         family: Family,
         familyTreeDrawer: FamilyTreeDrawer,
         relationshipLabel: RelationshipLabel,
-        addLayer: Int
+        addLayer: Int,
+        keepBloodFamily: MutableList<Int>
     ): Relationship {
 
         var labelType: RelationshipLabel?
@@ -52,7 +53,9 @@ class RelationshipFactory {
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND
-                MarriageLineManager(familyTreeDrawer, labelType, addLayer, focusedPerson, family)
+                MarriageLineManager(
+                    familyTreeDrawer, labelType, addLayer, focusedPerson, family, keepBloodFamily
+                )
             }
         } else {
             // TODO: Other relationship ig. Enemy
@@ -63,9 +66,10 @@ class RelationshipFactory {
     fun getLine(
         focusedListPerson: MutableList<Person>,
         parent: Person,
+        keepBloodFamily: MutableList<Int>,
         family: Family,
         familyTreeDrawer: FamilyTreeDrawer
     ): Relationship {
-        return ChildrenLineManager(focusedListPerson, parent, family, familyTreeDrawer)
+        return ChildrenLineManager(focusedListPerson, parent, keepBloodFamily, family, familyTreeDrawer)
     }
 }

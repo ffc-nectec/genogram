@@ -17,6 +17,7 @@
 
 package ffc.genogram.Util
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Node.EmptyNode
@@ -24,6 +25,19 @@ import ffc.genogram.Node.createGenderBorder
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.MarriageLine
+import kotlin.math.floor
+
+fun MutableList<Int>.addDescendentOf(head: Person, family: Family) {
+    head.children?.let { addAll(it) }
+    head.children?.forEach { person ->
+        family.findPerson(person)?.let {
+            addDescendentOf(family.findPerson(person)!!, family)
+        }
+    }
+}
+
+fun findMovingNodeNumb(addingPersonSibNumb: Int): Int = if (addingPersonSibNumb % 2 == 0)
+    (addingPersonSibNumb / 2) - 1 else (floor(addingPersonSibNumb / 2.0) - 1).toInt()
 
 fun cleanUpEmptyStack(stack: MutableList<Int>) = if (stack.isEmpty()) null else stack
 

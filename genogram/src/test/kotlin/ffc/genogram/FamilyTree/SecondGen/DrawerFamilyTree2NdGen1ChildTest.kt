@@ -86,7 +86,7 @@ class DrawerFamilyTree2NdGen1ChildTest {
             [        ,     |_________|   ]
             [        ,          |        ]
             [[ Bill ],      ( Lisa )     ]
-            [    |_____________|   ]
+            [    |_____________|         ]
         """.trimIndent()
     }
 }
