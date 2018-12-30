@@ -328,4 +328,5 @@ class Person(
         return if (isFather != null) family.findPerson(father!!)!! else family.findPerson(mother!!)!!
 
     }
+
 }

@@ -44,9 +44,7 @@ class FamilyTree(var family: Family) {
 
         return if (focusedPerson == null) {
             familyTreePic
-        } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) &&
-            (family.bloodFamily == null)
-        ) {
+        } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) && (family.bloodFamily == null)) {
             familyTreePic
         } else {
             print("LOADING...\n")

@@ -1,5 +1,6 @@
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.Node.Node
 import ffc.genogram.Person
@@ -55,11 +56,11 @@ class ChildrenLine : Line() {
     fun extendLine(
         familyTreeDrawer: FamilyTreeDrawer,
         extendLayer: Int,
-        childrenListInd: MutableList<Int>
+        childrenListInd: MutableList<Int>,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ) {
-
         childrenNumb = childrenListInd.size
-
         // Add Children sign spot ','
         val arrayMargin = 2
         val emptyNodeSize = (Node.nodeSize + Node.nodeBorderSize) + arrayMargin
@@ -74,7 +75,6 @@ class ChildrenLine : Line() {
             lineMarkPos.add(markPos.toInt())
         }
         imageLength = lineMarkPos[lineMarkPos.size - 1] + halfEmptyNodeSize
-
         // Add Children Sign '^'
         // Find the parent of addedPerson
         var parentChildrenLineInd: Int? = null
@@ -100,7 +100,8 @@ class ChildrenLine : Line() {
             }
         }
 
-        if (parentChildrenLineInd != null) {
+        val doExtend = childrenListInd[childrenNumb - 1] - childrenListInd[0] + 1 > 3
+        if (parentChildrenLineInd != null && doExtend) {
             // For "separateParentSib"
             // Find the grandparent's index (the grandparent's index is equal to the grandparent
             // marriage line's index.

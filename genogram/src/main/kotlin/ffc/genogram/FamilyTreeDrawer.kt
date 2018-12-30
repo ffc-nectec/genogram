@@ -272,7 +272,8 @@ class FamilyTreeDrawer {
                                 singleChildNumb++
                             }
                             else -> {
-                                childrenNumb += any.childrenNumb
+//                                childrenNumb += any.childrenNumb
+                                childrenNumb += (any.imageLength / (Node.nodeSize + Node.nodeBorderSize)).toInt()
                             }
                         }
                     } else if (any is EmptyNode) {
@@ -749,7 +750,6 @@ class FamilyTreeDrawer {
     fun findChildrenLine(childrenLineLayer: Int, child: Person): ChildrenLine? {
         val childrenLineStorage = personFamilyStorage[childrenLineLayer]
         var childrenLine: ChildrenLine? = null
-
         childrenLineStorage.forEachIndexed { index, any ->
             if (any is ChildrenLine) {
                 val childrenList = any.childrenList
@@ -976,16 +976,19 @@ class FamilyTreeDrawer {
                     }
                 }
             }
-        } else {
-            val bloodFGrandPa = if (leftGrandPa.isBloodFamily(bloodFamilyId)) leftGrandPa else
-                parent.findAnotherParent(leftGrandPa, family)
         }
 
         if (generationNumber(parentLayer) < 3)
-            parentChildrenLine.extendLine(this, parentLayer - 1, parentSibInd)
+            parentChildrenLine.extendLine(
+                this,
+                parentLayer - 1,
+                parentSibInd,
+                family,
+                bloodFamilyId
+            )
     }
 
-    fun getMovingInd(
+    fun moveInd(
         child: Person, // focusedPerson
         movingPerson: Person,
         movingPersonLayer: Int,
@@ -1032,7 +1035,7 @@ class FamilyTreeDrawer {
             val targetParent = movingPerson.getTargetParent(family, bloodFamilyId)
             val targetParentLayer = findPersonLayer(targetParent)
 
-            getMovingInd(
+            moveInd(
                 movingPerson,
                 targetParent,
                 targetParentLayer,
@@ -1043,7 +1046,7 @@ class FamilyTreeDrawer {
         }
     }
 
-    fun moveParentnLindLayer(
+    fun moveParentnLineLayer(
         movingNumb: Int,
         addingPersonIndSize: Int,
         parent1: Person,
@@ -1060,11 +1063,138 @@ class FamilyTreeDrawer {
             addFamilyStorageReplaceIndex(
                 parentLayer, addingPersonIndSize, null, null
             )
+
             // Move the parent's marriage line layer and children line
             for (layer in parentMarriageLineLayer..parentMarriageLineLayer + 1)
                 addFamilyStorageReplaceIndex(
                     layer, parentMarriageLineInd, null, null
                 )
         }
+    }
+
+    fun moveRightParentnLineLayer(
+        movingNumb: Int,
+        addingPersonIndSize: Int,
+        parent1: Person,
+        parent2: Person,
+        parentLayer: Int
+    ) {
+        // Find the uncle/aunt who will be moved
+        val storageSize = findStorageLayerSize(parentLayer)
+        if (storageSize > addingPersonIndSize) {
+            // Prepare for moving the line that related to the movedPerson;
+            // MarriageLine and childrenLine if he/she has.
+            val movedPerson = getPersonLayerInd(parentLayer, addingPersonIndSize) as Person
+            val movingPSpouseId = if (storageSize > addingPersonIndSize + 1) {
+                val nextPerson = getPersonLayerInd(parentLayer, addingPersonIndSize + 1) as Person
+                if (movedPerson.gender == GenderLabel.MALE) {
+                    movedPerson.wife?.firstOrNull { it == nextPerson.idCard }
+                } else {
+                    // movedPerson.gender == FEMALE
+                    movedPerson.husband?.firstOrNull { it == nextPerson.idCard }
+                }
+            } else null
+            val movingPSpouse = movingPSpouseId?.let {
+                getPersonById(movingPSpouseId, parentLayer)
+            }
+
+            // Moving process
+            for (i in 0 until movingNumb) {
+                // Move the movedPerson layer first
+                addFamilyStorageReplaceIndex(
+                    parentLayer, addingPersonIndSize, null, null
+                )
+
+                // Move the line that related to the movedPerson; MarriageLine and childrenLine if he/she has.
+                if (movingPSpouse != null) {
+                    val mPersonMarriageLineLayer = parentLayer + 1
+                    val mPersonMarriageLine = findMarriageLine(
+                        mPersonMarriageLineLayer, movedPerson, movingPSpouse
+                    )!!
+                    val mPersonMarriageLineInd = findLineInd(
+                        mPersonMarriageLine, mPersonMarriageLineLayer
+                    )!!
+                    // Move the marriage line
+                    addFamilyStorageReplaceIndex(
+                        mPersonMarriageLineLayer, mPersonMarriageLineInd, null, null
+                    )
+                    // Move the children line under the movedPerson
+                    val childrenLineLayer = mPersonMarriageLineLayer + 1
+                    val childrenLine = findChildrenLineByParent(
+                        movedPerson, movingPSpouse, childrenLineLayer
+                    )
+
+                    childrenLine?.let {
+                        val childrenLineInd = findChildrenLineInd(childrenLine, childrenLineLayer)!!
+                        val childrenLineIndSize = findChildrenLineIndSize(
+                            childrenLineLayer, 0, childrenLineInd - 1
+                        )
+                        val movedPersonInd = findPersonInd(movedPerson, parentLayer)
+                        val movedPersonIndSize = findPersonIndSize(parentLayer, 0, movedPersonInd - 1)
+                        if (childrenLineIndSize < movedPersonIndSize)
+                            addFamilyStorageReplaceIndex(
+                                childrenLineLayer, childrenLineInd, null, null
+                            )
+
+                        /*if (parent1.firstname == "Ted" && parent2.firstname == "Kitty") {
+                            print("------ MaleNode 119 ------\n")
+                            print("movedPerson: ${movedPerson.firstname}\n")
+                            print("movingPSpouse: ${movingPSpouse.firstname}\n")
+                            print("movedPersonIndSize: $movedPersonIndSize\n")
+                            print("childrenLineInd: $childrenLineInd\n")
+                            print("childrenLineIndSize: $childrenLineIndSize\n")
+                            print("...............\n")
+                            val canvasB = displayObjectResult(this)
+                            print(canvasB.toString())
+                            print("---------------------------------------\n")
+                        }*/
+                    }
+                }
+            }
+        }
+    }
+
+    fun findLeftParent(child: Person, parent: Person, parentLayer: Int, family: Family): Person {
+        val anotherParent = child.findAnotherParent(parent, family)
+        val parentInd = findPersonInd(parent, parentLayer)
+
+        return if (anotherParent != null) {
+            val anotherParentInd = anotherParent.let {
+                findPersonInd(anotherParent, parentLayer)
+            }
+            if (parentInd < anotherParentInd)
+                parent
+            else
+                anotherParent
+        } else {
+            parent
+        }
+    }
+
+    fun findChildrenLineByParent(
+        parent1: Person, parent2: Person?, childrenLineLayer: Int
+    ): ChildrenLine? {
+        val lineStorage = getPersonLayer(childrenLineLayer)
+
+        lineStorage.forEachIndexed { index, line ->
+            if (line is ChildrenLine) {
+                if (line.parentList.size == 2) {
+                    var hasParent1 = line.parentList.firstOrNull {
+                        it == parent1
+                    } != null
+                    var hasParent2 = line.parentList.firstOrNull {
+                        it == parent2
+                    } != null
+                    if (hasParent1 && hasParent2) return lineStorage[index] as ChildrenLine
+                } else {
+                    var hasParent1 = line.parentList.firstOrNull { person ->
+                        person == parent1
+                    } != null
+                    if (hasParent1) return lineStorage[index] as ChildrenLine
+                }
+            }
+        }
+
+        return null
     }
 }

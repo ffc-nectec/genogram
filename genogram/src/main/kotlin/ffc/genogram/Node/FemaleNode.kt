@@ -56,7 +56,7 @@ class FemaleNode(
                 if (hasRightHandPeople) {
                     // FocusedPerson(addedPerson's husband) has older siblings
                     // Reorder the array's position
-                    val addingInd = familyTreeDrawer.findPersonInd(
+                    var addingInd = familyTreeDrawer.findPersonInd(
                         focusedPerson!!, addingLayer
                     )
 
@@ -81,6 +81,7 @@ class FemaleNode(
                         // Separate AddedPerson's parent from their uncles/aunts by adding empty node(s).
                         // When the person in the 4th generation get married
                         if (parent != null && focusedPerson != null) {
+                            // Extend only their parent layer
                             separateParent4Gen(
                                 familyTreeDrawer,
                                 parent!!,
@@ -131,16 +132,31 @@ class FemaleNode(
 
                         // Extend the children line
                         if (childrenNumber > 2) {
-
                             var childrenLine = familyTreeDrawer.findChildrenLine(
                                 childrenLineLayer, focusedPerson!!
-                            )
+                            )!!
 
-                            childrenLine?.extendLine(
+                            childrenLine.extendLine(
                                 familyTreeDrawer,
                                 addingLayer - 1,
-                                childrenListInd
+                                childrenListInd,
+                                family,
+                                bloodFamilyId
                             )
+
+                            // Check
+                            /*if (addedPerson.firstname == "Cara") {
+                                print("------ Female 142 ------\n")
+                                print("add: ${addedPerson.firstname}\n")
+                                print("childrenNumber: $childrenNumber\n")
+                                print("childrenLine: $childrenLine\n")
+                                print("addingLayer: $addingLayer\n")
+                                print("childrenListInd: $childrenListInd\n")
+                                print("...............\n")
+                                val canvasB = displayObjectResult(familyTreeDrawer)
+                                print(canvasB.toString())
+                                print("---------------------------------------\n")
+                            }*/
                         }
                     }
                 } else if (!hasRightHandPeople) {
@@ -199,8 +215,8 @@ class FemaleNode(
                 val canvasB = displayObjectResult(familyTreeDrawer)
                 print(canvasB.toString())
                 print("---------------------------------------\n")
-            }
-*/
+            }*/
+
             // Children or Twin
             val parentLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             val parentInd = familyTreeDrawer.findPersonInd(focusedPerson!!, parentLayer)
@@ -230,7 +246,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Jane") {
+            /*if (addedPerson.firstname == "Kitty") {
                 print("------ After SeparateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
