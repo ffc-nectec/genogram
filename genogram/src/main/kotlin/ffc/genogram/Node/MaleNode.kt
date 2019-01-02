@@ -23,6 +23,7 @@ import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.Util.displayObjectResult
 
 class MaleNode(
     private var familyTreeDrawer: FamilyTreeDrawer,
@@ -66,12 +67,16 @@ class MaleNode(
                     )
 
                     // Find the focusedPerson sib
+                    var isOldestSib = false
+                    var isYoungestSib = false
                     val focusedSib = focusedPerson!!.findSiblingByDrawer(
                         familyTreeDrawer, addingLayer - 1
                     )
-                    val focusedSibObj = focusedSib[0] as MutableList<Person>
-                    val isOldestSib = focusedSibObj[0] == focusedPerson
-                    val isYoungestSib = focusedSibObj[focusedSibObj.size - 1] == focusedPerson
+                    focusedSib?.let {
+                        val focusedSibObj = focusedSib[0] as MutableList<Person>
+                        isOldestSib = focusedSibObj[0] == focusedPerson
+                        isYoungestSib = focusedSibObj[focusedSibObj.size - 1] == focusedPerson
+                    }
 
                     if (!leftHandNodes || isOldestSib) {
                         // FocusedPerson(the AddedPerson's wife) is the oldest daughter.
@@ -105,24 +110,46 @@ class MaleNode(
                         // (Special case) Add node AddedPerson node on the right of FocusedPerson.
                         familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
                     } else if (rightHandNodes && isYoungestSib) {
-                        // The node will be added on the right-hand side
-                        // Check
-                        isReplace = true
-                        familyTreeDrawer.replaceFamilyStorageLayer(
-                            addingLayer, addingInd + 1, nodeName, addedPerson
-                        )
-                        val parentLayer = addingLayer - 3
-                        val addedPersonInd = familyTreeDrawer.findPersonInd(addedPerson, addingLayer)
-                        val addedPersonIndSize = familyTreeDrawer.findPersonIndSize(
-                            addingLayer, 0, addedPersonInd - 1
-                        )
-                        val anotherParent = focusedPerson!!.findAnotherParent(parent!!, family)
+                        // If the addingInd is the empty node, it'll use replaceFamilyStorageLayer()
+                        val isEmptyNode =
+                            familyTreeDrawer.getPersonLayerInd(addingLayer, addingInd + 1) is EmptyNode
 
-                        // If it has the node on the right-hand side
-                        // We'll move that right-hand node's parent
-                        familyTreeDrawer.moveRightParentnLineLayer(
-                            1, addedPersonIndSize, parent!!, anotherParent!!, parentLayer
-                        )
+                        if (isEmptyNode) {
+                            isReplace = true
+                            familyTreeDrawer.replaceFamilyStorageLayer(
+                                addingLayer, addingInd + 1, nodeName, addedPerson
+                            )
+                        } else {
+                            isReplace = false
+                            // The node will be added on the right-hand side
+                            familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                addingLayer, addingInd, nodeName, addedPerson
+                            )
+
+                            val parentLayer = addingLayer - 3
+                            val addedPersonInd = familyTreeDrawer.findPersonInd(addedPerson, addingLayer)
+                            val addedPersonIndSize = familyTreeDrawer.findPersonIndSize(
+                                addingLayer, 0, addedPersonInd - 1
+                            )
+                            val anotherParent = focusedPerson!!.findAnotherParent(parent!!, family)
+
+                            // If it has the node on the right-hand side
+                            // We'll move that right-hand node's parent
+                            familyTreeDrawer.moveRightParentnLineLayer(
+                                1, addedPersonIndSize, parent!!, anotherParent!!, parentLayer
+                            )
+                        }
+
+                        // Check
+                        if (addedPerson.firstname == "Mike") {
+                            print("------ MaleNode 46 ------\n")
+                            print("add: ${addedPerson.firstname}\n")
+                            print("isEmptyNode: $isEmptyNode\n")
+                            print("...............\n")
+                            val canvasB = displayObjectResult(familyTreeDrawer)
+                            print(canvasB.toString())
+                            print("---------------------------------------\n")
+                        }
                     } else {
                         // FocusedPerson(the AddedPerson's wife) is the middle daughter.
                         // Add husband on the right hand of his wife.
@@ -311,24 +338,9 @@ class MaleNode(
                             )
 
                             if (previousObj !is EmptyNode && !isReplace) {
-                                /*familyTreeDrawer.moveParentnLineLayer(
-                                    1, addingPersonIndSize, parent!!, anotherParent, parentLayer
-                                )*/
-
                                 familyTreeDrawer.moveRightParentnLineLayer(
                                     1, addingPersonIndSize, parent!!, anotherParent, parentLayer
                                 )
-
-                                /*if (addedPerson.firstname == "Andrew") {
-                                    print("------ MaleNode 119 ------\n")
-                                    print("add: ${addedPerson.firstname}\n")
-                                    print("...............\n")
-                                    val canvasB = displayObjectResult(familyTreeDrawer)
-                                    print(canvasB.toString())
-                                    print("---------------------------------------\n")
-                                }*/
-
-
                             }
                             // Adjust the parent position after adding the addingPerson
                             val bloodParent = focusedPerson?.getBloodFParent(family, bloodFamilyId)!!
@@ -344,7 +356,7 @@ class MaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Dan") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -403,8 +415,8 @@ class MaleNode(
                 bloodFamilyId
             )
 
-            // Check
-            /*if (addedPerson.firstname == "Ted") {
+            /*// Check
+            if (addedPerson.firstname == "Andrew") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

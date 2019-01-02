@@ -79,25 +79,9 @@
       "ex-husband": null,
       "ex-wife": null,
       "husband": null,
-      "wife": [23],
-      "children": null,
-      "linkedStack": [1, 11, 23]
-    },
-    {
-      "idCard": 23,
-      "firstname": "Cara",
-      "lastname": "Smiths",
-      "birthDate": "12-11-1980",
-      "gender": 1,
-      "father": null,
-      "mother": null,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": [5],
       "wife": null,
       "children": null,
-      "linkedStack": [5]
+      "linkedStack": [1, 11]
     },
     {
       "idCard": 6,

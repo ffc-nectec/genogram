@@ -40,6 +40,15 @@ class MarriageLineManager(
         val marriageLine = MarriageLine()
         marriageLine.drawLine()
 
+        /*if (focusedPerson.firstname == "Lucy") {
+            print("------ MarriageLineM. 45 ------\n")
+            print("add: ${focusedPerson.firstname}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreeDrawer)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
         // Add the focusedPerson's spouses
         if (focusedPerson.gender == GenderLabel.MALE) {
             focusedPerson.wife?.forEach {

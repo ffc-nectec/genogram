@@ -105,7 +105,7 @@ abstract class Node {
         val childrenLineLayer = addingLayer - 1
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
         var childrenLine: ChildrenLine? = null
-        childrenLineStorage.forEachIndexed { index, line ->
+        childrenLineStorage?.forEachIndexed { index, line ->
             if (line is ChildrenLine) {
                 val childrenList: MutableList<Person> = line.childrenList
                 childrenList.forEachIndexed { pos, list ->
@@ -243,7 +243,7 @@ abstract class Node {
         val lineChildren = familyTreeDrawer.getPersonLayer(childrenLineLayer)
         var childrenNumb = 0
         var childNumb = 0
-        lineChildren.forEachIndexed { index, any ->
+        lineChildren?.forEachIndexed { index, any ->
             if (index < childrenLineSize - 1)
                 if (any is ChildrenLine) {
                     if (any.childrenNumb == 1)
@@ -580,7 +580,7 @@ abstract class Node {
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(childrenLineLayer)
 
         // Who is in the children line
-        childrenLineStorage.forEachIndexed { index, any ->
+        childrenLineStorage?.forEachIndexed { index, any ->
             if (any is ChildrenLine)
                 any.childrenList.forEach {
                     when (it) {
