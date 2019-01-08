@@ -263,6 +263,8 @@ class Drawer3GenChildrenTest {
             [( Cara ), [ Mike ],         ,      ( Lucy )     ]
         """.trimIndent()
     }
+
+    @Test
     fun draw3Children6() {
         val drawer = FamilyTree(getResourceAs("3rdGen/family-3-children-3rd-gen-6.json")).drawGenogram()
         val canvas = displayObjectResult(drawer)

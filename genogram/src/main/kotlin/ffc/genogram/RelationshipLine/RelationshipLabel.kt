@@ -29,5 +29,9 @@ enum class RelationshipLabel {
     MARRIAGE,
     DIVORCED,
     SINGLE,
-    NO_CHILD
+    NO_CHILD,
+    ONLY_CHILD,
+    OLDEST_CHILD,
+    MIDDLE_CHILD,
+    YOUNGEST_CHILD
 }

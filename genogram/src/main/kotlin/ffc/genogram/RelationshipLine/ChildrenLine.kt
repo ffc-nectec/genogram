@@ -1,6 +1,8 @@
 package ffc.genogram.RelationshipLine
 
+import ffc.genogram.Family
 import ffc.genogram.FamilyTreeDrawer
+import ffc.genogram.Node.EmptyNode
 import ffc.genogram.Node.Node
 import ffc.genogram.Person
 
@@ -55,11 +57,39 @@ class ChildrenLine : Line() {
     fun extendLine(
         familyTreeDrawer: FamilyTreeDrawer,
         extendLayer: Int,
-        childrenListInd: MutableList<Int>
+        childrenListInd: MutableList<Int>,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
     ) {
 
-        childrenNumb = childrenListInd.size
+        val childrenLineInd = familyTreeDrawer.findChildrenLineInd(
+            this, extendLayer
+        )!!
+        if (childrenLineInd + 1 < familyTreeDrawer.findPersonLayerSize(extendLayer)) {
+            val nextObj = familyTreeDrawer.getPersonLayerInd(extendLayer, childrenLineInd + 1)
+            // Check the right node
+            if (nextObj is EmptyNode) {
+                // Delete this emptyNode
+                fun deleteNode(ind: Int, layerNumb: Int) {
+                    val storage = familyTreeDrawer.getPersonLayer(layerNumb) as MutableList<Any>
+                    storage.removeAt(ind)
+                    familyTreeDrawer.setPersonLayer(storage, layerNumb)
+                }
+                deleteNode(childrenLineInd + 1, extendLayer)
+            }
+            /*if (extendLayer == 5) {
+                print("------ Female 114 ------\n")
+                print("extendLayer: $extendLayer\n")
+                print("nextObj: $nextObj\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("---------------------------------------\n")
+            }*/
+        }
 
+
+        childrenNumb = childrenListInd.size
         // Add Children sign spot ','
         val arrayMargin = 2
         val emptyNodeSize = (Node.nodeSize + Node.nodeBorderSize) + arrayMargin
@@ -82,7 +112,7 @@ class ChildrenLine : Line() {
 
         // Find the the index of the children line above the parent layer (in the extend layer).
         val parentChildrenLineStorage = familyTreeDrawer.getPersonLayer(extendLayer)
-        parentChildrenLineStorage.forEachIndexed { index, any ->
+        parentChildrenLineStorage?.forEachIndexed { index, any ->
             if (any is ChildrenLine && any != this) {
                 any.childrenList.forEach { parentSib ->
                     parentList.forEach { parent ->
@@ -100,7 +130,8 @@ class ChildrenLine : Line() {
             }
         }
 
-        if (parentChildrenLineInd != null) {
+        val doExtend = childrenListInd[childrenNumb - 1] - childrenListInd[0] + 1 > 3
+        if (parentChildrenLineInd != null && doExtend) {
             // For "separateParentSib"
             // Find the grandparent's index (the grandparent's index is equal to the grandparent
             // marriage line's index.
@@ -151,7 +182,7 @@ class ChildrenLine : Line() {
         val marriageLineStorage = familyTreeDrawer.getPersonLayer(parentLineLayer)
         var marriageLine: MarriageLine? = null
         var marriageLineInd = 0
-        marriageLineStorage.forEachIndexed { index, any ->
+        marriageLineStorage?.forEachIndexed { index, any ->
             if (any is MarriageLine) {
                 any.getSpouseList().forEach { coupleList ->
                     val parentId = coupleList[1].idCard
@@ -165,7 +196,7 @@ class ChildrenLine : Line() {
         // Find the children line index
         val childrenLineStorage = familyTreeDrawer.getPersonLayer(lineLayer)
         var childrenLineInd = 0
-        childrenLineStorage.forEachIndexed { index, any ->
+        childrenLineStorage?.forEachIndexed { index, any ->
             if (any is ChildrenLine) {
                 any.childrenList.forEach {
                     if (it.idCard == childrenList[0].idCard) {
