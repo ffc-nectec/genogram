@@ -23,7 +23,6 @@ import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import ffc.genogram.Util.displayObjectResult
 
 class MaleNode(
     private var familyTreeDrawer: FamilyTreeDrawer,
@@ -42,7 +41,7 @@ class MaleNode(
         ) {
 
             // Check
-            /*if (addedPerson.firstname == "Mike") {
+            /*if (addedPerson.firstname == "Teddy") {
                 print("------ MaleNode 46 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -56,6 +55,7 @@ class MaleNode(
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 var addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
                 var isReplace = false
+                var doExtend = false
 
                 if (focusedPerson!!.gender == GenderLabel.FEMALE) {
                     // Find whether the focusedPerson has any siblings.
@@ -69,11 +69,11 @@ class MaleNode(
                     // Find the focusedPerson sib
                     var isOldestSib = false
                     var isYoungestSib = false
-                    val focusedSib = focusedPerson!!.findSiblingByDrawer(
+                    var focusedSib = focusedPerson!!.findSiblingByDrawer(
                         familyTreeDrawer, addingLayer - 1
                     )
                     focusedSib?.let {
-                        val focusedSibObj = focusedSib[0] as MutableList<Person>
+                        val focusedSibObj = focusedSib!![0] as MutableList<Person>
                         isOldestSib = focusedSibObj[0] == focusedPerson
                         isYoungestSib = focusedSibObj[focusedSibObj.size - 1] == focusedPerson
                     }
@@ -138,17 +138,10 @@ class MaleNode(
                             familyTreeDrawer.moveRightParentnLineLayer(
                                 1, addedPersonIndSize, parent!!, anotherParent!!, parentLayer
                             )
-                        }
-
-                        // Check
-                        if (addedPerson.firstname == "Mike") {
-                            print("------ MaleNode 46 ------\n")
-                            print("add: ${addedPerson.firstname}\n")
-                            print("isEmptyNode: $isEmptyNode\n")
-                            print("...............\n")
-                            val canvasB = displayObjectResult(familyTreeDrawer)
-                            print(canvasB.toString())
-                            print("---------------------------------------\n")
+                            // Children line above the parent layer
+                            familyTreeDrawer.adjustUpperLayerPos(
+                                focusedPerson!!, parent!!, parentLayer, family, bloodFamilyId
+                            )
                         }
                     } else {
                         // FocusedPerson(the AddedPerson's wife) is the middle daughter.
@@ -182,6 +175,7 @@ class MaleNode(
                             }
                         }
                     }
+
                     // When the FocusedPerson is the oldest one.
                     // The AddedPerson will be added at the left-hand of the FocusedPerson.
                     // Then we don't change any sign of the line.
@@ -244,6 +238,7 @@ class MaleNode(
 
                             var startInd = childrenListInd[0]
                             var parentInd = familyTreeDrawer.findPersonInd(parent!!, parentLayer)
+
                             if (!rightHandNodes) {
                                 // Extend the CHILDREN Line the top layer of the AddedPerson.
                                 // When the AddedPerson is added on the left-hand of this wife (FocusedPerson).
@@ -306,8 +301,6 @@ class MaleNode(
                                 val addedPersonSib = familyTreeDrawer.findParentSibIdInd(
                                     addedPerson, parent!!, parentLayer
                                 )
-
-                                // Object Visualization
                                 childrenLine.extendLine(
                                     familyTreeDrawer,
                                     childrenLineLayer,

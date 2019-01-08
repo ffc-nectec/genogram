@@ -284,7 +284,7 @@ class Person(
             childrenLine?.childrenList?.forEachIndexed { index, person ->
                 childrenIndList.add(familyTreeDrawer.findPersonInd(person, childrenLineLayer + 1))
             }
-             mutableListOf(childrenLine?.childrenList, childrenIndList)
+            mutableListOf(childrenLine?.childrenList, childrenIndList)
         } else null
     }
 
@@ -317,5 +317,40 @@ class Person(
     fun getTargetParent(family: Family, bloodFamilyId: MutableList<Int>): Person {
         val isFather = bloodFamilyId.find { id -> id == father }
         return if (isFather != null) family.findPerson(father!!)!! else family.findPerson(mother!!)!!
+    }
+
+    fun getSibOrder(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int): RelationshipLabel? {
+
+        /*print("------ Person 334 ------\n")
+        print("childrenLineLayer: $childrenLineLayer\n")
+        print("---------------------------------------\n")*/
+
+        if (childrenLineLayer > 2) {
+            val focusedSib = findSiblingByDrawer(
+                familyTreeDrawer, childrenLineLayer
+            )
+
+            var sibList: MutableList<Person>? = mutableListOf()
+            focusedSib?.let {
+                focusedSib.let {
+                    sibList = if (focusedSib[0] != null) focusedSib[0] as MutableList<Person>? else null
+                }
+            }
+
+            return if (sibList != null && sibList?.isNotEmpty()!!) {
+                when (sibList!!.size) {
+                    1 -> RelationshipLabel.ONLY_CHILD
+                    else -> {
+                        return when (this) {
+                            sibList!![0] -> RelationshipLabel.OLDEST_CHILD
+                            sibList!![sibList!!.size - 1] -> RelationshipLabel.YOUNGEST_CHILD
+                            else -> RelationshipLabel.MIDDLE_CHILD
+                        }
+                    }
+                }
+            } else {
+                return null
+            }
+        } else return null
     }
 }

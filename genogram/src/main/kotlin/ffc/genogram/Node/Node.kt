@@ -119,7 +119,29 @@ abstract class Node {
         // For the 4th Generation, when addingPerson's parent is the only child
         val parentSib = parent.findSiblingByParent(family)
         val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
-        if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {
+
+        var sibOrder = parent.getSibOrder(familyTreeDrawer, parentLayer - 1)
+
+        /*if (addedPerson.firstname == "Micky") {
+            print("------ Node 106 ------\n")
+            print("add: ${addedPerson.firstname}\n")
+            print("gen: ${familyTreeDrawer.generationNumber(parentLayer)}\n")
+            print("parentSib.size: ${parentSib.size}\n")
+            print("parentLayer - 1: ${parentLayer - 1}\n")
+//            val test = parent.getSibRank(familyTreeDrawer, parentLayer - 1)
+            print("sibOrder: $sibOrder\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreeDrawer)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
+        if (familyTreeDrawer.generationNumber(parentLayer) >= 3
+//            && parentSib.size == 0
+//            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
+//            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
+                    || sibOrder == RelationshipLabel.ONLY_CHILD
+        ) {
             childrenLineInd?.let { childrenLineInd ->
                 val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
                     childrenLineLayer, 0, childrenLineInd - 1
@@ -128,6 +150,7 @@ abstract class Node {
                     addingLayer, 0, addingLayerSize
                 )
                 val lastAddingInd = childrenLineIndSize - (personLineIndSize - addingLayerSize)
+
                 if (childrenLineInd > addingLayerSize + 1) {
                     for (i in addingLayerSize until lastAddingInd)
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
@@ -152,7 +175,8 @@ abstract class Node {
                             addingLayer, 0, addingLayerSize - 1
                         )
 
-                        var replaceInd = if (leftParent.gender == GenderLabel.MALE) childrenLineIndSize else childrenLineIndSize - 1
+                        var replaceInd =
+                            if (leftParent.gender == GenderLabel.MALE) childrenLineIndSize else childrenLineIndSize - 1
                         val addingLayerSizeInd = familyTreeDrawer.findPersonIndSize(addingLayer, 0, addingLayerSize)
                         val endingInd = addingLayerSize + (replaceInd - addingLayerSizeInd)
                         if (isOldestChild && leftParent == bloodFParent) {

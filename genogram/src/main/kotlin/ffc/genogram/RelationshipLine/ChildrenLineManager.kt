@@ -34,6 +34,16 @@ class ChildrenLineManager(
 
     override fun drawLine(): FamilyTreeDrawer {
 
+        // Check
+        /*if (parent.firstname == "Ted") {
+            print("------ After Add a single child ------\n")
+            print("parent: ${parent.firstname}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreeDrawer)
+            print(canvasB.toString())
+            print("-------------\n")
+        }*/
+
         val childrenLine = ChildrenLine()
         childrenLine.childrenList = childrenList as ArrayList<Person>
         val parent1 = childrenList[0].father
@@ -104,8 +114,11 @@ class ChildrenLineManager(
             // Move the children line's position by adding empty node(s)
             if (marriageLineLength > 2 && leftParent == bloodParent) {
                 anotherParentInd?.let {
+                    val anotherParentIndSize = familyTreeDrawer.findPersonIndSize(
+                        addingLayer, 0, anotherParentInd
+                    )
                     val layerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
-                    if (anotherParentInd > layerSize) {
+                    if (anotherParentIndSize > layerSize) {
                         familyTreeDrawer.addFamilyStorageAtIndex(
                             addingLayer, layerSize - 1, null, null
                         )

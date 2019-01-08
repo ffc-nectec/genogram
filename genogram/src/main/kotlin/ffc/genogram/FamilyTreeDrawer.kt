@@ -1011,79 +1011,11 @@ class FamilyTreeDrawer {
         return null
     }
 
-    fun movingRightPersonAndParent(
-        addingLayer: Int,
-        childrenLineLayer: Int,
-        addingInd: Int,
-        youngestSibInd: Int,
-        nodeName: String,
-        addedPerson: Person,
-        family: Family
-    ) {
-
-        // Test
-        /*if (addedPerson.firstname == "Lisa") {
-            print("------ Female 75 ------\n")
-            print("add: ${addedPerson.firstname}\n")
-            print("...............\n")
-            val canvasB = displayObjectResult(this)
-            print(canvasB.toString())
-            print("---------------------------------------\n")
-        }*/
-
-        // Add an empty node at children, marriage, and parent index
-        addFamilyStorageReplaceIndex(
-            addingLayer, addingInd, nodeName, addedPerson
-        )
-
-        // Find the next person of the youngest sib = A
-        /*val nextPerson = findNextPerson(addingLayer, youngestSibInd)
-        if (nextPerson != null) {
-            // Find A's children line
-            val childrenLine = findChildrenLine(
-                childrenLineLayer, nextPerson
-            )
-            // Find A's children line index
-            val childrenLineInd = childrenLine?.let {
-                findChildrenLineInd(childrenLine, childrenLineLayer)
-            }
-            // Find A's parent by the children line
-            val npLeftParent = nextPerson.getLeftHandParent(this, childrenLineLayer)
-            // Find A's parent Index
-            val parentLayer = findPersonLayer(npLeftParent)
-            val npLeftParentInd = findPersonInd(
-                npLeftParent, parentLayer
-            )
-            val npAnotherParent = nextPerson.findAnotherParent(
-                npLeftParent, family
-            )
-            // Find A's marriage line of the parent
-            val npParentMarriageLine = findMarriageLine(
-                childrenLineLayer - 1, npLeftParent, npAnotherParent
-            )
-            // Find A's marriage line of the parent index
-            val npParentMarriageLineInd = npParentMarriageLine?.let {
-                findLineInd(npParentMarriageLine, childrenLineLayer - 1)
-            }
-
-            // Add an empty node at children, marriage, and parent index
-            addFamilyStorageReplaceIndex(
-                addingLayer, addingInd, nodeName, addedPerson
-            )
-            addFamilyStorageReplaceIndex(
-                parentLayer, npLeftParentInd, null, null
-            )
-            childrenLineInd?.let {
-                addFamilyStorageReplaceIndex(
-                    childrenLineLayer, childrenLineInd, null, null
-                )
-            }
-            npParentMarriageLineInd?.let {
-                addFamilyStorageReplaceIndex(
-                    childrenLineLayer - 1, npParentMarriageLineInd, null, null
-                )
-            }
-        }*/
+    fun findPreviousObj(layerNumb: Int, afterInd: Int): Any? {
+        return if (afterInd > 0 && layerNumb < findPersonStorageSize() - 1) {
+            val storage = getPersonLayer(layerNumb)
+            storage?.get(afterInd - 1)
+        } else null
     }
 
     fun moveNodeToRightHand(addingLayer: Int, startingInd: Int, endingInd: Int) {

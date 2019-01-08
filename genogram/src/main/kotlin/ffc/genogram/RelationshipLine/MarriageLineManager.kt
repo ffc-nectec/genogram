@@ -37,17 +37,18 @@ class MarriageLineManager(
     private val endSign = '|'
 
     override fun drawLine(): FamilyTreeDrawer {
-        val marriageLine = MarriageLine()
-        marriageLine.drawLine()
 
-        /*if (focusedPerson.firstname == "Lucy") {
+        /*if (focusedPerson.firstname == "Mike") {
             print("------ MarriageLineM. 45 ------\n")
-            print("add: ${focusedPerson.firstname}\n")
+            print("focusedPerson: ${focusedPerson.firstname}\n")
             print("...............\n")
             val canvasB = displayObjectResult(familyTreeDrawer)
             print(canvasB.toString())
             print("---------------------------------------\n")
         }*/
+
+        val marriageLine = MarriageLine()
+        marriageLine.drawLine()
 
         // Add the focusedPerson's spouses
         if (focusedPerson.gender == GenderLabel.MALE) {
@@ -130,10 +131,13 @@ class MarriageLineManager(
                         val personInd = familyTreeDrawer.findPersonIndById(
                             focusedPerson.idCard, personLayer
                         )
+                        val personIndSize = familyTreeDrawer.findPersonIndSize(
+                            personLayer, 0, personInd - 1
+                        )
                         // When we have only one marriage line.
                         // Relocate the marriage line's position.
-                        if (personInd != 0) {
-                            for (i in 0 until personInd) {
+                        if (personIndSize != 0) {
+                            for (i in 0 until personIndSize) {
                                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                                     personLayer + 1, 0, null, null
                                 )
@@ -250,7 +254,66 @@ class MarriageLineManager(
 
                         // Relocate the marriage line's position.
                         if (familyTreeDrawer.findStorageLayerSize(lineLayer) > 0) {
-                            addEmptyNode(lineLayer)
+                            // addEmptyNode(lineLayer)
+
+                            // TEST
+                            // Add empty node(s) between the marriage line.
+                            var addingInd = familyTreeDrawer.addMarriageLineInd(
+                                lineLayer, focusedPerson, null
+                            )
+//                            addingInd = familyTreeDrawer.findPersonIndSize(
+//                                lineLayer - 1, 0, focusedPersonInd - 1
+//                            )
+
+                            val lineLayerSize = familyTreeDrawer.findStorageLayerSize(lineLayer)
+                            val lastLineLayerInd = lineLayerSize - 1
+
+                            if (lineLayerSize < addingInd) {
+                                // When the layer's is less than the index the new marriage line expect.
+                                // Add empty node(s), and move the marriage line to "focusedPerson"'s index.
+                                val marriageLine = MarriageLine()
+                                marriageLine.drawLine()
+
+                                for (i in lastLineLayerInd until addingInd) {
+                                    if (i == addingInd) {
+                                        familyTreeDrawer.addFamilyAtLayer(
+                                            personLayer + 1,
+                                            createLineDistance(),
+                                            marriageLine
+                                        )
+                                    } else {
+                                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                            personLayer + 1, i, null, null
+                                        )
+                                    }
+                                }
+                            } else {
+                                // When the layer's is enough for moving the new marriage line
+                                // to the "focusedPerson"'s index.
+                                // Move the marriage line to "focusedPerson"'s index.
+
+                                // Here it's all the left-hand
+                                // The line will be added at the focusedPersonIndSize
+                                val startInd = familyTreeDrawer.findStorageLayerSize(lineLayer) - 1
+                                val startIndSize = familyTreeDrawer.findMarriageLineIndSize(
+                                    lineLayer, 0, startInd - 1
+                                )
+                                val addingMore = focusedPersonIndSize - startIndSize
+
+                                // Check the previous node
+                                val previousObj = familyTreeDrawer.findPreviousObj(
+                                    personLayer,
+                                    focusedPersonInd
+                                )
+
+                                if (previousObj is Person) {
+                                    for (i in startInd until startInd + addingMore) {
+                                        familyTreeDrawer.addFamilyStorageReplaceIndex(
+                                            lineLayer, addingInd - 1, null, null
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -313,8 +376,8 @@ class MarriageLineManager(
         val addingInd = familyTreeDrawer.addMarriageLineInd(
             lineLayer, focusedPerson, null
         )
-        val lineLayerSize = familyTreeDrawer
-            .findStorageLayerSize(lineLayer)
+        val lineLayerSize = familyTreeDrawer.findStorageLayerSize(lineLayer)
+//        val addingIndSize = familyTreeDrawer.findChildrenLineIndSize()
         val lastLineLayerInd = lineLayerSize - 1
 
         if (lineLayerSize < addingInd) {
