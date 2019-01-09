@@ -140,7 +140,7 @@ abstract class Node {
 //            && parentSib.size == 0
 //            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
 //            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
-                    || sibOrder == RelationshipLabel.ONLY_CHILD
+            || sibOrder == RelationshipLabel.ONLY_CHILD
         ) {
             childrenLineInd?.let { childrenLineInd ->
                 val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
@@ -727,6 +727,7 @@ abstract class Node {
         // Find that line index for using to move the children line parent
         val childrenLineInd: Int?
         val leftParentInd: Int?
+
         if (parentChildrenLine != null) {
             childrenLineInd = familyTreeDrawer.findChildrenLineInd(parentChildrenLine, childrenLineLayer)
 
@@ -735,26 +736,22 @@ abstract class Node {
             leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
 
             // Find the focusedPerson sib
-            val focusedPersonSib = familyTreeDrawer.findParentSibIdInd(
-                focusedPerson!!, parent!!, parentLayer
-            )
             val anotherParent = focusedPerson.findAnotherParent(parent, family)
-
-            val parentChildren = parent.findChildrenListIdInd(
-                anotherParent, parentLayer, family, familyTreeDrawer
+            val childrenLayer = parentLayer + 2
+            val fpSibInd = focusedPerson.findSiblingByDrawer(
+                familyTreeDrawer, childrenLayer
             )
-
-//            val focusedPersonSibInd = focusedPersonSib[1]
-            val focusedPersonSibInd = parentChildren?.get(1) as MutableList<Int>
+            val focusedPersonSibInd = fpSibInd!![1] as MutableList<Int>
             val oldestFocusedInd = focusedPersonSibInd[0]
             val youngestFocusedInd = focusedPersonSibInd[focusedPersonSibInd.size - 1]
             val addingPersonSibNumb = youngestFocusedInd - oldestFocusedInd + 1
 
             var expectingMoreNode = 0
-            if (addingPersonSibNumb > 3)
+            if (addingPersonSibNumb > 3) {
                 expectingMoreNode = if (addingPersonSibNumb % 2 == 0) (addingPersonSibNumb / 2) - 1
                 else
                     (floor(addingPersonSibNumb / 2.0) - 1).toInt()
+            }
 
             // Adjust the above layer position
             val expectingPos = childrenLineInd!! + expectingMoreNode

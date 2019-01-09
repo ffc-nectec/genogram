@@ -297,14 +297,15 @@ class MaleNode(
                                 val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
                                 startInd -= midEmptyNode
 
+                                // Update parentSib index
                                 childrenLineLayer = addingLayer - 1
-                                val addedPersonSib = familyTreeDrawer.findParentSibIdInd(
-                                    addedPerson, parent!!, parentLayer
+                                focusedSib = focusedPerson!!.findSiblingByDrawer(
+                                    familyTreeDrawer, addingLayer - 1
                                 )
                                 childrenLine.extendLine(
                                     familyTreeDrawer,
                                     childrenLineLayer,
-                                    addedPersonSib[1], //childrenListInd
+                                    focusedSib!![1] as MutableList<Int>, //parentSibInd
                                     family,
                                     bloodFamilyId
                                 )
