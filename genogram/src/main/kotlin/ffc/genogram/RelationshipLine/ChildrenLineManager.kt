@@ -36,7 +36,7 @@ class ChildrenLineManager(
 
         // Check
         /*if (parent.firstname == "Ted") {
-            print("------ After Add a single child ------\n")
+            print("------ ChildrenLineM ------\n")
             print("parent: ${parent.firstname}\n")
             print("...............\n")
             val canvasB = displayObjectResult(familyTreeDrawer)

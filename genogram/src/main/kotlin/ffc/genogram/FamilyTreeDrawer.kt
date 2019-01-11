@@ -26,6 +26,7 @@ import ffc.genogram.RelationshipLine.Relationship.Companion.lengthLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.findMovingNodeNumb
 import java.util.Collections
+import kotlin.math.floor
 
 class FamilyTreeDrawer {
     private val indentNumb = 4
@@ -761,17 +762,18 @@ class FamilyTreeDrawer {
         return drawParentSibList
     }
 
+    // When parent has more than 3 sib
     fun adjustUpperLayerPos(
         person: Person,
-        parent: Person,
+        bloodFParent: Person,
         parentLayer: Int,
         family: Family,
         bloodFamilyId: MutableList<Int>
     ) {
         // Adjust the children line above the parent layer
-        val parentSib = findParentSibIdInd(person, parent, parentLayer)
+        val parentSib = findParentSibIdInd(person, bloodFParent, parentLayer)
         val parentSibInd = parentSib[1]
-        val parentChildrenLine = findChildrenLine(parentLayer - 1, parent)!!
+        val parentChildrenLine = findChildrenLine(parentLayer - 1, bloodFParent)!!
 
         // Adjust the grandparent layer and grandparent's marriage line above the parent parentLayer
         val parentSibNumb = parentSibInd.size
@@ -821,6 +823,15 @@ class FamilyTreeDrawer {
         addingMoreNode: Int,
         bloodFamilyId: MutableList<Int>
     ) {
+        /*if (child.firstname == "Sindy") {
+            print("------ Node 406 ------\n")
+            print("child: ${child.firstname}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(this)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
         var focusedLayer = movingPersonLayer
 
         if (focusedLayer == 0) {
@@ -934,19 +945,6 @@ class FamilyTreeDrawer {
                             addFamilyStorageReplaceIndex(
                                 childrenLineLayer, childrenLineInd, null, null
                             )
-
-                        /*if (parent1.firstname == "Ted" && parent2.firstname == "Kitty") {
-                            print("------ MaleNode 119 ------\n")
-                            print("movedPerson: ${movedPerson.firstname}\n")
-                            print("movingPSpouse: ${movingPSpouse.firstname}\n")
-                            print("movedPersonIndSize: $movedPersonIndSize\n")
-                            print("childrenLineInd: $childrenLineInd\n")
-                            print("childrenLineIndSize: $childrenLineIndSize\n")
-                            print("...............\n")
-                            val canvasB = displayObjectResult(this)
-                            print(canvasB.toString())
-                            print("---------------------------------------\n")
-                        }*/
                     }
                 }
             }
@@ -1021,8 +1019,231 @@ class FamilyTreeDrawer {
     fun moveNodeToRightHand(addingLayer: Int, startingInd: Int, endingInd: Int) {
         val myArray = getPersonLayer(addingLayer)!!
 
-        for (i in endingInd downTo startingInd + 1) {
-            Collections.swap(myArray, i, i - 1)
+        if (endingInd < findStorageLayerSize(addingLayer))
+            for (i in endingInd downTo startingInd + 1) {
+                Collections.swap(myArray, i, i - 1)
+            }
+        else {
+            addFamilyStorageReplaceIndex(
+                addingLayer, startingInd, null, null
+            )
         }
+    }
+
+    fun movingParentToRightHand(
+        parent: Person,
+        expectingInd: Int,
+        parentInd: Int,
+        parentLayer: Int,
+        marriageLine: MarriageLine,
+        pMarriageLineLayer: Int,
+        bloodFamilyId: MutableList<Int>
+    ) {
+
+        var endingInd = pMarriageLineLayer + 1
+
+        for (layer in parentLayer until endingInd) {
+            val movingInd = if (layer == parentLayer) {
+                parentInd
+            } else {
+                // Marriage Line Index
+                findLineInd(marriageLine, pMarriageLineLayer)
+            }
+
+            for (index in parentInd until expectingInd) {
+                if (movingInd != null) {
+                    addFamilyStorageReplaceIndex(
+                        layer,
+                        movingInd,
+                        null,
+                        null
+                    )
+                }
+            }
+        }
+    }
+
+    fun separateAddedPersonParentLayer(
+        addedPerson: Person,
+        parent: Person,
+        addingMoreNode: Int,
+        parentInd: Int,
+        parentLayer: Int,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
+    ) {
+        if (parentLayer == 0) {
+            val childrenLineLayer = parentLayer + 2
+            val addedPersonSib = addedPerson.findSiblingByDrawer(
+                this, childrenLineLayer
+            )
+            val addingPersonSibInd = addedPersonSib?.get(1) as MutableList<Int>
+            val firstChildInd = addingPersonSibInd[0]
+            val childrenNumb = (addingPersonSibInd[addingPersonSibInd.size - 1] - firstChildInd) + 1
+            val addingMore = findAddingEmptyNodesParent(childrenNumb)
+            val shouldAddMoreNode = firstChildInd + addingMore > parentInd
+            if (shouldAddMoreNode)
+                for (i in 0 until addingMoreNode) {
+                    for (layer in 0 until parentLayer + 2)
+                        addFamilyStorageReplaceIndex(layer, parentInd, null, null)
+                }
+
+            updateChildrenLineAtLayer(addedPerson, childrenLineLayer, family, bloodFamilyId)
+        } else if (parentLayer >= 3) {
+            // find the marriage line of the parent
+            val marriageLineLayer = parentLayer + 1
+            val anotherPerson = addedPerson.findAnotherParent(parent, family)
+            val marriageLine = findMarriageLine(
+                marriageLineLayer, parent, anotherPerson
+            )!!
+            val marriageLineInd = findLineInd(marriageLine, marriageLineLayer)!!
+            val bloodFParent = addedPerson.getBloodFParent(family, bloodFamilyId)
+            val childrenLineLayer = parentLayer - 1
+            val childrenLine = findChildrenLine(childrenLineLayer, bloodFParent)!!
+            val childrenLineInd = findChildrenLineInd(childrenLine, childrenLineLayer)!!
+            // the node in front of the parent node
+            // find the children line above the parent layers
+            if (parentLayer > 3) {
+                for (i in 0 until addingMoreNode) {
+                    addFamilyStorageReplaceIndex(childrenLineLayer, childrenLineInd, null, null)
+                }
+            }
+
+            for (i in 0 until addingMoreNode) {
+                addFamilyStorageReplaceIndex(marriageLineLayer, marriageLineInd, null, null)
+                addFamilyStorageReplaceIndex(parentLayer, parentInd, null, null)
+            }
+
+            val grandParentLayer = parentLayer - 3
+            val grandParent = bloodFParent.getLeftHandParent(this, childrenLineLayer)
+            val grandParentInd = findPersonInd(grandParent, grandParentLayer)
+            updateChildrenLineAtLayer(addedPerson, childrenLineLayer, family, bloodFamilyId)
+
+            separateAddedPersonParentLayer(
+                bloodFParent,
+                grandParent,
+                addingMoreNode,
+                grandParentInd,
+                grandParentLayer,
+                family,
+                bloodFamilyId
+            )
+        }
+    }
+
+    fun separateAddedPersonParentLayer2(
+        addedPerson: Person,
+        parent: Person,
+        nextPerson: Person,
+        expectingInd: Int,
+        parentInd: Int,
+        parentLayer: Int,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
+    ) {
+        val addingEmptyNode = expectingInd - parentInd
+
+        if (parentLayer >= 3) {
+            // move Mike and Cara (addingPerson's parents)
+            // move Mike and Cara marriage line
+            val marriageLineLayer = parentLayer + 1 // Parents' marriage line
+            val anotherParent = addedPerson.findAnotherParent(parent, family)
+            val marriageLine = findMarriageLine(
+                marriageLineLayer, parent, anotherParent
+            )
+
+            // find the person next to Cara => Lucy
+            // use Lucy to find the children line above Lucy
+            // move the children line above Lucy
+            val nextPChildrenLineLayer = parentLayer - 1
+            val nextPChildrenLine = findChildrenLine(nextPChildrenLineLayer, nextPerson)!!
+            val nextPChildrenLineInd = findChildrenLineInd(nextPChildrenLine, nextPChildrenLineLayer)!!
+            addFamilyStorageReplaceIndex(
+                nextPChildrenLineLayer, nextPChildrenLineInd, null, null
+            )
+            // find Lucy(nextPerson)'s left-parent
+            val npLeftParent = nextPerson.getLeftHandParent(this, nextPChildrenLineLayer)
+            val anotherNPLeftParent = nextPerson.findAnotherParent(npLeftParent, family)
+            val npBloodFParent = nextPerson.getBloodFParent(family, bloodFamilyId)
+            val npLeftParentLayer = findPersonLayer(npLeftParent)
+            val npLeftParentInd = findPersonInd(npLeftParent, npLeftParentLayer)
+            // move Lucy's left-parent
+
+            // find the marriage of Lucy's left-parent
+            val npLeftParentMarriageLineLayer = npLeftParentLayer + 1
+            val npLeftParentMarriageLine = findMarriageLine(
+                npLeftParentMarriageLineLayer, npLeftParent, anotherNPLeftParent
+            )!!
+            val npLeftParentMarriageLineInd = findLineInd(
+                npLeftParentMarriageLine, npLeftParentMarriageLineLayer
+            )!!
+            // move the marriage of Lucy's left-parent
+
+            // Update the children line
+
+            for (i in 0 until addingEmptyNode) {
+                movingParentToRightHand(
+                    parent,
+                    expectingInd,
+                    parentInd,
+                    parentLayer,
+                    marriageLine!!,
+                    marriageLineLayer,
+                    bloodFamilyId
+                )
+                addFamilyStorageReplaceIndex(
+                    npLeftParentLayer, npLeftParentInd, null, null
+                )
+                addFamilyStorageReplaceIndex(
+                    npLeftParentMarriageLineLayer, npLeftParentMarriageLineInd, null, null
+                )
+            }
+
+            // Update the children line
+            updateChildrenLineAtLayer(parent, parentLayer - 1, family, bloodFamilyId)
+            updateChildrenLineAtLayer(nextPerson, nextPChildrenLineLayer, family, bloodFamilyId)
+
+            /*// Check
+            if (addedPerson.firstname == "June") {
+                print("------ Node 441 ------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("parent: ${parent.firstname}\n")
+                print("nextPerson: ${nextPerson.firstname}\n")
+                print("npLeftParent: ${npLeftParent.firstname}\n")
+                print("npLeftParentLayer: $npLeftParentLayer\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(this)
+                print(canvasB.toString())
+                print("-------------\n")
+            }*/
+        }
+    }
+
+    fun updateChildrenLineAtLayer(
+        addedPerson: Person,
+        childrenLineLayer: Int,
+        family: Family,
+        bloodFamilyId: MutableList<Int>
+    ) {
+        val addedPersonSib = addedPerson.findSiblingByDrawer(
+            this, childrenLineLayer
+        )
+        val addingPersonSibInd = addedPersonSib?.get(1) as MutableList<Int>
+
+        val childrenLine = findChildrenLine(childrenLineLayer, addedPerson)
+        childrenLine?.extendLine(
+            this,
+            childrenLineLayer,
+            addingPersonSibInd,
+            family,
+            bloodFamilyId
+        )
+    }
+
+    fun findAddingEmptyNodesParent(childrenNumber: Int): Int {
+        return if (childrenNumber % 2 == 0)
+            childrenNumber / 2 - 1
+        else
+            (floor(childrenNumber / 2.0) - 1).toInt()
     }
 }

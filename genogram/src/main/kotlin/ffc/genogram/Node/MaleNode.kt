@@ -23,6 +23,7 @@ import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
+import ffc.genogram.Util.displayObjectResult
 
 class MaleNode(
     private var familyTreeDrawer: FamilyTreeDrawer,
@@ -40,8 +41,8 @@ class MaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
 
-            // Check
-            /*if (addedPerson.firstname == "Teddy") {
+            /*// Check
+            if (addedPerson.firstname == "Luke") {
                 print("------ MaleNode 46 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -348,9 +349,19 @@ class MaleNode(
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
+
+            // Check
+            /*if (addedPerson.firstname == "Luke") {
+                print("------ MaleNode 46 ------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("---------------------------------------\n")
+            }*/
         } else {
             // Check
-            /*if (addedPerson.firstname == "Dan") {
+            /*if (addedPerson.firstname == "James") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -409,8 +420,8 @@ class MaleNode(
                 bloodFamilyId
             )
 
-            /*// Check
-            if (addedPerson.firstname == "Andrew") {
+            // Check
+            /*if (addedPerson.firstname == "Tom") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

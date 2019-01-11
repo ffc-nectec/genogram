@@ -189,24 +189,19 @@ class MarriageLineManager(
                         }
                     } else {
                         // When husband node is added on the right-hand.
-                        val marriageLineLayer = personLayer + 1
                         // For the 4th Generation, when addingPerson's parent is the only child
-                        val parentSib = focusedPerson.findSiblingByParent(family)
-                        if (familyTreeDrawer.generationNumber(personLayer) >= 3 && parentSib.size == 0) {
-                            val focusedPersonInd = familyTreeDrawer.findPersonInd(
-                                focusedPerson, personLayer
-                            )
-                            val marriageLineLayer = personLayer + 1
-                            val storageSize = familyTreeDrawer.findPersonStorageSize()
+                        val storageSize = familyTreeDrawer.findPersonStorageSize()
+                        val fpSibOrderSib = focusedPerson.getSibOrder(
+                            familyTreeDrawer, personLayer - 1
+                        )
 
-                            if (storageSize - 1 >= marriageLineLayer) {
+                        if (familyTreeDrawer.generationNumber(personLayer) >= 3) {
+                            if (storageSize - 1 >= lineLayer) {
                                 val marriageLineLayerSize = familyTreeDrawer.findPersonLayerSize(
-                                    marriageLineLayer
+                                    lineLayer
                                 )
                                 val marriageLineIndSize = familyTreeDrawer.findMarriageLineIndSize(
-                                    marriageLineLayer,
-                                    0,
-                                    marriageLineLayerSize
+                                    lineLayer, 0, marriageLineLayerSize
                                 )
                                 val addingPersonInd = focusedPersonIndSize - 1
 
@@ -224,7 +219,7 @@ class MarriageLineManager(
                                 if (addingPersonInd > marriageLineIndSize)
                                     for (i in marriageLineLayerSize - 1 until addingMore)
                                         familyTreeDrawer.addFamilyAtLayer(
-                                            marriageLineLayer,
+                                            lineLayer,
                                             createLineDistance(),
                                             EmptyNode()
                                         )
@@ -245,20 +240,38 @@ class MarriageLineManager(
 
                                 for (i in 0 until movingNumb - 1)
                                     familyTreeDrawer.addFamilyAtLayer(
-                                        marriageLineLayer,
+                                        lineLayer,
                                         createLineDistance(),
                                         EmptyNode()
                                     )
                             }
 
                             // Create a special marriageLine
-                            marriageLine.setSingleMarriageLine(handSide)
-                            marriageLine.extendLeftHandLine()
+                            if (fpSibOrderSib == RelationshipLabel.ONLY_CHILD) {
+                                marriageLine.setSingleMarriageLine(handSide)
+                                marriageLine.extendLeftHandLine()
+                            }
+
+                            /*if (focusedPerson.firstname == "Lucy") {
+                                print("------ MarriageLineM. 103 ------\n")
+                                print("focusedPerson: ${focusedPerson.firstname}\n")
+                                print("fpSibOrderSib: $fpSibOrderSib\n")
+//                                print("marriageLineLayerSize: $marriageLineLayerSize\n")
+//                                print("marriageLineIndSize: $marriageLineIndSize\n")
+                                print("lineLayer: $lineLayer\n")
+                                print("focusedPersonInd: $focusedPersonInd\n")
+                                print("focusedPersonIndSize: $focusedPersonIndSize\n")
+                                print("handSide: $handSide\n")
+                                print("...............\n")
+                                val canvasB = displayObjectResult(familyTreeDrawer)
+                                print(canvasB.toString())
+                                print("---------------------------------------\n")
+                            }*/
                         }
 
                         // Add a marriage line
                         familyTreeDrawer.addFamilyAtLayer(
-                            marriageLineLayer,
+                            lineLayer,
                             createLineDistance(),
                             marriageLine
                         )
@@ -270,10 +283,6 @@ class MarriageLineManager(
                                 lineLayer, focusedPerson, null
                             )
 
-                            /*var addingInd = familyTreeDrawer.findPersonIndSize(
-                                personLayer, 0, focusedPersonInd - 1
-                            )*/
-
                             val lineLayerSize = familyTreeDrawer.findStorageLayerSize(lineLayer)
                             val lastLineLayerInd = lineLayerSize - 1
 
@@ -282,18 +291,6 @@ class MarriageLineManager(
                                 // Add empty node(s), and move the marriage line to "focusedPerson"'s index.
                                 val marriageLine = MarriageLine()
                                 marriageLine.drawLine()
-
-                                /*if (focusedPerson.firstname == "Maye") {
-                                    print("------ MarriageLineM. 260 ------\n")
-                                    print("focusedPerson: ${focusedPerson.firstname}\n")
-                                    print("lastLineLayerInd: $lastLineLayerInd\n")
-                                    print("addingInd: $addingInd\n")
-                                    print("handSide: $handSide\n")
-                                    print("...............\n")
-                                    val canvasB = displayObjectResult(familyTreeDrawer)
-                                    print(canvasB.toString())
-                                    print("---------------------------------------\n")
-                                }*/
 
                                 for (i in lastLineLayerInd until addingInd) {
                                     if (i == addingInd) {
