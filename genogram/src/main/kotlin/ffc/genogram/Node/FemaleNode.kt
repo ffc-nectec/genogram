@@ -39,6 +39,15 @@ class FemaleNode(
         if (relationLabel != RelationshipLabel.CHILDREN &&
             relationLabel != RelationshipLabel.TWIN
         ) {
+            /*if (focusedPerson!!.firstname == "M0") {
+                print("------ Female 45 ------\n")
+                print("add: ${focusedPerson!!.firstname}\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("---------------------------------------\n")
+            }*/
+
             val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 

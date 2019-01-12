@@ -410,4 +410,18 @@ class Person(
 
         return if (personList.isNotEmpty()) personList else null
     }
+
+    fun deleteChildrenFromLinkedStack() {
+        // Happen when the person is a single parent
+        val tmpLinkedStack = mutableListOf(3)
+
+        children?.forEach { childId ->
+            if (isParentOf(childId) == RelationshipLabel.CHILDREN)
+                tmpLinkedStack.find {
+                    tmpLinkedStack.remove(childId)
+                }
+        }
+
+        linkedStack = cleanUpEmptyStack(tmpLinkedStack)
+    }
 }

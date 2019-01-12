@@ -129,17 +129,6 @@ class ChildrenLineManager(
                     addingLayer, childrenLineInd, null, null
                 )
             }
-
-            /*if (parent.firstname == "Susan") {
-                print("------ ChildrenLine 308 ------\n")
-                print("parent: ${parent.firstname}\n")
-                print("leftParent: ${leftParent.firstname}\n")
-                print("bloodParent: ${bloodParent.firstname}\n")
-                print("...............\n")
-                val canvasB = displayObjectResult(familyTreeDrawer)
-                print(canvasB.toString())
-                print("-------------\n")
-            }*/
         } else {
             // For the 4th Generation, when addingPerson's parent is the only child
             if (familyTreeDrawer.generationNumber(parentLayer) >= 3 && parentSib.size == 0) {

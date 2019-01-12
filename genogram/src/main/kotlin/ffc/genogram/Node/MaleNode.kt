@@ -39,7 +39,6 @@ class MaleNode(
         if (relationLabel != RelationshipLabel.CHILDREN &&
             relationLabel != RelationshipLabel.TWIN
         ) {
-
             /*// Check
             if (addedPerson.firstname == "Luke") {
                 print("------ MaleNode 46 ------\n")

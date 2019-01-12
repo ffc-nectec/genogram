@@ -23,4 +23,19 @@ class Drawer2GenSingleParentTest {
         """.trimIndent()
     }
 
+    @Test
+    fun draw1Child2() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/singleParent/single-parent-2.json")
+        ).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [[  M0  ], (   ?  )]
+            [    |_________|   ]
+            [    ,----^----,   ]
+            [(  F2  ), [  M3  ]]
+        """.trimIndent()
+    }
+
 }
