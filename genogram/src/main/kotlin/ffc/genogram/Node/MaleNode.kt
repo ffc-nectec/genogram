@@ -40,8 +40,8 @@ class MaleNode(
             relationLabel != RelationshipLabel.TWIN
         ) {
 
-            // Check
-            /*if (addedPerson.firstname == "Teddy") {
+            /*// Check
+            if (addedPerson.firstname == "Luke") {
                 print("------ MaleNode 46 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -297,14 +297,15 @@ class MaleNode(
                                 val midEmptyNode = familyTreeDrawer.findNumberOfMidEmptyNodePerson(addingLayer)
                                 startInd -= midEmptyNode
 
+                                // Update parentSib index
                                 childrenLineLayer = addingLayer - 1
-                                val addedPersonSib = familyTreeDrawer.findParentSibIdInd(
-                                    addedPerson, parent!!, parentLayer
+                                focusedSib = focusedPerson!!.findSiblingByDrawer(
+                                    familyTreeDrawer, addingLayer - 1
                                 )
                                 childrenLine.extendLine(
                                     familyTreeDrawer,
                                     childrenLineLayer,
-                                    addedPersonSib[1], //childrenListInd
+                                    focusedSib!![1] as MutableList<Int>, //parentSibInd
                                     family,
                                     bloodFamilyId
                                 )
@@ -347,9 +348,19 @@ class MaleNode(
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
+
+            // Check
+            /*if (addedPerson.firstname == "Luke") {
+                print("------ MaleNode 46 ------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("---------------------------------------\n")
+            }*/
         } else {
             // Check
-            /*if (addedPerson.firstname == "Dan") {
+            /*if (addedPerson.firstname == "Liam") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -366,7 +377,7 @@ class MaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Liam") {
                 print("------ After separateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -387,7 +398,7 @@ class MaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ After separateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -408,8 +419,8 @@ class MaleNode(
                 bloodFamilyId
             )
 
-            /*// Check
-            if (addedPerson.firstname == "Andrew") {
+            // Check
+            /*if (addedPerson.firstname == "Thomas") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

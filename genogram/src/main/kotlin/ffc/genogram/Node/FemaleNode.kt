@@ -42,16 +42,6 @@ class FemaleNode(
             val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
-            // Check
-            /*if (addedPerson.firstname == "Cara") {
-                print("------ Female ------\n")
-                print("add: ${addedPerson.firstname}\n")
-                print("...............\n")
-                val canvasB = displayObjectResult(familyTreeDrawer)
-                print(canvasB.toString())
-                print("---------------------------------------\n")
-            }*/
-
             if (focusedPerson != null) {
                 // Find layer of AddedPerson's siblings
                 val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
@@ -166,6 +156,19 @@ class FemaleNode(
                         sibInd[sibInd.size - 1] - sibInd[0] + 1
 
                     if (childrenNumber >= 3) {
+                        // Extend the children line
+                        var childrenLine = familyTreeDrawer.findChildrenLine(
+                            childrenLineLayer, focusedPerson!!
+                        )!!
+
+                        childrenLine.extendLine(
+                            familyTreeDrawer,
+                            addingLayer - 1,
+                            sibInd,
+                            family,
+                            bloodFamilyId
+                        )
+
                         // Extend the MarriageLineManager of AddedPerson's parent.
                         movingParentPosition(
                             familyTreeDrawer,
@@ -177,40 +180,6 @@ class FemaleNode(
                             family,
                             bloodFamilyId
                         )
-
-                        // Extend the children line
-                        var childrenLine = familyTreeDrawer.findChildrenLine(
-                            childrenLineLayer, focusedPerson!!
-                        )!!
-                        val childrenLineInd = familyTreeDrawer.findChildrenLineInd(
-                            childrenLine, childrenLineLayer
-                        )!!
-
-                        /*if (addedPerson.firstname == "Cara") {
-                            print("------ Female 114 ------\n")
-                            print("add: ${addedPerson.firstname}\n")
-                            print("...............\n")
-                            val canvasB = displayObjectResult(familyTreeDrawer)
-                            print(canvasB.toString())
-                            print("---------------------------------------\n")
-                        }*/
-
-                        childrenLine.extendLine(
-                            familyTreeDrawer,
-                            addingLayer - 1,
-                            sibInd,
-                            family,
-                            bloodFamilyId
-                        )
-
-                        /*if (addedPerson.firstname == "Cara") {
-                            print("------ Female 114 ------\n")
-                            print("add: ${addedPerson.firstname}\n")
-                            print("...............\n")
-                            val canvasB = displayObjectResult(familyTreeDrawer)
-                            print(canvasB.toString())
-                            print("---------------------------------------\n")
-                        }*/
                     }
                 } else if (!hasRightHandPeople) {
                     // When AddedPerson's husband is the youngest children.
@@ -261,7 +230,7 @@ class FemaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Maye") {
+            /*if (addedPerson.firstname == "Sindy") {
                 print("------ Started ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -278,7 +247,7 @@ class FemaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "Jane") {
+            /*if (addedPerson.firstname == "Sin") {
                 print("------ After SeparateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -299,7 +268,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Kitty") {
+            /*if (addedPerson.firstname == "Sin") {
                 print("------ After SeparateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -321,7 +290,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Maye") {
+            /*if (addedPerson.firstname == "Susan") {
                 print("------ After AddMiddleChild ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

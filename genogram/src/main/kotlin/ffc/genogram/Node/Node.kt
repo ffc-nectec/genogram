@@ -117,30 +117,11 @@ abstract class Node {
         }
         val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine!!, childrenLineLayer)
         // For the 4th Generation, when addingPerson's parent is the only child
-        val parentSib = parent.findSiblingByParent(family)
         val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
-
         var sibOrder = parent.getSibOrder(familyTreeDrawer, parentLayer - 1)
 
-        /*if (addedPerson.firstname == "Micky") {
-            print("------ Node 106 ------\n")
-            print("add: ${addedPerson.firstname}\n")
-            print("gen: ${familyTreeDrawer.generationNumber(parentLayer)}\n")
-            print("parentSib.size: ${parentSib.size}\n")
-            print("parentLayer - 1: ${parentLayer - 1}\n")
-//            val test = parent.getSibRank(familyTreeDrawer, parentLayer - 1)
-            print("sibOrder: $sibOrder\n")
-            print("...............\n")
-            val canvasB = displayObjectResult(familyTreeDrawer)
-            print(canvasB.toString())
-            print("---------------------------------------\n")
-        }*/
-
         if (familyTreeDrawer.generationNumber(parentLayer) >= 3
-//            && parentSib.size == 0
-//            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
-//            && (sibOrder == RelationshipLabel.YOUNGEST_CHILD
-                    || sibOrder == RelationshipLabel.ONLY_CHILD
+            || sibOrder == RelationshipLabel.ONLY_CHILD
         ) {
             childrenLineInd?.let { childrenLineInd ->
                 val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
@@ -255,6 +236,18 @@ abstract class Node {
                     null
                 )
             }
+
+            /*if (addedPerson.firstname == "Sam") {
+                print("------ After separateParentSib ------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("addingPersonInd: $addingPersonInd\n")
+                print("expectingPos: $expectingPos\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("-------------\n")
+            }*/
+
         }
     }
 
@@ -294,65 +287,189 @@ abstract class Node {
         // Find index the addedPerson will be added.
         val addingLayer = familyTreeDrawer.findStorageSize() - 1
         val addedPersonInd = familyTreeDrawer.findPersonLayerSize(addingLayer)
+        var addedPersonIndSize = familyTreeDrawer.findPersonIndSize(
+            addingLayer, 0, addedPersonInd - 1
+        )
+        val addPersonSibOrder = addedPerson.getSibOrder(
+            familyTreeDrawer, addingLayer - 1
+        )
 
-        if (parentInd < addedPersonInd && isAddedPersonOldest) {
-            // When the addedPerson's parent node is on the left-hand of the addedPerson,
-            // the addedPerson's parent's siblings (addedPerson's uncles/aunts) have
-            // children equal to less than their parent nodes.
-            // Replace an empty node at the addedPerson's parent index.
+        // When the addedPerson's parent node is on the left-hand of the addedPerson,
+        // the addedPerson's parent's siblings (addedPerson's uncles/aunts) have
+        // children equal to less than their parent nodes.
+        // Replace an empty node at the addedPerson's parent index.
 
-            // Move the addedPerson's parent index
-            val marriageLineLayer = parentLayer + 1
-            val marriageLineNumb = familyTreeDrawer.findLineNumber(marriageLineLayer) - 1
+        // Move the addedPerson's parent index
+        val pMarriageLineLayer = parentLayer + 1 // Parents' marriage line
+        val pMarriageLineLayerNumb = familyTreeDrawer.findLineNumber(pMarriageLineLayer) - 1
 
-            // Find marriageLineInd
-            val anotherParent = addedPerson.findAnotherParent(parent, family)
-            val marriageLine = familyTreeDrawer.findMarriageLine(
-                marriageLineLayer, parent, anotherParent
-            )
-            val emptyNodeNumbLine = familyTreeDrawer.findNumberOfEmptyNode(marriageLineLayer)
-            val emptyMidNodeNumbLine = familyTreeDrawer.findNumberOfMidEmptyNode(marriageLineLayer)
-            val emptyFrontMidNodeNumbLine = emptyNodeNumbLine - emptyMidNodeNumbLine
-            val childrenLineLayer = addingLayer - 1
-            val lastChildrenLineInd = familyTreeDrawer.findPersonLayerSize(childrenLineLayer) - 1
-            var addingInd = (marriageLineNumb * 2) + emptyFrontMidNodeNumbLine - 1
-            var childrenLineInd = familyTreeDrawer.findChildrenLineIndSize(
-                childrenLineLayer, 0, lastChildrenLineInd - 1
-            )
-            val expectingInd = if (parentChildren.size > 3)
-                parentInd + addingInd
-            else
-                parentInd + Math.abs(childrenLineInd - parentInd)
+        // Find marriageLineInd
+        val anotherParent = addedPerson.findAnotherParent(parent, family)
+        val marriageLine = familyTreeDrawer.findMarriageLine(
+            pMarriageLineLayer, parent, anotherParent
+        )
+        val emptyNodeNumbLine = familyTreeDrawer.findNumberOfEmptyNode(pMarriageLineLayer)
+        val emptyMidNodeNumbLine = familyTreeDrawer.findNumberOfMidEmptyNode(pMarriageLineLayer)
+        val emptyFrontMidNodeNumbLine = emptyNodeNumbLine - emptyMidNodeNumbLine
+        val childrenLineLayer = addingLayer - 1
+        val lastChildrenLineInd = familyTreeDrawer.findPersonLayerSize(childrenLineLayer) - 1
+        var addingInd = (pMarriageLineLayerNumb * 2) + emptyFrontMidNodeNumbLine - 1
+        var childrenLineInd = familyTreeDrawer.findChildrenLineIndSize(
+            childrenLineLayer, 0, lastChildrenLineInd - 1
+        )
+        var expectingInd = if (parentChildren!!.size > 3)
+            parentInd + addingInd
+        else
+            parentInd + Math.abs(childrenLineInd - parentInd)
 
-            val leftParent = familyTreeDrawer.findLeftParent(addedPerson, parent, parentLayer, family)
-            val leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
-            val leftParentIndSize = familyTreeDrawer.findPersonIndSize(
-                parentLayer, 0, leftParentInd - 1
-            )
-            val childrenLine = familyTreeDrawer.findChildrenLine(childrenLineLayer, addedPerson)!!
-            childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine, childrenLineLayer)!!
-            val childrenLineIndSize =
-                familyTreeDrawer.findChildrenLineIndSize(childrenLineLayer, 0, childrenLineInd - 1)
+        val leftParent = familyTreeDrawer.findLeftParent(addedPerson, parent, parentLayer, family)
+        val leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
+        val leftParentIndSize = familyTreeDrawer.findPersonIndSize(
+            parentLayer, 0, leftParentInd - 1
+        )
+        val childrenLine = familyTreeDrawer.findChildrenLine(childrenLineLayer, addedPerson)!!
+        childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine, childrenLineLayer)!!
+        val childrenLineIndSize =
+            familyTreeDrawer.findChildrenLineIndSize(childrenLineLayer, 0, childrenLineInd - 1)
 
-            if (leftParentIndSize < childrenLineIndSize && familyTreeDrawer.generationNumber(parentLayer) < 3) {
+        if (parentInd < addedPersonIndSize
+            && (addPersonSibOrder == RelationshipLabel.OLDEST_CHILD
+                    || addPersonSibOrder == RelationshipLabel.ONLY_CHILD)
+        ) {
+            if (leftParentIndSize < childrenLineIndSize
+                && familyTreeDrawer.generationNumber(parentLayer) < 3
+            ) {
                 // move the parent layer
-                for (layer in parentLayer until marriageLineLayer + 1) {
-                    val movingInd = if (layer == parentLayer) {
-                        parentInd
-                    } else {
-                        // Marriage Line Index
-                        familyTreeDrawer.findLineInd(marriageLine!!, marriageLineLayer)
-                    }
+                familyTreeDrawer.movingParentToRightHand(
+                    parent,
+                    expectingInd,
+                    parentInd,
+                    parentLayer,
+                    marriageLine!!,
+                    pMarriageLineLayer,
+                    bloodFamilyId
+                )
+            } else {
+                // children line above the addingPerson
+                val singleChildNumb = familyTreeDrawer.findSingleChildNumb(
+                    addingLayer - 1, 0, childrenLineInd
+                )
+                val addingTargetInd = addedPersonInd + 1
+                val addingTargetIndSize = familyTreeDrawer.findPersonIndSize(
+                    addingLayer, 0, addingTargetInd - 1
+                )
+                var checkingInd = if (addingTargetInd == addingTargetIndSize)
+                    leftParentIndSize
+                else {
+                    addingTargetIndSize - singleChildNumb
+                }
 
-                    for (index in parentInd until expectingInd) {
-                        if (movingInd != null) {
-                            familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                layer,
-                                movingInd,
-                                null,
-                                null
+                // At parent layer
+                val parentLayerSize = familyTreeDrawer.findPersonLayerSize(parentLayer)
+                val parentSingleChildNumb = familyTreeDrawer.findSingleChildNumb(
+                    parentLayer - 1, 0, parentLayerSize
+                )
+                checkingInd = when {
+                    (parentSingleChildNumb == 0 && singleChildNumb == 0) ->
+                        parentInd
+                    (parentSingleChildNumb == 0 && singleChildNumb > 0) ->
+                        checkingInd - singleChildNumb
+                    else ->
+                        checkingInd
+                }
+
+                // Check the node in the addingPerson at the left-hand parent's ind
+                // if it empty, we don't have to move anything
+                val layerSize = familyTreeDrawer.findPersonLayerSize(addingLayer)
+                var targetObj: Any? = null
+                if (checkingInd < layerSize) {
+                    targetObj = familyTreeDrawer.getPersonLayerInd(
+                        addingLayer, checkingInd
+                    )
+                }
+
+                if (targetObj is Person) {
+                    // move the parent layer
+                    val addingEmptyNode = expectingInd - leftParentInd
+                    val previousNode = familyTreeDrawer.findPreviousObj(
+                        parentLayer, leftParentInd
+                    )
+
+                    var preNodeIsSibling = false
+                    if (previousNode is Person)
+                        preNodeIsSibling = leftParent.isSibling(previousNode, family, familyTreeDrawer)
+
+                    if (previousNode is Person && !preNodeIsSibling) {
+                        // Move the left-hand parent to the right hand
+                        familyTreeDrawer.separateAddedPersonParentLayer(
+                            addedPerson,
+                            parent,
+                            addingEmptyNode,
+                            parentInd,
+                            parentLayer,
+                            family,
+                            bloodFamilyId
+                        )
+                        /*if (addedPerson.firstname == "Sin") {
+                            print("------ Node 405 ------\n")
+                            print("add: ${addedPerson.firstname}\n")
+                            print("...............\n")
+                            val canvasB = displayObjectResult(familyTreeDrawer)
+                            print(canvasB.toString())
+                            print("---------------------------------------\n")
+                        }*/
+                    } else {
+                        // Check the next node
+                        val rightParentInd = anotherParent?.let {
+                            familyTreeDrawer.findPersonInd(
+                                anotherParent, parentLayer
+                            )
+                        } ?: leftParentInd
+                        val nextNode = familyTreeDrawer.findNextPerson(
+                            parentLayer, rightParentInd
+                        )
+
+                        if (nextNode is Person) {
+                            val nextNodeChildrenLine = familyTreeDrawer.findChildrenLine(
+                                parentLayer - 1, nextNode
+                            )!!
+
+                            familyTreeDrawer.separateAddedPersonParentLayerByLeftNode(
+                                addedPerson,
+                                parent,
+                                nextNode,
+                                expectingInd,
+                                parentInd,
+                                parentLayer,
+                                family,
+                                bloodFamilyId
+                            )
+                        } else {
+                            familyTreeDrawer.movingParentToRightHand(
+                                parent,
+                                expectingInd,
+                                parentInd,
+                                parentLayer,
+                                marriageLine!!,
+                                pMarriageLineLayer,
+                                bloodFamilyId
+                            )
+
+                            // Extend parent's children line
+                            familyTreeDrawer.updateChildrenLineAtLayer(
+                                parent, parentLayer - 1, family, bloodFamilyId
                             )
                         }
+                        /*// Check
+                        if (addedPerson.firstname == "June") {
+                            print("------ Node 441 ------\n")
+                            print("add: ${addedPerson.firstname}\n")
+                            print("parent: ${parent.firstname}\n")
+                            print("...............\n")
+                            val canvasB = displayObjectResult(familyTreeDrawer)
+                            print(canvasB.toString())
+                            print("-------------\n")
+                        }*/
                     }
                 }
             }
@@ -362,7 +479,7 @@ abstract class Node {
             // Extend the MarriageLineManager of AddedPerson's parent.
             val targetParent: Person = if (anotherParent != null)
                 findTargetParent(
-                    parentLayer - 1, anotherParent!!, parent!!, familyTreeDrawer
+                    parentLayer - 1, anotherParent, parent, familyTreeDrawer
                 )
             else
                 parent
@@ -395,15 +512,6 @@ abstract class Node {
             if (addingPersonSibNumb > 3) {
                 expectingMoreNode = findMovingNodeNumb(addingPersonSibNumb)
             }
-
-            // Find parent index
-            val childrenLineLayer = addingLayer - 1
-            val parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
-            val childrenLine = familyTreeDrawer.findChildrenLine(childrenLineLayer, addedPerson)
-            val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine!!, childrenLineLayer)
-            val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
-                addingLayer - 1, 0, childrenLineInd!!
-            ) - addingPersonSib.size
             if (childrenLineIndSize + expectingMoreNode == parentInd) {
                 expectingMoreNode = 0
             }
@@ -412,12 +520,6 @@ abstract class Node {
             if (expectingMoreNode > 0) {
                 for (i in 0 until expectingMoreNode) {
                     for (j in parentLayer + 1 downTo 0) {
-                        // TODO: Find index for moving
-                        var movingInd = parentInd
-                        if (j % 2 == 0) {
-                            // TODO: Find the parent of the
-                        }
-
                         familyTreeDrawer.addFamilyStorageReplaceIndex(
                             j,
                             parentInd,
@@ -727,6 +829,7 @@ abstract class Node {
         // Find that line index for using to move the children line parent
         val childrenLineInd: Int?
         val leftParentInd: Int?
+
         if (parentChildrenLine != null) {
             childrenLineInd = familyTreeDrawer.findChildrenLineInd(parentChildrenLine, childrenLineLayer)
 
@@ -735,26 +838,22 @@ abstract class Node {
             leftParentInd = familyTreeDrawer.findPersonInd(leftParent, parentLayer)
 
             // Find the focusedPerson sib
-            val focusedPersonSib = familyTreeDrawer.findParentSibIdInd(
-                focusedPerson!!, parent!!, parentLayer
-            )
             val anotherParent = focusedPerson.findAnotherParent(parent, family)
-
-            val parentChildren = parent.findChildrenListIdInd(
-                anotherParent, parentLayer, family, familyTreeDrawer
+            val childrenLayer = parentLayer + 2
+            val fpSibInd = focusedPerson.findSiblingByDrawer(
+                familyTreeDrawer, childrenLayer
             )
-
-//            val focusedPersonSibInd = focusedPersonSib[1]
-            val focusedPersonSibInd = parentChildren?.get(1) as MutableList<Int>
+            val focusedPersonSibInd = fpSibInd!![1] as MutableList<Int>
             val oldestFocusedInd = focusedPersonSibInd[0]
             val youngestFocusedInd = focusedPersonSibInd[focusedPersonSibInd.size - 1]
             val addingPersonSibNumb = youngestFocusedInd - oldestFocusedInd + 1
 
             var expectingMoreNode = 0
-            if (addingPersonSibNumb > 3)
+            if (addingPersonSibNumb > 3) {
                 expectingMoreNode = if (addingPersonSibNumb % 2 == 0) (addingPersonSibNumb / 2) - 1
                 else
                     (floor(addingPersonSibNumb / 2.0) - 1).toInt()
+            }
 
             // Adjust the above layer position
             val expectingPos = childrenLineInd!! + expectingMoreNode

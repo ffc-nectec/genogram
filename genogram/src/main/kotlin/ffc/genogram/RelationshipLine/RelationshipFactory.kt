@@ -49,7 +49,11 @@ class RelationshipFactory {
             return if (labelType == RelationshipLabel.DIVORCED)
                 DivorceLine()
             else {
-                labelType = if (focusedPerson.gender == GenderLabel.MALE)
+                val fpSibOrder = focusedPerson.getSibOrder(
+                    familyTreeDrawer, addLayer - 1
+                )
+                labelType = if (focusedPerson.gender == GenderLabel.MALE
+                || fpSibOrder == RelationshipLabel.YOUNGEST_CHILD)
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND

@@ -353,4 +353,16 @@ class Person(
             }
         } else return null
     }
+
+    fun isSibling(
+        person: Person,
+        family: Family,
+        familyTreeDrawer: FamilyTreeDrawer
+    ): Boolean {
+        val personLayer = familyTreeDrawer.findPersonLayer(person)
+        val siblings = this.findSiblingByParent(family)
+
+        return siblings.firstOrNull { it == person } != null
+//        return true
+    }
 }
