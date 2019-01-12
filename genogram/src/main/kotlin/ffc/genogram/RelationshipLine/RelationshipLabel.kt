@@ -22,6 +22,8 @@ enum class RelationshipLabel {
     EX_HUSBAND,
     WIFE,
     HUSBAND,
+    SINGLE_PARENT_MALE,
+    SINGLE_PARENT_FEMALE,
     CHILDREN,
     TWIN,
     RIGHT_HAND,

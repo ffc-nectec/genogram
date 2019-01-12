@@ -54,6 +54,12 @@ class Person(
     // Whether the person has been divorced.
     fun hasBeenDivorced() = exHusband != null || exWife != null
 
+    fun isParentOf(relatedPersonId: Int): RelationshipLabel? {
+        return children?.find { it == relatedPersonId }?.let {
+            RelationshipLabel.CHILDREN
+        }
+    }
+
     fun hasBeenMarriedWith(relatedPersonId: Int): RelationshipLabel {
 
         if (gender == GenderLabel.MALE) {
@@ -320,11 +326,6 @@ class Person(
     }
 
     fun getSibOrder(familyTreeDrawer: FamilyTreeDrawer, childrenLineLayer: Int): RelationshipLabel? {
-
-        /*print("------ Person 334 ------\n")
-        print("childrenLineLayer: $childrenLineLayer\n")
-        print("---------------------------------------\n")*/
-
         if (childrenLineLayer > 2) {
             val focusedSib = findSiblingByDrawer(
                 familyTreeDrawer, childrenLineLayer
@@ -359,10 +360,54 @@ class Person(
         family: Family,
         familyTreeDrawer: FamilyTreeDrawer
     ): Boolean {
-        val personLayer = familyTreeDrawer.findPersonLayer(person)
         val siblings = this.findSiblingByParent(family)
 
         return siblings.firstOrNull { it == person } != null
-//        return true
+    }
+
+    fun getSpouse(family: Family): MutableList<Person>? {
+        var personList = mutableListOf<Person>()
+
+        when {
+            gender == GenderLabel.MALE -> {
+                wife?.forEach { id ->
+                    family.findPerson(id)?.let { wife ->
+                        personList.add(wife)
+                    }
+                }
+            }
+            else -> {
+                husband?.forEach { id ->
+                    family.findPerson(id)?.let { husband ->
+                        personList.add(husband)
+                    }
+                }
+            }
+        }
+
+        return if (personList.isNotEmpty()) personList else null
+    }
+
+    fun getExSpouse(family: Family): MutableList<Person>? {
+        var personList = mutableListOf<Person>()
+
+        when {
+            gender == GenderLabel.MALE -> {
+                exWife?.forEach { id ->
+                    family.findPerson(id)?.let { exWife ->
+                        personList.add(exWife)
+                    }
+                }
+            }
+            else -> {
+                exHusband?.forEach { id ->
+                    family.findPerson(id)?.let { exHusband ->
+                        personList.add(exHusband)
+                    }
+                }
+            }
+        }
+
+        return if (personList.isNotEmpty()) personList else null
     }
 }

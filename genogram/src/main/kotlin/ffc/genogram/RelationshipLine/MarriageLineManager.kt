@@ -51,14 +51,15 @@ class MarriageLineManager(
         marriageLine.drawLine()
 
         // Add the focusedPerson's spouses
-        if (focusedPerson.gender == GenderLabel.MALE) {
-            focusedPerson.wife?.forEach {
-                marriageLine.addSpouse(focusedPerson, family.findPerson(it)!!)
+        val spouseList = if (focusedPerson.gender == GenderLabel.MALE)
+            focusedPerson.wife else focusedPerson.husband
+        spouseList?.let {
+            it.forEach {id ->
+                marriageLine.addSpouse(focusedPerson, family.findPerson(id)!!)
             }
-        } else {
-            focusedPerson.husband?.forEach {
-                marriageLine.addSpouse(focusedPerson, family.findPerson(it)!!)
-            }
+        }?: run {
+            val unknownParent = family.createUnknownMember(focusedPerson)
+            marriageLine.addSpouse(focusedPerson, unknownParent)
         }
 
         val lineLayer = personLayer + 1
@@ -318,7 +319,6 @@ class MarriageLineManager(
                                         )
                                     }
                                 }
-
                             }
                         }
                     }

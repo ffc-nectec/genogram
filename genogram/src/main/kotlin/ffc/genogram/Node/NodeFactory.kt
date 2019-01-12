@@ -22,7 +22,7 @@ import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
-class NodeFactory {
+open class NodeFactory {
 
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,

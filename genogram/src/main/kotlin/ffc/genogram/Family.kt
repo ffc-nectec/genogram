@@ -50,4 +50,23 @@ class Family(
     fun findPerson(id: Int): Person? {
         return members.firstOrNull { it.idCard == id }
     }
+
+    fun createUnknownMember(focusedPerson: Person): Person {
+        val gender = if (focusedPerson.gender == GenderLabel.MALE)
+            GenderLabel.FEMALE else GenderLabel.MALE
+        return Person(
+            idCard = 0,
+            firstname = " ?",
+            lastname = "?",
+            gender = gender,
+            father = null,
+            mother = null,
+            twin = null,
+            exHusband = null,
+            exWife = null,
+            husband = null,
+            wife = null,
+            children = null
+        )
+    }
 }
