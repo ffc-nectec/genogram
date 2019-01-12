@@ -247,7 +247,7 @@ class FemaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "Sindy") {
+            /*if (addedPerson.firstname == "Sin") {
                 print("------ After SeparateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -268,7 +268,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Sindy") {
+            /*if (addedPerson.firstname == "Sin") {
                 print("------ After SeparateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -290,7 +290,7 @@ class FemaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Sindy") {
+            /*if (addedPerson.firstname == "Susan") {
                 print("------ After AddMiddleChild ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

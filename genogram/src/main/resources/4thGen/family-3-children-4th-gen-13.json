@@ -1,7 +1,7 @@
 {
   "familyId": 2,
   "familyName": "Smiths",
-  "bloodFamily": [0, 1, 2, 3, 5, 6, 7, 8, 9, 20, 21, 22, 23, 24],
+  "bloodFamily": [0, 1, 2, 3, 5, 6, 7, 8, 9, 20, 21, 22, 23, 24, 25],
   "members": [
     {
       "idCard": 0,
@@ -80,8 +80,8 @@
       "ex-wife": null,
       "husband": null,
       "wife": [13],
-      "children": [9, 23, 24],
-      "linkedStack": [1, 11, 13, 9, 23, 24]
+      "children": [9, 23, 24, 25],
+      "linkedStack": [1, 11, 13, 9, 23, 24, 25]
     },
     {
       "idCard": 13,
@@ -96,15 +96,15 @@
       "ex-wife": null,
       "husband": [5],
       "wife": null,
-      "children": [9, 23, 24],
-      "linkedStack": [5, 9, 23, 24]
+      "children": [9, 23, 24, 25],
+      "linkedStack": [5, 9, 23, 24, 25]
     },
     {
       "idCard": 9,
-      "firstname": "Sin",
+      "firstname": "Sam",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
-      "gender": 1,
+      "gender": 0,
       "father": 5,
       "mother": 13,
       "twin": null,
@@ -117,7 +117,23 @@
     },
     {
       "idCard": 23,
-      "firstname": "Kim",
+      "firstname": "Ryan",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
+      "father": 5,
+      "mother": 13,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [5, 13]
+    },
+    {
+      "idCard": 24,
+      "firstname": "Rita",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
       "gender": 1,
@@ -132,8 +148,8 @@
       "linkedStack": [5, 13]
     },
     {
-      "idCard": 24,
-      "firstname": "Thomas",
+      "idCard": 25,
+      "firstname": "Liam",
       "lastname": "Smiths",
       "birthDate": "23-10-1982",
       "gender": 0,
@@ -224,8 +240,8 @@
       "ex-wife": null,
       "husband": [14],
       "wife": null,
-      "children": [20, 21, 22],
-      "linkedStack": [3, 12, 14, 20, 21, 22]
+      "children": null,
+      "linkedStack": [3, 12, 14]
     },
     {
       "idCard": 14,
@@ -240,56 +256,8 @@
       "ex-wife": null,
       "husband": null,
       "wife": [7],
-      "children": [20, 21, 22],
-      "linkedStack": [7, 20, 21, 22]
-    },
-    {
-      "idCard": 20,
-      "firstname": "Kyle",
-      "lastname": "Smiths",
-      "birthDate": "23-10-1982",
-      "gender": 0,
-      "father": 14,
-      "mother": 7,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": null,
-      "wife": null,
       "children": null,
-      "linkedStack": [14, 7]
-    },
-    {
-      "idCard": 21,
-      "firstname": "Tim",
-      "lastname": "Smiths",
-      "birthDate": "23-10-1982",
-      "gender": 0,
-      "father": 14,
-      "mother": 7,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": null,
-      "wife": null,
-      "children": null,
-      "linkedStack": [14, 7]
-    },
-    {
-      "idCard": 22,
-      "firstname": "Jane",
-      "lastname": "Smiths",
-      "birthDate": "23-10-1982",
-      "gender": 1,
-      "father": 14,
-      "mother": 7,
-      "twin": null,
-      "ex-husband": null,
-      "ex-wife": null,
-      "husband": null,
-      "wife": null,
-      "children": null,
-      "linkedStack": [14, 7]
+      "linkedStack": [7]
     },
     {
       "idCard": 8,
@@ -302,10 +270,74 @@
       "twin": null,
       "ex-husband": null,
       "ex-wife": null,
+      "husband": [15],
+      "wife": null,
+      "children": [20, 21, 22],
+      "linkedStack": [3, 12, 15, 20, 21, 22]
+    },
+    {
+      "idCard": 15,
+      "firstname": "Tom",
+      "lastname": "Smiths",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [8],
+      "children": [20, 21, 22],
+      "linkedStack": [8, 21, 20, 22]
+    },
+    {
+      "idCard": 20,
+      "firstname": "Sin",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 1,
+      "father": 15,
+      "mother": 8,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
       "husband": null,
       "wife": null,
       "children": null,
-      "linkedStack": [3, 12]
+      "linkedStack": [15, 8]
+    },
+    {
+      "idCard": 21,
+      "firstname": "Kim",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 1,
+      "father": 15,
+      "mother": 8,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [15, 8]
+    },
+    {
+      "idCard": 22,
+      "firstname": "Kay",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
+      "father": 15,
+      "mother": 8,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [15, 8]
     }
   ]
 }

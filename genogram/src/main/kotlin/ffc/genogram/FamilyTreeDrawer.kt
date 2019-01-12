@@ -1101,37 +1101,52 @@ class FamilyTreeDrawer {
             val childrenLineLayer = parentLayer - 1
             val childrenLine = findChildrenLine(childrenLineLayer, bloodFParent)!!
             val childrenLineInd = findChildrenLineInd(childrenLine, childrenLineLayer)!!
-            // the node in front of the parent node
-            // find the children line above the parent layers
-            if (parentLayer > 3) {
+
+            // Whether the oldest sib in the children line is the left-parent
+            val oldestSib = childrenLine.childrenList[0]
+            val isOldestSibLeftParent = bloodFParent == oldestSib
+
+            if (isOldestSibLeftParent) {
+                // Move the children line above the parent layer
                 for (i in 0 until addingMoreNode) {
                     addFamilyStorageReplaceIndex(childrenLineLayer, childrenLineInd, null, null)
                 }
-            }
+                // Move the the parent layer and the marriage line below the parent layer
+                for (i in 0 until addingMoreNode) {
+                    addFamilyStorageReplaceIndex(parentLayer, parentInd, null, null)
+                    addFamilyStorageReplaceIndex(marriageLineLayer, marriageLineInd, null, null)
+                }
+                updateChildrenLineAtLayer(parent, childrenLineLayer, family, bloodFamilyId)
 
-            for (i in 0 until addingMoreNode) {
+                val grandParentLayer = parentLayer - 3
+                val grandParent = bloodFParent.getLeftHandParent(this, childrenLineLayer)
+                val grandParentInd = findPersonInd(grandParent, grandParentLayer)
+
+                separateAddedPersonParentLayer(
+                    bloodFParent,
+                    grandParent,
+                    addingMoreNode,
+                    grandParentInd,
+                    grandParentLayer,
+                    family,
+                    bloodFamilyId
+                )
+            } else {
+                // Move the marriage line below the parent layer
                 addFamilyStorageReplaceIndex(marriageLineLayer, marriageLineInd, null, null)
+                // Move the the parent layer
                 addFamilyStorageReplaceIndex(parentLayer, parentInd, null, null)
+                // Move the children line next to the parent's children line
+                addFamilyStorageReplaceIndex(childrenLineLayer, childrenLineInd + 1, null, null)
+
+                adjustUpperLayerPos(parent, bloodFParent, parentLayer, family, bloodFamilyId)
+                updateChildrenLineAtLayer(parent, childrenLineLayer, family, bloodFamilyId)
+                childrenLine.moveChildrenLineSign(this, childrenLineLayer)
             }
-
-            val grandParentLayer = parentLayer - 3
-            val grandParent = bloodFParent.getLeftHandParent(this, childrenLineLayer)
-            val grandParentInd = findPersonInd(grandParent, grandParentLayer)
-            updateChildrenLineAtLayer(addedPerson, childrenLineLayer, family, bloodFamilyId)
-
-            separateAddedPersonParentLayer(
-                bloodFParent,
-                grandParent,
-                addingMoreNode,
-                grandParentInd,
-                grandParentLayer,
-                family,
-                bloodFamilyId
-            )
         }
     }
 
-    fun separateAddedPersonParentLayer2(
+    fun separateAddedPersonParentLayerByLeftNode(
         addedPerson: Person,
         parent: Person,
         nextPerson: Person,
@@ -1167,9 +1182,6 @@ class FamilyTreeDrawer {
             val npBloodFParent = nextPerson.getBloodFParent(family, bloodFamilyId)
             val npLeftParentLayer = findPersonLayer(npLeftParent)
             val npLeftParentInd = findPersonInd(npLeftParent, npLeftParentLayer)
-            // move Lucy's left-parent
-
-            // find the marriage of Lucy's left-parent
             val npLeftParentMarriageLineLayer = npLeftParentLayer + 1
             val npLeftParentMarriageLine = findMarriageLine(
                 npLeftParentMarriageLineLayer, npLeftParent, anotherNPLeftParent
@@ -1177,9 +1189,6 @@ class FamilyTreeDrawer {
             val npLeftParentMarriageLineInd = findLineInd(
                 npLeftParentMarriageLine, npLeftParentMarriageLineLayer
             )!!
-            // move the marriage of Lucy's left-parent
-
-            // Update the children line
 
             for (i in 0 until addingEmptyNode) {
                 movingParentToRightHand(
@@ -1202,19 +1211,16 @@ class FamilyTreeDrawer {
             // Update the children line
             updateChildrenLineAtLayer(parent, parentLayer - 1, family, bloodFamilyId)
             updateChildrenLineAtLayer(nextPerson, nextPChildrenLineLayer, family, bloodFamilyId)
+            updateChildrenLineAtLayer(npBloodFParent, npLeftParentLayer - 1, family, bloodFamilyId)
 
-            /*// Check
-            if (addedPerson.firstname == "June") {
-                print("------ Node 441 ------\n")
+            /*if (addedPerson.firstname == "Sindy") {
+                print("------ Node 274 ------\n")
                 print("add: ${addedPerson.firstname}\n")
-                print("parent: ${parent.firstname}\n")
                 print("nextPerson: ${nextPerson.firstname}\n")
-                print("npLeftParent: ${npLeftParent.firstname}\n")
-                print("npLeftParentLayer: $npLeftParentLayer\n")
                 print("...............\n")
                 val canvasB = displayObjectResult(this)
                 print(canvasB.toString())
-                print("-------------\n")
+                print("---------------------------------------\n")
             }*/
         }
     }
@@ -1231,13 +1237,15 @@ class FamilyTreeDrawer {
         val addingPersonSibInd = addedPersonSib?.get(1) as MutableList<Int>
 
         val childrenLine = findChildrenLine(childrenLineLayer, addedPerson)
-        childrenLine?.extendLine(
-            this,
-            childrenLineLayer,
-            addingPersonSibInd,
-            family,
-            bloodFamilyId
-        )
+        childrenLine?.let {
+            childrenLine.extendLine(
+                this,
+                childrenLineLayer,
+                addingPersonSibInd,
+                family,
+                bloodFamilyId
+            )
+        }
     }
 
     fun findAddingEmptyNodesParent(childrenNumber: Int): Int {

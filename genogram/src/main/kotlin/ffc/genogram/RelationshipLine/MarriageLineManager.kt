@@ -251,22 +251,6 @@ class MarriageLineManager(
                                 marriageLine.setSingleMarriageLine(handSide)
                                 marriageLine.extendLeftHandLine()
                             }
-
-                            /*if (focusedPerson.firstname == "Lucy") {
-                                print("------ MarriageLineM. 103 ------\n")
-                                print("focusedPerson: ${focusedPerson.firstname}\n")
-                                print("fpSibOrderSib: $fpSibOrderSib\n")
-//                                print("marriageLineLayerSize: $marriageLineLayerSize\n")
-//                                print("marriageLineIndSize: $marriageLineIndSize\n")
-                                print("lineLayer: $lineLayer\n")
-                                print("focusedPersonInd: $focusedPersonInd\n")
-                                print("focusedPersonIndSize: $focusedPersonIndSize\n")
-                                print("handSide: $handSide\n")
-                                print("...............\n")
-                                val canvasB = displayObjectResult(familyTreeDrawer)
-                                print(canvasB.toString())
-                                print("---------------------------------------\n")
-                            }*/
                         }
 
                         // Add a marriage line
@@ -323,14 +307,18 @@ class MarriageLineManager(
                                     personLayer,
                                     focusedPersonInd
                                 )
+                                val marriageLineInd = familyTreeDrawer.findLineInd(
+                                    marriageLine, lineLayer
+                                )!!
 
                                 if (previousObj is Person) {
                                     for (i in startInd until startInd + addingMore) {
                                         familyTreeDrawer.addFamilyStorageReplaceIndex(
-                                            lineLayer, addingInd - 1, null, null
+                                            lineLayer, marriageLineInd, null, null
                                         )
                                     }
                                 }
+
                             }
                         }
                     }

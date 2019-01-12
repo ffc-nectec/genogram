@@ -118,7 +118,6 @@ abstract class Node {
         val childrenLineInd = familyTreeDrawer.findChildrenLineInd(childrenLine!!, childrenLineLayer)
         // For the 4th Generation, when addingPerson's parent is the only child
         val addingLayerSize = familyTreeDrawer.findStorageLayerSize(addingLayer)
-
         var sibOrder = parent.getSibOrder(familyTreeDrawer, parentLayer - 1)
 
         if (familyTreeDrawer.generationNumber(parentLayer) >= 3
@@ -237,6 +236,18 @@ abstract class Node {
                     null
                 )
             }
+
+            /*if (addedPerson.firstname == "Sam") {
+                print("------ After separateParentSib ------\n")
+                print("add: ${addedPerson.firstname}\n")
+                print("addingPersonInd: $addingPersonInd\n")
+                print("expectingPos: $expectingPos\n")
+                print("...............\n")
+                val canvasB = displayObjectResult(familyTreeDrawer)
+                print(canvasB.toString())
+                print("-------------\n")
+            }*/
+
         }
     }
 
@@ -379,15 +390,17 @@ abstract class Node {
 
                 if (targetObj is Person) {
                     // move the parent layer
-                    val addingEmptyNode = expectingInd - (addedPersonInd - 1)
+                    val addingEmptyNode = expectingInd - leftParentInd
                     val previousNode = familyTreeDrawer.findPreviousObj(
                         parentLayer, leftParentInd
                     )
+
                     var preNodeIsSibling = false
                     if (previousNode is Person)
                         preNodeIsSibling = leftParent.isSibling(previousNode, family, familyTreeDrawer)
 
                     if (previousNode is Person && !preNodeIsSibling) {
+                        // Move the left-hand parent to the right hand
                         familyTreeDrawer.separateAddedPersonParentLayer(
                             addedPerson,
                             parent,
@@ -397,17 +410,14 @@ abstract class Node {
                             family,
                             bloodFamilyId
                         )
-                        /*if (addedPerson.firstname == "Sindy") {
-                            print("------ Node 292 ------\n")
+                        /*if (addedPerson.firstname == "Sin") {
+                            print("------ Node 405 ------\n")
                             print("add: ${addedPerson.firstname}\n")
-                            print("previousNode: $previousNode\n")
-                            print("preNodeIsSibling: $preNodeIsSibling\n")
                             print("...............\n")
                             val canvasB = displayObjectResult(familyTreeDrawer)
                             print(canvasB.toString())
                             print("---------------------------------------\n")
                         }*/
-
                     } else {
                         // Check the next node
                         val rightParentInd = anotherParent?.let {
@@ -423,16 +433,8 @@ abstract class Node {
                             val nextNodeChildrenLine = familyTreeDrawer.findChildrenLine(
                                 parentLayer - 1, nextNode
                             )!!
-                            val parentChildrenLineInd = familyTreeDrawer.findLineInd(
-                                nextNodeChildrenLine, parentLayer - 1
-                            )!!
-                            /*familyTreeDrawer.moveNodeToRightHand(
-                                parentLayer - 1,
-                                parentChildrenLineInd,
-                                parentChildrenLineInd + 1
-                            )*/
 
-                            familyTreeDrawer.separateAddedPersonParentLayer2(
+                            familyTreeDrawer.separateAddedPersonParentLayerByLeftNode(
                                 addedPerson,
                                 parent,
                                 nextNode,

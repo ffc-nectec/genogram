@@ -47,7 +47,7 @@ class FamilyTree(var family: Family) {
         } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) && (family.bloodFamily == null)) {
             familyTreePic
         } else {
-            print("LOADING...\n")
+//            print("LOADING...\n")
             if (!isDrawn(focusedPerson))
                 drawNode(focusedPerson!!, null, null)
             val listFocusedPerson: ArrayList<Person> = ArrayList()

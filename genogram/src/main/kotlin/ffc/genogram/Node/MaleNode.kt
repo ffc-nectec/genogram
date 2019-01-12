@@ -23,7 +23,6 @@ import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 import ffc.genogram.RelationshipLine.ChildrenLine
 import ffc.genogram.RelationshipLine.RelationshipLabel
-import ffc.genogram.Util.displayObjectResult
 
 class MaleNode(
     private var familyTreeDrawer: FamilyTreeDrawer,
@@ -361,7 +360,7 @@ class MaleNode(
             }*/
         } else {
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Liam") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -378,7 +377,7 @@ class MaleNode(
             separateMidChildren(familyTreeDrawer, parentLayer)
 
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Liam") {
                 print("------ After separateMidChildren ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -399,7 +398,7 @@ class MaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "James") {
+            /*if (addedPerson.firstname == "Sam") {
                 print("------ After separateParentSib ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -421,7 +420,7 @@ class MaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Tom") {
+            /*if (addedPerson.firstname == "Thomas") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
