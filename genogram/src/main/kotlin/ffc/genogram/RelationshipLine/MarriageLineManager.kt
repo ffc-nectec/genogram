@@ -54,10 +54,10 @@ class MarriageLineManager(
         val spouseList = if (focusedPerson.gender == GenderLabel.MALE)
             focusedPerson.wife else focusedPerson.husband
         spouseList?.let {
-            it.forEach {id ->
+            it.forEach { id ->
                 marriageLine.addSpouse(focusedPerson, family.findPerson(id)!!)
             }
-        }?: run {
+        } ?: run {
             val unknownParent = family.createUnknownMember(focusedPerson)
             marriageLine.addSpouse(focusedPerson, unknownParent)
         }
@@ -69,8 +69,11 @@ class MarriageLineManager(
             personLayer, 0, focusedPersonInd - 1
         )
 
-        if (handSide == RelationshipLabel.RIGHT_HAND) {
-            if (personLayer > 0) {
+        if (personLayer == 0)
+            familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
+        else
+            // personLayer > 0
+            if (handSide == RelationshipLabel.RIGHT_HAND) {
                 if (familyTreeDrawer.findStorageSize() > (personLayer + 1)) {
                     if (focusedPersonSib.size == 0) {
                         marriageLine.setSingleMarriageLine(handSide)
@@ -158,14 +161,8 @@ class MarriageLineManager(
                     }
                 }
             } else {
-                familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
-            }
-        } else {
-            // Add line on left hand side
-            if (personLayer > 0) {
-                if (personLayer == 0) {
-                    familyTreeDrawer.addFamilyNewLayer(createLineDistance(), marriageLine)
-                } else {
+                // Add line on left hand side
+                if (personLayer > 0) {
                     val hasLeftNodes = familyTreeDrawer.hasNodeOnTheLeft(
                         focusedPerson, personLayer
                     )
@@ -324,7 +321,6 @@ class MarriageLineManager(
                     }
                 }
             }
-        }
 
         return familyTreeDrawer
     }

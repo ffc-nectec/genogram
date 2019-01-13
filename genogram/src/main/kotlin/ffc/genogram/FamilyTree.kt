@@ -21,6 +21,7 @@ import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.addDescendentOf
+import ffc.genogram.Util.displayObjectResult
 
 class FamilyTree(var family: Family) {
 
@@ -53,6 +54,7 @@ class FamilyTree(var family: Family) {
             else -> {
                 focusedPerson?.let {
                     if (!isDrawn(it)) drawNode(it, null, null)
+
                     val listFocusedPerson: ArrayList<Person> = arrayListOf(it)
                     // Get the relative person from the focusedPerson's linkedStack
                     personLinkedStack = it.linkedStack
@@ -90,6 +92,7 @@ class FamilyTree(var family: Family) {
                         // Draw a marriage (Single parent) / a relationship line and Unknown Node.
                         // Delete other children in the focusedPerson's linkedStack
                         focusedPerson.deleteChildrenFromLinkedStack()
+
                         val relationLabel =
                             if (focusedPerson.gender == GenderLabel.MALE)
                                 RelationshipLabel.SINGLE_PARENT_MALE
@@ -138,7 +141,6 @@ class FamilyTree(var family: Family) {
         spouse: Person,
         relationLabel: RelationshipLabel
     ): List<Int>? {
-
         val line = relationFactory.getLine(
             focusedPerson,
             family,
@@ -160,8 +162,6 @@ class FamilyTree(var family: Family) {
 
         var childrenId: ArrayList<Int>?
         var focusedParents: ArrayList<Person> = arrayListOf(focusedPerson)
-
-        ////
 
         childrenId = if (mSpouse == spouse) {
             focusedParents.add(mSpouse)
@@ -236,6 +236,7 @@ class FamilyTree(var family: Family) {
         val node = nodeFactory.getNode(
             familyTreePic, focusedPerson, relatedPerson, family, keepBloodFamily
         )
+        ////////////
         node.drawNode(relationLabel, siblings = false)
 
         var addNode = true

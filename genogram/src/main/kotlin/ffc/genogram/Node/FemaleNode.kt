@@ -48,11 +48,11 @@ class FemaleNode(
                 print("---------------------------------------\n")
             }*/
 
-            val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
             nodeName = createGenderBorder(nodeName, GenderLabel.FEMALE)
 
             if (focusedPerson != null) {
                 // Find layer of AddedPerson's siblings
+                val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val childrenLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 val childrenLineLayer = childrenLayer - 1
 
@@ -239,7 +239,7 @@ class FemaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Sindy") {
+            /*if (addedPerson.firstname == "F2") {
                 print("------ Started ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

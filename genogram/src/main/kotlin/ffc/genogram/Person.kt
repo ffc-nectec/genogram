@@ -413,15 +413,16 @@ class Person(
 
     fun deleteChildrenFromLinkedStack() {
         // Happen when the person is a single parent
-        val tmpLinkedStack = mutableListOf(3)
+        linkedStack?.let {
+            val tmpLinkedStack = it as MutableList<Int>
+            children?.forEach { childId ->
+                if (isParentOf(childId) == RelationshipLabel.CHILDREN)
+                    tmpLinkedStack.find {
+                        tmpLinkedStack.remove(childId)
+                    }
+            }
 
-        children?.forEach { childId ->
-            if (isParentOf(childId) == RelationshipLabel.CHILDREN)
-                tmpLinkedStack.find {
-                    tmpLinkedStack.remove(childId)
-                }
+            linkedStack = cleanUpEmptyStack(it)
         }
-
-        linkedStack = cleanUpEmptyStack(tmpLinkedStack)
     }
 }

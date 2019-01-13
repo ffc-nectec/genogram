@@ -38,4 +38,34 @@ class Drawer2GenSingleParentTest {
         """.trimIndent()
     }
 
+    @Test
+    fun draw1Child3() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/singleParent/single-parent-3.json")
+        ).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [[   ?  ], (  F1  )]
+            [    |_________|   ]
+            [         |        ]
+            [     (  F2  )     ]
+        """.trimIndent()
+    }
+
+    @Test
+    fun draw1Child4() {
+        val drawer = FamilyTree(
+            getResourceAs("2ndGen/singleParent/single-parent-4.json")
+        ).drawGenogram()
+        val canvas = displayObjectResult(drawer)
+
+        canvas.toString().trimIndent() `should equal` """
+            [[   ?  ], (  F1  )]
+            [    |_________|   ]
+            [    ,----^----,   ]
+            [[  M2  ], (  F3  )]
+        """.trimIndent()
+    }
+
 }

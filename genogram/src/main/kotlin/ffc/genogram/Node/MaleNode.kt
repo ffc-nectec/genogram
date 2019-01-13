@@ -54,7 +54,6 @@ class MaleNode(
                 val addingLayer = familyTreeDrawer.findPersonLayer(focusedPerson!!)
                 var addingInd = familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer)
                 var isReplace = false
-                var doExtend = false
 
                 if (focusedPerson!!.gender == GenderLabel.FEMALE) {
                     // Find whether the focusedPerson has any siblings.
@@ -66,23 +65,29 @@ class MaleNode(
                     )
 
                     // Find the focusedPerson sib
-                    var isOldestSib = false
-                    var isYoungestSib = false
                     var focusedSib = focusedPerson!!.findSiblingByDrawer(
                         familyTreeDrawer, addingLayer - 1
                     )
+                    var fpSibOrder: RelationshipLabel = RelationshipLabel.ONLY_CHILD
                     focusedSib?.let {
                         val focusedSibObj = focusedSib!![0] as MutableList<Person>
-                        isOldestSib = focusedSibObj[0] == focusedPerson
-                        isYoungestSib = focusedSibObj[focusedSibObj.size - 1] == focusedPerson
+                        fpSibOrder = when (focusedPerson) {
+                            focusedSibObj[0] -> RelationshipLabel.OLDEST_CHILD
+                            focusedSibObj[focusedSibObj.size - 1] -> RelationshipLabel.YOUNGEST_CHILD
+                            else -> RelationshipLabel.MIDDLE_CHILD
+                        }
                     }
 
-                    if (!leftHandNodes || isOldestSib) {
+                    if (!leftHandNodes ||
+                        fpSibOrder == RelationshipLabel.OLDEST_CHILD ||
+                        fpSibOrder == RelationshipLabel.ONLY_CHILD) {
                         // FocusedPerson(the AddedPerson's wife) is the oldest daughter.
                         // Add the AddedPerson at the first index, the male node will be
                         // on the left of the female node, and make indent(s) at the
                         // FocusedPerson's parent layer.
-                        if (isOldestSib && familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer) != 0) {
+                        if (fpSibOrder == RelationshipLabel.OLDEST_CHILD &&
+                            familyTreeDrawer.findPersonInd(focusedPerson!!, addingLayer) != 0
+                        ) {
                             if (familyTreeDrawer.getPersonLayerInd(addingLayer, addingInd - 1) is EmptyNode) {
                                 isReplace = true
                                 familyTreeDrawer.replaceFamilyStorageLayer(
@@ -98,7 +103,6 @@ class MaleNode(
                             familyTreeDrawer.addFamilyStorageAtIndex(
                                 addingLayer, addingInd, nodeName, addedPerson
                             )
-
                             for (i in 0 until addingLayer)
                                 familyTreeDrawer.addFamilyStorageReplaceIndex(
                                     i, 0, null, null
@@ -108,7 +112,8 @@ class MaleNode(
                         // FocusedPerson(the AddedPerson's wife) is the youngest daughter.
                         // (Special case) Add node AddedPerson node on the right of FocusedPerson.
                         familyTreeDrawer.addFamilyAtLayer(addingLayer, nodeName, addedPerson)
-                    } else if (rightHandNodes && isYoungestSib) {
+                    } else if (rightHandNodes &&
+                        fpSibOrder == RelationshipLabel.YOUNGEST_CHILD) {
                         // If the addingInd is the empty node, it'll use replaceFamilyStorageLayer()
                         val isEmptyNode =
                             familyTreeDrawer.getPersonLayerInd(addingLayer, addingInd + 1) is EmptyNode
@@ -178,7 +183,8 @@ class MaleNode(
                     // When the FocusedPerson is the oldest one.
                     // The AddedPerson will be added at the left-hand of the FocusedPerson.
                     // Then we don't change any sign of the line.
-                    if (!isOldestSib) {
+                    if (fpSibOrder != RelationshipLabel.OLDEST_CHILD &&
+                            fpSibOrder != RelationshipLabel.ONLY_CHILD) {
                         // Adjust the children line
                         val parentLayer = familyTreeDrawer.findPersonLayer(parent!!)
                         var childrenNumber = familyTreeDrawer.findPersonLayerSize(addingLayer)
@@ -347,16 +353,6 @@ class MaleNode(
             } else {
                 familyTreeDrawer.addFamilyLayer(nodeName, addedPerson)
             }
-
-            // Check
-            /*if (addedPerson.firstname == "Luke") {
-                print("------ MaleNode 46 ------\n")
-                print("add: ${addedPerson.firstname}\n")
-                print("...............\n")
-                val canvasB = displayObjectResult(familyTreeDrawer)
-                print(canvasB.toString())
-                print("---------------------------------------\n")
-            }*/
         } else {
             // Check
             /*if (addedPerson.firstname == "Liam") {
