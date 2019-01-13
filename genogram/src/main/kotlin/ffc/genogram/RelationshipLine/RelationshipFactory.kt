@@ -32,28 +32,36 @@ class RelationshipFactory {
         addLayer: Int,
         keepBloodFamily: MutableList<Int>
     ): Relationship {
-
         var labelType: RelationshipLabel?
 
         if (relationshipLabel == RelationshipLabel.WIFE ||
             relationshipLabel == RelationshipLabel.EX_WIFE ||
             relationshipLabel == RelationshipLabel.HUSBAND ||
-            relationshipLabel == RelationshipLabel.EX_HUSBAND
+            relationshipLabel == RelationshipLabel.EX_HUSBAND ||
+            relationshipLabel == RelationshipLabel.SINGLE_PARENT_MALE ||
+            relationshipLabel == RelationshipLabel.SINGLE_PARENT_FEMALE
         ) {
             labelType = if (focusedPerson.hasBeenDivorced()) {
-                // TODO: suspectedPerson could be Ex-spouce or the Person we focuse.
                 RelationshipLabel.DIVORCED
             } else
                 RelationshipLabel.MARRIAGE
 
             return if (labelType == RelationshipLabel.DIVORCED)
                 DivorceLine()
+//            else if (relationshipLabel == RelationshipLabel.SINGLE_PARENT_MALE ||
+//                relationshipLabel == RelationshipLabel.SINGLE_PARENT_FEMALE) {
+//
+//                MarriageLineManager(
+//                    familyTreeDrawer, labelType, addLayer, focusedPerson, family, keepBloodFamily
+//                )
+//            }
             else {
                 val fpSibOrder = focusedPerson.getSibOrder(
                     familyTreeDrawer, addLayer - 1
                 )
                 labelType = if (focusedPerson.gender == GenderLabel.MALE
-                || fpSibOrder == RelationshipLabel.YOUNGEST_CHILD)
+                    || fpSibOrder == RelationshipLabel.YOUNGEST_CHILD
+                )
                     RelationshipLabel.RIGHT_HAND
                 else
                     RelationshipLabel.LEFT_HAND
@@ -61,6 +69,16 @@ class RelationshipFactory {
                     familyTreeDrawer, labelType, addLayer, focusedPerson, family, keepBloodFamily
                 )
             }
+        } else if (relationshipLabel == RelationshipLabel.CHILDREN) {
+            // Children with single parent will use a marriage line with unknown parent node
+            val focusedListPerson = mutableListOf(focusedPerson)
+            return getLine(
+                focusedListPerson,
+                focusedPerson, // Parent
+                keepBloodFamily,
+                family,
+                familyTreeDrawer
+            )
         } else {
             // TODO: Other relationship ig. Enemy
             return TwinLine()

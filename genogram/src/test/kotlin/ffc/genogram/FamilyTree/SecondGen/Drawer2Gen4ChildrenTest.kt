@@ -23,7 +23,7 @@ import ffc.genogram.getResourceAs
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class DrawerFamilyTree2NdGen4ChildrenTest {
+class Drawer2Gen4ChildrenTest {
 
     /************************************************************************************
      **  4 Children

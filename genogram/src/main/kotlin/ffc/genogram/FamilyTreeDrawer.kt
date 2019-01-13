@@ -636,15 +636,19 @@ class FamilyTreeDrawer {
             if (any is MarriageLine) {
                 val spousesStorage = any.getSpouseList()
                 spousesStorage.forEach {
-                    if (it.size > 1) {
-                        val person1 = it[0]
-                        val person2 = it[1]
+                    val person1 = it[0]
+                    val person2 = it[1]
+
+                    // The Unknow's id is always "0"
+                    if (person2.idCard != 0) {
                         if ((person1 == parent1 && person2 == parent2) ||
                             (person1 == parent2 && person2 == parent1)
                         )
                             marriageLine = marriageLineStorage[index] as MarriageLine
                     } else {
                         // Single parent
+                        if (parent1 == it[0])
+                            marriageLine = marriageLineStorage[index] as MarriageLine
                     }
                 }
             }

@@ -25,13 +25,9 @@ import org.junit.Test
 
 class Drawer1GenTest {
 
-
     @Test
     fun drawGrandFObj() {
         val drawer = FamilyTree(getResourceAs("1stGen/family-1-person.json")).drawGenogram()
-        /*val canvas = StringBuilder().apply {
-            drawer.nameFamilyStorage.forEach { append("$it\n") }
-        }*/
         val canvas = displayObjectResult(drawer)
 
         canvas.toString().trimIndent() `should equal` """

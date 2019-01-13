@@ -1,0 +1,39 @@
+{
+  "familyId": 122345,
+  "familyName": "Smiths",
+  "bloodFamily": [1, 2],
+  "members": [
+    {
+      "idCard": 1,
+      "firstname": "F1",
+      "lastname": "Smiths",
+      "birthDate": "1-1-1970",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": [2],
+      "linkedStack": [2]
+    },
+    {
+      "idCard": 2,
+      "firstname": "F2",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 1,
+      "father": null,
+      "mother": 1,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [1]
+    }
+  ]
+}

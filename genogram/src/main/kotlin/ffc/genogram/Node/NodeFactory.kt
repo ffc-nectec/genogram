@@ -22,7 +22,7 @@ import ffc.genogram.FamilyTreeDrawer
 import ffc.genogram.GenderLabel
 import ffc.genogram.Person
 
-class NodeFactory {
+open class NodeFactory {
 
     fun getNode(
         familyTreeDrawer: FamilyTreeDrawer,
@@ -33,14 +33,17 @@ class NodeFactory {
     ): Node {
         // focusedPerson = parent
         var parent: Person? = null
-        if (focusedPerson != null &&
-            (focusedPerson.father != null ||
-                    focusedPerson.mother != null)
-        ) {
-            parent = family.findPerson(focusedPerson.father!!)
+
+        if (focusedPerson != null) {
+            focusedPerson.father?.let {
+                parent = family.findPerson(it)
+            }
             if (parent == null)
-                parent = family.findPerson(focusedPerson.mother!!)
+                focusedPerson.mother?.let {
+                    parent = family.findPerson(it)
+                }
         }
+
         return when (addedPerson.gender) {
             GenderLabel.MALE -> MaleNode(
                 familyTreeDrawer,

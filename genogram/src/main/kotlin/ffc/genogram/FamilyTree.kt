@@ -39,93 +39,148 @@ class FamilyTree(var family: Family) {
     }
 
     fun drawGenogram(): FamilyTreeDrawer {
-
         focusedPerson = family.popBloodFamily()
 
-        return if (focusedPerson == null) {
-            familyTreePic
-        } else if (isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) && (family.bloodFamily == null)) {
-            familyTreePic
-        } else {
-//            print("LOADING...\n")
-            if (!isDrawn(focusedPerson))
-                drawNode(focusedPerson!!, null, null)
-            val listFocusedPerson: ArrayList<Person> = ArrayList()
-            listFocusedPerson.add(focusedPerson!!)
-            personLinkedStack = focusedPerson!!.linkedStack
-
-            while (personLinkedStack != null) {
-                personLinkedStack = setRelationship(
-                    listFocusedPerson, null, null
-                )
+        return when {
+            focusedPerson == null -> {
+                familyTreePic
             }
-            drawGenogram()
+
+            isDrawn(focusedPerson) && (focusedPerson!!.linkedStack == null) && (family.bloodFamily == null) -> {
+                familyTreePic
+            }
+
+            else -> {
+                focusedPerson?.let {
+                    if (!isDrawn(it)) drawNode(it, null, null)
+
+                    val listFocusedPerson: ArrayList<Person> = arrayListOf(it)
+                    // Get the relative person from the focusedPerson's linkedStack
+                    personLinkedStack = it.linkedStack
+                    while (personLinkedStack != null) {
+                        personLinkedStack = setRelationship(
+                            listFocusedPerson, null, null
+                        )
+                    }
+                }
+                drawGenogram()
+            }
         }
     }
 
     private fun setRelationship(
-        list1: ArrayList<Person>,
+        personList: ArrayList<Person>, // list of focusedPerson
         childrenList: ArrayList<Person>?,
         childrenIdList: ArrayList<Int>?
     ): List<Int>? {
+        val focusedPerson = personList[0]
 
-        if ((list1.size > 1) &&
-            (childrenList != null) &&
-            (childrenIdList != null)
-        ) {
+        if ((personList.size > 1) || ((childrenList != null) && (childrenIdList != null))) {
             // Draw a children or twins line
-            val parent = findLeftHandParent(list1, family)
-            val line = relationFactory.getLine(
-                childrenList,
-                parent,
-                keepBloodFamily,
-                family,
-                familyTreePic
-            )
-            line.drawLine()
-            drawListNode(childrenList, list1, RelationshipLabel.CHILDREN)
-
-            return focusedPerson!!.linkedStack
+            return setChildrenRelationship(personList, childrenList!!)
         } else {
-            // Draw a marriage or divorce line
-            val relatedPerson = popLinkedStack(list1, null)
+            // Draw a marriage / single parent / divorce line
+            val relatedPerson = popLinkedStack(personList, null)
 
-            if (relatedPerson != null) {
-                val relatedPersonList: ArrayList<Person> = ArrayList()
-                relatedPersonList.add(relatedPerson)
-                val relationLabel = findRelationship(list1, relatedPersonList)
+            relatedPerson?.let { spouse ->
+                val relatedPersonList: ArrayList<Person> = arrayListOf(spouse)
+                val relationLabel = findRelationship(personList, relatedPersonList)
 
-                // Draw a relationship line and Node.
-                val line = relationFactory.getLine(
-                    focusedPerson!!,
-                    family,
-                    familyTreePic,
-                    relationLabel,
-                    familyTreePic.findPersonLayer(focusedPerson!!),
-                    keepBloodFamily
-                )
-                line.drawLine()
-                drawNode(relatedPerson, focusedPerson, relationLabel)
+                when (relationLabel) {
+                    RelationshipLabel.CHILDREN -> {
+                        // Draw a marriage (Single parent) / a relationship line and Unknown Node.
+                        // Delete other children in the focusedPerson's linkedStack
+                        focusedPerson.deleteChildrenFromLinkedStack()
 
-                val tmp: MutableList<Int> = mutableListOf(focusedPerson!!.idCard)
-                relatedPerson.removeLinkedStack(tmp)
-                val childrenId = focusedPerson!!.getChildrenId(relatedPerson)
+                        val relationLabel =
+                            if (focusedPerson.gender == GenderLabel.MALE)
+                                RelationshipLabel.SINGLE_PARENT_MALE
+                            else
+                                RelationshipLabel.SINGLE_PARENT_FEMALE
 
-                if (childrenId != null) {
-                    val children = focusedPerson!!.popChildren(
-                        childrenId,
-                        relatedPerson,
-                        family.members
-                    )
-                    val focusedParents: ArrayList<Person> =
-                        arrayListOf(focusedPerson!!, relatedPerson)
-
-                    return setRelationship(focusedParents, children, childrenId)
+                        setMarriageRelationship(
+                            focusedPerson, spouse, relationLabel
+                        )
+                    }
+                    else -> {
+                        // Draw a marriage
+                        // Draw a relationship line and Node.
+                        setMarriageRelationship(
+                            focusedPerson, spouse, relationLabel
+                        )
+                    }
                 }
             }
-
-            return focusedPerson!!.linkedStack
         }
+        return focusedPerson.linkedStack
+    }
+
+    private fun setChildrenRelationship(
+        personList: ArrayList<Person>, // list of focusedPerson
+        childrenList: ArrayList<Person>
+    ): List<Int>? {
+        val parent = findLeftHandParent(personList, family)
+        // Draw a children line
+        val line = relationFactory.getLine(
+            childrenList,
+            parent,
+            keepBloodFamily,
+            family,
+            familyTreePic
+        )
+        line.drawLine()
+        // Draw children nodes
+        drawListNode(childrenList, personList, RelationshipLabel.CHILDREN)
+
+        return personList[0].linkedStack // BloodParent's linkedStack
+    }
+
+    private fun setMarriageRelationship(
+        focusedPerson: Person, // list of focusedPerson
+        spouse: Person,
+        relationLabel: RelationshipLabel
+    ): List<Int>? {
+        val line = relationFactory.getLine(
+            focusedPerson,
+            family,
+            familyTreePic,
+            relationLabel,
+            familyTreePic.findPersonLayer(focusedPerson),
+            keepBloodFamily
+        )
+        line.drawLine()
+
+        var mSpouse = spouse
+        if (relationLabel == RelationshipLabel.SINGLE_PARENT_MALE ||
+            relationLabel == RelationshipLabel.SINGLE_PARENT_FEMALE
+        ) {
+            mSpouse = family.createUnknownMember(focusedPerson)
+        }
+
+        drawNode(mSpouse, focusedPerson, relationLabel)
+
+        var childrenId: ArrayList<Int>?
+        var focusedParents: ArrayList<Person> = arrayListOf(focusedPerson)
+
+        childrenId = if (mSpouse == spouse) {
+            focusedParents.add(mSpouse)
+            val tmp: MutableList<Int> = mutableListOf(focusedPerson.idCard)
+            spouse.removeLinkedStack(tmp)
+            focusedPerson.getChildrenId(mSpouse)
+        } else {
+            focusedPerson.children as ArrayList<Int>?
+        }
+
+        childrenId?.let { idList ->
+            val children = focusedPerson.popChildren(
+                idList,
+                spouse,
+                family.members
+            )
+            return setRelationship(focusedParents, children, idList)
+        }
+
+        return null
     }
 
     private fun isDrawn(focusedPerson: Person?): Boolean {
@@ -145,7 +200,7 @@ class FamilyTree(var family: Family) {
         if (focusedList.size == 1) {
             if (relatedList.size == 1) {
                 val focusedPerson = focusedList[0]
-                val relatedPersonId = relatedList[0].idCard.toInt()
+                val relatedPersonId = relatedList[0].idCard
 
                 val relationshipType = focusedPerson.hasBeenMarriedWith(relatedPersonId)
                 return if (relationshipType != RelationshipLabel.SINGLE) {
@@ -177,10 +232,42 @@ class FamilyTree(var family: Family) {
     }
 
     private fun drawNode(relatedPerson: Person, focusedPerson: Person?, relationLabel: RelationshipLabel?) {
-        val node = nodeFactory
-            .getNode(familyTreePic, focusedPerson, relatedPerson, family, keepBloodFamily)
+        val node = nodeFactory.getNode(
+            familyTreePic, focusedPerson, relatedPerson, family, keepBloodFamily
+        )
+
+        /*if (relatedPerson!!.firstname == "Cara") {
+            print("------ FF 240 ------\n")
+            print("add: ${relatedPerson!!.firstname}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreePic)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
+
         node.drawNode(relationLabel, siblings = false)
-        addedNodes.add(relatedPerson.idCard)
+
+        var addNode = true
+        if (relationLabel == RelationshipLabel.SINGLE_PARENT_MALE ||
+            relationLabel == RelationshipLabel.SINGLE_PARENT_FEMALE
+        )
+            addNode = false
+
+        if (addNode)
+            addedNodes.add(relatedPerson.idCard)
+
+        // Check
+        /*if (focusedPerson?.firstname == "F10") {
+            print("------ Started ------\n")
+            print("focusedPerson: ${focusedPerson?.firstname}\n")
+            print("focusedPerson: ${focusedPerson?.linkedStack}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreePic)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
     }
 
     private fun drawListNode(
@@ -193,7 +280,6 @@ class FamilyTree(var family: Family) {
             // Find the left-hand parent
             val parent = findLeftHandParent(parents, family)
             val node = nodeFactory.getNode(familyTreePic, parent, it, family, keepBloodFamily)
-
             if (childrenNumber == 1)
                 node.drawNode(relationLabel, siblings = false)
             else
@@ -203,7 +289,6 @@ class FamilyTree(var family: Family) {
         // Adjust the parent layer when the more than three children were added.
         // Add indent for the previous layers if the number of children is even number.
         // The number of empty nodes will be the number of children / FamilyTree.
-        familyTreePic.findPersonLayer(focusedPerson!!)
         focusedList.forEach {
             addedNodes.add(it.idCard)
         }
