@@ -355,7 +355,7 @@ class MaleNode(
             }
         } else {
             // Check
-            /*if (addedPerson.firstname == "Liam") {
+            /*if (addedPerson.firstname == "Teddy") {
                 print("------ Male 1 ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")
@@ -415,7 +415,7 @@ class MaleNode(
             )
 
             // Check
-            /*if (addedPerson.firstname == "Thomas") {
+            /*if (addedPerson.firstname == "Feddy") {
                 print("------ After Add a single child ------\n")
                 print("add: ${addedPerson.firstname}\n")
                 print("...............\n")

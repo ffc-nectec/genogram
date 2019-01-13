@@ -52,10 +52,16 @@ class ChildrenLineManager(
 
         if (parent1 != null)
             parentList.add(family.findPerson(parent1)!!)
+        else
+            parentList.add(family.createUnknownMember(parent))
+
         if (parent2 != null)
             parentList.add(family.findPerson(parent2)!!)
+        else
+            parentList.add(family.createUnknownMember(parent))
 
         childrenLine.parentList = parentList
+
         val parentLayer = familyTreeDrawer.findPersonLayer(parent)
         val addingLayer = parentLayer + 2
         val parentInd = familyTreeDrawer.findPersonInd(parent, parentLayer)
@@ -80,6 +86,7 @@ class ChildrenLineManager(
         val childrenLineIndSize = familyTreeDrawer.findChildrenLineIndSize(
             addingLayer, 0, addingLineInd - 2
         )
+
         var leftParent: Person = parent
         val bloodParent = childrenList[0].getBloodFParent(family, keepBloodFamily)
         val parentSib = bloodParent.findSiblingByParent(family)
@@ -90,7 +97,6 @@ class ChildrenLineManager(
             anotherParentInd = it.let {
                 familyTreeDrawer.findPersonInd(it, parentLayer)
             }
-
             if (anotherParentInd != null && anotherParentInd!! < parentInd)
                 leftParent = it
         }

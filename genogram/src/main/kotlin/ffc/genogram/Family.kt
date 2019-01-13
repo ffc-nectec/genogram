@@ -52,13 +52,11 @@ class Family(
     }
 
     fun createUnknownMember(focusedPerson: Person): Person {
-        val gender = if (focusedPerson.gender == GenderLabel.MALE)
-            GenderLabel.FEMALE else GenderLabel.MALE
-        return Person(
+        var person = Person(
             idCard = 0,
             firstname = " ?",
             lastname = "?",
-            gender = gender,
+            gender = GenderLabel.MALE,
             father = null,
             mother = null,
             twin = null,
@@ -68,5 +66,14 @@ class Family(
             wife = null,
             children = null
         )
+
+        if (focusedPerson.gender == GenderLabel.MALE) {
+            person.gender = GenderLabel.FEMALE
+            person.wife = mutableListOf(focusedPerson.idCard)
+        } else {
+            person.gender = GenderLabel.MALE
+            person.husband = mutableListOf(focusedPerson.idCard)
+        }
+        return person
     }
 }

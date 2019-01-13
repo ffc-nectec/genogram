@@ -1,0 +1,113 @@
+{
+  "familyId": 2,
+  "familyName": "Smiths",
+  "bloodFamily": [
+    10,
+    1,
+    2,
+    3
+  ],
+  "members": [
+    {
+      "idCard": 10,
+      "firstname": "Grandmother",
+      "lastname": "Smiths",
+      "birthDate": "1-1-1970",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": [
+        1,
+        2,
+        3
+      ],
+      "linkedStack": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "idCard": 1,
+      "firstname": "Bill",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 0,
+      "father": null,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": [
+        11
+      ],
+      "children": null,
+      "linkedStack": [
+        10,
+        11
+      ]
+    },
+    {
+      "idCard": 11,
+      "firstname": "Lisa",
+      "lastname": "Snow",
+      "birthDate": "12-11-1980",
+      "gender": 1,
+      "father": null,
+      "mother": null,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": [
+        1
+      ],
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        1
+      ]
+    },
+    {
+      "idCard": 2,
+      "firstname": "Ed",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
+      "father": null,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        10
+      ]
+    },
+    {
+      "idCard": 3,
+      "firstname": "Teddy",
+      "lastname": "Smiths",
+      "birthDate": "23-10-1982",
+      "gender": 0,
+      "father": null,
+      "mother": 10,
+      "twin": null,
+      "ex-husband": null,
+      "ex-wife": null,
+      "husband": null,
+      "wife": null,
+      "children": null,
+      "linkedStack": [
+        10
+      ]
+    }
+  ]
+}

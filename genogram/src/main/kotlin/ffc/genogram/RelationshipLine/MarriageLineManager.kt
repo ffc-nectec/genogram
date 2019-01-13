@@ -53,6 +53,7 @@ class MarriageLineManager(
         // Add the focusedPerson's spouses
         val spouseList = if (focusedPerson.gender == GenderLabel.MALE)
             focusedPerson.wife else focusedPerson.husband
+
         spouseList?.let {
             it.forEach { id ->
                 marriageLine.addSpouse(focusedPerson, family.findPerson(id)!!)

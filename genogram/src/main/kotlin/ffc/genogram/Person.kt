@@ -425,4 +425,54 @@ class Person(
             linkedStack = cleanUpEmptyStack(it)
         }
     }
+
+    fun hasSingleParent(): Boolean {
+        var hasFather = false
+        var hasMother = false
+
+        father?.let {
+            hasFather = true
+        }
+        mother?.let {
+            hasMother = true
+        }
+
+        return !hasFather || !hasMother
+    }
+
+    fun getSingleParent(family: Family): Person {
+        father?.let {
+            return family.findPerson(it)!!
+        }.run {
+            return family.findPerson(mother!!)!!
+        }
+    }
+
+    fun findUnknownNodeInd(personLayer: Int, familyTreeDrawer: FamilyTreeDrawer): Int? {
+        val storage = familyTreeDrawer.getPersonLayer(personLayer)
+
+        storage?.forEachIndexed { index, it ->
+            if (it is Person) {
+                if (it.idCard == 0) {
+                    when (gender) {
+                        GenderLabel.MALE -> {
+                            it.wife?.forEach { id ->
+                                if (id == idCard)
+                                    return index
+                            }
+                        }
+                        else -> {
+                            it.husband?.forEach { id ->
+                                if (id == idCard)
+                                    return index
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return null
+    }
 }

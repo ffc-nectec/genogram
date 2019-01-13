@@ -21,7 +21,6 @@ import ffc.genogram.Node.NodeFactory
 import ffc.genogram.RelationshipLine.RelationshipFactory
 import ffc.genogram.RelationshipLine.RelationshipLabel
 import ffc.genogram.Util.addDescendentOf
-import ffc.genogram.Util.displayObjectResult
 
 class FamilyTree(var family: Family) {
 
@@ -236,7 +235,17 @@ class FamilyTree(var family: Family) {
         val node = nodeFactory.getNode(
             familyTreePic, focusedPerson, relatedPerson, family, keepBloodFamily
         )
-        ////////////
+
+        /*if (relatedPerson!!.firstname == "Cara") {
+            print("------ FF 240 ------\n")
+            print("add: ${relatedPerson!!.firstname}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreePic)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
+
         node.drawNode(relationLabel, siblings = false)
 
         var addNode = true
@@ -247,6 +256,18 @@ class FamilyTree(var family: Family) {
 
         if (addNode)
             addedNodes.add(relatedPerson.idCard)
+
+        // Check
+        /*if (focusedPerson?.firstname == "F10") {
+            print("------ Started ------\n")
+            print("focusedPerson: ${focusedPerson?.firstname}\n")
+            print("focusedPerson: ${focusedPerson?.linkedStack}\n")
+            print("...............\n")
+            val canvasB = displayObjectResult(familyTreePic)
+            print(canvasB.toString())
+            print("---------------------------------------\n")
+        }*/
+
     }
 
     private fun drawListNode(
